@@ -52,6 +52,10 @@ document <
           Name='ReturnStatus'
           DataTypeName='varchar'
           DataLength=1
+        >, object:rpclass::TCustomLoadedField<
+          Name='AuthStatus'
+          DataTypeName='varchar'
+          DataLength=1
         >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
           Name='LFinancialAccount'
           ClassTypeName='FinancialAccount'

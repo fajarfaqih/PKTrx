@@ -30,7 +30,8 @@ def OnSetData(sender):
     rec.ReturnStatus = 'F'
   else :
     rec.ReturnStatus = 'T'
-  
+
+  rec.AuthStatus = oCATrans.LTransaction.AuthStatus
 
   
   
