@@ -1,0 +1,46 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{03AB2DCD-D5DA-4DD5-B07D-CD15AE22527E}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rpclass::TPClassUIDefList<
+  UIDefs={object:rpclass::TPClassUIDef<
+      Name='uipCPIA'
+      PClassName='CostPaidInAdvance'
+      LoadedFieldList='AccountNo;AccountName;NilaiAwal;LCPIACategory.CPIACatId;LCPIACategory.CPIACatCode;LCPIACategory.CPIACatName;LAccount.Account_Code;LAccount.Account_Code;LAccount.Account_Name;NominalPenyusutan;TotalPenyusutan;Balance'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='BeginDate'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='EndDate'
+          DataTypeName='timestamp'
+          DataLength=20
+        >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
+          Name='LCPIACategory'
+          ClassTypeName='CPIACategory'
+          FieldNames='CPIACatId;CPIACatCode;CPIACatName'
+        >, object:rpclass::TCustomLoadedLink<
+          Name='LAccount'
+          ClassTypeName='Account'
+          FieldNames='Account_Code;Account_Code;Account_Name'
+        >}Mode=imSingleRow
+    >, object:rpclass::TPClassUIDef<
+      Name='uipDepreciationHistori'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='DeprNo'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='DeprValue'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='DeprDate'
+          DataTypeName='timestamp'
+          DataLength=20
+        >}Mode=imMultiRow
+      CreateInstanceOnNew=true
+    >}OnSetDataEx='FormSetDataEx'
+>

@@ -1,0 +1,164 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{03AB2DCD-D5DA-4DD5-B07D-CD15AE22527E}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rpclass::TPClassUIDefList<
+  UIDefs={object:rpclass::TPClassUIDef<
+      Name='uipFilter'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='BranchCode'
+          DataTypeName='varchar'
+          DataLength=3
+        >, object:rpclass::TCustomLoadedField<
+          Name='BranchId'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='BranchName'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='HeadOfficeCode'
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rpclass::TCustomLoadedField<
+          Name='MasterBranchCode'
+          DataTypeName='varchar'
+          DataLength=5
+        >, object:rpclass::TCustomLoadedField<
+          Name='BeginDate'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='EndDate'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBranch.BranchCode'
+          DataTypeName='VARCHAR'
+          DataLength=3
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBranch.BranchCode'
+          DataTypeName='VARCHAR'
+          DataLength=3
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBranch.BranchName'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='IdDonor'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='NamaDonor'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='ChannelCode'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='ProgramName'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='LSponsor.SponsorId'
+          DataTypeName='INTEGER'
+        >, object:rpclass::TCustomLoadedField<
+          Name='LSponsor.SponsorId'
+          DataTypeName='INTEGER'
+        >, object:rpclass::TCustomLoadedField<
+          Name='LSponsor.Name'
+          DataTypeName='VARCHAR'
+          DataLength=50
+        >, object:rpclass::TCustomLoadedField<
+          Name='LVolunteer.VolunteerId'
+          DataTypeName='VARCHAR'
+          DataLength=10
+        >, object:rpclass::TCustomLoadedField<
+          Name='LVolunteer.VolunteerId'
+          DataTypeName='VARCHAR'
+          DataLength=10
+        >, object:rpclass::TCustomLoadedField<
+          Name='LVolunteer.VolunteerName'
+          DataTypeName='VARCHAR'
+          DataLength=50
+        >, object:rpclass::TCustomLoadedField<
+          Name='ProgramId'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='AccountNo'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='FundEntity'
+          DataTypeName='integer'
+          DataLength=1
+        >, object:rpclass::TCustomLoadedField<
+          Name='NoDonor'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LMarketer.MarketerId'
+          DataTypeName='INTEGER'
+        >, object:rpclass::TCustomLoadedField<
+          Name='LMarketer.MarketerId'
+          DataTypeName='INTEGER'
+        >, object:rpclass::TCustomLoadedField<
+          Name='LMarketer.Full_Name'
+          DataTypeName='VARCHAR'
+          DataLength=150
+        >, object:rpclass::TCustomLoadedField<
+          Name='IsAllBranch'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='IsAllDonor'
+          DataTypeName='varchar'
+          DataLength=1
+        >, object:rpclass::TCustomLoadedField<
+          Name='IsAllChannel'
+          DataTypeName='varchar'
+          DataLength=1
+        >, object:rpclass::TCustomLoadedField<
+          Name='IsAllProgram'
+          DataTypeName='varchar'
+          DataLength=1
+        >, object:rpclass::TCustomLoadedField<
+          Name='IsAllSponsor'
+          DataTypeName='varchar'
+          DataLength=1
+        >, object:rpclass::TCustomLoadedField<
+          Name='IsAllVolunteer'
+          DataTypeName='varchar'
+          DataLength=1
+        >, object:rpclass::TCustomLoadedField<
+          Name='IsAllFundEntity'
+          DataTypeName='varchar'
+          DataLength=1
+        >, object:rpclass::TCustomLoadedField<
+          Name='IsAllMarketer'
+          DataTypeName='varchar'
+          DataLength=1
+        >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
+          Name='LBranch'
+          ClassTypeName='Branch'
+          FieldNames='BranchCode;BranchCode;BranchName'
+        >, object:rpclass::TCustomLoadedLink<
+          Name='LSponsor'
+          ClassTypeName='Sponsor'
+          FieldNames='SponsorId;SponsorId;Name'
+        >, object:rpclass::TCustomLoadedLink<
+          Name='LVolunteer'
+          ClassTypeName='Volunteer'
+          FieldNames='VolunteerId;VolunteerId;VolunteerName'
+        >, object:rpclass::TCustomLoadedLink<
+          Name='LMarketer'
+          ClassTypeName='Marketer'
+          FieldNames='MarketerId;MarketerId;Full_Name'
+        >}Mode=imSingleRow
+    >}OnSetDataEx='FormSetDataEx'
+>

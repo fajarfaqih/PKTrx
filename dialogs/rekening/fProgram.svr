@@ -1,0 +1,173 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{03AB2DCD-D5DA-4DD5-B07D-CD15AE22527E}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rpclass::TPClassUIDefList<
+  UIDefs={object:rpclass::TPClassUIDef<
+      Name='uipProductAccount'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='BranchCode'
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rpclass::TCustomLoadedField<
+          Name='AccountNo'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='BeginDate'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='EndDate'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='FundEntity'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='BeginningBalance'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='ZakatBalance'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='InfaqBalance'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='WakafBalance'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='AmilBalance'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='NonHalalBalance'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='TotalBalance'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LProductAccount.AccountNo'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='LProductAccount.LProduct.ProductCode'
+          DataTypeName='VARCHAR'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LProductAccount.AccountNo'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='LProductAccount.AccountName'
+          DataTypeName='VARCHAR'
+          DataLength=50
+        >, object:rpclass::TCustomLoadedField<
+          Name='LProductAccount.Balance'
+          DataTypeName='DOUBLE'
+        >, object:rpclass::TCustomLoadedField<
+          Name='LProductAccount.CurrencyCode'
+          DataTypeName='VARCHAR'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LProductAccount.BranchCode'
+          DataTypeName='VARCHAR'
+          DataLength=5
+        >, object:rpclass::TCustomLoadedField<
+          Name='LProductAccount.ProductId'
+          DataTypeName='INTEGER'
+        >, object:rpclass::TCustomLoadedField<
+          Name='LProductAccount.LProduct.ProductName'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='LProductAccount.LProduct.FundCategory'
+          DataTypeName='VARCHAR'
+          DataLength=1
+        >, object:rpclass::TCustomLoadedField<
+          Name='LProductAccount.LProduct.Description'
+          DataTypeName='VARCHAR'
+          DataLength=100
+        >, object:rpclass::TCustomLoadedField<
+          Name='LProductAccount.LProduct.Status'
+          DataTypeName='VARCHAR'
+          DataLength=1
+        >, object:rpclass::TCustomLoadedField<
+          Name='LCurrency.Currency_Code'
+          DataTypeName='VARCHAR'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LCurrency.Currency_Code'
+          DataTypeName='VARCHAR'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LCurrency.Short_Name'
+          DataTypeName='VARCHAR'
+          DataLength=10
+        >, object:rpclass::TCustomLoadedField<
+          Name='LCurrency.Full_Name'
+          DataTypeName='VARCHAR'
+          DataLength=50
+        >, object:rpclass::TCustomLoadedField<
+          Name='BranchName'
+          DataTypeName='varchar'
+          DataLength=30
+        >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
+          Name='LProductAccount'
+          ClassTypeName='ProductAccount'
+          FieldNames='AccountNo;LProduct.ProductCode;AccountNo;AccountName;Balance;CurrencyCode;BranchCode;ProductId;LProduct.ProductName;LProduct.FundCategory;LProduct.Description;LProduct.Status'
+        >, object:rpclass::TCustomLoadedLink<
+          Name='LCurrency'
+          ClassTypeName='Currency'
+          FieldNames='Currency_Code;Currency_Code;Short_Name;Full_Name'
+        >}Mode=imSingleRow
+    >, object:rpclass::TPClassUIDef<
+      Name='uipTransaction'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='TransactionDate'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='TransactionCode'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='TransactionNo'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='MutationType'
+          DataTypeName='varchar'
+          DataLength=1
+        >, object:rpclass::TCustomLoadedField<
+          Name='Amount'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='ReferenceNo'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='Description'
+          DataTypeName='varchar'
+          DataLength=100
+        >, object:rpclass::TCustomLoadedField<
+          Name='Inputer'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='TransactionItemId'
+          DataTypeName='integer'
+          DataLength=20
+        >}Mode=imMultiRow
+    >}OnSetDataEx='FormSetDataEx'
+>

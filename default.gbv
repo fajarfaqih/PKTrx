@@ -1,0 +1,14 @@
+; THIS FILE CONTAINS GLOBAL VARIABLES USED IN APPLICATION
+; WRITTEN IN INI-STYLE FORM
+
+[COMPANYINFO]
+Name=%Customer Company Name%
+Address1=%Customer Company Address%
+Address2=%Customer Company Address2%
+
+[COMMONREPORT]
+periode='12/30/1899'-'12/30/1899'
+Tanggal=Jatuh Tempo Sampai Tanggal 31-Des-2000
+
+[OPTION]
+HeadOfficeCode=001

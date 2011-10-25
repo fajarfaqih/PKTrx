@@ -1,0 +1,148 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Bank'
+  Left=50
+  Top=50
+  Width=401
+  Height=177
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx='FormSetDataEx'
+  OnBeginProcessData='OnBeginProcessData'
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='mode'
+          Hidden=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ID'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TglUbah'
+          Hidden=true
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='UserPengubah'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TerminalUbah'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >}Name='uipData'
+      ClassTypeName='Bank'
+      DataBinding=bmMaster
+      OnSetData='BankOnSetData'
+    >}Containers={object:rtf::Panel<
+      ControlDefs={object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='BankCode'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='BankName'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='BankShortName'
+        >}Elements={*object:rtf::FieldUIElmtSetting<
+          Name='BankCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=10
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='BankName'
+          ControlCaption='Nama Bank'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='BankShortName'
+          ControlCaption='Nama Pendek Bank'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BankCodeID'
+          ControlCaption='Kode Bank'
+          DataTypeName='varchar'
+          DataLength=10
+        >}Name='pData'
+      Width=393
+      Height=249
+      UIPart=$UIPARTS['uipData']
+      Controls={*object:rtf::DBEdit<
+          Name='BankName'
+          Top=36
+          Left=8
+          Color=0
+          ControlCaption='Nama Bank'
+          LayoutOrder=2
+        >, *object:rtf::DBEdit<
+          Name='BankShortName'
+          Top=64
+          Left=8
+          Color=0
+          ControlCaption='Nama Pendek Bank'
+          LayoutOrder=3
+        >, *object:rtf::DBEdit<
+          Name='BankCodeID'
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption='Kode Bank'
+        >}EqualCaptionWidth=130
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=41
+      Controls={object:rtf::Button<
+          Name='bOK'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&OK'
+          Default=true
+          OnClick='bOKClick'
+        >, object:rtf::Button<
+          Name='bClose'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Width=82
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='&Cancel / Close'
+          Cancel=true
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=401
+      Height=177
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['pData']
+      InversedAlign=true
+    >}FormClassName='fBank'
+>

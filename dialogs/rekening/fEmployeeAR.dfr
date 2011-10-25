@@ -1,0 +1,322 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dsMain']
+  Caption='Peragaan rekening piutang karyawan'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=700
+  Height=505
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx='FormSetDataEx'
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=10
+        >}Name='uipEmployeeAR'
+    >, object:rtf::PClassUI<
+      Name='uipTransaction'
+      MultiLine=true
+    >}Containers={object:rtf::DualSplit<
+      Name='dsMain'
+      Width=240
+      Height=96
+      Container1=$CONTAINERS['pSelect']
+      Container2=$CONTAINERS['dsAccount']
+      InversedAlign=true
+    >, object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BeginDate'
+          ControlCaption='Pilih tanggal transaksi'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='EndDate'
+          ControlCaption='s.d'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BeginningBalance'
+          ReadOnlyControl=true
+          ControlCaption='Saldo Awal'
+          DataTypeName='double'
+          DataLength=20
+        >}Name='pSelectTransaction'
+      Width=665
+      Height=70
+      Bordered=true
+      UIPart=$UIPARTS['uipEmployeeAR']
+      Controls={*object:rtf::DBDateEdit<
+          Name='BeginDate'
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption='Pilih tanggal transaksi'
+          CaptionWidth=120
+        >, *object:rtf::DBDateEdit<
+          Name='EndDate'
+          Layout=clNextSide
+          Top=8
+          Left=256
+          Color=0
+          ControlCaption='s.d'
+        >, *object:rtf::DBEdit<
+          Name='BeginningBalance'
+          Top=36
+          Left=8
+          Color=-2147483624
+          ControlCaption='Saldo Awal'
+          CaptionWidth=120
+          ReadOnly=true
+        >, object:rtf::Button<
+          Name='bSelect'
+          Layout=clAbsolute
+          Top=8
+          Left=408
+          Color=0
+          ControlCaption=''
+          Caption='&Lihat histori'
+          OnClick='bViewHistClick'
+        >, object:rtf::Button<
+          Name='bExportExcel'
+          Layout=clAbsolute
+          Top=8
+          Left=488
+          Color=0
+          ControlCaption=''
+          Caption='&Export Excel'
+          OnClick='bExportClick'
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Grid<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='TransactionDate'
+          ControlCaption='Tanggal'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionCode'
+          Hidden=true
+          ControlCaption='Kode'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionNo'
+          ControlCaption='No Transaksi'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='MutationType'
+          ControlCaption='Mutasi'
+          DataTypeName='varchar'
+          DataLength=1
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount'
+          ControlCaption='Nilai'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ReferenceNo'
+          ControlCaption='No Referensi'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Description'
+          DataTypeName='varchar'
+          DataLength=100
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Inputer'
+          ControlCaption='Inputer'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionItemId'
+          Hidden=true
+          ReadOnlyControl=true
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AuthStatus'
+          ControlCaption='Status Otorisasi'
+        >}Name='gTransaction'
+      Width=700
+      Height=291
+      UIPart=$UIPARTS['uipTransaction']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Columns={*object:rtf::GridColumn<
+          Name='TransactionDate'
+          InputStyle=cisDate
+          EnumeratedValues=''
+          FieldName='TransactionDate'
+          DisplayFormat=''
+          TitleCaption='Tanggal'
+          Width=60
+        >, *object:rtf::GridColumn<
+          Name='TransactionNo'
+          TitleCaption='No Transaksi'
+          Width=160
+        >, *object:rtf::GridColumn<
+          Name='MutationType'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='MutationType'
+          DisplayFormat=''
+          TitleCaption='Mutasi'
+          Width=40
+        >, *object:rtf::GridColumn<
+          Name='Amount'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Amount'
+          DisplayFormat=',0.00'
+          TitleCaption='Nilai'
+          Width=120
+        >, *object:rtf::GridColumn<
+          Name='ReferenceNo'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='ReferenceNo'
+          DisplayFormat=''
+          TitleCaption='No Referensi'
+          Width=80
+        >, *object:rtf::GridColumn<
+          Name='Description'
+          Width=200
+        >, *object:rtf::GridColumn<
+          Name='Inputer'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Inputer'
+          DisplayFormat=''
+          TitleCaption='Inputer'
+          Width=60
+        >, *object:rtf::GridColumn<
+          Name='AuthStatus'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='AuthStatus'
+          DisplayFormat=''
+          TitleCaption='Status Otorisasi'
+        >}ReadOnly=true
+      RowSelect=true
+      SuppressHelpLine=true
+    >, object:rtf::Panel<
+      Name='pSelect'
+      Width=649
+      Height=41
+      Bordered=true
+      UIPart=$UIPARTS['uipEmployeeAR']
+      Controls={object:rtf::Button<
+          Name='bClose'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Tutup'
+          Cancel=true
+          ExitAction=eaQuitOK
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dsAccount'
+      Width=240
+      Height=96
+      Container1=$CONTAINERS['pProductAccount']
+      Container2=$CONTAINERS['dsTransaction']
+    >, object:rtf::Panel<
+      Elements={object:rtf::LinkUIElmtSetting<
+          Name='LEmployeeAR'
+          ControlCaption='Pilih rekening karyawan'
+          ClassTypeName='EmployeeAccountReceivable'
+          DisplayFields='AccountNo;AccountName;Balance;CurrencyCode;EmployeeId'
+          Restrictions='BranchCode|BranchCode'
+          OQLText=['select from EmployeeAccountReceivable'#13#10,
+            '[status = ''A'' and BranchCode = :BranchCode]'#13#10,
+            '('#13#10,
+            '  AccountNo, AccountName,'#13#10,
+            '  CurrencyCode, Balance, EmployeeId, self'#13#10,
+            ')'#13#10,
+            'then order by AccountName;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LEmployeeAR'
+        >}Name='pProductAccount'
+      Width=649
+      Height=100
+      Bordered=true
+      UIPart=$UIPARTS['uipEmployeeAR']
+      Controls={*object:rtf::DBLookupEdit<
+          Name='LEmployeeAR'
+          Top=8
+          Left=8
+          Width=100
+          Height=21
+          ControlCaption='Pilih rekening karyawan'
+          FieldName='LEmployeeAR.AccountNo'
+          DisplayFormat=''
+          LookupField='LEmployeeAR.AccountName'
+          DisplayLookupField=true
+          DisplayLookupColor=-2147483624
+          DisplayLookupWidth=200
+        >, object:rtf::DBEdit<
+          Name='edValuta'
+          Layout=clNewLine
+          Top=36
+          Left=8
+          Width=97
+          Height=21
+          Color=-2147483624
+          ControlCaption='Kode valuta'
+          CaptionWidth=100
+          FieldName='LEmployeeAR.CurrencyCode'
+          DisplayFormat=''
+          ReadOnly=true
+        >, object:rtf::DBEdit<
+          Name='edBalance'
+          Layout=clNewLine
+          Top=64
+          Left=8
+          Width=153
+          Height=21
+          Color=-2147483624
+          ControlCaption='Saldo'
+          CaptionWidth=100
+          FieldName='LEmployeeAR.Balance'
+          DisplayFormat=',0.00'
+          ReadOnly=true
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dsTransaction'
+      Width=240
+      Height=96
+      Container1=$CONTAINERS['pSelectTransaction']
+      Container2=$CONTAINERS['gTransaction']
+    >}FormClassName='fEmployeeAR'
+>

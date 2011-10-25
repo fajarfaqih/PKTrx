@@ -1,0 +1,108 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{03AB2DCD-D5DA-4DD5-B07D-CD15AE22527E}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rpclass::TPClassUIDefList<
+  UIDefs={object:rpclass::TPClassUIDef<
+      Name='uipData'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='LOwner.OwnerID'
+          DataTypeName='INTEGER'
+        >, object:rpclass::TCustomLoadedField<
+          Name='LOwner.OwnerCode'
+          DataTypeName='VARCHAR'
+          DataLength=10
+        >, object:rpclass::TCustomLoadedField<
+          Name='LOwner.OwnerName'
+          DataTypeName='VARCHAR'
+          DataLength=100
+        >, object:rpclass::TCustomLoadedField<
+          Name='BudgetPeriod'
+          DataTypeName='integer'
+          DataLength=20
+        >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
+          Name='LOwner'
+          ClassTypeName='BudgetOwner'
+          FieldNames='OwnerID;OwnerCode;OwnerName'
+        >}Mode=imSingleRow
+    >, object:rpclass::TPClassUIDef<
+      Name='uipProgram'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='itemCode'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='status'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='itemKegiatan'
+          DataTypeName='varchar'
+          DataLength=50
+        >}Mode=imMultiRow
+    >, object:rpclass::TPClassUIDef<
+      Name='uipRincian'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='budgetCode'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='itemDetail'
+          DataTypeName='varchar'
+          DataLength=200
+        >, object:rpclass::TCustomLoadedField<
+          Name='mTotal'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='m01'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='m02'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='m03'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='m04'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='m05'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='m06'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='m07'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='m08'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='m09'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='m10'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='m11'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='m12'
+          DataTypeName='double'
+          DataLength=20
+        >}Mode=imMultiRow
+    >}>

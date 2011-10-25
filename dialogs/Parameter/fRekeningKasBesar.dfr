@@ -1,0 +1,204 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Rekening Kas Besar'
+  Left=50
+  Top=50
+  Width=361
+  Height=297
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx='FormSetDataEx'
+  OnBeginProcessData='OnBeginProcessData'
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='mode'
+          Hidden=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ID'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TglUbah'
+          Hidden=true
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='UserPengubah'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TerminalUbah'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >}Name='uipData'
+      ClassTypeName='BranchCash'
+      DataBinding=bmMaster
+    >}Containers={object:rtf::Panel<
+      ControlDefs={object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='AccountNo'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='AccountName'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='BranchCode'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='CurrencyCode'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='Balance'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='OpeningDate'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='Status'
+        >}Elements={*object:rtf::FieldUIElmtSetting<
+          Name='AccountNo'
+          Hidden=true
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='AccountName'
+          ControlCaption='Nama Rekening'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          ControlCaption='Kode Cabang'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='CurrencyCode'
+          ControlCaption='Kode Valuta'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='Balance'
+          ReadOnlyControl=true
+          ControlCaption='Balance'
+          DataTypeName='double'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='OpeningDate'
+          ReadOnlyControl=true
+          ControlCaption='Tgl Buka'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='Status'
+          ReadOnlyControl=true
+          ControlCaption='Status'
+          LayoutOrder=7
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AccountNoID'
+          ControlCaption='Account No'
+          DataTypeName='varchar'
+          DataLength=30
+        >}Name='pData'
+      Width=345
+      Height=313
+      UIPart=$UIPARTS['uipData']
+      Controls={*object:rtf::DBEdit<
+          Name='AccountName'
+          Top=36
+          Left=8
+          Width=203
+          Height=21
+          Color=0
+          ControlCaption='Nama Rekening'
+        >, *object:rtf::DBEdit<
+          Name='BranchCode'
+          Top=64
+          Left=8
+          Color=0
+          ControlCaption='Kode Cabang'
+        >, *object:rtf::DBEdit<
+          Name='CurrencyCode'
+          Top=92
+          Left=8
+          Color=0
+          ControlCaption='Kode Valuta'
+        >, *object:rtf::DBEdit<
+          Name='Balance'
+          Top=120
+          Left=8
+          Color=-2147483624
+          ControlCaption='Balance'
+        >, *object:rtf::DBDateEdit<
+          Name='OpeningDate'
+          Top=148
+          Left=8
+          Color=-2147483624
+          ControlCaption='Tgl Buka'
+        >, *object:rtf::DBComboBox<
+          Name='Status'
+          Top=176
+          Left=8
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Status'
+          LayoutOrder=7
+        >, *object:rtf::DBEdit<
+          Name='AccountNoID'
+          Top=8
+          Left=8
+          Width=203
+          Height=21
+          Enabled=false
+          Color=0
+          ControlCaption='AccountNo'
+          LayoutOrder=-2
+        >}EqualCaptionWidth=130
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=41
+      Controls={object:rtf::Button<
+          Name='bOK'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&OK'
+          Default=true
+          OnClick='bOKClick'
+        >, object:rtf::Button<
+          Name='bClose'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Width=82
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='&Cancel / Close'
+          Cancel=true
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=361
+      Height=297
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['pData']
+      InversedAlign=true
+    >}FormClassName='fRekeningKasBesar'
+>

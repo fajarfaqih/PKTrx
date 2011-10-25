@@ -1,0 +1,323 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='GL Interface Produk'
+  Left=50
+  Top=50
+  Width=361
+  Height=385
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='mode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ID'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TglUbah'
+          Hidden=true
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='UserPengubah'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TerminalUbah'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >}Name='uipProduct'
+      ClassTypeName='Product'
+      DataBinding=bmMaster
+      AlwaysPostToServer=true
+    >, object:rtf::PClassUI<
+      Name='Ls_GLInterface'
+      ClassTypeName='GLInterface'
+      DataBinding=bmList
+      Master=$UIPARTS['uipProduct']
+      ListName='Ls_GLInterface'
+      AlwaysPostToServer=true
+      CreateInstanceOnNew=true
+      SetMasterDetailRelationship=true
+      OnSetData='GLOnSetData'
+      AfterNewRecord='AfterNewRecord'
+    >}Containers={object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=41
+      Controls={object:rtf::Button<
+          Name='bOK'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&OK'
+          Default=true
+          DefaultAction=daProcessAllUI
+          ExitAction=eaQuitOK
+          OnClick='bOKClick'
+        >, object:rtf::Button<
+          Name='bClose'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Width=82
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='&Cancel / Close'
+          Cancel=true
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=361
+      Height=385
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['dualsplit2']
+      InversedAlign=true
+    >, object:rtf::Grid<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='InterfaceCode'
+          ControlCaption='Kd Interface'
+          DataTypeName='VARCHAR'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Description'
+          ControlCaption='Deskripsi'
+          DataTypeName='VARCHAR'
+          DataLength=100
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AccountCode'
+          ControlCaption='Kode Account'
+          DataTypeName='VARCHAR'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AccountName'
+          ControlCaption='Nama Account'
+          DataTypeName='VARCHAR'
+          DataLength=60
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ProductId'
+          DataTypeName='INTEGER'
+          DataLength=0
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LAccount'
+          ControlCaption='Kode Account'
+          ClassTypeName=''
+          ExternalClassTypeName='Account'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LAccount.Account_Code'
+              DataTypeName='varchar'
+              DataLength=20
+              UsedAsKey=true
+              KeyOrDisplayName='Account_Code'
+              FinalDisplayFieldName='Account_Code'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LAccount.Account_Name'
+              DataTypeName='varchar'
+              DataLength=50
+              UsedAsDisplay=true
+              KeyOrDisplayName='Account_Name'
+              FinalDisplayFieldName='Account_Name'
+              CDSFieldName='LAccount.Account_Name'
+            >}Restrictions=''
+          OQLText=['select from Account'#13#10,
+            '[ is_detail=''T'']'#13#10,
+            '('#13#10,
+            '  Account_Code,'#13#10,
+            '  Account_Name,'#13#10,
+            '  self'#13#10,
+            ');']
+          OQLSystemContext='accounting'
+          LookupOption=loCustomOQL
+          FieldBaseName='LAccount'
+        >}Name='gGLInterface'
+      Width=361
+      Height=237
+      UIPart=$UIPARTS['Ls_GLInterface']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='Daftar GL Interface'
+      Columns={*object:rtf::GridColumn<
+          Name='InterfaceCode'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='InterfaceCode'
+          DisplayFormat=''
+          TitleCaption='Kd Interface'
+          Width=70
+        >, *object:rtf::GridColumn<
+          Name='Description'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Description'
+          DisplayFormat=''
+          TitleCaption='Deskripsi'
+          Width=150
+        >, *object:rtf::GridColumn<
+          Name='AccountCode'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='AccountCode'
+          DisplayFormat=''
+          TitleCaption='Kode Account'
+          Hidden=true
+        >, *object:rtf::GridColumn<
+          Name='AccountName'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          Index=5
+          FieldName='AccountName'
+          DisplayFormat=''
+          TitleCaption='Nama Account'
+        >, *object:rtf::GridColumn<
+          Name='LAccount.Account_Name'
+          InputStyle=cisLookup
+          EnumeratedValues=''
+          FieldName='LAccount.Account_Name'
+          DisplayFormat=''
+          TitleCaption='Kode Account'
+        >}>, object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='ProductId'
+          AccessOption=aoReadOnly
+          ReadOnlyControl=true
+          ControlCaption='Id Produk'
+          LayoutOrder=1
+          DataTypeName='INTEGER'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ProductName'
+          AccessOption=aoReadOnly
+          ReadOnlyControl=true
+          ControlCaption='Nama Produk'
+          LayoutOrder=2
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Description'
+          AccessOption=aoReadOnly
+          ReadOnlyControl=true
+          ControlCaption='Keterangan'
+          LayoutOrder=3
+          DataTypeName='VARCHAR'
+          DataLength=100
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Status'
+          AccessOption=aoReadOnly
+          Hidden=true
+          ReadOnlyControl=true
+          ControlCaption='Status'
+          LayoutOrder=7
+          DataTypeName='VARCHAR'
+          DataLength=1
+          EnumeratedValues=['A=Active'#13#10,
+            'N=NonActive'#13#10]
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LProductParent'
+          Hidden=true
+          ControlCaption='Produk Induk'
+          ClassTypeName='Program'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LProductParent.ProductId'
+              DataTypeName='INTEGER'
+              DataLength=0
+              UsedAsKey=true
+              KeyOrDisplayName='ProductId'
+              FinalDisplayFieldName='ProductId'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LProductParent.ProductId'
+              DataTypeName='INTEGER'
+              DataLength=0
+              UsedAsDisplay=true
+              KeyOrDisplayName='ProductId'
+              FinalDisplayFieldName='ProductId'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LProductParent.ProductName'
+              DataTypeName='VARCHAR'
+              DataLength=30
+              UsedAsDisplay=true
+              KeyOrDisplayName='ProductName'
+              FinalDisplayFieldName='ProductName'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LProductParent.Level'
+              DataTypeName='INTEGER'
+              DataLength=0
+              UsedAsDisplay=true
+              KeyOrDisplayName='Level'
+              FinalDisplayFieldName='Level'
+            >}Restrictions=''
+          OQLText=['Select from Program'#13#10,
+            '[ Status = ''A'' and IsDetail =''F'']'#13#10,
+            '('#13#10,
+            ' ProductId,'#13#10,
+            ' ProductName,'#13#10,
+            ' Description,'#13#10,
+            ' Level, '#13#10,
+            ' self'#13#10,
+            ')'#13#10,
+            'then order by ProductId;'#13#10]
+          LookupOption=loCustomOQL
+          FieldBaseName='LProductParent'
+        >}Name='pData'
+      Width=353
+      Height=105
+      UIPart=$UIPARTS['uipProduct']
+      Controls={*object:rtf::DBEdit<
+          Name='ProductId'
+          Top=8
+          Left=8
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Id Produk'
+          LayoutOrder=1
+        >, *object:rtf::DBEdit<
+          Name='ProductName'
+          Top=36
+          Left=8
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Nama Produk'
+          LayoutOrder=2
+        >, *object:rtf::DBEdit<
+          Name='Description'
+          Top=64
+          Left=8
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Keterangan'
+          LayoutOrder=3
+        >}EqualCaptionWidth=130
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit2'
+      Width=361
+      Height=343
+      Container1=$CONTAINERS['pData']
+      Container2=$CONTAINERS['gGLInterface']
+    >}FormClassName='fGLInterfaceEdit'
+>

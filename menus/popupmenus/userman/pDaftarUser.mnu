@@ -1,0 +1,87 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{FF6521AE-DCB8-457C-933C-35D88DB5B672}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>
+object:rmn::Menu<
+  MenuItems={
+    object:rmn::MenuItem<
+      Caption='&Peragaan...'
+      OnClick='ActionUser1Click'
+      AllowedGroups='MISADM'
+      StringTag='um03_view_user'
+    >
+    , object:rmn::MenuItem<
+      Caption='-'
+      AllowedGroups='MISADM'
+    >
+    , object:rmn::MenuItem<
+      Caption='&Buat Pengguna Baru...'
+      OnClick='TambahUserClick'
+      AllowedGroups='MISADM'
+    >
+    , object:rmn::MenuItem<
+      Caption='&Koreksi Pengguna...'
+      OnClick='ActionUser1Click'
+      AllowedGroups='MISADM'
+      StringTag='um02_edit_user'
+    >
+    , object:rmn::MenuItem<
+      Caption='&Hapus Pengguna...'
+      OnClick='DeleteUserClick'
+      AllowedGroups='MISADM'
+    >
+    , object:rmn::MenuItem<
+      Caption='-'
+      AllowedGroups='MISADM'
+    >
+    , object:rmn::MenuItem<
+      Caption='&Tambah Kelompok Pengguna...'
+      OnClick='ActionUser1Click'
+      AllowedGroups='MISADM'
+      StringTag='um12_add_usertogroup'
+    >
+    , object:rmn::MenuItem<
+      Caption='-'
+      AllowedGroups='MISADM'
+    >
+    , object:rmn::MenuItem<
+      Caption='Hapus& Password...'
+      OnClick='ClearPasswordClick'
+      AllowedGroups='MISADM'
+    >
+    , object:rmn::MenuItem<
+      Caption='&Daftar Hak Akses Menu...'
+      OnClick='HakAksesMenuClick'
+      AllowedGroups='MISADM'
+    >
+    , object:rmn::MenuItem<
+      Caption='-'
+      AllowedGroups='MISADM'
+    >
+    , object:rmn::MenuItem<
+      Caption='&Lock Pengguna...'
+      OnClick='LockUserClick'
+      AllowedGroups='MISADM'
+    >
+    , object:rmn::MenuItem<
+      Caption='Lock Semua Pengguna...'
+      OnClick='LockAllUserClick'
+      AllowedGroups='MISADM'
+    >
+    , object:rmn::MenuItem<
+      Caption='&UnLock Pengguna...'
+      OnClick='UnLockUserClick'
+      AllowedGroups='MISADM'
+    >
+    , object:rmn::MenuItem<
+      Caption='UnLock Semua Pengguna...'
+      OnClick='UnLockAllUserClick'
+      AllowedGroups='MISADM'
+    >
+  }
+  MenuType=mtPopupMenu
+  DenyThenAllow=true
+>

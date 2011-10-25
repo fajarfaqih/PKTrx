@@ -1,0 +1,27 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{03AB2DCD-D5DA-4DD5-B07D-CD15AE22527E}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rpclass::TPClassUIDefList<
+  UIDefs={object:rpclass::TPClassUIDef<
+      Name='uipProject'
+      PClassName='Project'
+      LoadedFieldList='ProductId;ProductCode;ProductName;Description'
+      Mode=imSingleRow
+    >, object:rpclass::TPClassUIDef<
+      Name='LsProjectSponsor'
+      MasterUIName='uipProject'
+      ListName='Ls_ProjectSponsor'
+      LoadedFieldList='ProjectSponsorCode;LSponsor.SponsorId;LSponsor.SponsorId;LSponsor.Name'
+      StoredFieldList='ProjectSponsorCode;LSponsor'
+      CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
+          Name='LSponsor'
+          ClassTypeName='Sponsor'
+          FieldNames='SponsorId;SponsorId;Name'
+        >}CreateInstanceOnNew=true
+      DeleteOnDel=true
+      SetMasterDetailRelationship=true
+    >}OnSetDataEx='FormSetDataEx'
+>

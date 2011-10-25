@@ -1,0 +1,27 @@
+def BeforeLogout(config):
+  # Clear SessionBLOB table for this session
+  sessionID = config.SecurityContext.SessionID
+  oqlstat = config.OQLEngine.CreateOQL('SELECT FROM SessionBLOB [SessionID=:SessionID] (Self);')
+  oqlstat.SetParameterValueByName('SessionID', sessionID)
+  oqlstat.ApplyParamValues()
+
+  config.BeginTransaction()
+  try:
+    oqlstat.Active = 1
+    oqlres = oqlstat.RawResult
+    while not oqlres.Eof:
+      oSessionBLOB = oqlstat.SessionBLOB
+      oBLOBData = oSessionBLOB.LBLOBData
+      try:
+        if not oBLOBData.IsNull:
+          oBLOBData.DeleteData()
+          oBLOBData.Delete()
+      finally:
+        oSessionBLOB.Delete()
+      oqlres.Next()
+    config.Commit()
+  except:
+    config.Rollback()
+    raise
+
+  

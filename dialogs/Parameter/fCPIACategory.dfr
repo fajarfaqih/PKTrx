@@ -1,0 +1,131 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Kategori Biaya Dibayar Dimuka'
+  Left=50
+  Top=50
+  Width=361
+  Height=153
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx='FormSetDataEx'
+  OnBeginProcessData='OnBeginProcessData'
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='mode'
+          Hidden=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ID'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TglUbah'
+          Hidden=true
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='UserPengubah'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TerminalUbah'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >}Name='uipData'
+      ClassTypeName='CPIACategory'
+      DataBinding=bmMaster
+    >}Containers={object:rtf::Panel<
+      ControlDefs={object:rtf::MultiControlDef<
+          Action=caEdit
+          DataMembers=['CPIACatId'#13#10,
+            'CPIACatCode'#13#10,
+            'CPIACatName'#13#10]
+        >}Elements={*object:rtf::FieldUIElmtSetting<
+          Name='CPIACatId'
+          Hidden=true
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='CPIACatCode'
+          ControlCaption='Kode Kategori'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='CPIACatIdID'
+          Hidden=true
+          ControlCaption='Kategori Asset ID'
+          DataTypeName='integer'
+          DataLength=20
+        >}Name='pData'
+      Width=473
+      Height=112
+      UIPart=$UIPARTS['uipData']
+      Controls={*object:rtf::DBEdit<
+          Name='CPIACatCode'
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption='Kode Kategori'
+        >, *object:rtf::DBEdit<
+          Name='CPIACatName'
+          Top=36
+          Left=8
+          Color=0
+          ControlCaption='Nama Kategori'
+        >}EqualCaptionWidth=130
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=41
+      Controls={object:rtf::Button<
+          Name='bOK'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&OK'
+          Default=true
+          OnClick='bOKClick'
+        >, object:rtf::Button<
+          Name='bClose'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Width=82
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='&Cancel / Close'
+          Cancel=true
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=361
+      Height=153
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['pData']
+      InversedAlign=true
+    >}FormClassName='fCPIACategory'
+>

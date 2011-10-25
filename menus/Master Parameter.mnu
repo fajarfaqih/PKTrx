@@ -1,0 +1,49 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{FF6521AE-DCB8-457C-933C-35D88DB5B672}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rmn::Menu<
+  MenuItems={object:rmn::MenuItem<
+      Caption='Master Parameter'
+      MenuItems={object:rmn::MenuItem<
+          Caption='Daftar Produk Zakat'
+          OnClick='ShowQueryClick'
+          StringTag='parameter/fDaftarProdukZakat'
+        >, object:rmn::MenuItem<
+          Caption='Daftar Program'
+          OnClick='ShowQueryClick'
+          StringTag='parameter/fDaftarProgram'
+        >, object:rmn::MenuItem<
+          Caption='Daftar Project'
+          OnClick='ShowQueryClick'
+          StringTag='parameter/fDaftarProject'
+        >, object:rmn::MenuItem<
+          Caption='-'
+        >, object:rmn::MenuItem<
+          Caption='Daftar Sponsor'
+          OnClick='ShowQueryClick'
+          StringTag='parameter/fDaftarSponsor'
+        >, object:rmn::MenuItem<
+          Caption='-'
+        >, object:rmn::MenuItem<
+          Caption='Parameter Journal'
+          OnClick='ParameterJournalClick'
+        >}>, object:rmn::MenuItem<
+      Caption='Manajemen Rekening'
+      MenuItems={object:rmn::MenuItem<
+          Caption='Daftar Rekening Bank'
+          OnClick='ShowQueryClick'
+          StringTag='parameter/fDaftarRekeningBank'
+        >, object:rmn::MenuItem<
+          Caption='-'
+        >, object:rmn::MenuItem<
+          Caption='Daftar Rekening Kas Besar (Cabang)'
+          OnClick='ShowQueryClick'
+          StringTag='parameter/fDaftarRekeningKasCabang'
+        >, object:rmn::MenuItem<
+          Caption='Daftar Rekening Kas Kecil'
+          OnClick='ShowQueryClick'
+          StringTag='parameter/fDaftarRekeningKasKecil'
+        >}>}>

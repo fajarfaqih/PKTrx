@@ -1,0 +1,258 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Peragaan Biaya Dibayar Dimuka'
+  Left=50
+  Top=50
+  Width=585
+  Height=353
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx='FormSetDataEx'
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Name='uipCPIA'
+      ClassTypeName='CostPaidInAdvance'
+      DataBinding=bmMaster
+    >, object:rtf::PClassUI<
+      Name='uipDepreciationHistori'
+      MultiLine=true
+      CreateInstanceOnNew=true
+    >}Containers={object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=240
+      Height=96
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['multipages1']
+      InversedAlign=true
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=42
+      Controls={object:rtf::Button<
+          Name='bClose'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Tutup'
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit2'
+      Width=577
+      Height=282
+      Container1=$CONTAINERS['pAmortized']
+      Container2=$CONTAINERS['gHistoriPenyusutan']
+    >, object:rtf::MultiPages<
+      Name='multipages1'
+      Width=320
+      Height=320
+      Pages={object:rtf::Page<
+          PageName='mpMainData'
+          PageTitle='Data'
+          Container=$CONTAINERS['pData']
+        >, object:rtf::Page<
+          PageName='mpAmortized'
+          PageTitle='Amortisasi'
+          Container=$CONTAINERS['dualsplit2']
+          Index=1
+        >}>, object:rtf::Panel<
+      ControlDefs={object:rtf::MultiControlDef<
+          Action=caView
+          DataMembers=['AccountNo'#13#10,
+            'AccountName'#13#10,
+            'NilaiAwal'#13#10,
+            'LCPIACategory'#13#10,
+            'LAccount'#13#10]
+        >}Elements={*object:rtf::FieldUIElmtSetting<
+          Name='AccountNo'
+          ControlCaption='Kode'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='AccountName'
+          ControlCaption='Nama Biaya'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='NilaiAwal'
+          ControlCaption='Nominal Biaya'
+        >, *object:rtf::LinkUIElmtSetting<
+          Name='LCPIACategory'
+          ControlCaption='Kategori Biaya Dimuka'
+          DisplayFields='CPIACatCode;CPIACatName'
+          Restrictions=''
+          FieldBaseName='LCPIACategory'
+        >, *object:rtf::LinkUIElmtSetting<
+          Name='LAccount'
+          ControlCaption='Akun Biaya'
+          DisplayFields='Account_Code;Account_Name'
+          Restrictions=''
+          FieldBaseName='LAccount'
+        >}Name='pData'
+      Width=457
+      Height=281
+      UIPart=$UIPARTS['uipCPIA']
+      Controls={*object:rtf::DBEdit<
+          Name='AccountNo'
+          Top=10
+          Left=8
+          Color=-2147483624
+          ControlCaption='Kode'
+        >, *object:rtf::DBEdit<
+          Name='AccountName'
+          Top=38
+          Left=8
+          Color=-2147483624
+          ControlCaption='Nama Biaya'
+        >, *object:rtf::DBEdit<
+          Name='NilaiAwal'
+          Top=66
+          Left=8
+          Color=-2147483624
+          ControlCaption='Nominal Biaya'
+        >, *object:rtf::DBLookupEdit<
+          Name='LCPIACategory'
+          Top=94
+          Left=8
+          Enabled=false
+          Color=0
+          ControlCaption='Kategori Biaya Dimuka'
+          LookupField='LCPIACategory.CPIACatName'
+          DisplayLookupField=true
+        >, *object:rtf::DBLookupEdit<
+          Name='LAccount'
+          Top=122
+          Left=8
+          Enabled=false
+          Color=0
+          ControlCaption='Akun Biaya'
+          LookupField='LAccount.Account_Name'
+          DisplayLookupField=true
+        >}EqualCaptionWidth=150
+      ControlLeftMargin=8
+      ControlTopMargin=10
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Grid<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='DeprNo'
+          ControlCaption='No'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='DeprValue'
+          ControlCaption='Nilai Amortisasi'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='DeprDate'
+          ControlCaption='Tgl Amortisasi'
+          DataTypeName='timestamp'
+          DataLength=20
+        >}Name='gHistoriPenyusutan'
+      Width=577
+      Height=184
+      UIPart=$UIPARTS['uipDepreciationHistori']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='Histori Amortisasi'
+      Columns={*object:rtf::GridColumn<
+          Name='DeprNo'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='DeprNo'
+          DisplayFormat=''
+          TitleCaption='No'
+        >, *object:rtf::GridColumn<
+          Name='DeprValue'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='DeprValue'
+          DisplayFormat=''
+          TitleCaption='Nilai Amortisasi'
+        >, *object:rtf::GridColumn<
+          Name='DeprDate'
+          InputStyle=cisDate
+          EnumeratedValues=''
+          FieldName='DeprDate'
+          DisplayFormat=''
+          TitleCaption='Tgl Amortisasi'
+        >}ReadOnly=true
+      RowSelect=true
+      SuppressHelpLine=true
+    >, object:rtf::Panel<
+      ControlDefs={object:rtf::MultiControlDef<
+          Action=caView
+          DataMembers=['NominalPenyusutan'#13#10,
+            'TotalPenyusutan'#13#10,
+            'Balance'#13#10]
+        >}Elements={*object:rtf::FieldUIElmtSetting<
+          Name='NominalPenyusutan'
+          ControlCaption='Nilai Amortisasi'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='TotalPenyusutan'
+          ControlCaption='Akumulasi Amortisasi'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='Balance'
+          ControlCaption='Nilai Buku'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BeginDate'
+          Hidden=true
+          ControlCaption='Periode Tanggal'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='EndDate'
+          Hidden=true
+          ControlCaption='s/d'
+          DataTypeName='timestamp'
+          DataLength=20
+        >}Name='pAmortized'
+      Width=529
+      Height=97
+      UIPart=$UIPARTS['uipCPIA']
+      Controls={*object:rtf::DBEdit<
+          Name='NominalPenyusutan'
+          Top=8
+          Left=8
+          Color=-2147483624
+          ControlCaption='Nilai Amortisasi'
+        >, *object:rtf::DBEdit<
+          Name='TotalPenyusutan'
+          Top=36
+          Left=8
+          Color=-2147483624
+          ControlCaption='Akumulasi Amortisasi'
+        >, *object:rtf::DBEdit<
+          Name='Balance'
+          Top=64
+          Left=8
+          Color=-2147483624
+          ControlCaption='Nilai Buku'
+        >}EqualCaptionWidth=120
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >}FormClassName='fCPIAView'
+>

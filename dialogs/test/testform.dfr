@@ -1,0 +1,70 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dsMain']
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=769
+  Height=489
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx=''
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  Containers={object:rtf::DualSplit<
+      Name='dsMain'
+      Width=769
+      Height=489
+      Container1=$CONTAINERS['wb']
+      Container2=$CONTAINERS['dsRight']
+      SplitDirection=sdrSplitLeftRight
+    >, object:rtf::WebBrowser<
+      Name='wb'
+      Width=318
+      Height=489
+      URL='C:\daf20i\bin\tmp\test.html'
+    >, object:rtf::DualSplit<
+      Name='dsRight'
+      Width=450
+      Height=489
+      Container1=$CONTAINERS['panel1']
+      Container2=$CONTAINERS['panel2']
+    >, object:rtf::Panel<
+      Name='panel1'
+      Width=433
+      Height=37
+      Controls={object:rtf::Button<
+          Name='button1'
+          Layout=clAbsolute
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='Load'
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Name='panel2'
+      Width=320
+      Height=240
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >}FormClassName='ftestform'
+>

@@ -1,0 +1,252 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dsMain']
+  Caption='Laporan mitra per jenis dana'
+  Left=50
+  Top=50
+  Width=697
+  Height=313
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rtf::FieldUIElmtSetting<
+          Name='VolunteerId'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=20
+        >}Name='uipVolunteer'
+    >, object:rtf::PClassUI<
+      Name='uipTransaction'
+      MultiLine=true
+    >}Containers={object:rtf::DualSplit<
+      Name='dsMain'
+      Width=697
+      Height=313
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['dsTransaction']
+      InversedAlign=true
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=49
+      Controls={object:rtf::Button<
+          Name='bClose'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Color=0
+          ControlCaption=''
+          LayoutOrder=2
+          Caption='&Tutup'
+          ExitAction=eaQuitCancel
+        >, object:rtf::Button<
+          Name='bExcel'
+          Layout=clNextSide
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Export Excel'
+          OnClick='bExportClick'
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dsTransaction'
+      Width=697
+      Height=263
+      Container1=$CONTAINERS['pVolunteer']
+      Container2=$CONTAINERS['pSelectTransaction']
+    >, object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='FundEntity'
+          ControlCaption='Pilih Jenis Dana'
+          DataTypeName='integer'
+          DataLength=20
+          EnumeratedValues=['0=Seluruhnya'#13#10,
+            '1=Zakat'#13#10,
+            '2=Infaq'#13#10,
+            '3=Wakaf'#13#10,
+            '4=Amil'#13#10,
+            '5=Non Halal'#13#10]
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BeginDate'
+          ControlCaption='Pilih tanggal transaksi'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='EndDate'
+          ControlCaption='s.d'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BeginningBalance'
+          Hidden=true
+          ReadOnlyControl=true
+          ControlCaption='Saldo Awal'
+          DataTypeName='double'
+          DataLength=20
+        >}Name='pSelectTransaction'
+      Width=665
+      Height=129
+      UIPart=$UIPARTS['uipVolunteer']
+      Controls={*object:rtf::DBComboBox<
+          Name='FundEntity'
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption='Pilih Jenis Dana'
+        >, *object:rtf::DBDateEdit<
+          Name='BeginDate'
+          Top=36
+          Left=8
+          Color=0
+          ControlCaption='Pilih tanggal transaksi'
+          CaptionWidth=120
+        >, *object:rtf::DBDateEdit<
+          Name='EndDate'
+          Layout=clNextSide
+          Top=36
+          Left=256
+          Color=0
+          ControlCaption='s.d'
+        >}EqualCaptionWidth=120
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Elements={object:rtf::LinkUIElmtSetting<
+          Name='LVolunteer'
+          ControlCaption='Pilih mitra'
+          ClassTypeName='Volunteer'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LVolunteer.VolunteerId'
+              DataTypeName='VARCHAR'
+              DataLength=20
+              UsedAsKey=true
+              KeyOrDisplayName='VolunteerId'
+              FinalDisplayFieldName='VolunteerId'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LVolunteer.VolunteerId'
+              DataTypeName='VARCHAR'
+              DataLength=20
+              UsedAsDisplay=true
+              KeyOrDisplayName='VolunteerId'
+              FinalDisplayFieldName='VolunteerId'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LVolunteer.VolunteerName'
+              DataTypeName='VARCHAR'
+              DataLength=50
+              UsedAsDisplay=true
+              KeyOrDisplayName='VolunteerName'
+              FinalDisplayFieldName='VolunteerName'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LVolunteer.HomeAddress'
+              DataTypeName='VARCHAR'
+              DataLength=150
+              UsedAsDisplay=true
+              KeyOrDisplayName='HomeAddress'
+              FinalDisplayFieldName='HomeAddress'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LVolunteer.HomePhone'
+              DataTypeName='VARCHAR'
+              DataLength=20
+              UsedAsDisplay=true
+              KeyOrDisplayName='HomePhone'
+              FinalDisplayFieldName='HomePhone'
+            >}Restrictions='BranchCode|BranchCode'
+          OQLText=['select from Volunteer'#13#10,
+            '[BranchCode=:BranchCode]'#13#10,
+            '('#13#10,
+            '  VolunteerId,'#13#10,
+            '  VolunteerName,'#13#10,
+            '  HomeAddress,'#13#10,
+            '  HomePhone,'#13#10,
+            '  self'#13#10,
+            ');']
+          LookupOption=loCustomOQL
+          FieldBaseName='LVolunteer'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='VolunteerName'
+          ReadOnlyControl=true
+          ControlCaption='Nama Mitra'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='HomePhone'
+          ReadOnlyControl=true
+          ControlCaption='No Telpon'
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rtf::FieldUIElmtSetting<
+          Name='HomeAddress'
+          Hidden=true
+          ReadOnlyControl=true
+          ControlCaption='Alamat'
+          DataTypeName='varchar'
+          DataLength=100
+        >}Name='pVolunteer'
+      Width=617
+      Height=191
+      UIPart=$UIPARTS['uipVolunteer']
+      Controls={*object:rtf::DBLookupEdit<
+          Name='LVolunteer'
+          Top=8
+          Left=8
+          ControlCaption='Pilih mitra'
+          FieldName='LVolunteer.VolunteerId'
+          DisplayFormat=''
+          LookupField='LVolunteer.VolunteerName'
+          DisplayLookupField=true
+          OnAfterLookup='LVolunteerAfterLookup'
+          DisplayLookupColor=-2147483624
+          DisplayLookupWidth=150
+        >, *object:rtf::DBEdit<
+          Name='VolunteerName'
+          Top=36
+          Left=8
+          Width=221
+          Height=21
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Nama Mitra'
+        >, *object:rtf::DBEdit<
+          Name='HomePhone'
+          Top=64
+          Left=8
+          Width=221
+          Height=21
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='No Telpon'
+        >, object:rtf::Edit<
+          Name='edAddress'
+          Layout=clNewLine
+          Top=92
+          Left=8
+          Width=222
+          Height=69
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Alamat'
+          MultiLine=true
+        >}EqualCaptionWidth=120
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >}FormClassName='fReportVolunteerPerEntity'
+>

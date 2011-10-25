@@ -1,0 +1,117 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit2']
+  Caption='Daftar Kategori'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=849
+  Height=321
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx=''
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Name='uipFilter'
+    >}Containers={object:rtf::Panel<
+      Name='pFilter'
+      Width=425
+      Height=57
+      UIPart=$UIPARTS['uipFilter']
+      Controls={object:rtf::Label<
+          Name='lTitle'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Width=521
+          Height=49
+          Color=0
+          ControlCaption='Daftar'
+          Caption='Daftar Kategori Asset'
+          AutoSize=true
+          FontName='Times New Roman'
+          FontSize=30
+          FontStyleBold=true
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Query<
+      Name='AssetCategory'
+      Width=849
+      Height=219
+      ContextMenuName='popupmenus/parameter/pAssetCategory'
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      OQLText=['select from AssetCategory'#13#10,
+        '('#13#10,
+        '  AssetCategoryId,'#13#10,
+        '  AssetCategoryCode as Kode_Asset,'#13#10,
+        '  AssetCategoryName as Nama_Asset,'#13#10,
+        '  DefaultLifeTime,'#13#10,
+        '  GLIContainerId,'#13#10,
+        '  self'#13#10,
+        ') then order by Kode_Asset;']
+      DirectDisplay=true
+      WindowSize=20
+      Columns={object:rtf::QueryColumn<
+          FieldName='AssetCategory.Kode_Asset'
+          Width=100
+          Caption='Kode Kategori Asset'
+        >, object:rtf::QueryColumn<
+          FieldName='AssetCategory.Nama_Asset'
+          Width=250
+          Caption='Nama Kategori Asset'
+        >, object:rtf::QueryColumn<
+          FieldName='AssetCategory.DefaultLifetime'
+          Caption='Masa Penyusutan (bulan)'
+        >}EnableColumns=true
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=849
+      Height=277
+      Container1=$CONTAINERS['pFilter']
+      Container2=$CONTAINERS['AssetCategory']
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=43
+      Controls={object:rtf::Button<
+          Name='button1'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='T&utup'
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit2'
+      Width=849
+      Height=321
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['dualsplit1']
+      InversedAlign=true
+    >}FormClassName='fDaftarAssetCategory'
+>

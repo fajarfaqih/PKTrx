@@ -1,0 +1,67 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{03AB2DCD-D5DA-4DD5-B07D-CD15AE22527E}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rpclass::TPClassUIDefList<
+  UIDefs={object:rpclass::TPClassUIDef<
+      Name='uipProduct'
+      PClassName='Product'
+      LoadedFieldList='ProductId;ProductName;Description;Status'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='mode'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='ID'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='TglUbah'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='UserPengubah'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='TerminalUbah'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='LProductParent.ProductId'
+          DataTypeName='INTEGER'
+        >, object:rpclass::TCustomLoadedField<
+          Name='LProductParent.ProductId'
+          DataTypeName='INTEGER'
+        >, object:rpclass::TCustomLoadedField<
+          Name='LProductParent.ProductName'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='LProductParent.Level'
+          DataTypeName='INTEGER'
+        >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
+          Name='LProductParent'
+          ClassTypeName='Program'
+          FieldNames='ProductId;ProductId;ProductName;Level'
+        >}Mode=imSingleRow
+    >, object:rpclass::TPClassUIDef<
+      Name='Ls_GLInterface'
+      MasterUIName='uipProduct'
+      ListName='Ls_GLInterface'
+      StoredFieldList='InterfaceCode;Description;AccountCode;AccountName;ProductId'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='LAccount.Account_Code'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LAccount.Account_Name'
+          DataTypeName='varchar'
+          DataLength=50
+        >}CreateInstanceOnNew=true
+      SetMasterDetailRelationship=true
+      OnSetData='GLOnSetData'
+    >}OnSetDataEx='FormSetDataEx'
+>

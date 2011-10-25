@@ -1,0 +1,12 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{FF6521AE-DCB8-457C-933C-35D88DB5B672}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rmn::Menu<
+  MenuItems={object:rmn::MenuItem<
+      Caption='Peragaan Detail'
+      OnClick='ViewClick'
+    >}MenuType=mtPopupMenu
+>

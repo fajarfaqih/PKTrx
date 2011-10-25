@@ -1,0 +1,22 @@
+%(INVOICENO)s
+
+
+
+%(CUSTOMERNAME)s               %(INVOICEDATE)s  %(TERMDATE)s
+%(CUSTOMERADDRESS)s
+
+
+%(DESCRIPTION)s          %(QTY)s  %(AMOUNT)s   %(AMOUNT)s
+
+
+                                        %(AMOUNT)s
+%(SAYS)s   
+
+
+%(BANKNAME)s
+%(BANKACCOUNTNO)s
+%(BANKACCOUNTNAME)s
+
+
+			%(SIGNNAME)s
+                        %(JOBPOSITION)s

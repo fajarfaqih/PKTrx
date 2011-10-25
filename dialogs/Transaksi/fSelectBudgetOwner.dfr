@@ -1,0 +1,106 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dsMain']
+  Caption='Pilih Pemilik Anggaran'
+  Left=50
+  Top=50
+  Width=600
+  Height=550
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx='FormSetDataEx'
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Name='uipBudgetOwner'
+      ClassTypeName='BudgetOwner'
+      DataBinding=bmMaster
+    >}Containers={object:rtf::DualSplit<
+      Name='dsMain'
+      Width=600
+      Height=550
+      Container1=$CONTAINERS['pSelect']
+      Container2=$CONTAINERS['gBudgetOwner']
+      InversedAlign=true
+    >, object:rtf::Panel<
+      Name='pSelect'
+      Width=409
+      Height=41
+      Controls={object:rtf::Button<
+          Name='bSelect'
+          Layout=clAbsolute
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='Pilih'
+          Default=true
+          ExitAction=eaQuitOK
+        >, object:rtf::Button<
+          Name='bCancel'
+          Layout=clAbsolute
+          Top=8
+          Left=88
+          Color=0
+          ControlCaption=''
+          Caption='Batal'
+          Cancel=true
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Grid<
+      ControlDefs={object:rtf::MultiControlDef<
+          Action=caView
+          DataMembers=['OwnerID'#13#10,
+            'OwnerName'#13#10]
+        >}Elements={*object:rtf::FieldUIElmtSetting<
+          Name='OwnerID'
+          ControlCaption='Id Pemilik'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='OwnerName'
+          ControlCaption='Nama Pemilik'
+        >}Name='gBudgetOwner'
+      Width=600
+      Height=508
+      UIPart=$UIPARTS['uipBudgetOwner']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='Daftar Pemilik Anggaran'
+      Columns={*object:rtf::GridColumn<
+          Name='OwnerID'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='OwnerID'
+          DisplayFormat=''
+          TitleCaption='Id Pemilik'
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='OwnerName'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='OwnerName'
+          DisplayFormat=''
+          TitleCaption='Nama Pemilik'
+          ReadOnly=true
+        >}ReadOnly=true
+      RowSelect=true
+      SuppressHelpLine=true
+    >}FormClassName='fSelectBudgetOwner'
+>

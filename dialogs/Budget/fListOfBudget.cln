@@ -1,0 +1,353 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dsMain']
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=897
+  Height=481
+  UIParts={object:rtf::PClassUI<
+      Name='uipData'
+    >, object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='itemCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='status'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >}Name='uipProgram'
+      MultiLine=true
+    >, object:rtf::PClassUI<
+      Name='uipRincian'
+      MultiLine=true
+    >}Containers={object:rtf::DualSplit<
+      Name='dsMain'
+      Width=240
+      Height=96
+      Container1=$CONTAINERS['pData']
+      Container2=$CONTAINERS['mpBudget']
+    >, object:rtf::Panel<
+      Elements={object:rtf::LinkUIElmtSetting<
+          Name='LOwner'
+          ControlCaption='PIC Anggaran'
+          ClassTypeName='BudgetOwner'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LOwner.OwnerID'
+              DataTypeName='INTEGER'
+              DataLength=0
+              UsedAsKey=true
+              KeyOrDisplayName='OwnerID'
+              FinalDisplayFieldName='OwnerID'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LOwner.OwnerCode'
+              DataTypeName='VARCHAR'
+              DataLength=10
+              UsedAsDisplay=true
+              KeyOrDisplayName='OwnerCode'
+              FinalDisplayFieldName='OwnerCode'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LOwner.OwnerName'
+              DataTypeName='VARCHAR'
+              DataLength=100
+              UsedAsDisplay=true
+              KeyOrDisplayName='OwnerName'
+              FinalDisplayFieldName='OwnerName'
+            >}Restrictions=''
+          OQLText=['Select From BudgetOwner'#13#10,
+            '[IsDetail = ''T'']'#13#10,
+            '(OwnerID, OwnerCode, OwnerName, self)'#13#10,
+            'order by OwnerCode;'#13#10]
+          LookupOption=loCustomOQL
+          FieldBaseName='LOwner'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BudgetPeriod'
+          ControlCaption='Tahun Anggaran'
+          DataTypeName='integer'
+          DataLength=20
+        >}Name='pData'
+      Width=865
+      Height=103
+      UIPart=$UIPARTS['uipData']
+      Controls={*object:rtf::DBLookupEdit<
+          Name='LOwner'
+          Top=8
+          Left=8
+          Width=90
+          Height=21
+          ControlCaption='PIC Anggaran'
+          FieldName='LOwner.OwnerCode'
+          DisplayFormat=''
+          LookupField='LOwner.OwnerName'
+          DisplayLookupField=true
+          DisplayLookupColor=-2147483624
+          DisplayLookupWidth=200
+        >, *object:rtf::DBEdit<
+          Name='BudgetPeriod'
+          Top=36
+          Left=8
+          Width=89
+          Height=21
+          Color=0
+          ControlCaption='Tahun Anggaran'
+        >, object:rtf::Button<
+          Name='bLoadBudget'
+          Layout=clAbsolute
+          Top=72
+          Left=8
+          Width=121
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='Tampilkan anggaran'
+          OnClick='bViewData'
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::MultiPages<
+      Name='mpBudget'
+      Width=320
+      Height=320
+      Pages={object:rtf::Page<
+          PageName='pgBudget'
+          PageTitle='Rincian Anggaran'
+          Container=$CONTAINERS['gBudget']
+        >, object:rtf::Page<
+          PageName='pgProgram'
+          PageTitle='Program Kerja'
+          Container=$CONTAINERS['gProgram']
+          Index=1
+        >}TabStyle=tsrFlatButtons
+    >, object:rtf::Grid<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='itemKegiatan'
+          ControlCaption='Kegiatan'
+          DataTypeName='varchar'
+          DataLength=50
+        >}Name='gProgram'
+      Width=889
+      Height=346
+      UIPart=$UIPARTS['uipProgram']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='PROGRAM KERJA'
+      Columns={*object:rtf::GridColumn<
+          Name='itemKegiatan'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='itemKegiatan'
+          DisplayFormat=''
+          TitleCaption='Kegiatan'
+          Width=200
+        >}ReadOnly=true
+      RowSelect=true
+      SuppressHelpLine=true
+    >, object:rtf::Grid<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='budgetCode'
+          ControlCaption='Kode Anggaran'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='itemDetail'
+          ControlCaption='Rincian Kebutuhan'
+          DataTypeName='varchar'
+          DataLength=200
+        >, object:rtf::FieldUIElmtSetting<
+          Name='mTotal'
+          ControlCaption='Total Anggaran'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='m01'
+          ControlCaption='01'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='m02'
+          ControlCaption='02'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='m03'
+          ControlCaption='03'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='m04'
+          ControlCaption='04'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='m05'
+          ControlCaption='05'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='m06'
+          ControlCaption='06'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='m07'
+          ControlCaption='07'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='m08'
+          ControlCaption='08'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='m09'
+          ControlCaption='09'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='m10'
+          ControlCaption='10'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='m11'
+          ControlCaption='11'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='m12'
+          ControlCaption='12'
+          DataTypeName='double'
+          DataLength=20
+        >}Name='gBudget'
+      Width=889
+      Height=346
+      UIPart=$UIPARTS['uipRincian']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='RENCANA ANGGARAN BELANJA DAN RENCANA ALOKASI'
+      Columns={*object:rtf::GridColumn<
+          Name='budgetCode'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='budgetCode'
+          DisplayFormat=''
+          TitleCaption='Kode'
+          Width=70
+        >, *object:rtf::GridColumn<
+          Name='itemDetail'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='itemDetail'
+          DisplayFormat=''
+          TitleCaption='Rincian Kebutuhan'
+          Width=150
+        >, *object:rtf::GridColumn<
+          Name='mTotal'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='mTotal'
+          DisplayFormat=',0.00'
+          TitleCaption='Total'
+        >, *object:rtf::GridColumn<
+          Name='m01'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='m01'
+          DisplayFormat=''
+          TitleCaption='01'
+        >, *object:rtf::GridColumn<
+          Name='m02'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='m02'
+          DisplayFormat=''
+          TitleCaption='02'
+        >, *object:rtf::GridColumn<
+          Name='m03'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='m03'
+          DisplayFormat=''
+          TitleCaption='03'
+        >, *object:rtf::GridColumn<
+          Name='m04'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='m04'
+          DisplayFormat=''
+          TitleCaption='04'
+        >, *object:rtf::GridColumn<
+          Name='m05'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='m05'
+          DisplayFormat=''
+          TitleCaption='05'
+        >, *object:rtf::GridColumn<
+          Name='m06'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='m06'
+          DisplayFormat=''
+          TitleCaption='06'
+        >, *object:rtf::GridColumn<
+          Name='m07'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='m07'
+          DisplayFormat=''
+          TitleCaption='07'
+        >, *object:rtf::GridColumn<
+          Name='m08'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='m08'
+          DisplayFormat=''
+          TitleCaption='08'
+        >, *object:rtf::GridColumn<
+          Name='m09'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='m09'
+          DisplayFormat=''
+          TitleCaption='09'
+        >, *object:rtf::GridColumn<
+          Name='m10'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='m10'
+          DisplayFormat=''
+          TitleCaption='10'
+        >, *object:rtf::GridColumn<
+          Name='m11'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='m11'
+          DisplayFormat=''
+          TitleCaption='11'
+        >, *object:rtf::GridColumn<
+          Name='m12'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='m12'
+          DisplayFormat=''
+          TitleCaption='12'
+        >}>}DefaultShowMode=2
+>

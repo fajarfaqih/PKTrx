@@ -1,0 +1,417 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Daftar Investasi'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=585
+  Height=320
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=5
+        >}Name='uipData'
+    >, object:rtf::PClassUI<
+      Name='uipInvestment'
+      ClassTypeName='Investment'
+      DataBinding=bmMaster
+      MultiLine=true
+    >}Containers={object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='IsAllInvestment'
+          ControlCaption='Seluruh Investasi'
+          DataTypeName='varchar'
+          DataLength=1
+          EnumeratedValues=['F=False'#13#10,
+            'T=True'#13#10]
+          GenerateCheckBoxForEnum=true
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LProductAccount'
+          Hidden=true
+          ControlCaption='Produk'
+          ClassTypeName='VProduct'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LProductAccount.AccountNo'
+              DataTypeName='VARCHAR'
+              DataLength=30
+              UsedAsKey=true
+              KeyOrDisplayName='AccountNo'
+              FinalDisplayFieldName='AccountNo'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LProductAccount.ProductCode'
+              DataTypeName='VARCHAR'
+              DataLength=30
+              UsedAsDisplay=true
+              KeyOrDisplayName='ProductCode'
+              FinalDisplayFieldName='ProductCode'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LProductAccount.ProductName'
+              DataTypeName='VARCHAR'
+              DataLength=30
+              UsedAsDisplay=true
+              KeyOrDisplayName='ProductName'
+              FinalDisplayFieldName='ProductName'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LProductAccount.AccountNo'
+              DataTypeName='VARCHAR'
+              DataLength=30
+              UsedAsDisplay=true
+              KeyOrDisplayName='AccountNo'
+              FinalDisplayFieldName='AccountNo'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LProductAccount.AccountName'
+              DataTypeName='VARCHAR'
+              DataLength=50
+              UsedAsDisplay=true
+              KeyOrDisplayName='AccountName'
+              FinalDisplayFieldName='AccountName'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LProductAccount.ProductType'
+              DataTypeName='VARCHAR'
+              DataLength=1
+              UsedAsDisplay=true
+              KeyOrDisplayName='ProductType'
+              FinalDisplayFieldName='ProductType'
+            >}Restrictions='BranchCode|BranchCode'
+          OQLText=['select from VProduct '#13#10,
+            '[  status = ''A'' and '#13#10,
+            '   BranchCode = :BranchCode and '#13#10,
+            '  ( (currencycode =''000'' and producttype = ''G'') '#13#10,
+            '     or (producttype=''J'')'#13#10,
+            '  ) '#13#10,
+            '] '#13#10,
+            '(   ProductCode, '#13#10,
+            '   AccountName, '#13#10,
+            '   ProductName, '#13#10,
+            '   FundCategory $ as FundType, '#13#10,
+            '   FundCategory, '#13#10,
+            '   PercentageOfAmilFunds, '#13#10,
+            '  ProductId, '#13#10,
+            '   Idx,'#13#10,
+            '   AccountNo, '#13#10,
+            'self) then order by ProductCode;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LProductAccount'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='InvestmentType'
+          Hidden=true
+          ControlCaption='Jenis Investasi'
+          DataTypeName='varchar'
+          DataLength=1
+          EnumeratedValues=['E=Internal'#13#10,
+            'N=Eksternal'#13#10]
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LInvestmentCategory'
+          ControlCaption='Kategori Investasi'
+          ClassTypeName='InvestmentCategory'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LInvestmentCategory.InvestmentCatId'
+              DataTypeName='INTEGER'
+              DataLength=0
+              UsedAsKey=true
+              KeyOrDisplayName='InvestmentCatId'
+              FinalDisplayFieldName='InvestmentCatId'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LInvestmentCategory.InvestmentCatCode'
+              DataTypeName='VARCHAR'
+              DataLength=5
+              UsedAsDisplay=true
+              KeyOrDisplayName='InvestmentCatCode'
+              FinalDisplayFieldName='InvestmentCatCode'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LInvestmentCategory.InvestmentCatName'
+              DataTypeName='VARCHAR'
+              DataLength=150
+              UsedAsDisplay=true
+              KeyOrDisplayName='InvestmentCatName'
+              FinalDisplayFieldName='InvestmentCatName'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LInvestmentCategory.InvestmentCatId'
+              DataTypeName='INTEGER'
+              DataLength=0
+              UsedAsDisplay=true
+              KeyOrDisplayName='InvestmentCatId'
+              FinalDisplayFieldName='InvestmentCatId'
+            >}Restrictions=''
+          OQLText=['select from InvestmentCategory'#13#10,
+            '('#13#10,
+            ' InvestmentCatCode,'#13#10,
+            ' InvestmentCatName,'#13#10,
+            ' InvestmentCatId,'#13#10,
+            'self) then order by InvestmentCatCode;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LInvestmentCategory'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BeginDate'
+          ControlCaption='Tanggal Transaksi'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='EndDate'
+          ControlCaption='s/d'
+          DataTypeName='timestamp'
+          DataLength=20
+        >}Name='pFilter'
+      Width=489
+      Height=137
+      UIPart=$UIPARTS['uipData']
+      Controls={*object:rtf::DBCheckBox<
+          Name='IsAllInvestment'
+          Layout=clAbsolute
+          Top=10
+          Left=16
+          Color=0
+          ControlCaption='Seluruh Investasi'
+          ValueChecked='T'
+          ValueUnchecked='F'
+          OnClick='IsAllInvestmentOnClick'
+        >, *object:rtf::DBLookupEdit<
+          Name='LInvestmentCategory'
+          Top=40
+          Left=40
+          ControlCaption='Kategori Investasi'
+          LookupField='LInvestmentCategory.InvestmentCatName'
+          DisplayLookupField=true
+        >, *object:rtf::DBDateEdit<
+          Name='BeginDate'
+          Top=68
+          Left=40
+          Color=0
+          ControlCaption='Tanggal Transaksi'
+        >, *object:rtf::DBDateEdit<
+          Name='EndDate'
+          Layout=clNextSide
+          Top=68
+          Left=268
+          Color=0
+          ControlCaption='s/d'
+        >, object:rtf::Button<
+          Name='bApplyFilter'
+          Layout=clAbsolute
+          Top=104
+          Left=16
+          Color=0
+          ControlCaption=''
+          Caption='Apply Filter'
+          OnClick='FilterClick'
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=40
+      ControlTopMargin=40
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=585
+      Height=320
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['dualsplit2']
+      InversedAlign=true
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=42
+      Controls={object:rtf::Button<
+          Name='bClose'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Tutup'
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit2'
+      Width=585
+      Height=277
+      Container1=$CONTAINERS['pFilter']
+      Container2=$CONTAINERS['dualsplit3']
+    >, object:rtf::Grid<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='AccountNo'
+          AccessOption=aoReadOnly
+          ControlCaption='Kode Investasi'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AccountName'
+          AccessOption=aoReadOnly
+          ControlCaption='Nama Investasi'
+          DataTypeName='VARCHAR'
+          DataLength=50
+        >, object:rtf::FieldUIElmtSetting<
+          Name='InvestmentAmount'
+          AccessOption=aoReadOnly
+          ControlCaption='Nilai Investasi'
+          DataTypeName='DOUBLE'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
+          Name='InvestmentShare'
+          AccessOption=aoReadOnly
+          Hidden=true
+          DataTypeName='DOUBLE'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
+          Name='InvestmentNisbah'
+          AccessOption=aoReadOnly
+          ControlCaption='% Nisbah / Tahun'
+          DataTypeName='DOUBLE'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
+          Name='OpeningDate'
+          AccessOption=aoReadOnly
+          ControlCaption='Tanggal Investasi'
+          DataTypeName='TIMESTAMP'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
+          Name='InvestmentCatName'
+          ControlCaption='Kategori Investasi'
+          DataTypeName='varchar'
+          DataLength=100
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionNo'
+          ControlCaption='Nomor Transaksi'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='InvesteeName'
+          ControlCaption='Nama Investee'
+          DataTypeName='varchar'
+          DataLength=100
+        >}Name='gInvestmentList'
+      Width=585
+      Height=93
+      ContextMenuName='popupmenus/rekening/pInvestmentList'
+      UIPart=$UIPARTS['uipInvestment']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='Daftar Investasi'
+      Columns={*object:rtf::GridColumn<
+          Name='AccountNo'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='AccountNo'
+          DisplayFormat=''
+          TitleCaption='Kode Investasi'
+          Width=120
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='AccountName'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='AccountName'
+          DisplayFormat=''
+          TitleCaption='Nama Investasi'
+          Width=120
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='InvestmentAmount'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='InvestmentAmount'
+          DisplayFormat=',0.00'
+          TitleCaption='Nilai Investasi'
+          Width=120
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='InvestmentNisbah'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='InvestmentNisbah'
+          DisplayFormat=',0.00'
+          TitleCaption='% Nisbah / Tahun'
+          Width=100
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='OpeningDate'
+          InputStyle=cisDate
+          EnumeratedValues=''
+          FieldName='OpeningDate'
+          DisplayFormat=''
+          TitleCaption='Tanggal Investasi'
+          Width=100
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='InvestmentCatName'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='InvestmentCatName'
+          DisplayFormat=''
+          TitleCaption='Kategori Investasi'
+          Width=120
+        >, *object:rtf::GridColumn<
+          Name='TransactionNo'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='TransactionNo'
+          DisplayFormat=''
+          TitleCaption='Nomor Transaksi'
+          Width=120
+        >, *object:rtf::GridColumn<
+          Name='InvesteeName'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          Index=2
+          FieldName='InvesteeName'
+          DisplayFormat=''
+          TitleCaption='Nama Investee'
+          Width=120
+        >}ReadOnly=true
+      RowSelect=true
+      SuppressHelpLine=true
+    >, object:rtf::Panel<
+      Name='pGrid'
+      Width=320
+      Height=45
+      Bordered=true
+      Controls={object:rtf::Button<
+          Name='button1'
+          Layout=clNextSide
+          Top=8
+          Left=109
+          Color=0
+          ControlCaption=''
+          LayoutOrder=2
+          Caption='Expot E&xcel'
+          OnClick='ExportExcelClick'
+        >, object:rtf::Button<
+          Name='button2'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Width=97
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='Peragaan &Detil'
+          OnClick='DetailClick'
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit3'
+      Width=585
+      Height=139
+      Container1=$CONTAINERS['pGrid']
+      Container2=$CONTAINERS['gInvestmentList']
+      InversedAlign=true
+    >}FormClassName='fInvestmentList'
+>

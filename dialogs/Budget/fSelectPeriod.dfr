@@ -1,0 +1,122 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit2']
+  Caption='Daftar Periode Anggaran'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=633
+  Height=320
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx=''
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Name='uipFilter'
+    >}Containers={object:rtf::Panel<
+      Name='pFilter'
+      Width=809
+      Height=57
+      UIPart=$UIPARTS['uipFilter']
+      Controls={object:rtf::Label<
+          Name='lTitle'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Width=377
+          Height=49
+          Color=0
+          ControlCaption='Daftar'
+          Caption='Pilih Periode Anggaran'
+          AutoSize=true
+          FontName='Times New Roman'
+          FontSize=20
+          FontStyleBold=true
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Query<
+      Name='qBudgetPeriod'
+      Width=633
+      Height=205
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      OQLText=['select from BudgetPeriod'#13#10,
+        '[ ParentPeriodID is not null and IsOpen =''T'']'#13#10,
+        '('#13#10,
+        '  PeriodID,'#13#10,
+        '  PeriodValue as Bulan,'#13#10,
+        '  LParent.PeriodValue as Tahun,'#13#10,
+        '  self'#13#10,
+        ') then order by PeriodID;']
+      DirectDisplay=true
+      WindowSize=20
+      Columns={object:rtf::QueryColumn<
+          FieldName='BudgetPeriod.Bulan'
+          Width=100
+          Caption='Bulan'
+        >, object:rtf::QueryColumn<
+          FieldName='BudgetPeriod.Tahun'
+          Width=200
+          Caption='Tahun'
+        >}EnableColumns=true
+      HideSearchPanel=true
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=633
+      Height=263
+      Container1=$CONTAINERS['pFilter']
+      Container2=$CONTAINERS['qBudgetPeriod']
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=56
+      Controls={object:rtf::Button<
+          Name='bPilih'
+          Layout=clNextSide
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Pilih'
+          ExitAction=eaQuitOK
+        >, object:rtf::Button<
+          Name='bTutup'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Color=0
+          ControlCaption=''
+          Caption='&Tutup'
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit2'
+      Width=633
+      Height=320
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['dualsplit1']
+      InversedAlign=true
+    >}FormClassName='fSelectPeriod'
+>

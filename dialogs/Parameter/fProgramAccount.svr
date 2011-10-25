@@ -1,0 +1,93 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{03AB2DCD-D5DA-4DD5-B07D-CD15AE22527E}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rpclass::TPClassUIDefList<
+  UIDefs={object:rpclass::TPClassUIDef<
+      Name='uipData'
+      PClassName='Program'
+      LoadedFieldList='ProductId;ProductCode;ProductName;Description;AccountOfCollection;AccountOfDistribution;PercentageOfAmilFunds;FundCategory;FixedValue;FixedValueAmount;MultiPackage;Status;IsDetail;ParentProductId;Level'
+      StoredFieldList='ProductId;ProductCode;ProductName;Description;AccountOfCollection;AccountOfDistribution;PercentageOfAmilFunds;FundCategory;FixedValue;FixedValueAmount;MultiPackage;Status;IsDetail;ParentProductId;Level'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='mode'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='ID'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='TglUbah'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='UserPengubah'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='TerminalUbah'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='ProductIdID'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LProductParent.ProductId'
+          DataTypeName='INTEGER'
+        >, object:rpclass::TCustomLoadedField<
+          Name='LProductParent.ProductId'
+          DataTypeName='INTEGER'
+        >, object:rpclass::TCustomLoadedField<
+          Name='LProductParent.ProductName'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='LProductParent.Level'
+          DataTypeName='INTEGER'
+        >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
+          Name='LProductParent'
+          ClassTypeName='ZakahProduct'
+          FieldNames='ProductId;ProductId;ProductName;Level'
+        >}Mode=imSingleRow
+      OnSetData='ProductOnSetData'
+    >, object:rpclass::TPClassUIDef<
+      Name='uipLsAccount'
+      MasterUIName='uipData'
+      ListName='Ls_ProductAccount'
+      LoadedFieldList='BranchCode;CurrencyCode;Balance'
+    >, object:rpclass::TPClassUIDef<
+      Name='uipInput'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='IsAllCabang'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LCabang.Kode_Cabang'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LCabang.Nama_Cabang'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='IsAllValuta'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LValuta.currency_code'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LValuta.short_name'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LValuta.full_name'
+          DataTypeName='varchar'
+          DataLength=20
+        >}Mode=imSingleRow
+    >}OnSetDataEx='FormSetDataEx'
+>

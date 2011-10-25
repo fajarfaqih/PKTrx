@@ -1,0 +1,90 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{03AB2DCD-D5DA-4DD5-B07D-CD15AE22527E}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rpclass::TPClassUIDefList<
+  UIDefs={object:rpclass::TPClassUIDef<
+      Name='uipData'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='IsSPV'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='BranchCode'
+          DataTypeName='varchar'
+          DataLength=3
+        >, object:rpclass::TCustomLoadedField<
+          Name='BeginItemNo'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='UserId'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBranch.Kode_Cabang'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBranch.Nama_Cabang'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='IsAllCabang'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='DateCategory'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='BeginDate'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='EndDate'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='SearchCategory'
+          DataTypeName='integer'
+          DataLength=1
+        >, object:rpclass::TCustomLoadedField<
+          Name='SearchText'
+          DataTypeName='varchar'
+          DataLength=100
+        >, object:rpclass::TCustomLoadedField<
+          Name='SortCategory'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LimitData'
+          DataTypeName='integer'
+          DataLength=20
+        >}Mode=imSingleRow
+    >, object:rpclass::TPClassUIDef<
+      Name='uipTransaction'
+      PClassName='Transaction'
+      LoadedFieldList='TransactionId;TransactionNo;TransactionCode;TransactionDate;ActualDate;Amount;DonorNo;DonorName;ReferenceNo;Description;Inputer;AuthStatus;IsPosted;BranchCode'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='ChannelName'
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rpclass::TCustomLoadedField<
+          Name='IsPostedMir'
+          DataTypeName='varchar'
+          DataLength=1
+        >, object:rpclass::TCustomLoadedField<
+          Name='BranchName'
+          DataTypeName='varchar'
+          DataLength=30
+        >}Mode=imMultiRow
+    >, object:rpclass::TPClassUIDef<
+      Name='uipTransactionItem'
+      MasterUIName='uipTransaction'
+      ListName='Ls_TransactionItem'
+      SetMasterDetailRelationship=true
+    >}OnSetDataEx='FormSetDataEx'
+>

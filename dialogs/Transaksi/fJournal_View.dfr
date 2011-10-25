@@ -1,0 +1,262 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Info Jurnal Accounting'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=505
+  Height=353
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx='FormSetDataEx'
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Name='uipJournal'
+    >, object:rtf::PClassUI<
+      Name='uipJournalItem'
+      MultiLine=true
+    >}Containers={object:rtf::Grid<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='Account_Code'
+          ControlCaption='Kode Akun'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Account_Name'
+          ControlCaption='Nama Akun'
+          DataTypeName='varchar'
+          DataLength=100
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Branch_Code'
+          ControlCaption='Cabang'
+          DataTypeName='varchar'
+          DataLength=3
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Branch_Name'
+          ControlCaption='Nama Kantor'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Currency_Code'
+          ControlCaption='K.Val'
+          DataTypeName='varchar'
+          DataLength=3
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Kode_Kurs'
+          Hidden=true
+          ControlCaption='Kode Kurs'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Nilai_Kurs'
+          ControlCaption='Nilai Kurs'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Nama_RC'
+          Hidden=true
+          ControlCaption='Nama RC'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Nomor_Rekening'
+          Hidden=true
+          ControlCaption='Nomor Rekening'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Nama_Rekening'
+          Hidden=true
+          ControlCaption='Nama Rekening'
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount_Debet'
+          ControlCaption='Debet'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount_Credit'
+          ControlCaption='Kredit'
+          DataTypeName='double'
+          DataLength=20
+        >}Name='gJournalItem'
+      Width=505
+      Height=174
+      UIPart=$UIPARTS['uipJournalItem']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='Item Transaksi'
+      Columns={*object:rtf::GridColumn<
+          Name='Account_Code'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Account_Code'
+          DisplayFormat=''
+          TitleCaption='Kode Akun'
+          Width=75
+        >, *object:rtf::GridColumn<
+          Name='Account_Name'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Account_Name'
+          DisplayFormat=''
+          TitleCaption='Nama Akun'
+          Width=200
+        >, *object:rtf::GridColumn<
+          Name='Branch_Code'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Branch_Code'
+          DisplayFormat=''
+          TitleCaption='Cabang'
+          Width=40
+        >, *object:rtf::GridColumn<
+          Name='Branch_Name'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Branch_Name'
+          DisplayFormat=''
+          TitleCaption='Nama Kantor'
+          Width=100
+        >, *object:rtf::GridColumn<
+          Name='Currency_Code'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Currency_Code'
+          DisplayFormat=''
+          TitleCaption='K.Val'
+          Width=30
+        >, *object:rtf::GridColumn<
+          Name='Nilai_Kurs'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Nilai_Kurs'
+          DisplayFormat=',0.00'
+          TitleCaption='Nilai Kurs'
+          Width=60
+        >, *object:rtf::GridColumn<
+          Name='Amount_Debet'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Amount_Debet'
+          DisplayFormat=',0.00'
+          TitleCaption='Debet'
+          Width=100
+        >, *object:rtf::GridColumn<
+          Name='Amount_Credit'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Amount_Credit'
+          DisplayFormat=',0.00'
+          TitleCaption='Kredit'
+          Width=100
+        >}ReadOnly=true
+      RowSelect=true
+      SuppressHelpLine=true
+    >, object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='journal_no'
+          ReadOnlyControl=true
+          ControlCaption='Nomor Transaksi'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='journal_date'
+          ReadOnlyControl=true
+          ControlCaption='Tanggal Jurnal'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='transaction_date'
+          ReadOnlyControl=true
+          ControlCaption='Tanggal_Input'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='user_create'
+          ReadOnlyControl=true
+          ControlCaption='User Input'
+        >}Name='pInfoJournal'
+      Width=505
+      Height=129
+      UIPart=$UIPARTS['uipJournal']
+      Controls={*object:rtf::DBEdit<
+          Name='journal_no'
+          Top=10
+          Left=20
+          Color=-2147483624
+          ControlCaption='Nomor Transaksi'
+          ReadOnly=true
+        >, *object:rtf::DBDateEdit<
+          Name='journal_date'
+          Top=38
+          Left=20
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Tanggal Jurnal'
+        >, *object:rtf::DBDateEdit<
+          Name='transaction_date'
+          Top=66
+          Left=20
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Tanggal_Input'
+        >, *object:rtf::DBEdit<
+          Name='user_create'
+          Top=94
+          Left=20
+          Color=-2147483624
+          ControlCaption='User Input'
+          ReadOnly=true
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=20
+      ControlTopMargin=10
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=505
+      Height=353
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['dualsplit2']
+      InversedAlign=true
+    >, object:rtf::DualSplit<
+      Name='dualsplit2'
+      Width=505
+      Height=304
+      Container1=$CONTAINERS['pInfoJournal']
+      Container2=$CONTAINERS['gJournalItem']
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=48
+      Controls={object:rtf::Button<
+          Name='bClosed'
+          Layout=clAbsolute
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Tutup'
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >}FormClassName='fJournal_View'
+>

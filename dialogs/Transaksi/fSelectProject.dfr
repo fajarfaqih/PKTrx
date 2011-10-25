@@ -1,0 +1,105 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Pilih Produk'
+  Left=50
+  Top=50
+  Width=600
+  Height=550
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx=''
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  Containers={object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=600
+      Height=550
+      Container1=$CONTAINERS['pSelect']
+      Container2=$CONTAINERS['qProduct']
+      InversedAlign=true
+    >, object:rtf::Panel<
+      Name='pSelect'
+      Width=409
+      Height=41
+      Controls={object:rtf::Button<
+          Name='bSelect'
+          Layout=clAbsolute
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='P&ilih'
+          Default=true
+          ExitAction=eaQuitOK
+        >, object:rtf::Button<
+          Name='bCancel'
+          Layout=clAbsolute
+          Top=8
+          Left=88
+          Color=0
+          ControlCaption=''
+          Caption='&Batal'
+          Cancel=true
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Query<
+      Name='qProduct'
+      Width=600
+      Height=508
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      PClassName='VProduct'
+      WindowSize=20
+      Columns={object:rtf::QueryColumn<
+          FieldName='VProduct.ProductId'
+          Width=60
+          Caption='ID Produk'
+          Hidden=true
+        >, object:rtf::QueryColumn<
+          FieldName='VProduct.ProductCode'
+          Width=150
+          Caption='Kode Produk'
+        >, object:rtf::QueryColumn<
+          FieldName='VProduct.ProductName'
+          Width=150
+          Caption='Nama Produk'
+        >, object:rtf::QueryColumn<
+          FieldName='VProduct.AccountName'
+          Width=150
+          Caption='Nama Account Produk'
+        >, object:rtf::QueryColumn<
+          FieldName='VProduct.Description'
+          Width=240
+          Caption='Keterangan'
+          Hidden=true
+        >, object:rtf::QueryColumn<
+          FieldName='VProduct.FundCategory'
+          Width=80
+          Caption='Jenis Dana'
+          Hidden=true
+        >, object:rtf::QueryColumn<
+          FieldName='VProduct.AccountNo'
+          Hidden=true
+        >}EnableColumns=true
+      OnDoubleClick='OnDoubleClick'
+    >}FormClassName='fSelectProduct'
+>

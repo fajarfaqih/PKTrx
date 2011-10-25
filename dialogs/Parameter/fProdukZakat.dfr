@@ -1,0 +1,304 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Produk Zakat'
+  Left=100
+  Top=100
+  Width=449
+  Height=441
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx='FormSetDataEx'
+  OnBeginProcessData='OnBeginProcessData'
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='mode'
+          Hidden=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ID'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TglUbah'
+          Hidden=true
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='UserPengubah'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TerminalUbah'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >}Name='uipData'
+      ClassTypeName='ZakahProduct'
+      DataBinding=bmMaster
+      AlwaysPostToServer=true
+      PostLinkValues=true
+      OnSetData='ProductOnSetData'
+    >}Containers={object:rtf::Panel<
+      ControlDefs={object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='ProductId'
+          LayoutOrder=2
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='ProductCode'
+          LayoutOrder=3
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='ProductName'
+          LayoutOrder=4
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='Description'
+          LayoutOrder=4
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='Rate'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='PercentageOfAmilFunds'
+          LayoutOrder=7
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='FundCategory'
+          LayoutOrder=8
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='Status'
+          LayoutOrder=9
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='Nishab'
+          ControlCaption='Nishab'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='Haul'
+          ControlCaption='Haul'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='IsDetail'
+          LayoutOrder=2
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='ParentProductId'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='Level'
+        >}Elements={*object:rtf::FieldUIElmtSetting<
+          Name='ProductId'
+          Hidden=true
+          LayoutOrder=2
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='ProductCode'
+          ControlCaption='Kode Produk'
+          LayoutOrder=3
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='ProductName'
+          ControlCaption='Nama Produk'
+          LayoutOrder=3
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='Description'
+          ControlCaption='Keterangan'
+          LayoutOrder=4
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='PercentageOfAmilFunds'
+          ControlCaption='Persentase Amil'
+          LayoutOrder=8
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='FundCategory'
+          ReadOnlyControl=true
+          ControlCaption='Kategori Sumber'
+          LayoutOrder=9
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='Status'
+          ReadOnlyControl=true
+          LayoutOrder=10
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='IsDetail'
+          ControlCaption='Detail'
+          LayoutOrder=2
+          GenerateCheckBoxForEnum=true
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='ParentProductId'
+          Hidden=true
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='Level'
+          Hidden=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ProductIdID'
+          Hidden=true
+          ControlCaption='Id Produk'
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LProductParent'
+          ControlCaption='Produk Induk'
+          ClassTypeName='ZakahProduct'
+          DisplayFields='ProductId;ProductCode;ProductName;Level'
+          Restrictions=''
+          OQLText=['Select from ZakahProduct'#13#10,
+            '[ Status = ''A'' and IsDetail =''F'']'#13#10,
+            '('#13#10,
+            ' ProductId,'#13#10,
+            ' ProductCode,'#13#10,
+            ' ProductName,'#13#10,
+            ' Description,'#13#10,
+            ' Level, '#13#10,
+            ' self'#13#10,
+            ')'#13#10,
+            'then order by ProductId;'#13#10]
+          LookupOption=loCustomOQL
+          FieldBaseName='LProductParent'
+        >}Name='pData'
+      Width=433
+      Height=369
+      UIPart=$UIPARTS['uipData']
+      Controls={*object:rtf::DBEdit<
+          Name='ProductCode'
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption='Kode Produk'
+          LayoutOrder=2
+        >, *object:rtf::DBEdit<
+          Name='ProductName'
+          Top=36
+          Left=8
+          Width=251
+          Height=21
+          Color=0
+          ControlCaption='Nama Produk'
+          LayoutOrder=3
+        >, *object:rtf::DBEdit<
+          Name='Description'
+          Top=64
+          Left=8
+          Width=251
+          Height=21
+          Color=0
+          ControlCaption='Keterangan'
+          LayoutOrder=3
+        >, *object:rtf::DBEdit<
+          Name='Rate'
+          Top=148
+          Left=8
+          Color=0
+          ControlCaption='Rate Zakat (%)'
+          LayoutOrder=6
+        >, *object:rtf::DBEdit<
+          Name='PercentageOfAmilFunds'
+          Top=176
+          Left=8
+          Color=0
+          ControlCaption='Persentase Amil (%)'
+          LayoutOrder=7
+        >, *object:rtf::DBComboBox<
+          Name='FundCategory'
+          Top=260
+          Left=8
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Kategori Sumber'
+          LayoutOrder=10
+        >, *object:rtf::DBComboBox<
+          Name='Status'
+          Top=288
+          Left=8
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Status'
+          LayoutOrder=11
+        >, *object:rtf::DBEdit<
+          Name='Nishab'
+          Top=204
+          Left=8
+          Color=0
+          ControlCaption='Nishab'
+          LayoutOrder=8
+        >, *object:rtf::DBEdit<
+          Name='Haul'
+          Top=232
+          Left=8
+          Color=0
+          ControlCaption='Haul'
+          LayoutOrder=9
+        >, *object:rtf::DBCheckBox<
+          Name='IsDetail'
+          Top=120
+          Left=8
+          Enabled=false
+          Color=0
+          ControlCaption='Detail'
+          LayoutOrder=4
+          OnClick='DetailOnClick'
+        >, *object:rtf::DBLookupEdit<
+          Name='LProductParent'
+          Top=92
+          Left=8
+          ControlCaption='Produk Induk'
+          LayoutOrder=4
+          LookupField='LProductParent.ProductName'
+          DisplayLookupField=true
+          OnAfterLookup='LProductParentAfterLookup'
+        >}EqualCaptionWidth=130
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=41
+      Controls={object:rtf::Button<
+          Name='bOK'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&OK'
+          Default=true
+          OnClick='bOKClick'
+        >, object:rtf::Button<
+          Name='bClose'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Width=82
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='&Cancel / Close'
+          Cancel=true
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=449
+      Height=441
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['pData']
+      InversedAlign=true
+    >}FormClassName='fProdukZakat'
+>

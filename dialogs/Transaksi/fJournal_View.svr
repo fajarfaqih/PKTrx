@@ -1,0 +1,79 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{03AB2DCD-D5DA-4DD5-B07D-CD15AE22527E}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rpclass::TPClassUIDefList<
+  UIDefs={object:rpclass::TPClassUIDef<
+      Name='uipJournal'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='journal_no'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='journal_date'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='transaction_date'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='user_create'
+          DataTypeName='varchar'
+          DataLength=20
+        >}Mode=imSingleRow
+    >, object:rpclass::TPClassUIDef<
+      Name='uipJournalItem'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='Account_Code'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='Account_Name'
+          DataTypeName='varchar'
+          DataLength=100
+        >, object:rpclass::TCustomLoadedField<
+          Name='Branch_Code'
+          DataTypeName='varchar'
+          DataLength=3
+        >, object:rpclass::TCustomLoadedField<
+          Name='Branch_Name'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='Currency_Code'
+          DataTypeName='varchar'
+          DataLength=3
+        >, object:rpclass::TCustomLoadedField<
+          Name='Kode_Kurs'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='Nilai_Kurs'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='Nama_RC'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='Nomor_Rekening'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='Nama_Rekening'
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rpclass::TCustomLoadedField<
+          Name='Amount_Debet'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='Amount_Credit'
+          DataTypeName='double'
+          DataLength=20
+        >}Mode=imMultiRow
+    >}OnSetDataEx='FormSetDataEx'
+>

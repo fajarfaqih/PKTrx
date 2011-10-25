@@ -1,0 +1,68 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{03AB2DCD-D5DA-4DD5-B07D-CD15AE22527E}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rpclass::TPClassUIDefList<
+  UIDefs={object:rpclass::TPClassUIDef<
+      Name='uipData'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='BranchCode'
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBranch.BranchCode'
+          DataTypeName='VARCHAR'
+          DataLength=3
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBranch.BranchCode'
+          DataTypeName='VARCHAR'
+          DataLength=3
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBranch.BranchName'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='LCashAccount.AccountNo'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='LCashAccount.AccountNo'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='LCashAccount.AccountName'
+          DataTypeName='VARCHAR'
+          DataLength=50
+        >, object:rpclass::TCustomLoadedField<
+          Name='LCashAccount.CurrencyCode'
+          DataTypeName='VARCHAR'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LCashAccount.LCurrency.Short_Name'
+          DataTypeName='VARCHAR'
+          DataLength=10
+        >, object:rpclass::TCustomLoadedField<
+          Name='IsAllCash'
+          DataTypeName='varchar'
+          DataLength=1
+        >, object:rpclass::TCustomLoadedField<
+          Name='BeginDate'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='EndDate'
+          DataTypeName='timestamp'
+          DataLength=20
+        >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
+          Name='LBranch'
+          ClassTypeName='Branch'
+          FieldNames='BranchCode;BranchCode;BranchName'
+        >, object:rpclass::TCustomLoadedLink<
+          Name='LCashAccount'
+          ClassTypeName='CashAccount'
+          FieldNames='AccountNo;AccountNo;AccountName;CurrencyCode;LCurrency.Short_Name'
+        >}Mode=imSingleRow
+    >}OnSetDataEx='FormSetDataEx'
+>

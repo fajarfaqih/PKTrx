@@ -1,0 +1,623 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{FF6521AE-DCB8-457C-933C-35D88DB5B672}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rmn::Menu<
+  MenuItems={object:rmn::MenuItem<
+      Caption='Master'
+      MenuItems={object:rmn::MenuItem<
+          Name='TR0001'
+          Caption='Produk zakat'
+          OnClick='ShowQueryClick'
+          AllowedGroups='ADM'
+          StringTag='parameter/fDaftarProdukZakat'
+        >, object:rmn::MenuItem<
+          Name='TR0002'
+          Caption='Program'
+          OnClick='ShowQueryClick'
+          AllowedGroups='ADM'
+          StringTag='parameter/fDaftarProgram'
+        >, object:rmn::MenuItem<
+          Name='TR0003'
+          Caption='Project Induk'
+          OnClick='ShowQueryClick'
+          AllowedGroups='ADM'
+          StringTag='parameter/fDaftarProject'
+        >, object:rmn::MenuItem<
+          Caption='-'
+          AllowedGroups='ADM'
+        >, object:rmn::MenuItem<
+          Name='TR0004'
+          Caption='Sponsor'
+          OnClick='ShowQueryClick'
+          AllowedGroups='HIDDEN'
+          StringTag='parameter/fDaftarSponsor'
+        >, object:rmn::MenuItem<
+          Name='TR0004'
+          Caption='Mitra'
+          OnClick='ShowQueryClick'
+          AllowedGroups='ADM;SPV'
+          StringTag='parameter/fDaftarMitra'
+        >, object:rmn::MenuItem<
+          Name='TR0004A'
+          Caption='Bank'
+          OnClick='ShowQueryClick'
+          AllowedGroups='ADM'
+          StringTag='parameter/fDaftarBank'
+        >, object:rmn::MenuItem<
+          Caption='-'
+          AllowedGroups='ADM'
+        >, object:rmn::MenuItem<
+          Name='TR0005'
+          Caption='Parameter journal...'
+          OnClick='ParameterJournalClick'
+          AllowedGroups='ADM'
+        >, object:rmn::MenuItem<
+          Caption='-'
+          AllowedGroups='ADM'
+        >, object:rmn::MenuItem<
+          Name='TR0006'
+          Caption='Rekening bank'
+          OnClick='ShowQueryClick'
+          AllowedGroups='ADM'
+          StringTag='parameter/fDaftarRekeningBank'
+        >, object:rmn::MenuItem<
+          Name='TR0007'
+          Caption='Rekening kas besar'
+          OnClick='ShowQueryClick'
+          AllowedGroups='ADM'
+          StringTag='parameter/fDaftarRekeningKasCabang'
+        >, object:rmn::MenuItem<
+          Name='TR0008'
+          Caption='Rekening kas kecil'
+          OnClick='ShowQueryClick'
+          AllowedGroups='ADM'
+          StringTag='parameter/fDaftarRekeningKasKecil'
+        >, object:rmn::MenuItem<
+          Caption='-'
+        >, object:rmn::MenuItem<
+          Name='TR0009'
+          Caption='Periode Anggaran'
+          OnClick='ShowQueryClick'
+          AllowedGroups='ADM'
+          StringTag='parameter/fDaftarBudgetPeriod'
+        >, object:rmn::MenuItem<
+          Name='TR0010'
+          Caption='Pemilik Anggaran'
+          OnClick='ShowQueryClick'
+          AllowedGroups='ADM'
+          StringTag='parameter/fDaftarBudgetOwner'
+        >, object:rmn::MenuItem<
+          Name='TR0010'
+          Caption='Item Anggaran'
+          OnClick='ShowQueryClick'
+          AllowedGroups='HIDDEN'
+          StringTag='parameter/fDaftarBudgetItem'
+        >, object:rmn::MenuItem<
+          Caption='-'
+          AllowedGroups='ADM'          
+        >, object:rmn::MenuItem<
+          Name='TR0010'
+          Caption='Daftar Kategori Aset'
+          OnClick='ShowQueryClick'
+          AllowedGroups='ADM'
+          StringTag='parameter/fDaftarAssetCategory'
+        >, object:rmn::MenuItem<
+          Name='TR0010'
+          Caption='Daftar Kategori Persediaan'
+          OnClick='ShowQueryClick'
+          AllowedGroups='HIDDEN'
+          StringTag='parameter/fDaftarInventoryCategory'
+        >, object:rmn::MenuItem<
+          Name='TR0010'
+          Caption='Daftar Kategori Biaya Dibayar Di Muka'
+          OnClick='ShowQueryClick'
+          AllowedGroups='ADM'
+          StringTag='parameter/fDaftarCPIACategory'
+        >, object:rmn::MenuItem<
+          Caption='-'
+          AllowedGroups='ADM'          
+        >, object:rmn::MenuItem<
+          Name='TR0010'
+          Caption='Daftar Kategori Investasi'
+          OnClick='ShowQueryClick'
+          AllowedGroups='ADM'          
+          StringTag='parameter/fDaftarInvestmentCategory'
+        >, object:rmn::MenuItem<
+          Name='TR0010'
+          Caption='Daftar Investee Eksternal'
+          OnClick='ShowQueryClick'
+          AllowedGroups='ADM;SPV'
+          StringTag='parameter/fDaftarInvestee'
+        >, object:rmn::MenuItem<
+          Name='TR0010'
+          Caption='Daftar Debitur Eksternal Piutang'
+          OnClick='ShowQueryClick'
+          AllowedGroups='ADM;SPV'
+          StringTag='parameter/fDaftarExternalDebtor'
+        >}AllowedGroups='ADM;SPV'
+    >, object:rmn::MenuItem<
+      Caption='Peragaan'
+      MenuItems={object:rmn::MenuItem<
+          Name='TR0011'
+          Caption='Peragaan data donatur (Browse)'
+          OnClick='ShowClick'
+          AllowedGroups='HIDDEN'
+          StringTag='Donatur/fCariDonatur'
+        >, object:rmn::MenuItem<
+          Name='TR0011'
+          Caption='Peragaan data donatur'
+          OnClick='ShowClick'
+          AllowedGroups='HIDDEN'
+          StringTag='Donatur/fPeragaanDonatur'
+        >, object:rmn::MenuItem<
+          Name='TR0011'
+          Caption='Peragaan histori transaksi donatur'
+          OnClick='ShowClick'
+          AllowedGroups='ADM;SPV;KEU'
+          StringTag='Donatur/fDonaturTransHistory'
+        >, object:rmn::MenuItem<
+          Name='TR0012'
+          Caption='Peragaan rekening kas/bank'
+          OnClick='cashAccountClick'
+          AllowedGroups='ADM;SPV;KEU'
+        >, object:rmn::MenuItem<
+          Name='TR0012'
+          Caption='Peragaan histori transaksi GL Account'
+          OnClick='GLHistoriClick'
+          AllowedGroups='ADM;SPV;KEU'
+        >, object:rmn::MenuItem<
+          Caption='-'
+          AllowedGroups='ADM;SPV;KEU'
+        >, object:rmn::MenuItem<
+          Name='TR0013'
+          Caption='Peragaan program'
+          OnClick='SimpleShowClick'
+          AllowedGroups='ADM;SPV;KEU'
+          StringTag='Rekening/fProgram'
+        >, object:rmn::MenuItem<
+          Name='TR0014'
+          Caption='Peragaan rekening zakat'
+          OnClick='productZakatClick'
+          AllowedGroups='ADM;SPV;KEU'
+        >, object:rmn::MenuItem<
+          Name='TR0015'
+          Caption='Peragaan rekening piutang karyawan'
+          OnClick='SimpleShowClick'
+          AllowedGroups='ADM;SPV;KEU'
+          StringTag='Rekening/fEmployeeAR'
+        >, object:rmn::MenuItem<
+          Name='TR0015'
+          Caption='Peragaan rekening piutang eksternal'
+          OnClick='SimpleShowClick'
+          AllowedGroups='ADM;SPV;KEU'
+          StringTag='Rekening/fExternalAR'
+        >, object:rmn::MenuItem<
+          Name='TR0015A'
+          Caption='Peragaan rekening uang muka karyawan'
+          OnClick='SimpleShowClick'
+          AllowedGroups='ADM;SPV;KEU'
+          StringTag='Rekening/fEmployeeCashAdvance'
+        >, object:rmn::MenuItem<
+          Caption='-'
+        >, object:rmn::MenuItem<
+          Name='TR0112'
+          Caption='Rincian Persediaan'
+          OnClick='invQueryClick'
+          AllowedGroups='HIDDEN'
+        >, object:rmn::MenuItem<
+          Name='TR0016'
+          Caption='Daftar Aset Tetap'
+          OnClick='FAViewClick'
+          AllowedGroups='ADM;SPV;KEU'
+        >, object:rmn::MenuItem<
+          Name='TR0016'
+          Caption='Daftar Biaya Dibayar Dimuka'
+          OnClick='CPIAListClick'
+          AllowedGroups='001'
+        >, object:rmn::MenuItem<
+          Name='TR0016'
+          Caption='Daftar Investasi'
+          OnClick='InvestmentListClick'
+          AllowedGroups='ADM;SPV;KEU'
+        >, object:rmn::MenuItem<
+          Caption='-'
+          AllowedGroups='ADM;SPV;KEU'
+        >, object:rmn::MenuItem<
+          Name='TR0016'
+          Caption='Peragaan transaksi'
+          OnClick='showHistoriTransaksi2'
+          AllowedGroups='ADM;SPV;KEU'
+        >, object:rmn::MenuItem<
+          Name='TR0016A'
+          Caption='Peragaan transaksi(Supervisor)'
+          OnClick='showHistoriTransaksi3'
+          AllowedGroups='ADM;SPV'
+        >}AllowedGroups='ADM;SPV;KEU'
+    >, object:rmn::MenuItem<
+      Caption='Project && Anggaran'
+      MenuItems={object:rmn::MenuItem<
+          Name='TR0018'
+          Caption='Project'
+          OnClick='ShowQuery2Click'
+          AllowedGroups='ADM;SPV;KEU'
+          StringTag='Project/fDaftarProject'
+        >, object:rmn::MenuItem<
+          Caption='-'
+          AllowedGroups='ADM;SPV;KEU'
+        >, object:rmn::MenuItem<
+          Name='TR0017'
+          Caption='Buat Anggaran Baru'
+          OnClick='NewBudgetClick'
+          AllowedGroups='ADM;SPV;KEU'
+        >, object:rmn::MenuItem<
+          Name='TR0017A'
+          Caption='Revisi Anggaran'
+          OnClick='BudgetRevisionClick'
+          AllowedGroups='ADM;SPV;KEU'
+        >, object:rmn::MenuItem<
+          Name='TR0017B'
+          Caption='Peragaan Anggaran'
+          OnClick='BudgetViewClick'
+          AllowedGroups='ADM;SPV;KEU'
+        >}AllowedGroups='ADM;SPV;KEU'
+    >, object:rmn::MenuItem<
+      Caption='Transaksi'
+      MenuItems={object:rmn::MenuItem<
+          Name='TR0019'
+          Caption='Buat batch transaksi...'
+          OnClick='NewBatchClick'
+          AllowedGroups='ADM;SPV;KEU'
+        >, object:rmn::MenuItem<
+          Caption='-'
+          AllowedGroups='ADM;SPV;KEU'
+        >, object:rmn::MenuItem<
+          Name='TR0020'
+          Caption='Transaksi penghimpunan dana...'
+          OnClick='FundCollectionClick'
+          AllowedGroups='ADM;SPV;KEU'
+        >, object:rmn::MenuItem<
+          Name='TR0021'
+          Caption='Transaksi penyaluran dana...'
+          OnClick='FundDistributionClick'
+          AllowedGroups='ADM;SPV;KEU'
+        >, object:rmn::MenuItem<
+          Name='TR0025'
+          Caption='Cetak BSZ...'
+          OnClick='CetakBSZClick'
+          AllowedGroups='ADM;SPV;KEU'
+        >, object:rmn::MenuItem<
+          Caption='-'
+          AllowedGroups='ADM;SPV;KEU'
+        >, object:rmn::MenuItem<
+          Name='TR0022'
+          Caption='(Pinjam/Bayar) Piutang'
+          OnClick='AccountReceivableClick'
+          AllowedGroups='ADM;SPV;KEU'
+        >, object:rmn::MenuItem<
+          Name='TR0022A'
+          Caption='Transaksi Penyerahan Uang Muka...'
+          OnClick='CashAdvanceClick'
+          AllowedGroups='ADM;SPV;KEU'
+        >, object:rmn::MenuItem<
+          Name='TR0022B'
+          Caption='Transaksi Pengembalian Uang Muka...'
+          OnClick='CashAdvanceReturnClick'
+          AllowedGroups='ADM;SPV;KEU'
+        >, object:rmn::MenuItem<
+          Name='TR0022B'
+          Caption='Transaksi Pengembalian Uang Muka (Dana RAK)...'
+          OnClick='CashAdvanceReturnRAKClick'
+        >, object:rmn::MenuItem<
+          Caption='-'
+          AllowedGroups='ADM;SPV;KEU'
+        >, object:rmn::MenuItem<
+          Name='TR0023A'
+          Caption='Pinjaman antar dana...'
+          OnClick='InterFundTransferClick'
+          AllowedGroups='ADM;SPV;KEU'
+        >, object:rmn::MenuItem<
+          Name='TR0023'
+          Caption='Transfer internal...'
+          OnClick='TransferInternalClick'
+          AllowedGroups='ADM;SPV;KEU'
+        >, object:rmn::MenuItem<
+          Caption='-'
+          AllowedGroups='ADM;SPV;KEU'
+        >, object:rmn::MenuItem<
+          Name='TR0024'
+          Caption='Transaksi umum...'
+          OnClick='GeneralTransactionClick'
+          AllowedGroups='ADM;SPV;KEU'
+        >, object:rmn::MenuItem<
+          Name='TR0024A'
+          Caption='Transaksi Penerimaan Amil...'
+          OnClick='SimpleShowClick'
+          AllowedGroups='ADM;SPV;KEU'
+          StringTag='Transaksi/fCashIn'
+        >, object:rmn::MenuItem<
+          Name='TR0024B'
+          Caption='Transaksi Pengeluaran Amil...'
+          OnClick='SimpleShowClick'
+          AllowedGroups='ADM;SPV;KEU'
+          StringTag='Transaksi/fCashOut'
+        >, object:rmn::MenuItem<
+          Caption='-'
+        >, object:rmn::MenuItem<
+          Caption='Transaksi Investasi'
+          MenuItems={object:rmn::MenuItem<
+              Name='TR0024'
+              Caption='Penanaman Investasi'
+              OnClick='InvestmentClick'
+            >, object:rmn::MenuItem<
+              Name='TR0024'
+              Caption='Pengembalian Investasi'
+              OnClick='InvestmentReturnClick'
+            >}AllowedGroups='ADM;SPV;KEU'
+        >, object:rmn::MenuItem<
+          Caption='Transaksi RAK'
+          MenuItems={object:rmn::MenuItem<
+              Name='TR0024'
+              Caption='Transaksi Penyaluran Dana ke Cabang (RAK)...'
+              OnClick='BranchDistributionClick'
+              AllowedGroups='ADM;SPV;KEU'
+            >, object:rmn::MenuItem<
+              Name='TR0024'
+              Caption='Transaksi Pengembalian Dana dari Cabang(RAK)...'
+              OnClick='BranchDistributionReturnClick'
+              AllowedGroups='ADM;SPV;KEU'
+            >, object:rmn::MenuItem<
+              Name='TR0024'
+              Caption='Daftar Penyaluran Dana Antar Cabang (RAK)...'
+              OnClick='BranchDistListClick'
+            >}>, object:rmn::MenuItem<
+          Caption='Transaksi Invoice Sponsor'
+          MenuItems={object:rmn::MenuItem<
+              Name='TR0018A'
+              Caption='Invoice Sponsor...'
+              OnClick='ProgramSponsorClick'
+              AllowedGroups='ADM;SPV;KEU'
+            >, object:rmn::MenuItem<
+              Name='TR0018A'
+              Caption='Pembayaran Invoice Sponsor...'
+              OnClick='InvoicePaymentClick'
+              AllowedGroups='ADM;SPV;KEU'
+            >}>, object:rmn::MenuItem<
+          Caption='Transaksi Aset Tetap'
+          MenuItems={object:rmn::MenuItem<
+              Name='TR0020'
+              Caption='Pembelian Aset Tetap...'
+              OnClick='FixedAssetClick'
+              AllowedGroups='ADM;SPV;KEU'
+            >, object:rmn::MenuItem<
+              Name='TR0020'
+              Caption='Pencatatan Invoice Aset Tetap...'
+              OnClick='FAInvoiceClick'
+              AllowedGroups='ADM;SPV;KEU'
+            >, object:rmn::MenuItem<
+              Name='TR0020'
+              Caption='Pembayaran Invoice Aset Tetap...'
+              OnClick='FAInvoicePaymentClick'
+              AllowedGroups='ADM;SPV;KEU'
+            >, object:rmn::MenuItem<
+              Name='TR0020'
+              Caption='Penjualan Aset Tetap...'
+              OnClick='FADisposalClick'
+              AllowedGroups='ADM;SPV;KEU'
+            >}>, object:rmn::MenuItem<
+          Caption='Transaksi Biaya Dibayar Dimuka'
+          MenuItems={object:rmn::MenuItem<
+              Name='TR0026'
+              Caption='Registrasi Biaya Dibayar Dimuka'
+              OnClick='registerBDDClick'
+              AllowedGroups='ADM;SPV;KEU'
+            >}>, object:rmn::MenuItem<
+          Caption='-'
+          AllowedGroups='ADM;SPV;KEU'
+        >, object:rmn::MenuItem<
+          Name='TR0026'
+          Caption='Cetak Nota Dinas...'
+          OnClick='NotaDinasClick'
+          AllowedGroups='ADM;SPV;KEU'
+        >, object:rmn::MenuItem<
+          Name='TR0026'
+          Caption='Otorisasi Transaksi...'
+          OnClick='OtorisasiClick'
+          AllowedGroups='ADM;SPV;KEU'
+        >, object:rmn::MenuItem<
+          Caption='Cetak Kwitansi Penerimaan'
+          OnClick='PrintVoucherClick'
+          AllowedGroups='PHP'
+        >}AllowedGroups='ADM;SPV;KEU;PHP'
+    >, object:rmn::MenuItem<
+      Caption='Laporan'
+      MenuItems={object:rmn::MenuItem<
+          Name='TR0027'
+          Caption='Transaksi kas/bank harian (Daily cash)'
+          OnClick='ShowReportClick'
+          AllowedGroups='ADM;SPV;KEU'
+          StringTag='fDailyCash'
+        >, object:rmn::MenuItem<
+          Name='TR0028'
+          Caption='Rekapitulasi transaksi kas (Summary cash transaction)'
+          OnClick='ShowReportClick'
+          AllowedGroups='ADM;SPV;KEU'
+          StringTag='fSummaryCash'
+        >, object:rmn::MenuItem<
+          Caption='-'
+          AllowedGroups='ADM;SPV;KEU'
+        >, object:rmn::MenuItem<
+          Name='TR0029'
+          Caption='Transaksi Sponsor per project'
+          OnClick='ShowReportClick'
+          AllowedGroups='ADM;SPV;KEU'
+          StringTag='fReportSponsorPerProject'
+        >, object:rmn::MenuItem<
+          Name='TR0030'
+          Caption='Rekapitulasi piutang karyawan'
+          OnClick='ShowReportClick'
+          AllowedGroups='ADM;SPV;KEU'
+          StringTag='fSummaryEmpAR'
+        >, object:rmn::MenuItem<
+          Name='TR0030'
+          Caption='Rekapitulasi piutang eksternal'
+          OnClick='ShowReportClick'
+          AllowedGroups='ADM;SPV;KEU'
+          StringTag='fSummaryExtAR'
+        >, object:rmn::MenuItem<
+          Name='TR0030'
+          Caption='Rekapitulasi uang muka karyawan'
+          OnClick='ShowReportClick'
+          AllowedGroups='ADM;SPV;KEU'
+          StringTag='fSummaryEmpCA'
+        >, object:rmn::MenuItem<
+          Name='TR0030'
+          Caption='Rekapitulasi transaksi mitra'
+          OnClick='ShowReportClick'
+          AllowedGroups='ADM;SPV;KEU'
+          StringTag='fSumVolunteerTrans'
+        >, object:rmn::MenuItem<
+          Name='TR0031'
+          Caption='Transaksi mitra per jenis dana'
+          OnClick='ShowReportClick'
+          AllowedGroups='ADM;SPV;KEU'
+          StringTag='fReportVolunteerPerEntity'
+        >, object:rmn::MenuItem<
+          Caption='-'
+          AllowedGroups='ADM;SPV;KEU'
+        >, object:rmn::MenuItem<
+          Name='TR0032'
+          Caption='Penghimpunan Dana'
+          OnClick='ShowReportClick'
+          AllowedGroups='ADM;SPV;KEU'
+          StringTag='fCollectionReport'
+        >, object:rmn::MenuItem<
+          Name='TR0033'
+          Caption='Penyaluran Dana'
+          OnClick='ShowReportClick'
+          AllowedGroups='ADM;SPV;KEU'
+          StringTag='fDistributionReport'
+        >, object:rmn::MenuItem<
+          Caption='-'
+          AllowedGroups='ADM;SPV;KEU'
+        >, object:rmn::MenuItem<
+          Name='TR0033'
+          Caption='Penerimaan Amil'
+          OnClick='ShowReportClick'
+          AllowedGroups='ADM;SPV;KEU'
+          StringTag='fCashInReport'
+        >, object:rmn::MenuItem<
+          Name='TR0033'
+          Caption='Pengeluaran Amil'
+          OnClick='ShowReportClick'
+          AllowedGroups='ADM;SPV;KEU'
+          StringTag='fCashOutReport'
+        >, object:rmn::MenuItem<
+          Caption='-'
+          AllowedGroups='HIDDEN'
+        >, object:rmn::MenuItem<
+          Name='TR0029'
+          Caption='Penerimaan Amil'
+          OnClick='ShowReportClick'
+          AllowedGroups='HIDDEN'
+          StringTag='fCashInReport'
+        >, object:rmn::MenuItem<
+          Name='TR0030'
+          Caption='Pengeluaran Amil'
+          OnClick='ShowReportClick'
+          AllowedGroups='HIDDEN'
+          StringTag='fCashOutReport'
+        >, object:rmn::MenuItem<
+          Name='TR0029'
+          Caption='Penyaluran berdasarkan produk'
+          OnClick='ShowReportClick'
+          AllowedGroups='HIDDEN'
+          StringTag='fProductDistribution'
+        >, object:rmn::MenuItem<
+          Name='TR0030'
+          Caption='Penghimpunan per jenis dana (Advertising)'
+          OnClick='ShowReportClick'
+          AllowedGroups='HIDDEN'
+          StringTag='fAdvertisingReport'
+        >, object:rmn::MenuItem<
+          Name='TR0031'
+          Caption='Penghimpunan per jenis dana per jenis kas (Donation cash)'
+          OnClick='ShowReportClick'
+          AllowedGroups='HIDDEN'
+          StringTag='fDonationCashReport'
+        >, object:rmn::MenuItem<
+          Name='TR0032'
+          Caption='Penghimpunan per jenis dana per donatur (Donation cash detail)'
+          OnClick='ShowReportClick'
+          AllowedGroups='HIDDEN'
+          StringTag='fDonationCashReportDetail'
+        >, object:rmn::MenuItem<
+          Name='TR0033'
+          Caption='Penghimpunan per jenis dana (Overall)'
+          OnClick='ShowReportClick'
+          AllowedGroups='HIDDEN'
+          StringTag='fOverallCashDonationReport'
+        >, object:rmn::MenuItem<
+          Caption='-'
+          AllowedGroups='HIDDEN'
+        >, object:rmn::MenuItem<
+          Name='TR0034'
+          Caption='Resume donasi per jenis dana per jenis kas'
+          OnClick='ShowReportClick'
+          AllowedGroups='HIDDEN'
+          StringTag='fResumeDonasi'
+        >, object:rmn::MenuItem<
+          Name='TR0035'
+          Caption='Akumulasi donasi per jenis dana'
+          OnClick='ShowReportClick'
+          AllowedGroups='HIDDEN'
+          StringTag='fAkumulasiDonasi'
+        >, object:rmn::MenuItem<
+          Name='TR0036'
+          Caption='Laporan sponsorship'
+          OnClick='ShowReportClick'
+          AllowedGroups='HIDDEN'
+          StringTag='fSponsorshipReport'
+        >}AllowedGroups='ADM;SPV;KEU'
+    >, object:rmn::MenuItem<
+      Caption='Tools'
+      MenuItems={object:rmn::MenuItem<
+          Name='TR0037'
+          Caption='Proses Tutup Hari'
+          OnClick='CloseDayClick'
+          AllowedGroups='ADM;SPV'
+        >, object:rmn::MenuItem<
+          Name='TR0037A'
+          Caption='Kontrol Transaksi Belum Otorisasi'
+          OnClick='OnBatchCabang'
+          AllowedGroups='ADM;SPV'
+        >, object:rmn::MenuItem<
+          Name='TR0037B'
+          Caption='Proses Generate Ulang Jurnal Accounting'
+          OnClick='GenerateJournalClick'
+          AllowedGroups='ADM;SPV'
+        >, object:rmn::MenuItem<
+          Caption='Tes'
+          OnClick='TesClick'
+          AllowedUsers='SYSTEM'
+          StringTag='test/fBranch'
+        >, object:rmn::MenuItem<
+          Caption='Script Test'
+          OnClick='ScriptTestClick'
+        >, object:rmn::MenuItem<
+          Name='TR0037B'
+          Caption='Saldo Awal'
+          OnClick='SaldoAwalClick'
+          AllowedGroups='ADM;SPV'
+        >}AllowedGroups='ADM;SPV'
+    >, object:rmn::MenuItem<
+      Caption='Batch Process'
+      MenuItems={object:rmn::MenuItem<
+          Name='TR8001'
+          Caption='Penyusutan Aktiva'
+          OnClick='OnDepreciationClick'
+          AllowedGroups='ADM;SPV'
+        >}AllowedGroups='ADM;SPV'
+    >}>

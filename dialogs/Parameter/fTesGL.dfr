@@ -1,0 +1,79 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='TES GL'
+  Left=50
+  Top=50
+  Width=400
+  Height=320
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx='FormSetDataEx'
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Name='uipProduct'
+      ClassTypeName='ZakahProduct'
+      DataBinding=bmMaster
+    >, object:rtf::PClassUI<
+      Name='LsGLInterface'
+      ClassTypeName='GLInterface'
+      DataBinding=bmList
+      Master=$UIPARTS['uipProduct']
+      ListName='Ls_GLInterface'
+      SetMasterDetailRelationship=true
+    >}Containers={object:rtf::Panel<
+      ControlDefs={object:rtf::MultiControlDef<
+          Action=caView
+          DataMembers=['ProductId'#13#10,
+            'ProductName'#13#10]
+        >}Elements={}Name='panel1'
+      Width=320
+      Height=98
+      UIPart=$UIPARTS['uipProduct']
+      Controls={*object:rtf::DBEdit<
+          Name='ProductId'
+          Top=8
+          Left=8
+          Color=-2147483624
+          ControlCaption='productid'
+        >, *object:rtf::DBEdit<
+          Name='ProductName'
+          Top=36
+          Left=8
+          Color=-2147483624
+          ControlCaption='productname'
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Grid<
+      ControlDefs={object:rtf::MultiControlDef<
+          Action=caEdit
+          DataMembers=['InterfaceID'#13#10,
+            'InterfaceCode'#13#10,
+            'Description'#13#10]
+        >}Elements={}Name='grid1'
+      Width=400
+      Height=221
+      UIPart=$UIPARTS['LsGLInterface']
+      Columns={}>, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=400
+      Height=320
+      Container1=$CONTAINERS['panel1']
+      Container2=$CONTAINERS['grid1']
+    >}FormClassName='fTesGL'
+>

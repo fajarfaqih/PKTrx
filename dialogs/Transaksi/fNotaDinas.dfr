@@ -1,0 +1,133 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Cetak Nota Dinas'
+  Left=50
+  Top=50
+  Width=400
+  Height=233
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx='FormSetDataEx'
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Name='uipData'
+    >}Containers={object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=45
+      Controls={object:rtf::Button<
+          Name='bPrint'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Cetak'
+          OnClick='bPrintClick'
+        >, object:rtf::Button<
+          Name='bClose'
+          Layout=clAbsolute
+          Top=8
+          Left=88
+          Color=0
+          ControlCaption=''
+          Caption='&Tutup'
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='TransactionDate'
+          ControlCaption='Tanggal'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Nomor'
+          Hidden=true
+          ReadOnlyControl=true
+          ControlCaption='Nomor'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='PaidFrom'
+          ControlCaption='Dibayar Oleh'
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Inputer'
+          ControlCaption='Diinput Oleh'
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Manajer'
+          ControlCaption='Manajer Keuangan'
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Direktur'
+          ControlCaption='Direktur'
+          DataTypeName='varchar'
+          DataLength=50
+        >}Name='pData'
+      Width=320
+      Height=185
+      UIPart=$UIPARTS['uipData']
+      Controls={*object:rtf::DBDateEdit<
+          Name='TransactionDate'
+          Top=10
+          Left=10
+          Color=0
+          ControlCaption='Tanggal'
+        >, *object:rtf::DBEdit<
+          Name='PaidFrom'
+          Top=38
+          Left=10
+          Color=0
+          ControlCaption='Dibayar Oleh'
+        >, *object:rtf::DBEdit<
+          Name='Inputer'
+          Top=66
+          Left=10
+          Color=0
+          ControlCaption='Diinput Oleh'
+        >, *object:rtf::DBEdit<
+          Name='Manajer'
+          Top=94
+          Left=10
+          Color=0
+          ControlCaption='Manajer Keuangan'
+        >, *object:rtf::DBEdit<
+          Name='Direktur'
+          Top=122
+          Left=10
+          Color=0
+          ControlCaption='Direktur'
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=10
+      ControlTopMargin=10
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=400
+      Height=233
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['pData']
+      InversedAlign=true
+    >}FormClassName='fNotaDinas'
+>

@@ -1,0 +1,225 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit2']
+  Caption='Ubah GL Interface'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=441
+  Height=320
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx='FormSetDataEx'
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Name='uipProduct'
+      ClassTypeName='Product'
+      DataBinding=bmMaster
+      AlwaysPostToServer=true
+    >, object:rtf::PClassUI<
+      Name='LsGLInterface'
+      ClassTypeName='GLInterface'
+      DataBinding=bmList
+      Master=$UIPARTS['uipProduct']
+      ListName='Ls_GLInterface'
+      AlwaysPostToServer=true
+      CreateInstanceOnNew=true
+      DeleteInstanceOnDel=true
+      SetMasterDetailRelationship=true
+      OnSetData='GLOnSetData'
+      AfterNewRecord='ItemAfterNewRecord'
+    >}Containers={object:rtf::Panel<
+      ControlDefs={object:rtf::MultiControlDef<
+          Action=caView
+          DataMembers=['ProductId'#13#10,
+            'ProductCode'#13#10,
+            'ProductName'#13#10,
+            'Description'#13#10]
+        >}Elements={*object:rtf::FieldUIElmtSetting<
+          Name='ProductId'
+          Hidden=true
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='ProductCode'
+          ControlCaption='Kode Produk'
+        >}Name='pProduct'
+      Width=320
+      Height=98
+      UIPart=$UIPARTS['uipProduct']
+      Controls={*object:rtf::DBEdit<
+          Name='ProductCode'
+          Top=8
+          Left=8
+          Color=-2147483624
+          ControlCaption='Kode Produk'
+        >, *object:rtf::DBEdit<
+          Name='ProductName'
+          Top=36
+          Left=8
+          Color=-2147483624
+          ControlCaption='Nama Produk'
+        >, *object:rtf::DBEdit<
+          Name='Description'
+          Top=64
+          Left=8
+          Color=-2147483624
+          ControlCaption='Keterangan'
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Grid<
+      ControlDefs={object:rtf::MultiControlDef<
+          Action=caEdit
+          DataMembers=['InterfaceCode'#13#10,
+            'Description'#13#10,
+            'AccountCode'#13#10,
+            'AccountName'#13#10]
+        >}Elements={*object:rtf::FieldUIElmtSetting<
+          Name='InterfaceCode'
+          ControlCaption='Kode Interface'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='Description'
+          ControlCaption='Deskripsi'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='AccountCode'
+          Hidden=true
+          ControlCaption='Kode Account'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='AccountName'
+          ReadOnlyControl=true
+          ControlCaption='Nama Account'
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LAccount'
+          ControlCaption='Account Code'
+          ClassTypeName=''
+          ExternalClassTypeName='account'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LAccount.Account_Code'
+              UsedAsKey=true
+              KeyOrDisplayName='Account_Code'
+              FinalDisplayFieldName='Account_Code'
+              CDSFieldName='LAccount.Account_Code'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LAccount.Account_Name'
+              DataTypeName='varchar'
+              DataLength=30
+              UsedAsDisplay=true
+              KeyOrDisplayName='Account_Name'
+              FinalDisplayFieldName='Account_Name'
+              CDSFieldName='LAccount.Account_Name'
+            >}Restrictions=''
+          OQLText=['select from Account'#13#10,
+            '[ is_detail=''T'']'#13#10,
+            '('#13#10,
+            '  Account_Code,'#13#10,
+            '  Account_Name,'#13#10,
+            '  self'#13#10,
+            ');']
+          OQLSystemContext='accounting'
+          LookupOption=loCustomOQL
+          FieldBaseName='LAccount'
+        >}Name='gGLInterface'
+      Width=441
+      Height=170
+      UIPart=$UIPARTS['LsGLInterface']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='GL Interface'
+      Columns={*object:rtf::GridColumn<
+          Name='InterfaceCode'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='InterfaceCode'
+          DisplayFormat=''
+          TitleCaption='Kode Interface'
+          Width=100
+        >, *object:rtf::GridColumn<
+          Name='Description'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Description'
+          DisplayFormat=''
+          TitleCaption='Deskripsi'
+          Width=220
+        >, *object:rtf::GridColumn<
+          Name='AccountName'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          Index=4
+          FieldName='AccountName'
+          DisplayFormat=''
+          TitleCaption='Nama Account'
+          Width=220
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='LAccount.Account_Name'
+          InputStyle=cisLookup
+          EnumeratedValues=''
+          OnAfterLookup='LAccountAfterLookup'
+          Index=3
+          FieldName='LAccount.Account_Code'
+          DisplayFormat=''
+          TitleCaption='Account Code'
+          Width=100
+          DirectInput=true
+        >}SuppressHelpLine=true
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=441
+      Height=269
+      Container1=$CONTAINERS['pProduct']
+      Container2=$CONTAINERS['gGLInterface']
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=50
+      Controls={object:rtf::Button<
+          Name='bSimpan'
+          Layout=clNextSide
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Simpan'
+          DefaultAction=daProcessAllUI
+          ExitAction=eaQuitOK
+        >, object:rtf::Button<
+          Name='bBatal'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Color=0
+          ControlCaption=''
+          Caption='&Batal'
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit2'
+      Width=441
+      Height=320
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['dualsplit1']
+      InversedAlign=true
+    >}FormClassName='fGLInterfaceEdit'
+>

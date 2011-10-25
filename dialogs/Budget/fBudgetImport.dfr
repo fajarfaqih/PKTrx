@@ -1,0 +1,204 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Form Import Data Budget'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=400
+  Height=320
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx=''
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Name='uipData'
+      AlwaysPostToServer=true
+      CreateInstanceOnNew=true
+    >, object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='OwnerCode'
+          Hidden=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ItemGroup'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=200
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ItemName'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=200
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BudgetCode'
+          Hidden=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount1'
+          Hidden=true
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount2'
+          Hidden=true
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount3'
+          Hidden=true
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount4'
+          Hidden=true
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount5'
+          Hidden=true
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount6'
+          Hidden=true
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount7'
+          Hidden=true
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount8'
+          Hidden=true
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount9'
+          Hidden=true
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount10'
+          Hidden=true
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount11'
+          Hidden=true
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount12'
+          Hidden=true
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='RowNumber'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >}Name='uipBudgetDetail'
+    >}Containers={object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=41
+      Controls={object:rtf::Button<
+          Name='bOK'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&OK'
+          OnClick='OkClick'
+        >, object:rtf::Button<
+          Name='bCancel'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Color=0
+          ControlCaption=''
+          Caption='&Batal'
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='Tahun'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >}Name='pInput'
+      Width=320
+      Height=65
+      UIPart=$UIPARTS['uipData']
+      Controls={object:rtf::Button<
+          Name='bBrowse'
+          Layout=clNewLine
+          Top=36
+          Left=8
+          Color=0
+          ControlCaption=''
+          LayoutOrder=2
+          Caption='Browse File'
+          OnClick='bBrowseClick'
+        >, object:rtf::DBComboBox<
+          Name='Tahun'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Width=145
+          Height=21
+          Color=0
+          ControlCaption='Tahun'
+          FieldName='Tahun'
+          DisplayFormat=''
+          Items=''
+          Values=''
+          OnChange='TahunOnChange'
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::OleContainer<
+      Name='oleXLS'
+      Width=400
+      Height=212
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      AutoActivate=0
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=400
+      Height=320
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['dualsplit2']
+      InversedAlign=true
+    >, object:rtf::DualSplit<
+      Name='dualsplit2'
+      Width=400
+      Height=278
+      Container1=$CONTAINERS['pInput']
+      Container2=$CONTAINERS['oleXLS']
+    >}FormClassName='fBudgetImport'
+>

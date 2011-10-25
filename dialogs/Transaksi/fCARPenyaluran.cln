@@ -1,0 +1,170 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Left=50
+  Top=50
+  Width=385
+  Height=297
+  UIParts={object:rtf::PClassUI<
+      Name='uipData'
+    >}Containers={object:rtf::Panel<
+      Elements={object:rtf::LinkUIElmtSetting<
+          Name='LProductAccount'
+          ControlCaption='Produk'
+          ClassTypeName='ProductAccount'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LProductAccount.AccountNo'
+              DataTypeName='VARCHAR'
+              DataLength=30
+              UsedAsKey=true
+              KeyOrDisplayName='AccountNo'
+              FinalDisplayFieldName='AccountNo'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LProductAccount.AccountNo'
+              DataTypeName='VARCHAR'
+              DataLength=30
+              UsedAsDisplay=true
+              KeyOrDisplayName='AccountNo'
+              FinalDisplayFieldName='AccountNo'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LProductAccount.AccountName'
+              DataTypeName='VARCHAR'
+              DataLength=50
+              UsedAsDisplay=true
+              KeyOrDisplayName='AccountName'
+              FinalDisplayFieldName='AccountName'
+            >}Restrictions=''
+          OQLText=['select from ProductAccount '#13#10,
+            '[  LProduct.status = ''A'' '#13#10,
+            '   and BranchCode = :BranchCode '#13#10,
+            '   and CurrencyCode = ''000'' '#13#10,
+            '   and LProduct.IsDetail=''T'']'#13#10,
+            '(ProductId, LProduct.ProductName as ProductName, '#13#10,
+            '       LProduct.Description as Description, LProduct.FundCategory $ as FundType, '#13#10,
+            '       LProduct.FundCategory as FundCategory, '#13#10,
+            '       LProduct.PercentageOfAmilFunds as PercentageOfAmilFunds, self) '#13#10,
+            '      then order by ProductId;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LProductAccount'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Ashnaf'
+          DataTypeName='varchar'
+          DataLength=1
+          EnumeratedValues=['F=Fakir'#13#10,
+            'M=Miskin'#13#10,
+            'G=Gharimin'#13#10,
+            'H=Hamba Sahaya'#13#10,
+            'I=Ibnu Sabil'#13#10,
+            'U=Mualaf'#13#10,
+            'S=Fisabilillah'#13#10,
+            'L=Lainnya (Non-Zakat)'#13#10]
+        >, object:rtf::FieldUIElmtSetting<
+          Name='FundEntity'
+          ControlCaption='Jenis Dana'
+          DataTypeName='integer'
+          DataLength=20
+          EnumeratedValues=['1=Zakat'#13#10,
+            '2=Infaq'#13#10,
+            '3=Wakaf'#13#10,
+            '4=Amil'#13#10,
+            '5=Non Halal'#13#10]
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Nilai Transaksi'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Description'
+          DataTypeName='varchar'
+          DataLength=100
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BudgetCode'
+          ControlCaption='Kode Budget'
+          DataTypeName='varchar'
+          DataLength=20
+        >}Name='pData'
+      Width=377
+      Height=217
+      UIPart=$UIPARTS['uipData']
+      Controls={*object:rtf::DBLookupEdit<
+          Name='LProductAccount'
+          Top=10
+          Left=8
+          ControlCaption='Produk'
+          LookupField='LProductAccount.AccountName'
+          DisplayLookupField=true
+        >, *object:rtf::DBComboBox<
+          Name='Ashnaf'
+          Top=38
+          Left=8
+          Color=0
+          ControlCaption='ashnaf'
+        >, *object:rtf::DBComboBox<
+          Name='FundEntity'
+          Top=66
+          Left=8
+          Color=0
+          ControlCaption='Jenis Dana'
+        >, *object:rtf::DBEdit<
+          Name='Nilai Transaksi'
+          Top=94
+          Left=8
+          Color=0
+          ControlCaption='nilai transaksi'
+        >, *object:rtf::DBEdit<
+          Name='Description'
+          Top=122
+          Left=8
+          Color=0
+          ControlCaption='description'
+        >, *object:rtf::DBEdit<
+          Name='BudgetCode'
+          Top=150
+          Left=8
+          Color=0
+          ControlCaption='Kode Budget'
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=10
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=47
+      Controls={object:rtf::Button<
+          Name='bOK'
+          Layout=clNextSide
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&OK'
+          ExitAction=eaQuitOK
+        >, object:rtf::Button<
+          Name='bCancel'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Color=0
+          ControlCaption=''
+          Caption='&Cancel'
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=385
+      Height=297
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['pData']
+      InversedAlign=true
+    >}>

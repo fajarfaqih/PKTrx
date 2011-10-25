@@ -1,0 +1,430 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Laporan Penyaluran Dana'
+  Left=50
+  Top=50
+  Width=625
+  Height=257
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx='FormSetDataEx'
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=3
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BranchName'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='HeadOfficeCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rtf::FieldUIElmtSetting<
+          Name='MasterBranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=10
+        >}Name='uipFilter'
+    >}Containers={object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=625
+      Height=257
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['dualsplit2']
+      InversedAlign=true
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=52
+      Controls={object:rtf::Button<
+          Name='bCetak'
+          Layout=clNextSide
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Cetak Text'
+          OnClick='bCetakClick'
+        >, object:rtf::Button<
+          Name='bTutup'
+          Layout=clNextSide
+          Top=8
+          Left=166
+          Color=0
+          ControlCaption=''
+          LayoutOrder=3
+          Caption='&Tutup'
+          ExitAction=eaQuitCancel
+        >, object:rtf::Button<
+          Name='bExportExcel'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Color=0
+          ControlCaption=''
+          Caption='Cetak E&xcel'
+          OnClick='bExportExcelClick'
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BeginDate'
+          ControlCaption='Periode Tanggal'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='EndDate'
+          ControlCaption='s/d'
+          DataTypeName='timestamp'
+          DataLength=20
+        >}Name='pFilter'
+      Width=409
+      Height=47
+      UIPart=$UIPARTS['uipFilter']
+      Controls={*object:rtf::DBDateEdit<
+          Name='BeginDate'
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption='Periode Tanggal'
+        >, *object:rtf::DBDateEdit<
+          Name='EndDate'
+          Layout=clNextSide
+          Top=8
+          Left=236
+          Color=0
+          ControlCaption='s/d'
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit2'
+      Width=625
+      Height=204
+      Container1=$CONTAINERS['pFilter']
+      Container2=$CONTAINERS['dualsplit3']
+    >, object:rtf::Panel<
+      Elements={object:rtf::LinkUIElmtSetting<
+          Name='LBranch'
+          ControlCaption='Cabang / Capem'
+          ClassTypeName='Branch'
+          DisplayFields='BranchCode;BranchName'
+          Restrictions='MasterBranchCode|BranchCodeParam'
+          OQLText=['select from Branch'#13#10,
+            '[ BranchCode LIKE :BranchCodeParam or '#13#10,
+            '  MasterBranchCode LIKE :BranchCodeParam'#13#10,
+            ']'#13#10,
+            '( BranchCode,BranchName,self'#13#10,
+            ') then order by BranchName;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LBranch'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='IdDonor'
+          Hidden=true
+          ControlCaption='Pilih Donor'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='NamaDonor'
+          ReadOnlyControl=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ChannelCode'
+          ControlCaption='Jenis Pembayaran'
+          DataTypeName='varchar'
+          DataLength=20
+          EnumeratedValues=['P=Kas Kecil'#13#10,
+            'R=Kas Cabang'#13#10,
+            'A=Bank'#13#10,
+            'G=Non Tunai (Aktiva)'#13#10]
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ProgramName'
+          ReadOnlyControl=true
+          ControlCaption='Program'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LSponsor'
+          Hidden=true
+          ControlCaption='Sponsor'
+          ClassTypeName='Sponsor'
+          DisplayFields='SponsorId;Name'
+          Restrictions=''
+          OQLText=['select from Sponsor'#13#10,
+            '(SponsorId, Name, self)'#13#10,
+            'then order by SponsorId;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LSponsor'
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LVolunteer'
+          Hidden=true
+          ControlCaption='Mitra'
+          ClassTypeName='Volunteer'
+          DisplayFields='VolunteerId;VolunteerName'
+          Restrictions='BranchCode|BranchCode'
+          OQLText=['select from volunteer '#13#10,
+            '[BranchCode=:BranchCode]'#13#10,
+            '('#13#10,
+            '  VolunteerId, VolunteerName, HomeAddress, MobilePhone,'#13#10,
+            '  self'#13#10,
+            ')'#13#10,
+            'then order by VolunteerId;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LVolunteer'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ProgramId'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AccountNo'
+          Hidden=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='FundEntity'
+          ControlCaption='Jenis Dana'
+          DataTypeName='integer'
+          DataLength=1
+          EnumeratedValues=['1=Zakat'#13#10,
+            '3=Wakaf'#13#10,
+            '2=Infaq'#13#10,
+            '4=Amil'#13#10,
+            '5=Non Halal'#13#10]
+        >, object:rtf::FieldUIElmtSetting<
+          Name='NoDonor'
+          ReadOnlyControl=true
+          ControlCaption='Sponsor'
+        >}Name='pFilter3'
+      Width=417
+      Height=185
+      UIPart=$UIPARTS['uipFilter']
+      Controls={*object:rtf::DBLookupEdit<
+          Name='LBranch'
+          Top=8
+          Left=8
+          ControlCaption='Cabang / Capem'
+          LookupField='LBranch.BranchName'
+          DisplayLookupField=true
+        >, *object:rtf::DBEdit<
+          Name='NamaDonor'
+          Layout=clNextSide
+          Top=120
+          Left=197
+          Width=110
+          Height=21
+          ForceUseEqualCaptionWidth=true
+          Color=-2147483624
+          ControlCaption=''
+          LayoutOrder=7
+          CaptionWidth=2
+        >, *object:rtf::DBComboBox<
+          Name='ChannelCode'
+          Top=36
+          Left=8
+          Color=0
+          ControlCaption='Jenis Pembayaran'
+          LayoutOrder=2
+        >, *object:rtf::DBEdit<
+          Name='ProgramName'
+          Top=64
+          Left=8
+          Color=-2147483624
+          ControlCaption='Program'
+          LayoutOrder=3
+          ReadOnly=true
+        >, *object:rtf::DBComboBox<
+          Name='FundEntity'
+          Top=92
+          Left=8
+          Color=0
+          ControlCaption='Jenis Dana'
+          LayoutOrder=5
+        >, *object:rtf::DBEdit<
+          Name='NoDonor'
+          Top=120
+          Left=8
+          Width=81
+          Height=21
+          Color=-2147483624
+          ControlCaption='Sponsor'
+          LayoutOrder=6
+        >, object:rtf::Button<
+          Name='bSelectProgram'
+          Layout=clNextSide
+          Top=64
+          Left=316
+          Width=75
+          Height=21
+          Color=0
+          ControlCaption=''
+          LayoutOrder=4
+          Caption='Pilih Program'
+          OnClick='bSelectProgram'
+        >, object:rtf::Button<
+          Name='bSelectSponsor'
+          Layout=clNextSide
+          Top=120
+          Left=317
+          Color=0
+          ControlCaption=''
+          LayoutOrder=8
+          Caption='Pilih Sponsor'
+          OnClick='bPilihDonor'
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='IsAllBranch'
+          ControlCaption='Seluruh Cabang / Capem'
+          DataTypeName='varchar'
+          DataLength=20
+          EnumeratedValues=['F=False'#13#10,
+            'T=True'#13#10]
+          GenerateCheckBoxForEnum=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='IsAllDonor'
+          Hidden=true
+          ControlCaption='Seluruh Donor'
+          DataTypeName='varchar'
+          DataLength=1
+          EnumeratedValues=['F=False'#13#10,
+            'T=True'#13#10]
+          GenerateCheckBoxForEnum=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='IsAllChannel'
+          ControlCaption='Seluruh Jenis Pembayaran'
+          DataTypeName='varchar'
+          DataLength=1
+          EnumeratedValues=['F=False'#13#10,
+            'T=True'#13#10]
+          GenerateCheckBoxForEnum=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='IsAllProgram'
+          ControlCaption='Seluruh Program'
+          DataTypeName='varchar'
+          DataLength=1
+          EnumeratedValues=['F=False'#13#10,
+            'T=True'#13#10]
+          GenerateCheckBoxForEnum=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='IsAllSponsor'
+          ControlCaption='Seluruh Sponsor'
+          DataTypeName='varchar'
+          DataLength=1
+          EnumeratedValues=['F=False'#13#10,
+            'T=True'#13#10]
+          GenerateCheckBoxForEnum=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='IsAllVolunteer'
+          Hidden=true
+          ControlCaption='Seluruh Mitra'
+          DataTypeName='varchar'
+          DataLength=1
+          EnumeratedValues=['F=False'#13#10,
+            'T=True'#13#10]
+          GenerateCheckBoxForEnum=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='IsAllFundEntity'
+          ControlCaption='Seluruh Jenis Dana'
+          DataTypeName='varchar'
+          DataLength=1
+          EnumeratedValues=['F=False'#13#10,
+            'T=True'#13#10]
+          GenerateCheckBoxForEnum=true
+        >}Name='pFilter2'
+      Width=200
+      Height=145
+      UIPart=$UIPARTS['uipFilter']
+      Controls={*object:rtf::DBCheckBox<
+          Name='IsAllBranch'
+          Top=8
+          Left=8
+          Width=161
+          Height=17
+          Color=0
+          ControlCaption='Seluruh Cabang / Capem'
+          ValueChecked='T'
+          ValueUnchecked='F'
+          OnClick='CheckClick'
+        >, *object:rtf::DBCheckBox<
+          Name='IsAllChannel'
+          Top=36
+          Left=8
+          Width=190
+          Height=21
+          Color=0
+          ControlCaption='Seluruh Jenis Pembayaran'
+          ValueChecked='T'
+          ValueUnchecked='F'
+          OnClick='CheckClick'
+        >, *object:rtf::DBCheckBox<
+          Name='IsAllProgram'
+          Top=64
+          Left=8
+          Width=190
+          Height=21
+          Color=0
+          ControlCaption='Seluruh Program'
+          ValueChecked='T'
+          ValueUnchecked='F'
+          OnClick='CheckClick'
+        >, *object:rtf::DBCheckBox<
+          Name='IsAllSponsor'
+          Top=120
+          Left=8
+          Color=0
+          ControlCaption='Seluruh Sponsor'
+          LayoutOrder=5
+          ValueChecked='T'
+          ValueUnchecked='F'
+          OnClick='CheckClick'
+        >, *object:rtf::DBCheckBox<
+          Name='IsAllFundEntity'
+          Top=92
+          Left=8
+          Color=0
+          ControlCaption='Seluruh Jenis Dana'
+          ValueChecked='T'
+          ValueUnchecked='F'
+          OnClick='CheckClick'
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit3'
+      Width=625
+      Height=156
+      Container1=$CONTAINERS['pFilter2']
+      Container2=$CONTAINERS['pFilter3']
+      SplitDirection=sdrSplitLeftRight
+    >}FormClassName='fDistributionReport'
+>

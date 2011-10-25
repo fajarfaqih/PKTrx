@@ -1,0 +1,224 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Pemilik Anggaran'
+  Left=50
+  Top=50
+  Width=377
+  Height=225
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx='FormSetDataEx'
+  OnBeginProcessData='OnBeginProcessData'
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='mode'
+          Hidden=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ID'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TglUbah'
+          Hidden=true
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='UserPengubah'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TerminalUbah'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >}Name='uipData'
+      ClassTypeName='BudgetOwner'
+      DataBinding=bmMaster
+      OnSetData='OnSetData'
+    >}Containers={object:rtf::Panel<
+      ControlDefs={object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='OwnerID'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='OwnerName'
+          ControlCaption='Nama Pemilik'
+          LayoutOrder=1
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='Level'
+          LayoutOrder=3
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='Is_Detail'
+          ControlCaption='Detail'
+          LayoutOrder=4
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='ParentOwnerID'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='OwnerCode'
+          ControlCaption='Kode pemilik'
+        >}Elements={*object:rtf::FieldUIElmtSetting<
+          Name='OwnerID'
+          Hidden=true
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='OwnerName'
+          LayoutOrder=1
+          DataTypeName='VARCHAR'
+          DataLength=100
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='Level'
+          ReadOnlyControl=true
+          ControlCaption='Level'
+          LayoutOrder=2
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='Is_Detail'
+          LayoutOrder=4
+          GenerateCheckBoxForEnum=true
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='ParentOwnerID'
+          Hidden=true
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='OwnerCode'
+          ControlCaption=''
+        >, object:rtf::FieldUIElmtSetting<
+          Name='OwnerIdID'
+          ReadOnlyControl=true
+          ControlCaption='ID Pemilik'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LParent'
+          ControlCaption='Pemilik Induk'
+          ClassTypeName='BudgetOwner'
+          DisplayFields='OwnerID;OwnerName;Level'
+          Restrictions=''
+          OQLText=['select from BudgetOwner'#13#10,
+            '[ Is_Detail = ''F'']'#13#10,
+            '('#13#10,
+            '  OwnerID,'#13#10,
+            '  OwnerName,'#13#10,
+            '  Level,'#13#10,
+            '  self'#13#10,
+            ');']
+          LookupOption=loCustomOQL
+          FieldBaseName='LParent'
+        >}Name='pData'
+      Width=385
+      Height=169
+      UIPart=$UIPARTS['uipData']
+      Controls={*object:rtf::DBEdit<
+          Name='OwnerName'
+          Top=64
+          Left=8
+          Width=228
+          Height=21
+          Color=0
+          ControlCaption='Nama Pemilik'
+          LayoutOrder=2
+        >, *object:rtf::DBEdit<
+          Name='Level'
+          Top=120
+          Left=8
+          Width=76
+          Height=21
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Level'
+          LayoutOrder=3
+        >, *object:rtf::DBCheckBox<
+          Name='Is_Detail'
+          Top=148
+          Left=8
+          Color=0
+          ControlCaption='Detail'
+          LayoutOrder=5
+        >, *object:rtf::DBEdit<
+          Name='OwnerCode'
+          Top=36
+          Left=8
+          Color=0
+          ControlCaption='Kode pemilik'
+          LayoutOrder=2
+        >, *object:rtf::DBEdit<
+          Name='OwnerIdID'
+          Top=8
+          Left=8
+          Width=76
+          Height=21
+          Color=-2147483624
+          ControlCaption='ID Pemilik'
+          LayoutOrder=1
+          ReadOnly=true
+        >, *object:rtf::DBLookupEdit<
+          Name='LParent'
+          Top=92
+          Left=8
+          ControlCaption='Pemilik Induk'
+          LayoutOrder=2
+          LookupField='LParent.OwnerName'
+          DisplayLookupField=true
+          OnAfterLookup='LParentAfterLookup'
+        >}EqualCaptionWidth=130
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=3
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=41
+      Controls={object:rtf::Button<
+          Name='bOK'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&OK'
+          Default=true
+          OnClick='bOKClick'
+        >, object:rtf::Button<
+          Name='bClose'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Width=82
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='&Batal'
+          Cancel=true
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=377
+      Height=225
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['pData']
+      InversedAlign=true
+    >}FormClassName='fBudgetOwner'
+>

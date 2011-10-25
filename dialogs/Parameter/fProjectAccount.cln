@@ -1,0 +1,571 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Project'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=585
+  Height=609
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='mode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ID'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TglUbah'
+          Hidden=true
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='UserPengubah'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TerminalUbah'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >}Name='uipData'
+      ClassTypeName='Project'
+      DataBinding=bmMaster
+      AlwaysPostToServer=true
+      OnSetData='ProductOnSetData'
+    >, object:rtf::PClassUI<
+      Name='uipLsAccount'
+      ClassTypeName='ProductAccount'
+      DataBinding=bmList
+      Master=$UIPARTS['uipData']
+      ListName='Ls_ProductAccount'
+      AlwaysPostToServer=true
+    >, object:rtf::PClassUI<
+      Name='uipInput'
+    >}Containers={object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='ProductId'
+          AccessOption=aoReadOnly
+          Hidden=true
+          DataTypeName='INTEGER'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ProductCode'
+          AccessOption=aoReadOnly
+          DataTypeName='VARCHAR'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ProductName'
+          AccessOption=aoReadOnly
+          ControlCaption='Nama Proyek'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Description'
+          AccessOption=aoReadOnly
+          ControlCaption='Keterangan'
+          DataTypeName='VARCHAR'
+          DataLength=100
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AccountOfCollection'
+          AccessOption=aoReadOnly
+          Hidden=true
+          ControlCaption='Rekening Pengumpulan'
+          DataTypeName='VARCHAR'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AccountOfDistribution'
+          AccessOption=aoReadOnly
+          Hidden=true
+          ControlCaption='Rekening Distribusi'
+          DataTypeName='VARCHAR'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='PercentageOfAmilFunds'
+          AccessOption=aoReadOnly
+          ControlCaption='Presentase Amil (%)'
+          DataTypeName='DOUBLE'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ClosedDate'
+          AccessOption=aoReadOnly
+          ControlCaption='Tgl Tutup'
+          DataTypeName='TIMESTAMP'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
+          Name='FundCategory'
+          AccessOption=aoReadOnly
+          ControlCaption='Kategori Dana'
+          DataTypeName='VARCHAR'
+          DataLength=1
+          EnumeratedValues=['Z=Zakat'#13#10,
+            'I=Infaq'#13#10,
+            'W=Wakaf'#13#10]
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BudgetAmount'
+          AccessOption=aoReadOnly
+          ControlCaption='Nilai Budget'
+          DataTypeName='DOUBLE'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
+          Name='StartDate'
+          AccessOption=aoReadOnly
+          ControlCaption='Tgl Mulai'
+          DataTypeName='TIMESTAMP'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
+          Name='FinsihDate'
+          AccessOption=aoReadOnly
+          ControlCaption='Tgl Berakhir'
+          DataTypeName='TIMESTAMP'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Status'
+          AccessOption=aoReadOnly
+          ReadOnlyControl=true
+          LayoutOrder=7
+          DataTypeName='VARCHAR'
+          DataLength=1
+          EnumeratedValues=['A=Active'#13#10,
+            'N=NonActive'#13#10]
+        >, object:rtf::FieldUIElmtSetting<
+          Name='IsDetail'
+          AccessOption=aoReadOnly
+          ControlCaption='Detail'
+          LayoutOrder=1
+          DataTypeName='VARCHAR'
+          DataLength=1
+          EnumeratedValues=['F=false'#13#10,
+            'T=true'#13#10]
+          GenerateCheckBoxForEnum=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ParentProductId'
+          AccessOption=aoReadOnly
+          Hidden=true
+          DataTypeName='INTEGER'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Level'
+          AccessOption=aoReadOnly
+          Hidden=true
+          DataTypeName='INTEGER'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ProductIdID'
+          Hidden=true
+          ControlCaption='Id Proyek'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LProductParent'
+          ControlCaption='Proyek Induk'
+          ClassTypeName='Project'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LProductParent.ProductId'
+              DataTypeName='INTEGER'
+              DataLength=0
+              UsedAsKey=true
+              KeyOrDisplayName='ProductId'
+              FinalDisplayFieldName='ProductId'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LProductParent.ProductId'
+              DataTypeName='INTEGER'
+              DataLength=0
+              UsedAsDisplay=true
+              KeyOrDisplayName='ProductId'
+              FinalDisplayFieldName='ProductId'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LProductParent.ProductName'
+              DataTypeName='VARCHAR'
+              DataLength=30
+              UsedAsDisplay=true
+              KeyOrDisplayName='ProductName'
+              FinalDisplayFieldName='ProductName'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LProductParent.Level'
+              DataTypeName='INTEGER'
+              DataLength=0
+              UsedAsDisplay=true
+              KeyOrDisplayName='Level'
+              FinalDisplayFieldName='Level'
+            >}Restrictions=''
+          OQLText=['Select from Project'#13#10,
+            '[ Status = ''A'' and IsDetail =''F'']'#13#10,
+            '('#13#10,
+            ' ProductId,'#13#10,
+            ' ProductName,'#13#10,
+            ' Description,'#13#10,
+            ' Level, '#13#10,
+            ' self'#13#10,
+            ')'#13#10,
+            'then order by ProductId;'#13#10]
+          LookupOption=loCustomOQL
+          FieldBaseName='LProductParent'
+        >}Name='pData'
+      Width=569
+      Height=273
+      Bordered=true
+      UIPart=$UIPARTS['uipData']
+      Controls={*object:rtf::DBEdit<
+          Name='ProductCode'
+          Top=8
+          Left=8
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Kode Proyek'
+          LayoutOrder=2
+        >, *object:rtf::DBEdit<
+          Name='ProductName'
+          Top=36
+          Left=8
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Nama Proyek'
+          LayoutOrder=3
+        >, *object:rtf::DBEdit<
+          Name='Description'
+          Top=92
+          Left=8
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Keterangan'
+          LayoutOrder=4
+        >, *object:rtf::DBEdit<
+          Name='PercentageOfAmilFunds'
+          Layout=clNextSide
+          Top=148
+          Left=267
+          Enabled=false
+          ForceUseEqualCaptionWidth=true
+          Color=-2147483624
+          ControlCaption='Presentase Amil (%)'
+          LayoutOrder=7
+        >, *object:rtf::DBDateEdit<
+          Name='ClosedDate'
+          Layout=clNextSide
+          Top=204
+          Left=266
+          Enabled=false
+          ForceUseEqualCaptionWidth=true
+          Color=-2147483624
+          ControlCaption='Tgl Tutup'
+          LayoutOrder=11
+        >, *object:rtf::DBComboBox<
+          Name='FundCategory'
+          Top=148
+          Left=8
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Kategori Dana'
+          LayoutOrder=6
+        >, *object:rtf::DBEdit<
+          Name='BudgetAmount'
+          Top=204
+          Left=8
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Nilai Budget'
+          LayoutOrder=10
+        >, *object:rtf::DBDateEdit<
+          Name='StartDate'
+          Top=176
+          Left=8
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Tgl Mulai'
+          LayoutOrder=8
+        >, *object:rtf::DBDateEdit<
+          Name='FinsihDate'
+          Layout=clNextSide
+          Top=176
+          Left=266
+          Enabled=false
+          ForceUseEqualCaptionWidth=true
+          Color=-2147483624
+          ControlCaption='Tgl Berakhir'
+          LayoutOrder=9
+        >, *object:rtf::DBComboBox<
+          Name='Status'
+          Top=232
+          Left=8
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Status'
+          LayoutOrder=12
+        >, *object:rtf::DBCheckBox<
+          Name='IsDetail'
+          Top=120
+          Left=8
+          Enabled=false
+          Color=0
+          ControlCaption='Detail'
+          LayoutOrder=5
+          OnClick='DetailOnClick'
+        >, *object:rtf::DBLookupEdit<
+          Name='LProductParent'
+          Top=64
+          Left=8
+          Enabled=false
+          Color=0
+          ControlCaption='Proyek Induk'
+          LayoutOrder=4
+          LookupField='LProductParent.ProductName'
+          DisplayLookupField=true
+        >}EqualCaptionWidth=130
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='IsAllCabang'
+          ControlCaption='Pilih Semua Cabang'
+          DataTypeName='integer'
+          DataLength=20
+          EnumeratedValues=['0=False'#13#10,
+            '1=True'#13#10]
+          GenerateCheckBoxForEnum=true
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LCabang'
+          ControlCaption='Kode Cabang'
+          ClassTypeName=''
+          ExternalClassTypeName='Cabang'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LCabang.Kode_Cabang'
+              DataTypeName='varchar'
+              DataLength=20
+              UsedAsKey=true
+              KeyOrDisplayName='Kode_Cabang'
+              FinalDisplayFieldName='Kode_Cabang'
+              CDSFieldName='LCabang.Kode_Cabang'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LCabang.Nama_Cabang'
+              DataTypeName='varchar'
+              DataLength=30
+              UsedAsDisplay=true
+              KeyOrDisplayName='Nama_Cabang'
+              FinalDisplayFieldName='Nama_Cabang'
+              CDSFieldName='LCabang.Nama_Cabang'
+            >}Restrictions=''
+          OQLText=['select from Cabang'#13#10,
+            '(  '#13#10,
+            '  Kode_Cabang,'#13#10,
+            '  Nama_Cabang, '#13#10,
+            '  self'#13#10,
+            ');']
+          OQLSystemContext='corporate'
+          LookupOption=loCustomOQL
+          FieldBaseName='LCabang'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='IsAllValuta'
+          ControlCaption='Pilih Semua Valuta'
+          DataTypeName='integer'
+          DataLength=20
+          EnumeratedValues=['0=False'#13#10,
+            '1=True'#13#10]
+          GenerateCheckBoxForEnum=true
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LValuta'
+          ControlCaption='Kode Valuta'
+          ClassTypeName=''
+          ExternalClassTypeName='Currency'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LValuta.currency_code'
+              DataTypeName='varchar'
+              DataLength=20
+              UsedAsKey=true
+              KeyOrDisplayName='currency_code'
+              FinalDisplayFieldName='currency_code'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LValuta.short_name'
+              DataTypeName='varchar'
+              DataLength=20
+              UsedAsDisplay=true
+              KeyOrDisplayName='short_name'
+              FinalDisplayFieldName='short_name'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LValuta.full_name'
+              DataTypeName='varchar'
+              DataLength=20
+              UsedAsDisplay=true
+              KeyOrDisplayName='full_name'
+              FinalDisplayFieldName='full_name'
+            >}Restrictions=''
+          OQLText=['select from currency'#13#10,
+            '('#13#10,
+            '  currency_code,'#13#10,
+            '  short_name,'#13#10,
+            '  full_name,'#13#10,
+            '  self'#13#10,
+            ');'#13#10]
+          OQLSystemContext='accounting'
+          LookupOption=loCustomOQL
+          FieldBaseName='LValuta'
+        >}Name='pInput'
+      Width=361
+      Height=121
+      Bordered=true
+      UIPart=$UIPARTS['uipInput']
+      Controls={*object:rtf::DBCheckBox<
+          Name='IsAllCabang'
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption='Pilih Semua Cabang'
+          ValueChecked='1'
+          ValueUnchecked='0'
+          OnClick='IsAllCabangClick'
+        >, *object:rtf::DBLookupEdit<
+          Name='LCabang'
+          Top=36
+          Left=8
+          ControlCaption='Kode Cabang'
+          LookupField='LCabang.Nama_Cabang'
+          DisplayLookupField=true
+          DirectInput=true
+        >, *object:rtf::DBCheckBox<
+          Name='IsAllValuta'
+          Top=64
+          Left=8
+          Color=0
+          ControlCaption='Pilih Semua Valuta'
+          ValueChecked='1'
+          ValueUnchecked='0'
+          OnClick='IsAllValutaClick'
+        >, *object:rtf::DBLookupEdit<
+          Name='LValuta'
+          Top=92
+          Left=8
+          ControlCaption='Kode Valuta'
+          FieldName='LValuta.currency_code'
+          DisplayFormat=''
+          LookupField='LValuta.full_name'
+          DisplayLookupField=true
+          DisplayLookupColor=-2147483624
+          DisplayLookupWidth=150
+          DirectInput=true
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=41
+      Controls={object:rtf::Button<
+          Name='bOK'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&OK'
+          Default=true
+          OnClick='bOKClick'
+        >, object:rtf::Button<
+          Name='bClose'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Width=82
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='&Cancel / Close'
+          Cancel=true
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=240
+      Height=96
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['dualsplit2']
+      InversedAlign=true
+    >, object:rtf::DualSplit<
+      Name='dualsplit2'
+      Width=240
+      Height=96
+      Container1=$CONTAINERS['dualsplit3']
+      Container2=$CONTAINERS['gLsAccount']
+    >, object:rtf::DualSplit<
+      Name='dualsplit3'
+      Width=585
+      Height=401
+      Container1=$CONTAINERS['pData']
+      Container2=$CONTAINERS['pInput']
+    >, object:rtf::Grid<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          AccessOption=aoReadOnly
+          ControlCaption='Kode Cabang'
+          DataTypeName='VARCHAR'
+          DataLength=5
+        >, object:rtf::FieldUIElmtSetting<
+          Name='CurrencyCode'
+          AccessOption=aoReadOnly
+          ControlCaption='Kode Valuta'
+          DataTypeName='VARCHAR'
+          DataLength=5
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Balance'
+          AccessOption=aoReadOnly
+          ControlCaption='Saldo'
+          DataTypeName='DOUBLE'
+          DataLength=0
+        >}Name='gLsAccount'
+      Width=585
+      Height=165
+      UIPart=$UIPARTS['uipLsAccount']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='Daftar Account Cabang Yang Sudah Ada'
+      Columns={*object:rtf::GridColumn<
+          Name='BranchCode'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='BranchCode'
+          DisplayFormat=''
+          TitleCaption='Kode Cabang'
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='CurrencyCode'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='CurrencyCode'
+          DisplayFormat=''
+          TitleCaption='Kode Valuta'
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='Balance'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Balance'
+          DisplayFormat=''
+          TitleCaption='Saldo'
+          ReadOnly=true
+        >}ReadOnly=true
+      RowSelect=true
+      SuppressHelpLine=true
+    >}FormClassName='fProjectAccount'
+>

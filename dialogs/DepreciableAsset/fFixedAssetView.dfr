@@ -1,0 +1,266 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Peragaan Asset Tetap'
+  Left=50
+  Top=50
+  Width=585
+  Height=369
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx='FormSetDataEx'
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Name='uipFixedAsset'
+      ClassTypeName='FixedAsset'
+      DataBinding=bmMaster
+    >, object:rtf::PClassUI<
+      Name='uipDepreciationHistori'
+      MultiLine=true
+      CreateInstanceOnNew=true
+    >}Containers={object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=585
+      Height=369
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['multipages1']
+      InversedAlign=true
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=42
+      Controls={object:rtf::Button<
+          Name='bClose'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Tutup'
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit2'
+      Width=577
+      Height=298
+      Container1=$CONTAINERS['pDepretiation']
+      Container2=$CONTAINERS['gHistoriPenyusutan']
+    >, object:rtf::MultiPages<
+      Name='multipages1'
+      Width=585
+      Height=326
+      Pages={object:rtf::Page<
+          PageName='mpMainData'
+          PageTitle='Data'
+          Container=$CONTAINERS['pData']
+        >, object:rtf::Page<
+          PageName='mpDepr'
+          PageTitle='Info Penyusutan'
+          Container=$CONTAINERS['dualsplit2']
+          Index=1
+        >}>, object:rtf::Panel<
+      ControlDefs={object:rtf::MultiControlDef<
+          Action=caView
+          DataMembers=['AccountNo'#13#10,
+            'AccountName'#13#10,
+            'Qty'#13#10,
+            'OpeningDate'#13#10,
+            'NilaiAwal'#13#10,
+            'TotalDibayar'#13#10]
+        >}Elements={*object:rtf::FieldUIElmtSetting<
+          Name='AccountNo'
+          ControlCaption='Kode Aset'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='AccountName'
+          ControlCaption='Nama Aset'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='Qty'
+          ControlCaption='Jumlah'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='OpeningDate'
+          ControlCaption='Tanggal Perolehan'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='NilaiAwal'
+          ControlCaption='Nilai Awal Aset'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='TotalDibayar'
+          ControlCaption='Nilai Yang Sudah dibayarkan'
+        >}Name='pData'
+      Width=553
+      Height=297
+      UIPart=$UIPARTS['uipFixedAsset']
+      Controls={*object:rtf::DBEdit<
+          Name='AccountNo'
+          Top=10
+          Left=8
+          Color=-2147483624
+          ControlCaption='Kode Aset'
+        >, *object:rtf::DBEdit<
+          Name='AccountName'
+          Top=38
+          Left=8
+          Color=-2147483624
+          ControlCaption='Nama Aset'
+        >, *object:rtf::DBEdit<
+          Name='Qty'
+          Top=66
+          Left=8
+          Color=-2147483624
+          ControlCaption='Jumlah'
+        >, *object:rtf::DBDateEdit<
+          Name='OpeningDate'
+          Top=94
+          Left=8
+          Color=-2147483624
+          ControlCaption='Tanggal Perolehan'
+        >, *object:rtf::DBEdit<
+          Name='NilaiAwal'
+          Top=122
+          Left=8
+          Color=-2147483624
+          ControlCaption='Nilai Pembelian Aset'
+        >, *object:rtf::DBEdit<
+          Name='TotalDibayar'
+          Top=150
+          Left=8
+          Color=-2147483624
+          ControlCaption='Nilai Yang Sudah dibayarkan'
+        >}EqualCaptionWidth=150
+      ControlLeftMargin=8
+      ControlTopMargin=10
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Grid<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='DeprNo'
+          ControlCaption='No'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='DeprValue'
+          ControlCaption='Nilai Penyusutan'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='DeprDate'
+          ControlCaption='Tgl Penyusutan'
+          DataTypeName='timestamp'
+          DataLength=20
+        >}Name='gHistoriPenyusutan'
+      Width=577
+      Height=144
+      UIPart=$UIPARTS['uipDepreciationHistori']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='Histori Penyusutan'
+      Columns={*object:rtf::GridColumn<
+          Name='DeprNo'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='DeprNo'
+          DisplayFormat=''
+          TitleCaption='No'
+          Width=40
+        >, *object:rtf::GridColumn<
+          Name='DeprValue'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='DeprValue'
+          DisplayFormat=',0.00'
+          TitleCaption='Nilai Penyusutan'
+          Width=150
+        >, *object:rtf::GridColumn<
+          Name='DeprDate'
+          InputStyle=cisDate
+          EnumeratedValues=''
+          FieldName='DeprDate'
+          DisplayFormat='dd-mm-yyyy'
+          TitleCaption='Tgl Penyusutan'
+        >}ReadOnly=true
+      RowSelect=true
+      SuppressHelpLine=true
+    >, object:rtf::Panel<
+      ControlDefs={object:rtf::MultiControlDef<
+          Action=caView
+          DataMembers=['TanggalProsesTerakhir'#13#10,
+            'TanggalProsesBerikut'#13#10,
+            'NominalPenyusutan'#13#10,
+            'TotalPenyusutan'#13#10,
+            'Balance'#13#10]
+        >}Elements={*object:rtf::FieldUIElmtSetting<
+          Name='TanggalProsesTerakhir'
+          ControlCaption='Tanggal Proses Terakhir'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='TanggalProsesBerikut'
+          ControlCaption='Tanggal Proses Berikut'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='NominalPenyusutan'
+          ControlCaption='Nilai Penyusutan'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='TotalPenyusutan'
+          ControlCaption='Akumulasi Penyusutan'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='Balance'
+          ControlCaption='Nilai Buku'
+        >}Name='pDepretiation'
+      Width=320
+      Height=153
+      UIPart=$UIPARTS['uipFixedAsset']
+      Controls={*object:rtf::DBDateEdit<
+          Name='TanggalProsesTerakhir'
+          Top=8
+          Left=8
+          Color=-2147483624
+          ControlCaption='Tanggal Proses Terakhir'
+        >, *object:rtf::DBDateEdit<
+          Name='TanggalProsesBerikut'
+          Top=36
+          Left=8
+          Color=-2147483624
+          ControlCaption='Tanggal Proses Berikut'
+        >, *object:rtf::DBEdit<
+          Name='NominalPenyusutan'
+          Top=64
+          Left=8
+          Color=-2147483624
+          ControlCaption='Nilai Penyusutan'
+        >, *object:rtf::DBEdit<
+          Name='TotalPenyusutan'
+          Top=92
+          Left=8
+          Color=-2147483624
+          ControlCaption='Akumulasi Penyusutan'
+        >, *object:rtf::DBEdit<
+          Name='Balance'
+          Top=120
+          Left=8
+          Color=-2147483624
+          ControlCaption='Nilai Buku'
+        >}EqualCaptionWidth=130
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >}FormClassName='fFixedAssetView'
+>

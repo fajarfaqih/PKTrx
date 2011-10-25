@@ -1,0 +1,147 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{03AB2DCD-D5DA-4DD5-B07D-CD15AE22527E}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rpclass::TPClassUIDefList<
+  UIDefs={object:rpclass::TPClassUIDef<
+      Name='uipDataI'
+      PClassName='IndividualDonor'
+      LoadedFieldList='DonorId;DonorName;AddressStreet;AddressKelurahan;AddressSubDistrict;AddressCity;AddressProvince;AddressPostalCode;PhoneNumber;MobileNumber;Email;Fax;ReferenceBy;Gender;BirthPlace;BirthDate;IdentityType;IdentityNumber;Religion;NPWP;MaritalState;Language;LastFormalEducation;FieldOfWork;IncomePerMonth;ExpensePerMonth'
+      StoredFieldList='DonorId;DonorName;AddressStreet;AddressKelurahan;AddressSubDistrict;AddressCity;AddressProvince;AddressPostalCode;PhoneNumber;MobileNumber;Email;Fax;ReferenceBy;Gender;BirthPlace;BirthDate;IdentityType;IdentityNumber;Religion;NPWP;MaritalState;Language;LastFormalEducation;FieldOfWork;IncomePerMonth;ExpensePerMonth'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='mode'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='ID'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='UserPengubah'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='TglUbah'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='TerminalUbah'
+          DataTypeName='varchar'
+          DataLength=30
+        >}Mode=imSingleRow
+    >, object:rpclass::TPClassUIDef<
+      Name='uipDataC'
+      PClassName='CorporateDonor'
+      LoadedFieldList='DonorId;DonorName;AddressStreet;AddressKelurahan;AddressSubDistrict;AddressCity;AddressProvince;AddressPostalCode;PhoneNumber;MobileNumber;Email;Fax;ReferenceBy;Corporation;NPWP;SIUPP;TDP;LocationType;OwnerType;EconomicSector'
+      StoredFieldList='DonorId;DonorName;AddressStreet;AddressKelurahan;AddressSubDistrict;AddressCity;AddressProvince;AddressPostalCode;PhoneNumber;MobileNumber;Email;Fax;ReferenceBy;Corporation;NPWP;SIUPP;TDP;LocationType;OwnerType;EconomicSector'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='mode'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='ID'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='UserPengubah'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='TglUbah'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='TerminalUbah'
+          DataTypeName='varchar'
+          DataLength=30
+        >}Mode=imSingleRow
+    >, object:rpclass::TPClassUIDef<
+      Name='uipFilter'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='mode'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='ID'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='UserPengubah'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='TglUbah'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='TerminalUbah'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='ViewType'
+          DataTypeName='varchar'
+          DataLength=1
+        >, object:rpclass::TCustomLoadedField<
+          Name='TempData'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='Input_Data'
+          DataTypeName='varchar'
+          DataLength=1
+        >, object:rpclass::TCustomLoadedField<
+          Name='Data'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='TglAwal'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='TglAkhir'
+          DataTypeName='timestamp'
+          DataLength=20
+        >}Mode=imSingleRow
+    >, object:rpclass::TPClassUIDef<
+      Name='uipTrans'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='TransactionItemId'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='TransactionDate'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='TransactionCode'
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rpclass::TCustomLoadedField<
+          Name='BranchCode'
+          DataTypeName='varchar'
+          DataLength=5
+        >, object:rpclass::TCustomLoadedField<
+          Name='MutationType'
+          DataTypeName='varchar'
+          DataLength=1
+        >, object:rpclass::TCustomLoadedField<
+          Name='Amout'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='CurrencyCode'
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rpclass::TCustomLoadedField<
+          Name='Rate'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='EkuivalenAmount'
+          DataTypeName='double'
+          DataLength=20
+        >}Mode=imMultiRow
+    >}OnSetDataEx='FormSetDataEx'
+>

@@ -1,0 +1,140 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit2']
+  Caption='Daftar Rekening Kas Cabang'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=609
+  Height=289
+  UIParts={object:rtf::PClassUI<
+      Name='uipFilter'
+    >}Containers={object:rtf::Panel<
+      Name='pFilter'
+      Width=561
+      Height=57
+      UIPart=$UIPARTS['uipFilter']
+      Controls={object:rtf::Label<
+          Name='lTitle'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Width=521
+          Height=49
+          Color=0
+          ControlCaption='Daftar'
+          Caption='Daftar Rekening Kas Cabang'
+          AutoSize=true
+          FontName='Times New Roman'
+          FontSize=30
+          FontStyleBold=true
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Query<
+      Name='fRekeningKasCabang'
+      Width=609
+      Height=186
+      ContextMenuName='popupmenus/parameter/pMasterCashAccount'
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      OQLText=['select from BranchCash'#13#10,
+        '('#13#10,
+        '  AccountNo,'#13#10,
+        '  CashCode,'#13#10,
+        '  AccountName as Nama_Rekening,'#13#10,
+        '  Balance,'#13#10,
+        '  BranchCode as Kode_Cabang,'#13#10,
+        '  LBranch.BranchName as Nama_Cabang,'#13#10,
+        '  CurrencyCode as Kode_Valuta,'#13#10,
+        '  OpeningDate as Tgl_Buka,'#13#10,
+        '  Status $, '#13#10,
+        '  self'#13#10,
+        ') then order by AccountNo;']
+      DirectDisplay=true
+      WindowSize=20
+      Columns={object:rtf::QueryColumn<
+          FieldName='BranchCash.AccountNo'
+          Width=90
+          Caption='Nomor Rekening'
+        >, object:rtf::QueryColumn<
+          FieldName='BranchCash.CashCode'
+          Width=90
+          Caption='Kode Kas'
+        >, object:rtf::QueryColumn<
+          FieldName='BranchCash.Nama_Rekening'
+          Width=200
+          Caption='Nama Rekening'
+        >, object:rtf::QueryColumn<
+          FieldName='BranchCash.Balance'
+          Width=120
+          Caption='Saldo'
+        >, object:rtf::QueryColumn<
+          FieldName='BranchCash.Kode_Cabang'
+          Width=60
+          Caption='Kd Cabang'
+        >, object:rtf::QueryColumn<
+          FieldName='BranchCash.Kode_Valuta'
+          Width=60
+          Caption='Kd Valuta'
+        >, object:rtf::QueryColumn<
+          FieldName='BranchCash.Tgl_Buka'
+          Caption='Tgl Buka'
+        >, object:rtf::QueryColumn<
+          FieldName='BranchCash.Status'
+          Width=80
+          Caption='Status'
+        >}EnableColumns=true
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=609
+      Height=244
+      Container1=$CONTAINERS['pFilter']
+      Container2=$CONTAINERS['fRekeningKasCabang']
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=44
+      Controls={object:rtf::Button<
+          Name='bClosed'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Color=0
+          ControlCaption=''
+          LayoutOrder=2
+          Caption='T&utup'
+          ExitAction=eaQuitCancel
+        >, object:rtf::Button<
+          Name='bExportExcel'
+          Layout=clNextSide
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Export Excel'
+          OnClick='bExportExcelClick'
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit2'
+      Width=609
+      Height=289
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['dualsplit1']
+      InversedAlign=true
+    >}FormClassName='fDaftarRekeningKasCabang'
+>

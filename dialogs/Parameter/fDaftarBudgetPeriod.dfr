@@ -1,0 +1,88 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Daftar Budget Periode'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=865
+  Height=377
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx=''
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Name='uipFilter'
+    >}Containers={object:rtf::Panel<
+      Name='pFilter'
+      Width=809
+      Height=57
+      UIPart=$UIPARTS['uipFilter']
+      Controls={object:rtf::Label<
+          Name='lTitle'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Width=521
+          Height=49
+          Color=0
+          ControlCaption='Daftar'
+          Caption='Daftar Periode Anggaran'
+          AutoSize=true
+          FontName='Times New Roman'
+          FontSize=30
+          FontStyleBold=true
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Query<
+      Name='qBudgetPeriod'
+      Width=865
+      Height=319
+      ContextMenuName='popupmenus/parameter/pBudgetPeriod'
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      OQLText=['select from BudgetPeriod'#13#10,
+        '[ ParentPeriodID is null ]'#13#10,
+        '('#13#10,
+        '  PeriodID,'#13#10,
+        '  PeriodValue,'#13#10,
+        '  IsOpen $ as status,'#13#10,
+        '  self'#13#10,
+        ') then order by PeriodValue;']
+      DirectDisplay=true
+      WindowSize=20
+      Columns={object:rtf::QueryColumn<
+          FieldName='BudgetPeriod.PeriodValue'
+          Width=100
+          Caption='Tahun Periode'
+        >, object:rtf::QueryColumn<
+          FieldName='BudgetPeriod.Status'
+          Width=200
+          Caption='Status Aktif'
+        >}EnableColumns=true
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=865
+      Height=377
+      Container1=$CONTAINERS['pFilter']
+      Container2=$CONTAINERS['qBudgetPeriod']
+    >}FormClassName='fDaftarBudgetPeriod'
+>

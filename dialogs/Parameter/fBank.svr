@@ -1,0 +1,41 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{03AB2DCD-D5DA-4DD5-B07D-CD15AE22527E}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rpclass::TPClassUIDefList<
+  UIDefs={object:rpclass::TPClassUIDef<
+      Name='uipData'
+      PClassName='Bank'
+      LoadedFieldList='BankCode;BankName;BankShortName'
+      StoredFieldList='BankCode;BankName;BankShortName'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='mode'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='ID'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='TglUbah'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='UserPengubah'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='TerminalUbah'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='BankCodeID'
+          DataTypeName='varchar'
+          DataLength=10
+        >}Mode=imSingleRow
+      OnSetData='BankOnSetData'
+    >}OnSetDataEx='FormSetDataEx'
+  OnBeginProcessData='OnBeginProcessData'
+>

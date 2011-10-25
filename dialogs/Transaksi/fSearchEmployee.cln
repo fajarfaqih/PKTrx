@@ -1,0 +1,123 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Cari Karyawan'
+  Left=50
+  Top=50
+  Width=400
+  Height=320
+  UIParts={object:rtf::PClassUI<
+      Name='uipFilter'
+    >, object:rtf::PClassUI<
+      Name='uipEmployee'
+      MultiLine=true
+    >}Containers={object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='Nama'
+          ControlCaption='Nama'
+          DataTypeName='varchar'
+          DataLength=30
+        >}Name='pFilter'
+      Width=320
+      Height=49
+      UIPart=$UIPARTS['uipFilter']
+      Controls={*object:rtf::DBEdit<
+          Name='Nama'
+          Top=10
+          Left=10
+          Color=0
+          ControlCaption='Nama'
+          OnExit='NameOnExit'
+          CharCase=ecUpperCase
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=10
+      ControlTopMargin=10
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      ControlCharCase=ecUpperCase
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=59
+      Controls={object:rtf::Button<
+          Name='bSelect'
+          Layout=clNextSide
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Pilih'
+          OnClick='bSelectClick'
+        >, object:rtf::Button<
+          Name='bCancel'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Color=0
+          ControlCaption=''
+          Caption='&Batal'
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Grid<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='EmployeeId'
+          ControlCaption='Id'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='EmployeeName'
+          ControlCaption='Nama Karyawan'
+          DataTypeName='varchar'
+          DataLength=30
+        >}Name='gEmployee'
+      Width=400
+      Height=210
+      UIPart=$UIPARTS['uipEmployee']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Columns={*object:rtf::GridColumn<
+          Name='EmployeeId'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='EmployeeId'
+          DisplayFormat=''
+          TitleCaption='Id'
+        >, *object:rtf::GridColumn<
+          Name='EmployeeName'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='EmployeeName'
+          DisplayFormat=''
+          TitleCaption='Nama Karyawan'
+        >}ReadOnly=true
+      RowSelect=true
+      OnDoubleClick='GridDoubleClick'
+      SuppressHelpLine=true
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=400
+      Height=320
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['dualsplit2']
+      InversedAlign=true
+    >, object:rtf::DualSplit<
+      Name='dualsplit2'
+      Width=400
+      Height=260
+      Container1=$CONTAINERS['pFilter']
+      Container2=$CONTAINERS['gEmployee']
+    >}FormClassName='fSearchEmployee'
+>

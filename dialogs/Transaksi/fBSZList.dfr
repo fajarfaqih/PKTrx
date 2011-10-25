@@ -1,0 +1,477 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Bukti Setor Zakat'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=721
+  Height=505
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx=''
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='TransactionId'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='DonorId'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >}Name='uipData'
+      AlwaysPostToServer=true
+    >, object:rtf::PClassUI<
+      Name='uipDetail'
+      MultiLine=true
+      AlwaysPostToServer=true
+      BeforePost='ItemBeforePost'
+      AfterPost='ItemAfterPost'
+      AfterNewRecord='ItemAfterNewRecord'
+    >, object:rtf::PClassUI<
+      Name='uipTransaction'
+      MultiLine=true
+      AlwaysPostToServer=true
+      BeforeDelete='TransItemBeforeDelete'
+    >, object:rtf::PClassUI<
+      Name='uipBSZ'
+    >}Containers={object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=52
+      Controls={object:rtf::Button<
+          Name='button2'
+          Layout=clNextSide
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Tutup'
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='Nama_Muzakki'
+          ReadOnlyControl=true
+          ControlCaption='Nama Wajib Zakat'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='NPWP'
+          ReadOnlyControl=true
+          ControlCaption='NPWP'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='NPWZ'
+          ReadOnlyControl=true
+          ControlCaption='NPWZ'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Jumlah'
+          Hidden=true
+          ReadOnlyControl=true
+          ControlCaption='Jumlah Setor Zakat'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='JumlahDetail'
+          Hidden=true
+          ReadOnlyControl=true
+          ControlCaption='Jumlah Detail'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Alamat'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=100
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BSZNo'
+          Hidden=true
+          ControlCaption='Nomor BSZ'
+          DataTypeName='varchar'
+          DataLength=30
+        >}Name='pData'
+      Width=665
+      Height=161
+      Bordered=true
+      UIPart=$UIPARTS['uipData']
+      Controls={*object:rtf::DBEdit<
+          Name='Nama_Muzakki'
+          Top=8
+          Left=8
+          Color=-2147483624
+          ControlCaption='Nama Wajib Zakat'
+          ReadOnly=true
+        >, *object:rtf::DBEdit<
+          Name='NPWP'
+          Top=64
+          Left=8
+          Width=201
+          Height=21
+          Color=-2147483624
+          ControlCaption='NPWP'
+          LayoutOrder=4
+          ReadOnly=true
+        >, *object:rtf::DBEdit<
+          Name='NPWZ'
+          Top=36
+          Left=8
+          Width=201
+          Height=21
+          Color=-2147483624
+          ControlCaption='NPWZ'
+          LayoutOrder=3
+          ReadOnly=true
+        >, object:rtf::Button<
+          Name='bPilihDonor'
+          Layout=clAbsolute
+          Top=8
+          Left=328
+          Color=0
+          ControlCaption=''
+          LayoutOrder=2
+          Caption='Pilih &Donor'
+          OnClick='CariDonorClick'
+        >, object:rtf::Edit<
+          Name='edAddress'
+          Layout=clNewLine
+          Top=92
+          Left=8
+          Width=443
+          Height=49
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Alamat'
+          LayoutOrder=5
+          ReadOnly=true
+          MultiLine=true
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=721
+      Height=505
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['dualsplit2']
+      InversedAlign=true
+    >, object:rtf::DualSplit<
+      Name='dualsplit2'
+      Width=721
+      Height=452
+      Container1=$CONTAINERS['pData']
+      Container2=$CONTAINERS['dualsplit3']
+    >, object:rtf::DualSplit<
+      Name='dualsplit3'
+      Width=721
+      Height=290
+      Container1=$CONTAINERS['pButton']
+      Container2=$CONTAINERS['gBSZList']
+    >, object:rtf::Grid<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BSZDate'
+          ControlCaption='Tgl Buat'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BSZNumber'
+          ControlCaption='No BSZ'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BSZTotal'
+          ControlCaption='Jumla Donasi'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BSZId'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >}Name='gBSZList'
+      Width=721
+      Height=225
+      UIPart=$UIPARTS['uipBSZ']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='Daftar BSZ Donatur'
+      Columns={*object:rtf::GridColumn<
+          Name='BSZDate'
+          InputStyle=cisDate
+          EnumeratedValues=''
+          FieldName='BSZDate'
+          DisplayFormat='dd-mm-yyyy'
+          TitleCaption='Tgl Buat'
+        >, *object:rtf::GridColumn<
+          Name='BSZNumber'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='BSZNumber'
+          DisplayFormat=''
+          TitleCaption='No BSZ'
+        >, *object:rtf::GridColumn<
+          Name='BSZTotal'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='BSZTotal'
+          DisplayFormat=',0.00'
+          TitleCaption='Jumla Donasi'
+          Width=150
+        >}ReadOnly=true
+      RowSelect=true
+      SuppressHelpLine=true
+    >, object:rtf::Grid<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='TransactionNo'
+          ReadOnlyControl=true
+          ControlCaption='Nomor Transaksi'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionDate'
+          ReadOnlyControl=true
+          ControlCaption='Tgl Transaksi'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AccountName'
+          ReadOnlyControl=true
+          ControlCaption='Produk Zakat'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount'
+          ReadOnlyControl=true
+          ControlCaption='Nilai'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Description'
+          ReadOnlyControl=true
+          ControlCaption='Keterangan'
+          DataTypeName='varchar'
+          DataLength=100
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionItemId'
+          Hidden=true
+          ReadOnlyControl=true
+          DataTypeName='integer'
+          DataLength=20
+        >}Name='gTransaction'
+      Width=721
+      Height=129
+      UIPart=$UIPARTS['uipTransaction']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='Daftar Transaksi'
+      Columns={*object:rtf::GridColumn<
+          Name='TransactionNo'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='TransactionNo'
+          DisplayFormat=''
+          TitleCaption='Nomor Transaksi'
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='TransactionDate'
+          InputStyle=cisDate
+          EnumeratedValues=''
+          FieldName='TransactionDate'
+          DisplayFormat=''
+          TitleCaption='Tgl Transaksi'
+          Width=75
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='AccountName'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='AccountName'
+          DisplayFormat=''
+          TitleCaption='Produk Zakat'
+          Width=120
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='Amount'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Amount'
+          DisplayFormat=',0.00'
+          TitleCaption='Nilai'
+          Width=150
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='Description'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Description'
+          DisplayFormat=''
+          TitleCaption='Keterangan'
+          ReadOnly=true
+        >}ReadOnly=true
+      RowSelect=true
+    >, object:rtf::Grid<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='ItemNo'
+          ControlCaption='No'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ObjekZakat'
+          ReadOnlyControl=true
+          ControlCaption='Objek Zakat'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TahunPerolehan'
+          ControlCaption='Thn Perolehan'
+          DataTypeName='integer'
+          DataLength=4
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Kadar'
+          ControlCaption='Kadar (%)'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='DasarPengenaan'
+          ControlCaption='Dasar Pengenaan Zakat'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Jumlah'
+          ControlCaption='Jumlah Zakat'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ItemIdx'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >}Name='gDetail'
+      Width=721
+      Height=64
+      UIPart=$UIPARTS['uipDetail']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='Detail Zakat'
+      Columns={*object:rtf::GridColumn<
+          Name='ItemNo'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='ItemNo'
+          DisplayFormat=''
+          TitleCaption='No'
+          Width=20
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='ObjekZakat'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='ObjekZakat'
+          DisplayFormat=''
+          TitleCaption='Objek Zakat'
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='TahunPerolehan'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='TahunPerolehan'
+          DisplayFormat='0000'
+          TitleCaption='Thn Perolehan'
+          Width=80
+        >, *object:rtf::GridColumn<
+          Name='Kadar'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Kadar'
+          DisplayFormat=''
+          TitleCaption='Kadar (%)'
+        >, *object:rtf::GridColumn<
+          Name='DasarPengenaan'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='DasarPengenaan'
+          DisplayFormat=',0.00'
+          TitleCaption='Dasar Pengenaan Zakat'
+          Width=150
+        >, *object:rtf::GridColumn<
+          Name='Jumlah'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Jumlah'
+          DisplayFormat=',0.00'
+          TitleCaption='Jumlah Zakat'
+          Width=150
+        >}SuppressHelpLine=true
+    >, object:rtf::Panel<
+      Name='pButton'
+      Width=409
+      Height=64
+      Bordered=true
+      Controls={object:rtf::Button<
+          Name='button1'
+          Layout=clAbsolute
+          Top=16
+          Left=8
+          Width=105
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='&1 Buat Baru'
+          OnClick='BSZNewClick'
+        >, object:rtf::Button<
+          Name='button2'
+          Layout=clAbsolute
+          Top=16
+          Left=120
+          Width=97
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='&2 Cetak'
+          OnClick='BSZPrintClick'
+        >, object:rtf::Button<
+          Name='button3'
+          Layout=clAbsolute
+          Top=16
+          Left=224
+          Width=89
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='&3. Hapus'
+          OnClick='BSZDeleteClick'
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >}FormClassName='fBSZList'
+>

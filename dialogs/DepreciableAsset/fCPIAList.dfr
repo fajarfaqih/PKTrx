@@ -1,0 +1,376 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Daftar Biaya Dibayar Dimuka'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=585
+  Height=320
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx='FormSetDataEx'
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=5
+        >}Name='uipData'
+    >, object:rtf::PClassUI<
+      Name='uipCPIA'
+      ClassTypeName='CostPaidInAdvance'
+      DataBinding=bmMaster
+      MultiLine=true
+    >}Containers={object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=585
+      Height=320
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['dualsplit2']
+      InversedAlign=true
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=42
+      Controls={object:rtf::Button<
+          Name='bClose'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Tutup'
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='IsAllCPIA'
+          ControlCaption='Seluruh Biaya Dibayar Dimuka'
+          DataTypeName='varchar'
+          DataLength=1
+          EnumeratedValues=['F=False'#13#10,
+            'T=True'#13#10]
+          GenerateCheckBoxForEnum=true
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LCPIACategory'
+          ControlCaption='Kategori Biaya'
+          ClassTypeName='CPIACategory'
+          DisplayFields='CPIACatCode;CPIACatName;CPIACatId'
+          Restrictions=''
+          OQLText=['select from CPIACategory'#13#10,
+            '('#13#10,
+            'CPIACatCode,'#13#10,
+            'CPIACatName,'#13#10,
+            'CPIACatId,'#13#10,
+            'self)then order by CPIACatCode;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LCPIACategory'
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LProductAccount'
+          Hidden=true
+          ControlCaption='Produk'
+          ClassTypeName='VProduct'
+          DisplayFields='ProductCode;ProductName;AccountNo;AccountName;ProductType'
+          Restrictions='BranchCode|BranchCode'
+          OQLText=['select from VProduct '#13#10,
+            '[  status = ''A'' and '#13#10,
+            '   BranchCode = :BranchCode and '#13#10,
+            '  ( (currencycode =''000'' and producttype = ''G'') '#13#10,
+            '     or (producttype=''J'')'#13#10,
+            '  ) '#13#10,
+            '] '#13#10,
+            '(   ProductCode, '#13#10,
+            '   AccountName, '#13#10,
+            '   ProductName, '#13#10,
+            '   FundCategory $ as FundType, '#13#10,
+            '   FundCategory, '#13#10,
+            '   PercentageOfAmilFunds, '#13#10,
+            '  ProductId, '#13#10,
+            '   Idx,'#13#10,
+            '   AccountNo, '#13#10,
+            'self) then order by ProductCode;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LProductAccount'
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LAccount'
+          ControlCaption='Akun Biaya'
+          ClassTypeName='Account'
+          DisplayFields='Account_Code;Account_Name'
+          Restrictions=''
+          OQLText=['select from Account'#13#10,
+            '[Is_Detail =''T'' and Account_Code LLIKE ''5'']'#13#10,
+            '(Account_Code,'#13#10,
+            'Account_Name,'#13#10,
+            'self) then order by Account_Code;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LAccount'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BeginDate'
+          ControlCaption='Tgl Pembelian'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='EndDate'
+          ControlCaption='s/d'
+          DataTypeName='timestamp'
+          DataLength=20
+        >}Name='pFilter'
+      Width=529
+      Height=145
+      UIPart=$UIPARTS['uipData']
+      Controls={*object:rtf::DBCheckBox<
+          Name='IsAllCPIA'
+          Layout=clAbsolute
+          Top=8
+          Left=16
+          Width=193
+          Height=17
+          Color=0
+          ControlCaption='Seluruh Biaya Dibayar Dimuka'
+          ValueChecked='T'
+          ValueUnchecked='F'
+          OnClick='IsAllCPIAClick'
+        >, *object:rtf::DBLookupEdit<
+          Name='LCPIACategory'
+          Top=40
+          Left=40
+          ControlCaption='Kategori Biaya'
+          LookupField='LCPIACategory.CPIACatName'
+          DisplayLookupField=true
+        >, *object:rtf::DBLookupEdit<
+          Name='LAccount'
+          Top=68
+          Left=40
+          ControlCaption='Akun Biaya'
+          LookupField='LAccount.Account_Name'
+          DisplayLookupField=true
+        >, *object:rtf::DBDateEdit<
+          Name='BeginDate'
+          Top=96
+          Left=40
+          Color=0
+          ControlCaption='Tgl Pembelian'
+        >, *object:rtf::DBDateEdit<
+          Name='EndDate'
+          Layout=clNextSide
+          Top=96
+          Left=268
+          Color=0
+          ControlCaption='s/d'
+        >, object:rtf::Button<
+          Name='button1'
+          Layout=clAbsolute
+          Top=112
+          Left=16
+          Color=0
+          ControlCaption=''
+          Caption='Apply &Filter'
+          OnClick='FilterClick'
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=40
+      ControlTopMargin=40
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit2'
+      Width=585
+      Height=277
+      Container1=$CONTAINERS['pFilter']
+      Container2=$CONTAINERS['dualsplit3']
+    >, object:rtf::Panel<
+      Name='pGrid'
+      Width=320
+      Height=44
+      Bordered=true
+      Controls={object:rtf::Button<
+          Name='button1'
+          Layout=clNextSide
+          Top=8
+          Left=8
+          Width=89
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='Peragaan &Detail'
+          OnClick='ViewDetail'
+        >, object:rtf::Button<
+          Name='button2'
+          Layout=clNextSide
+          Top=8
+          Left=101
+          Color=0
+          ControlCaption=''
+          Caption='Export E&xcel'
+          OnClick='ExportExcelClick'
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Grid<
+      ControlDefs={object:rtf::MultiControlDef<
+          Action=caView
+          DataMembers=['AccountNo'#13#10,
+            'AccountName'#13#10,
+            'CostAccountNo'#13#10,
+            'NilaiAwal'#13#10,
+            'Balance'#13#10,
+            'OpeningDate'#13#10]
+        >}Elements={*object:rtf::FieldUIElmtSetting<
+          Name='AccountNo'
+          ControlCaption='Kode'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='AccountName'
+          ControlCaption='Nama Biaya Dimuka'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='CostAccountNo'
+          ControlCaption='Kode Akun Biaya'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='NilaiAwal'
+          ControlCaption='Nominal Biaya'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='OpeningDate'
+          ControlCaption='Tanggal Transaksi'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionNo'
+          ControlCaption='Nomor Transaksi'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Account_Name'
+          ControlCaption='Akun Biaya'
+          DataTypeName='varchar'
+          DataLength=200
+        >, object:rtf::FieldUIElmtSetting<
+          Name='CPIACatName'
+          ControlCaption='Kategori Biaya Dimuka'
+          DataTypeName='varchar'
+          DataLength=100
+        >}Name='gCPIA'
+      Width=585
+      Height=86
+      UIPart=$UIPARTS['uipCPIA']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='Daftar Biaya Dibayar Dimuka'
+      Columns={*object:rtf::GridColumn<
+          Name='AccountNo'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='AccountNo'
+          DisplayFormat=''
+          TitleCaption='Kode'
+          Width=120
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='AccountName'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='AccountName'
+          DisplayFormat=''
+          TitleCaption='Nama Biaya Dimuka'
+          Width=120
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='CostAccountNo'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='CostAccountNo'
+          DisplayFormat=''
+          TitleCaption='Kode Akun Biaya'
+          Width=100
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='NilaiAwal'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='NilaiAwal'
+          DisplayFormat=',0.00'
+          TitleCaption='Nominal Biaya'
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='Balance'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Balance'
+          DisplayFormat=',0.00'
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='OpeningDate'
+          InputStyle=cisDate
+          EnumeratedValues=''
+          FieldName='OpeningDate'
+          DisplayFormat=''
+          TitleCaption='Tanggal Transaksi'
+          Width=100
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='TransactionNo'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='TransactionNo'
+          DisplayFormat=''
+          TitleCaption='Nomor Transaksi'
+          Width=120
+        >, *object:rtf::GridColumn<
+          Name='Account_Name'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          Index=3
+          FieldName='Account_Name'
+          DisplayFormat=''
+          TitleCaption='Akun Biaya'
+          Width=120
+        >, *object:rtf::GridColumn<
+          Name='CPIACatName'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='CPIACatName'
+          DisplayFormat=''
+          TitleCaption='Kategori Biaya Dimuka'
+          Width=120
+        >}ReadOnly=true
+      RowSelect=true
+      SuppressHelpLine=true
+    >, object:rtf::Query<
+      Name='qCPIA'
+      Width=585
+      Height=277
+      ContextMenuName='popupmenus\DepreciableAsset\pCPIAList'
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      HideSearchPanel=true
+    >, object:rtf::DualSplit<
+      Name='dualsplit3'
+      Width=585
+      Height=131
+      Container1=$CONTAINERS['pGrid']
+      Container2=$CONTAINERS['gCPIA']
+      InversedAlign=true
+    >}FormClassName='fCIAList'
+>

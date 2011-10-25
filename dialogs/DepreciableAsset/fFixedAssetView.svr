@@ -1,0 +1,30 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{03AB2DCD-D5DA-4DD5-B07D-CD15AE22527E}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rpclass::TPClassUIDefList<
+  UIDefs={object:rpclass::TPClassUIDef<
+      Name='uipFixedAsset'
+      PClassName='FixedAsset'
+      LoadedFieldList='AccountNo;AccountName;Qty;OpeningDate;NilaiAwal;TotalDibayar;TanggalProsesTerakhir;TanggalProsesBerikut;NominalPenyusutan;TotalPenyusutan;Balance'
+      Mode=imSingleRow
+    >, object:rpclass::TPClassUIDef<
+      Name='uipDepreciationHistori'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='DeprNo'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='DeprValue'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='DeprDate'
+          DataTypeName='timestamp'
+          DataLength=20
+        >}Mode=imMultiRow
+      CreateInstanceOnNew=true
+    >}OnSetDataEx='FormSetDataEx'
+>

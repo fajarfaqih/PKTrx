@@ -1,0 +1,350 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['multisplit1']
+  Caption='Peragaan Transaksi Donatur'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=657
+  Height=497
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx='FormSetDataEx'
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='mode'
+          Hidden=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ID'
+          Hidden=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='UserPengubah'
+          Hidden=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TglUbah'
+          Hidden=true
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TerminalUbah'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ViewType'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=1
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TempData'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >}Name='uipFilter'
+    >, object:rtf::PClassUI<
+      Name='uipTrans'
+      MultiLine=true
+    >}Containers={object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='No_Donor'
+          ControlCaption='Nomor Donatur'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Nama_Donor'
+          ReadOnlyControl=true
+          ControlCaption='Nama Donatur'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Id_Donor'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >}Name='pDonor'
+      Width=545
+      Height=73
+      UIPart=$UIPARTS['uipFilter']
+      Controls={*object:rtf::DBEdit<
+          Name='No_Donor'
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption='Nomor Donatur'
+          OnExit='IdDonorOnExit'
+        >, *object:rtf::DBEdit<
+          Name='Nama_Donor'
+          Top=36
+          Left=8
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Nama Donatur'
+          LayoutOrder=3
+        >, object:rtf::Button<
+          Name='bCari'
+          Layout=clAbsolute
+          Top=8
+          Left=304
+          Width=81
+          Height=25
+          Color=0
+          ControlCaption=''
+          LayoutOrder=2
+          Caption='Cari &Donatur'
+          OnClick='bCariClick'
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::MultiSplit<
+      Name='multisplit1'
+      Width=657
+      Height=497
+      Side1Containers={$CONTAINERS['pDonor']
+      }Side2Containers={$CONTAINERS['pAction']
+      }SpaceContainer=$CONTAINERS['dualsplit4']
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=39
+      Controls={object:rtf::Button<
+          Name='bClose'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&T&utup'
+          Default=true
+          Cancel=true
+          ExitAction=eaQuitOK
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='TglAwal'
+          ControlCaption='Periode Tanggal'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TglAkhir'
+          ControlCaption='s/d'
+          DataTypeName='timestamp'
+          DataLength=20
+        >}Name='pTransFilter'
+      Width=625
+      Height=57
+      UIPart=$UIPARTS['uipFilter']
+      Controls={*object:rtf::DBDateEdit<
+          Name='TglAwal'
+          Top=25
+          Left=8
+          Color=0
+          ControlCaption='Periode Tanggal'
+        >, *object:rtf::DBDateEdit<
+          Name='TglAkhir'
+          Layout=clNextSide
+          Top=25
+          Left=236
+          Color=0
+          ControlCaption='s/d'
+        >, object:rtf::Button<
+          Name='bView'
+          Layout=clAbsolute
+          Top=25
+          Left=387
+          Color=0
+          ControlCaption=''
+          Caption='&Tampilkan'
+          OnClick='bViewHistClick'
+        >, object:rtf::Button<
+          Name='bExport'
+          Layout=clAbsolute
+          Top=25
+          Left=472
+          Width=89
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='&Export Ke Excel'
+          OnClick='bExportClick'
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=25
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='Histori Transaksi'
+    >, object:rtf::DualSplit<
+      Name='dualsplit4'
+      Width=657
+      Height=383
+      Container1=$CONTAINERS['pTransFilter']
+      Container2=$CONTAINERS['dualsplit5']
+    >, object:rtf::DualSplit<
+      Name='dualsplit5'
+      Width=657
+      Height=325
+      Container1=$CONTAINERS['pSummary']
+      Container2=$CONTAINERS['gHist']
+      InversedAlign=true
+    >, object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='TotalAmount'
+          ReadOnlyControl=true
+          ControlCaption='Total Transaksi'
+          DataTypeName='double'
+          DataLength=20
+        >}Name='pSummary'
+      Width=320
+      Height=47
+      Bordered=true
+      UIPart=$UIPARTS['uipFilter']
+      Controls={*object:rtf::DBEdit<
+          Name='TotalAmount'
+          Top=10
+          Left=10
+          Width=127
+          Height=21
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Total Transaksi'
+          FieldName='TotalAmount'
+          DisplayFormat=',0.00'
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=10
+      ControlTopMargin=10
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Grid<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='TransactionItemId'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionDate'
+          ControlCaption='Tgl Transaksi'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionCode'
+          Hidden=true
+          ControlCaption='Kode Transaksi'
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionNo'
+          ControlCaption='Nomor Transaksi'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          ControlCaption='Kode Cabang'
+          DataTypeName='varchar'
+          DataLength=5
+        >, object:rtf::FieldUIElmtSetting<
+          Name='MutationType'
+          ControlCaption='Jns Mutasi'
+          DataTypeName='varchar'
+          DataLength=1
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount'
+          ControlCaption='Jumlah'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='CurrencyCode'
+          Hidden=true
+          ControlCaption='Kode Valuta'
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Rate'
+          Hidden=true
+          ControlCaption='Rate'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='EkuivalenAmount'
+          Hidden=true
+          ControlCaption='Jumlah Ekiv'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Description'
+          ControlCaption='Keterangan'
+          DataTypeName='varchar'
+          DataLength=200
+        >}Name='gHist'
+      Width=657
+      Height=277
+      UIPart=$UIPARTS['uipTrans']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Columns={*object:rtf::GridColumn<
+          Name='TransactionDate'
+          InputStyle=cisDate
+          EnumeratedValues=''
+          FieldName='TransactionDate'
+          DisplayFormat=''
+          TitleCaption='Tgl Transaksi'
+        >, *object:rtf::GridColumn<
+          Name='TransactionNo'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='TransactionNo'
+          DisplayFormat=''
+          TitleCaption='Nomor Transaksi'
+          Width=130
+        >, *object:rtf::GridColumn<
+          Name='BranchCode'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='BranchCode'
+          DisplayFormat=''
+          TitleCaption='Kode Cabang'
+        >, *object:rtf::GridColumn<
+          Name='MutationType'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='MutationType'
+          DisplayFormat=''
+          TitleCaption='Jns Mutasi'
+        >, *object:rtf::GridColumn<
+          Name='Amount'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Amount'
+          DisplayFormat=',0.00'
+          TitleCaption='Jumlah'
+          Width=150
+        >, *object:rtf::GridColumn<
+          Name='Description'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Description'
+          DisplayFormat=''
+          TitleCaption='Keterangan'
+        >}ReadOnly=true
+      SuppressHelpLine=true
+    >}FormClassName='fDonaturTransHistory'
+>

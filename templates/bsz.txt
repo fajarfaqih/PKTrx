@@ -1,0 +1,33 @@
+                              BUKTI SETOR ZAKAT
+
+
+Telah Terima Dari  : %(DONOR_NAMA)s
+NPWP               : %(NPWP)s
+NPWZ               : %(NPWZ)s
+NAMA WAJIB ZAKAT   : %(DONOR_NAMA)s
+ALAMAT WAJIB ZAKAT : %(DONOR_ALAMAT1)s
+                     %(DONOR_ALAMAT2)s
+
+Objek Zakat                               Thn       Kadar    Dasar Pengenaan Zakat         Jumlah Zakat
+                                        Perolehan   (%%)
+Emas,Perak, dan Uang                      %(A_THN)4s      %(A_KADAR)5s %(A_DASAR)24s  %(A_ZAKAT)24s
+Perdagangan & Perusahaan                  %(B_THN)4s      %(B_KADAR)5s %(B_DASAR)24s  %(B_ZAKAT)24s
+Hasil Pertanian Perkebunan & Perikanan    %(C_THN)4s      %(C_KADAR)5s %(C_DASAR)24s  %(C_ZAKAT)24s
+Hasil Pertambangan                        %(D_THN)4s      %(D_KADAR)5s %(D_DASAR)24s  %(D_ZAKAT)24s
+Hasil Peternakan                          %(E_THN)4s      %(E_KADAR)5s %(E_DASAR)24s  %(E_ZAKAT)24s
+Hasil Pendapatan Jasa                     %(F_THN)4s      %(F_KADAR)5s %(F_DASAR)24s  %(F_ZAKAT)24s
+Rikaz                                     %(G_THN)4s      %(G_KADAR)5s %(G_DASAR)24s  %(G_ZAKAT)24s
+
+                                                                      Jumlah  RP    %(TOTAL)24s
+
+   Terbilang  : %(TERBILANG1)s
+                %(TERBILANG2)s
+
+Diterima oleh %(NAMA_LEMBAGA)s                    Penyetor/ Wajib Zakat,
+%(CABANG)s, %(TGL_BAYAR)s
+
+
+
+
+%(USER_CETAK)s                                    %(DONOR_NAMA)s
+Waktu Cetak : %(WAKTU_CETAK)s

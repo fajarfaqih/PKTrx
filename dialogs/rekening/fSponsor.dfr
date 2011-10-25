@@ -1,0 +1,374 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dsMain']
+  Caption='Peragaan sponsor'
+  Left=50
+  Top=50
+  Width=700
+  Height=505
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx='FormSetDataEx'
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=10
+        >}Name='uipSponsor'
+    >, object:rtf::PClassUI<
+      Name='uipTransaction'
+      MultiLine=true
+    >}Containers={object:rtf::DualSplit<
+      Name='dsMain'
+      Width=700
+      Height=505
+      Container1=$CONTAINERS['dsAccount']
+      Container2=$CONTAINERS['dsTransaction']
+    >, object:rtf::DualSplit<
+      Name='dsAccount'
+      Width=700
+      Height=140
+      Container1=$CONTAINERS['pSelect']
+      Container2=$CONTAINERS['pSponsor']
+    >, object:rtf::Panel<
+      Elements={object:rtf::LinkUIElmtSetting<
+          Name='LSponsor'
+          ControlCaption='Pilih sponsor'
+          ClassTypeName='Sponsor'
+          DisplayFields='SponsorId;Name;Description;Address'
+          Restrictions='BranchCode|BranchCode'
+          OQLText=['select from Sponsor'#13#10,
+            '('#13#10,
+            '  SponsorId,'#13#10,
+            '  Name,'#13#10,
+            '  Description,'#13#10,
+            '  Address,'#13#10,
+            '  self'#13#10,
+            ');']
+          LookupOption=loCustomOQL
+          FieldBaseName='LSponsor'
+        >}Name='pSelect'
+      Width=649
+      Height=41
+      Bordered=true
+      UIPart=$UIPARTS['uipSponsor']
+      Controls={*object:rtf::DBLookupEdit<
+          Name='LSponsor'
+          Top=8
+          Left=8
+          ControlCaption='Pilih sponsor'
+          LookupField='LSponsor.Name'
+          DisplayLookupField=true
+          OnAfterLookup='LSponsorAfterLookup'
+        >, object:rtf::Button<
+          Name='bClose'
+          Layout=clAbsolute
+          Top=8
+          Left=344
+          Color=0
+          ControlCaption=''
+          Caption='&Tutup'
+          Cancel=true
+          ExitAction=eaQuitOK
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='SponsorName'
+          ReadOnlyControl=true
+          ControlCaption='Nama Sponsor'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='SponsorDescription'
+          ReadOnlyControl=true
+          ControlCaption='Deskripsi'
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rtf::FieldUIElmtSetting<
+          Name='SponsorAddress'
+          ReadOnlyControl=true
+          ControlCaption='Alamat'
+          DataTypeName='varchar'
+          DataLength=100
+        >, object:rtf::FieldUIElmtSetting<
+          Name='SponsorId'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >}Name='pSponsor'
+      Width=617
+      Height=89
+      Bordered=true
+      UIPart=$UIPARTS['uipSponsor']
+      Controls={*object:rtf::DBEdit<
+          Name='SponsorName'
+          Top=8
+          Left=8
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Nama Sponsor'
+        >, *object:rtf::DBEdit<
+          Name='SponsorDescription'
+          Top=36
+          Left=8
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Deskripsi'
+        >, *object:rtf::DBEdit<
+          Name='SponsorAddress'
+          Top=64
+          Left=8
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Alamat'
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dsTransaction'
+      Width=700
+      Height=364
+      Container1=$CONTAINERS['pSelectTransaction']
+      Container2=$CONTAINERS['gTransaction']
+    >, object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='IsAllProject'
+          ControlCaption='Semua Project'
+          DataTypeName='varchar'
+          DataLength=20
+          EnumeratedValues=['F=0'#13#10,
+            'T=1'#13#10]
+          GenerateCheckBoxForEnum=true
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LProject'
+          ControlCaption='Pilih Project'
+          ClassTypeName='ProjectSponsor'
+          DisplayFields='LProject.ProductCode;LProject.ProductName;LProject.ProductId;ProjectSponsorId'
+          Restrictions='SponsorId|SponsorId'
+          OQLText=['select from ProjectSponsor'#13#10,
+            ' [SponsorId=:SponsorId]'#13#10,
+            '('#13#10,
+            ' LProject.ProductCode,'#13#10,
+            ' LProject.ProductName,'#13#10,
+            ' LProject.ProductId,'#13#10,
+            ' ProjectSponsorId,'#13#10,
+            ' self'#13#10,
+            ') then order by ProductCode;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LProject'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BeginDate'
+          ControlCaption='Pilih tanggal transaksi'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='EndDate'
+          ControlCaption='s.d'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BeginningBalance'
+          ReadOnlyControl=true
+          ControlCaption='Saldo Awal'
+          DataTypeName='double'
+          DataLength=20
+        >}Name='pSelectTransaction'
+      Width=665
+      Height=97
+      Bordered=true
+      UIPart=$UIPARTS['uipSponsor']
+      Controls={*object:rtf::DBCheckBox<
+          Name='IsAllProject'
+          Layout=clAbsolute
+          Top=8
+          Left=352
+          Visible=false
+          Color=0
+          ControlCaption='Semua Project'
+          ValueChecked='T'
+          ValueUnchecked='F'
+          OnClick='AllProjectOnClick'
+        >, *object:rtf::DBLookupEdit<
+          Name='LProject'
+          Top=8
+          Left=8
+          Width=120
+          Height=21
+          ControlCaption='Pilih Project'
+          LookupField='LProject.LProject.ProductName'
+          DisplayLookupField=true
+        >, *object:rtf::DBDateEdit<
+          Name='BeginDate'
+          Top=36
+          Left=8
+          Color=0
+          ControlCaption='Pilih tanggal transaksi'
+          CaptionWidth=120
+        >, *object:rtf::DBDateEdit<
+          Name='EndDate'
+          Layout=clNextSide
+          Top=36
+          Left=256
+          Color=0
+          ControlCaption='s.d'
+        >, *object:rtf::DBEdit<
+          Name='BeginningBalance'
+          Top=64
+          Left=8
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Saldo Awal'
+          CaptionWidth=120
+          ReadOnly=true
+        >, object:rtf::Button<
+          Name='bSelect'
+          Layout=clAbsolute
+          Top=32
+          Left=416
+          Color=0
+          ControlCaption=''
+          Caption='&Lihat histori'
+          OnClick='bViewHistClick'
+        >, object:rtf::Button<
+          Name='button1'
+          Layout=clAbsolute
+          Top=32
+          Left=504
+          Color=0
+          ControlCaption=''
+          Caption='&Export Excel'
+          OnClick='bExportClick'
+        >}EqualCaptionWidth=120
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Grid<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='TransactionDate'
+          ControlCaption='Tanggal'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Debet'
+          ControlCaption='Debet'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Kredit'
+          ControlCaption='Kredit'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ReferenceNo'
+          ControlCaption='No Referensi'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Description'
+          DataTypeName='varchar'
+          DataLength=100
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionCode'
+          ControlCaption='Jenis Transaksi'
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Inputer'
+          ControlCaption='Inputer'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionItemId'
+          Hidden=true
+          ReadOnlyControl=true
+          DataTypeName='integer'
+          DataLength=20
+        >}Name='gTransaction'
+      Width=700
+      Height=266
+      UIPart=$UIPARTS['uipTransaction']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Columns={*object:rtf::GridColumn<
+          Name='TransactionDate'
+          InputStyle=cisDate
+          EnumeratedValues=''
+          FieldName='TransactionDate'
+          DisplayFormat=''
+          TitleCaption='Tanggal'
+          Width=60
+        >, *object:rtf::GridColumn<
+          Name='Debet'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Debet'
+          DisplayFormat=',0.00'
+          TitleCaption='Debet'
+        >, *object:rtf::GridColumn<
+          Name='Kredit'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Kredit'
+          DisplayFormat=',0.00'
+          TitleCaption='Kredit'
+          Width=120
+        >, *object:rtf::GridColumn<
+          Name='ReferenceNo'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='ReferenceNo'
+          DisplayFormat=''
+          TitleCaption='No Referensi'
+          Width=80
+        >, *object:rtf::GridColumn<
+          Name='Description'
+          Index=5
+          Width=200
+        >, *object:rtf::GridColumn<
+          Name='TransactionCode'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          Index=6
+          FieldName='TransactionCode'
+          DisplayFormat=''
+          TitleCaption='Jenis Transaksi'
+          Width=100
+        >, *object:rtf::GridColumn<
+          Name='Inputer'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          Index=7
+          FieldName='Inputer'
+          DisplayFormat=''
+          TitleCaption='Inputer'
+          Width=60
+        >}ReadOnly=true
+      RowSelect=true
+      SuppressHelpLine=true
+    >}FormClassName='fSponsor'
+>

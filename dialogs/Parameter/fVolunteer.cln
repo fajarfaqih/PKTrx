@@ -1,0 +1,230 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Mitra'
+  Left=50
+  Top=50
+  Width=361
+  Height=273
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='mode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ID'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TglUbah'
+          Hidden=true
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='UserPengubah'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TerminalUbah'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=10
+        >}Name='uipData'
+      ClassTypeName='Volunteer'
+      DataBinding=bmMaster
+      OnSetData='VolunteerOnSetData'
+    >}Containers={object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='VolunteerId'
+          AccessOption=aoReadOnlyOnEdit
+          Hidden=true
+          DataTypeName='VARCHAR'
+          DataLength=10
+        >, object:rtf::FieldUIElmtSetting<
+          Name='VolunteerName'
+          ControlCaption='Nama Mitra'
+          DataTypeName='VARCHAR'
+          DataLength=50
+        >, object:rtf::FieldUIElmtSetting<
+          Name='HomeAddress'
+          ControlCaption='Alamat Mitra'
+          DataTypeName='VARCHAR'
+          DataLength=150
+        >, object:rtf::FieldUIElmtSetting<
+          Name='HomePhone'
+          ControlCaption='Telepon Rumah'
+          DataTypeName='VARCHAR'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='MobilePhone'
+          ControlCaption='HP'
+          DataTypeName='VARCHAR'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Email'
+          ControlCaption='Email'
+          DataTypeName='VARCHAR'
+          DataLength=50
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          Hidden=true
+          ControlCaption='Kode Cabang'
+          DataTypeName='VARCHAR'
+          DataLength=5
+        >, object:rtf::FieldUIElmtSetting<
+          Name='VolunteerIdID'
+          ControlCaption='ID Mitra'
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LCabang'
+          Hidden=true
+          ControlCaption='Kode Cabang'
+          ClassTypeName=''
+          ExternalClassTypeName='Cabang'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LCabang.Kode_Cabang'
+              DataTypeName='varchar'
+              DataLength=20
+              UsedAsKey=true
+              KeyOrDisplayName='Kode_Cabang'
+              FinalDisplayFieldName='Kode_Cabang'
+              CDSFieldName='LCabang.Kode_Cabang'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LCabang.Nama_Cabang'
+              DataTypeName='varchar'
+              DataLength=30
+              UsedAsDisplay=true
+              KeyOrDisplayName='Nama_Cabang'
+              FinalDisplayFieldName='Nama_Cabang'
+              CDSFieldName='LCabang.Nama_Cabang'
+            >}Restrictions=''
+          OQLText=['select from Cabang'#13#10,
+            '(  '#13#10,
+            '  Kode_Cabang,'#13#10,
+            '  Nama_Cabang, '#13#10,
+            '  self'#13#10,
+            ');']
+          OQLSystemContext='corporate'
+          LookupOption=loCustomOQL
+          FieldBaseName='LCabang'
+        >}Name='pData'
+      Width=320
+      Height=240
+      UIPart=$UIPARTS['uipData']
+      Controls={*object:rtf::DBEdit<
+          Name='VolunteerName'
+          Top=36
+          Left=8
+          Color=0
+          ControlCaption='Nama Mitra'
+          LayoutOrder=2
+        >, *object:rtf::DBEdit<
+          Name='HomeAddress'
+          Top=64
+          Left=8
+          Color=0
+          ControlCaption='Alamat Mitra'
+          LayoutOrder=3
+        >, *object:rtf::DBEdit<
+          Name='HomePhone'
+          Top=92
+          Left=8
+          Color=0
+          ControlCaption='Telepon Rumah'
+          LayoutOrder=4
+        >, *object:rtf::DBEdit<
+          Name='MobilePhone'
+          Top=120
+          Left=8
+          Color=0
+          ControlCaption='HP'
+          LayoutOrder=5
+        >, *object:rtf::DBEdit<
+          Name='Email'
+          Top=148
+          Left=8
+          Color=0
+          ControlCaption='Email'
+          LayoutOrder=6
+        >, *object:rtf::DBEdit<
+          Name='VolunteerIdID'
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption='ID Mitra'
+          LayoutOrder=1
+        >, object:rtf::Label<
+          Name='lblBranchCode'
+          Layout=clAbsolute
+          Top=12
+          Left=240
+          Width=84
+          Height=17
+          Color=0
+          ControlCaption=''
+          Caption='lblBranchCode'
+          AutoSize=true
+          FontName='Tahoma'
+          FontColor=-2147483640
+          FontSize=8
+          FontStyleBold=true
+        >}EqualCaptionWidth=130
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=41
+      Controls={object:rtf::Button<
+          Name='bOK'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&OK'
+          Default=true
+          OnClick='bOKClick'
+        >, object:rtf::Button<
+          Name='bClose'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Width=82
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='&Cancel / Close'
+          Cancel=true
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=361
+      Height=273
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['pData']
+      InversedAlign=true
+    >}FormClassName='fVolunteer'
+>

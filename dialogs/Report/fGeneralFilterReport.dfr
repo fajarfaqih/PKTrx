@@ -1,0 +1,118 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Laporan : '
+  Left=50
+  Top=50
+  Width=321
+  Height=137
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx='FormSetDataEx'
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='ID'
+          Hidden=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='mode'
+          Hidden=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='UserPengubah'
+          Hidden=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TglUbah'
+          Hidden=true
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TerminalUbah'
+          Hidden=true
+        >}Name='uipData'
+      FillInDefaultValues=true
+      InitWithDefaultValues=true
+    >}Containers={object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='TglAwal'
+          ControlCaption='Tgl Awal'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TglAkhir'
+          ControlCaption='Tgl Akhir'
+          DataTypeName='timestamp'
+          DataLength=20
+        >}Name='PData'
+      Width=617
+      Height=100
+      UIPart=$UIPARTS['uipData']
+      Controls={*object:rtf::DBDateEdit<
+          Name='TglAwal'
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption='Tgl Awal'
+        >, *object:rtf::DBDateEdit<
+          Name='TglAkhir'
+          Top=36
+          Left=8
+          Color=0
+          ControlCaption='Tgl Akhir'
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      ControlCharCase=ecUpperCase
+    >, object:rtf::Panel<
+      Name='PAction'
+      Width=320
+      Height=41
+      Controls={object:rtf::Button<
+          Name='BPrint'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Cetak'
+          Default=true
+          OnClick='PrintClick'
+        >, object:rtf::Button<
+          Name='BCancel'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Color=0
+          ControlCaption=''
+          Caption='&Batalkan'
+          Cancel=true
+          DefaultAction=daClear
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=321
+      Height=137
+      Container1=$CONTAINERS['PAction']
+      Container2=$CONTAINERS['PData']
+      InversedAlign=true
+    >}FormClassName='fGeneralFilterReport'
+>

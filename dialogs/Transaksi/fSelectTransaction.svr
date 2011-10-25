@@ -1,0 +1,75 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{03AB2DCD-D5DA-4DD5-B07D-CD15AE22527E}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rpclass::TPClassUIDefList<
+  UIDefs={object:rpclass::TPClassUIDef<
+      Name='uipTransaction'
+      PClassName='Transaction'
+      LoadedFieldList='TransactionTime;Inputer;Description;ReferenceNo;TransactionId;TransactionCode'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='inboxId'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='formId'
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rpclass::TCustomLoadedField<
+          Name='Nomor'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='Proses'
+          DataTypeName='varchar'
+          DataLength=1
+        >}Mode=imMultiRow
+    >, object:rpclass::TPClassUIDef<
+      Name='uipTransactionItem'
+      MasterUIName='uipTransaction'
+      ListName='Ls_TransactionItem'
+      LoadedFieldList='TransactionItemId;ParameterJournalId;RefAccountNo;RefAccountName;CurrencyCode;MutationType;Amount;Rate'
+      SetMasterDetailRelationship=true
+    >, object:rpclass::TPClassUIDef<
+      Name='uipData'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='Today'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='BranchCode'
+          DataTypeName='varchar'
+          DataLength=3
+        >, object:rpclass::TCustomLoadedField<
+          Name='BatchNo'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBatch.BatchId'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBatch.BatchNo'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBatch.Inputer'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBatch.Description'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='BeginNo'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='TransactionNumber'
+          DataTypeName='integer'
+          DataLength=20
+        >}Mode=imSingleRow
+    >}OnSetDataEx='FormSetDataEx'
+>

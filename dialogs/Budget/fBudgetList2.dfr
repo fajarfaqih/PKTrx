@@ -1,0 +1,92 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Daftar Budget'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=633
+  Height=320
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx=''
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Name='uipFilter'
+    >}Containers={object:rtf::Panel<
+      Name='pFilter'
+      Width=809
+      Height=57
+      UIPart=$UIPARTS['uipFilter']
+      Controls={object:rtf::Label<
+          Name='lTitle'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Width=521
+          Height=49
+          Color=0
+          ControlCaption='Daftar'
+          Caption='Daftar Anggaran'
+          AutoSize=true
+          FontName='Times New Roman'
+          FontSize=30
+          FontStyleBold=true
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Query<
+      Name='qBudget'
+      Width=633
+      Height=262
+      ContextMenuName='popupmenus/budget/pBudgetRevision'
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      OQLText=['select from Budget'#13#10,
+        '('#13#10,
+        '  BudgetID,'#13#10,
+        '  LPeriod.PeriodValue as Bulan,'#13#10,
+        '  LPeriod.LParent.PeriodValue as Tahun,'#13#10,
+        '  LOwner.OwnerName as Pemilik,'#13#10,
+        '  self'#13#10,
+        ') ;']
+      DirectDisplay=true
+      WindowSize=20
+      Columns={object:rtf::QueryColumn<
+          FieldName='Budget.Pemilik'
+          Width=120
+          Caption='Nama Pemilik'
+        >, object:rtf::QueryColumn<
+          FieldName='Budget.Bulan'
+          Width=80
+          Caption='Bulan'
+        >, object:rtf::QueryColumn<
+          FieldName='Budget.Tahun'
+          Width=80
+          Caption='Tahun'
+        >}EnableColumns=true
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=633
+      Height=320
+      Container1=$CONTAINERS['pFilter']
+      Container2=$CONTAINERS['qBudget']
+    >}FormClassName='fBudgetList'
+>

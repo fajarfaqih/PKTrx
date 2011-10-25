@@ -1,0 +1,78 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Daftar Mitra'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=633
+  Height=320
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx=''
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Name='uipFilter'
+    >}Containers={object:rtf::Panel<
+      Name='pFilter'
+      Width=529
+      Height=57
+      UIPart=$UIPARTS['uipFilter']
+      Controls={object:rtf::Label<
+          Name='lTitle'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Width=273
+          Height=49
+          Color=0
+          ControlCaption='Daftar'
+          Caption='Daftar Mitra'
+          FontName='Times New Roman'
+          FontSize=30
+          FontStyleBold=true
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Query<
+      Name='fVolunteer'
+      Width=633
+      Height=262
+      ContextMenuName='popupmenus/parameter/masterpopup'
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      OQLText=['select from Volunteer'#13#10,
+        '('#13#10,
+        '  VolunteerId,'#13#10,
+        '  VolunteerName as Nama_Mitra,'#13#10,
+        '  Email,'#13#10,
+        '  BranchCode,  '#13#10,
+        '  self'#13#10,
+        ') then order by VolunteerId;']
+      DirectDisplay=true
+      WindowSize=20
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=633
+      Height=320
+      Container1=$CONTAINERS['pFilter']
+      Container2=$CONTAINERS['fVolunteer']
+    >}FormClassName='fDaftarMitra'
+>

@@ -1,0 +1,516 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dsMain']
+  Caption='Pembuatan Invoice Aktiva Tetap'
+  Left=50
+  Top=50
+  Width=553
+  Height=401
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Inputer'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='FloatTransactionDate'
+          Hidden=true
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ShowMode'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='PeriodId'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BudgetId'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >}Name='uipTransaction'
+      AlwaysPostToServer=true
+      PostLinkValues=true
+    >}Containers={object:rtf::DualSplit<
+      Name='dsMain'
+      Width=240
+      Height=96
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['pTransaction']
+      InversedAlign=true
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=425
+      Height=41
+      Controls={object:rtf::Button<
+          Name='bSave'
+          Layout=clAbsolute
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Simpan'
+          Default=true
+          OnClick='bSimpanClick'
+        >, object:rtf::Button<
+          Name='bCancel'
+          Layout=clAbsolute
+          Top=8
+          Left=88
+          Color=0
+          ControlCaption=''
+          Caption='&Batal'
+          Cancel=true
+          ExitAction=eaQuitOK
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='TransactionNo'
+          Hidden=true
+          ReadOnlyControl=true
+          ControlCaption='Nomor Transaksi'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionDate'
+          ReadOnlyControl=true
+          ControlCaption='Tanggal transaksi'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LBatch'
+          ControlCaption='Pilih batch transaksi'
+          ClassTypeName='TransactionBatch'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LBatch.BatchId'
+              DataTypeName='INTEGER'
+              DataLength=0
+              UsedAsKey=true
+              KeyOrDisplayName='BatchId'
+              FinalDisplayFieldName='BatchId'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LBatch.BatchId'
+              DataTypeName='INTEGER'
+              DataLength=0
+              UsedAsDisplay=true
+              KeyOrDisplayName='BatchId'
+              FinalDisplayFieldName='BatchId'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LBatch.BatchNo'
+              DataTypeName='VARCHAR'
+              DataLength=30
+              UsedAsDisplay=true
+              KeyOrDisplayName='BatchNo'
+              FinalDisplayFieldName='BatchNo'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LBatch.BatchDate'
+              DataTypeName='TIMESTAMP'
+              DataLength=0
+              UsedAsDisplay=true
+              KeyOrDisplayName='BatchDate'
+              FinalDisplayFieldName='BatchDate'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LBatch.Description'
+              DataTypeName='VARCHAR'
+              DataLength=100
+              UsedAsDisplay=true
+              KeyOrDisplayName='Description'
+              FinalDisplayFieldName='Description'
+            >}Restrictions='Inputer|Inputer'
+          OQLText=['Select from TransactionBatch '#13#10,
+            '[IsClosed = ''F'' and BatchTag=''OPR'' and IsPosted = ''T'' and Inputer = :Inputer]'#13#10,
+            '(BatchDate, Description,BatchId, BatchNo, self )'#13#10,
+            'then order by Desc BatchDate;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LBatch'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ReceivedFrom'
+          Hidden=true
+          ControlCaption='Kasir'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LAssetCategory'
+          Hidden=true
+          ControlCaption='Kategori Asset'
+          ClassTypeName='AssetCategory'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LAssetCategory.AssetCategoryId'
+              DataTypeName='INTEGER'
+              DataLength=0
+              UsedAsKey=true
+              KeyOrDisplayName='AssetCategoryId'
+              FinalDisplayFieldName='AssetCategoryId'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LAssetCategory.AssetCategoryId'
+              DataTypeName='INTEGER'
+              DataLength=0
+              UsedAsDisplay=true
+              KeyOrDisplayName='AssetCategoryId'
+              FinalDisplayFieldName='AssetCategoryId'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LAssetCategory.AssetCategoryCode'
+              DataTypeName='VARCHAR'
+              DataLength=20
+              UsedAsDisplay=true
+              KeyOrDisplayName='AssetCategoryCode'
+              FinalDisplayFieldName='AssetCategoryCode'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LAssetCategory.AssetCategoryName'
+              DataTypeName='VARCHAR'
+              DataLength=50
+              UsedAsDisplay=true
+              KeyOrDisplayName='AssetCategoryName'
+              FinalDisplayFieldName='AssetCategoryName'
+            >}Restrictions=''
+          OQLText=['select from AssetCategory'#13#10,
+            '( AssetCategoryCode,'#13#10,
+            '  AssetCategoryName,'#13#10,
+            ' self) then order by AssetCategoryCode;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LAssetCategory'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='EmployeeId'
+          Hidden=true
+          ReadOnlyControl=true
+          ControlCaption='Nomor Karyawan'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='EmployeeName'
+          Hidden=true
+          ReadOnlyControl=true
+          ControlCaption='-'
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LEmployee'
+          Hidden=true
+          ControlCaption='Nomor karyawan'
+          ClassTypeName=''
+          ExternalClassTypeName='Employee'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LEmployee.Nomor_Karyawan'
+              DataTypeName='varchar'
+              DataLength=20
+              UsedAsKey=true
+              KeyOrDisplayName='Nomor_Karyawan'
+              FinalDisplayFieldName='Nomor_Karyawan'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LEmployee.Nomor_Karyawan'
+              DataTypeName='varchar'
+              DataLength=20
+              UsedAsDisplay=true
+              KeyOrDisplayName='Nomor_Karyawan'
+              FinalDisplayFieldName='Nomor_Karyawan'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LEmployee.Nama_Lengkap'
+              DataTypeName='varchar'
+              DataLength=20
+              UsedAsDisplay=true
+              KeyOrDisplayName='Nama_Lengkap'
+              FinalDisplayFieldName='Nama_Lengkap'
+            >}Restrictions='BranchCode|BranchCode'
+          OQLText=['select from Employee'#13#10,
+            '[Kode_Cabang = :BranchCode ]'#13#10,
+            '('#13#10,
+            '  Nomor_Karyawan,'#13#10,
+            '  Nama_Lengkap,'#13#10,
+            '  LDepartemen.Nama_Departemen,'#13#10,
+            '  LJabatan.Nama_Jabatan,'#13#10,
+            '  self'#13#10,
+            ')'#13#10,
+            'then order by Nomor_Karyawan;']
+          OQLSystemContext='corporate'
+          LookupOption=loCustomOQL
+          FieldBaseName='LEmployee'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionType'
+          Hidden=true
+          ControlCaption='Jenis transaksi'
+          DataTypeName='varchar'
+          DataLength=1
+          EnumeratedValues=['P=Pinjam'#13#10,
+            'B=Bayar'#13#10]
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LProduct'
+          Hidden=true
+          ControlCaption='Program / Project'
+          ClassTypeName='VProduct'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LProduct.AccountNo'
+              DataTypeName='VARCHAR'
+              DataLength=30
+              UsedAsKey=true
+              KeyOrDisplayName='AccountNo'
+              FinalDisplayFieldName='AccountNo'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LProduct.ProductCode'
+              DataTypeName='VARCHAR'
+              DataLength=30
+              UsedAsDisplay=true
+              KeyOrDisplayName='ProductCode'
+              FinalDisplayFieldName='ProductCode'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LProduct.ProductName'
+              DataTypeName='VARCHAR'
+              DataLength=30
+              UsedAsDisplay=true
+              KeyOrDisplayName='ProductName'
+              FinalDisplayFieldName='ProductName'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LProduct.AccountNo'
+              DataTypeName='VARCHAR'
+              DataLength=30
+              UsedAsDisplay=true
+              KeyOrDisplayName='AccountNo'
+              FinalDisplayFieldName='AccountNo'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LProduct.AccountName'
+              DataTypeName='VARCHAR'
+              DataLength=50
+              UsedAsDisplay=true
+              KeyOrDisplayName='AccountName'
+              FinalDisplayFieldName='AccountName'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LProduct.ProductType'
+              DataTypeName='VARCHAR'
+              DataLength=1
+              UsedAsDisplay=true
+              KeyOrDisplayName='ProductType'
+              FinalDisplayFieldName='ProductType'
+            >}Restrictions='BranchCode|BranchCode'
+          OQLText=['select from VProduct '#13#10,
+            '[  status = ''A'' and '#13#10,
+            '   BranchCode = :BranchCode and '#13#10,
+            '  ( (currencycode =''000'' and producttype = ''G'') '#13#10,
+            '     or (producttype=''J'')'#13#10,
+            '  ) '#13#10,
+            '] '#13#10,
+            '(   ProductCode, '#13#10,
+            '   AccountName, '#13#10,
+            '   ProductName, '#13#10,
+            '   FundCategory $ as FundType, '#13#10,
+            '   FundCategory, '#13#10,
+            '   PercentageOfAmilFunds, '#13#10,
+            '  ProductId, '#13#10,
+            '   Idx,'#13#10,
+            '   AccountNo, '#13#10,
+            'self) then order by ProductCode;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LProduct'
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LFixedAsset'
+          ControlCaption='Aktiva Tetap'
+          ClassTypeName='FixedAsset'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LFixedAsset.AccountNo'
+              DataTypeName='VARCHAR'
+              DataLength=30
+              UsedAsKey=true
+              KeyOrDisplayName='AccountNo'
+              FinalDisplayFieldName='AccountNo'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LFixedAsset.AccountNo'
+              DataTypeName='VARCHAR'
+              DataLength=30
+              UsedAsDisplay=true
+              KeyOrDisplayName='AccountNo'
+              FinalDisplayFieldName='AccountNo'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LFixedAsset.AccountName'
+              DataTypeName='VARCHAR'
+              DataLength=50
+              UsedAsDisplay=true
+              KeyOrDisplayName='AccountName'
+              FinalDisplayFieldName='AccountName'
+            >}Restrictions=''
+          OQLText=['select from FixedAsset('#13#10,
+            '  AccountNo,'#13#10,
+            '  AccountName,'#13#10,
+            '  self'#13#10,
+            ');']
+          LookupOption=loCustomOQL
+          FieldBaseName='LFixedAsset'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='InvoiceNo'
+          ControlCaption='Nomor Invoice'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount'
+          ControlCaption='Nominal Invoice'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ReferenceNo'
+          ControlCaption='Nomor referensi'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Description'
+          ControlCaption='Keterangan'
+          DataTypeName='varchar'
+          DataLength=100
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BudgetCode'
+          Hidden=true
+          ReadOnlyControl=true
+          ControlCaption='Kode Budget'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BudgetOwner'
+          Hidden=true
+          ReadOnlyControl=true
+          ControlCaption='-'
+          DataTypeName='varchar'
+          DataLength=100
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LCashAccount'
+          Hidden=true
+          ControlCaption='Kas/Bank'
+          ClassTypeName='CashAccount'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LCashAccount.AccountNo'
+              DataTypeName='VARCHAR'
+              DataLength=30
+              UsedAsKey=true
+              KeyOrDisplayName='AccountNo'
+              FinalDisplayFieldName='AccountNo'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LCashAccount.AccountNo'
+              DataTypeName='VARCHAR'
+              DataLength=30
+              UsedAsDisplay=true
+              KeyOrDisplayName='AccountNo'
+              FinalDisplayFieldName='AccountNo'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LCashAccount.AccountName'
+              DataTypeName='VARCHAR'
+              DataLength=50
+              UsedAsDisplay=true
+              KeyOrDisplayName='AccountName'
+              FinalDisplayFieldName='AccountName'
+            >}Restrictions='BranchCode|BranchCode'
+          OQLText=['select from CashAccount'#13#10,
+            '[status = ''A'' and CurrencyCode = ''000'' '#13#10,
+            ' and BranchCode = :BranchCode]'#13#10,
+            '('#13#10,
+            ' AccountNo, AccountName, CashAccountType, Balance, self'#13#10,
+            ')'#13#10,
+            'then order by desc CashAccountType;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LCashAccount'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='CashAdvance'
+          Hidden=true
+          ControlCaption='Nominal'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Qty'
+          Hidden=true
+          ControlCaption='Jumlah'
+          DataTypeName='integer'
+          DataLength=20
+        >}Name='pTransaction'
+      Width=537
+      Height=353
+      UIPart=$UIPARTS['uipTransaction']
+      Controls={*object:rtf::DBDateEdit<
+          Name='TransactionDate'
+          Top=8
+          Left=8
+          Color=-2147483624
+          ControlCaption='Tanggal transaksi'
+          CaptionWidth=100
+        >, *object:rtf::DBLookupEdit<
+          Name='LBatch'
+          Top=36
+          Left=8
+          Width=120
+          Height=21
+          ControlCaption='Pilih batch transaksi'
+          FieldName='LBatch.BatchId'
+          DisplayFormat=''
+          LookupField='LBatch.Description'
+          DisplayLookupField=true
+          DisplayLookupColor=-2147483624
+          DisplayLookupWidth=215
+        >, *object:rtf::DBLookupEdit<
+          Name='LFixedAsset'
+          Top=64
+          Left=8
+          Width=120
+          Height=21
+          ControlCaption='Aktiva Tetap'
+          LookupField='LFixedAsset.AccountName'
+          DisplayLookupField=true
+        >, *object:rtf::DBEdit<
+          Name='InvoiceNo'
+          Top=92
+          Left=8
+          Width=185
+          Height=21
+          Color=0
+          ControlCaption='Nomor Invoice'
+          CharCase=ecUpperCase
+        >, *object:rtf::DBEdit<
+          Name='Amount'
+          Top=120
+          Left=8
+          Width=185
+          Height=21
+          Color=0
+          ControlCaption='Nominal Invoice'
+          CaptionWidth=100
+          FieldName='Amount'
+          DisplayFormat=',0.00'
+        >, *object:rtf::DBEdit<
+          Name='ReferenceNo'
+          Top=148
+          Left=8
+          Width=201
+          Height=21
+          Color=0
+          ControlCaption='Nomor referensi'
+          CaptionWidth=100
+          CharCase=ecUpperCase
+        >, *object:rtf::DBEdit<
+          Name='Description'
+          Top=176
+          Left=8
+          Width=313
+          Height=21
+          Color=0
+          ControlCaption='Keterangan'
+          CaptionWidth=100
+          CharCase=ecUpperCase
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      ControlCharCase=ecUpperCase
+    >}FormClassName='fFixedAssetInvoice'
+>

@@ -1,0 +1,209 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Sponsor Project'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=529
+  Height=465
+  UIParts={object:rtf::PClassUI<
+      Name='uipProject'
+      ClassTypeName='ProjectAccount'
+      DataBinding=bmMaster
+      AlwaysPostToServer=true
+    >, object:rtf::PClassUI<
+      Name='LsProjectSponsor'
+      ClassTypeName='ProjectSponsor'
+      DataBinding=bmList
+      Master=$UIPARTS['uipProject']
+      ListName='Ls_ProjectSponsor'
+      AlwaysPostToServer=true
+      CreateInstanceOnNew=true
+      DeleteInstanceOnDel=true
+      SetMasterDetailRelationship=true
+      OnSetData='ProjectSponsorOnSetData'
+    >, object:rtf::PClassUI<
+      Name='LsDisbursement'
+      ClassTypeName='ProjectSponsorDisbursement'
+      DataBinding=bmList
+      Master=$UIPARTS['LsProjectSponsor']
+      ListName='Ls_Disbursement'
+      AlwaysPostToServer=true
+      CreateInstanceOnNew=true
+      DeleteInstanceOnDel=true
+      SetMasterDetailRelationship=true
+    >}Containers={object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='AccountNo'
+          AccessOption=aoReadOnly
+          ControlCaption='Kode Proyek'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AccountName'
+          ControlCaption='Nama Proyek'
+          DataTypeName='VARCHAR'
+          DataLength=50
+        >}Name='pProject'
+      Width=320
+      Height=105
+      UIPart=$UIPARTS['uipProject']
+      Controls={*object:rtf::DBEdit<
+          Name='AccountNo'
+          Top=8
+          Left=8
+          Color=-2147483624
+          ControlCaption='Kode Proyek'
+        >, *object:rtf::DBEdit<
+          Name='AccountName'
+          Top=36
+          Left=8
+          Color=0
+          ControlCaption='Nama Proyek'
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=49
+      Controls={object:rtf::Button<
+          Name='bSimpan'
+          Layout=clNextSide
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Simpan'
+          DefaultAction=daProcessAllUI
+          ExitAction=eaQuitOK
+        >, object:rtf::Button<
+          Name='bBatal'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Color=0
+          ControlCaption=''
+          Caption='&Batal'
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=529
+      Height=465
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['dualsplit2']
+      InversedAlign=true
+    >, object:rtf::DualSplit<
+      Name='dualsplit2'
+      Width=529
+      Height=415
+      Container1=$CONTAINERS['pProject']
+      Container2=$CONTAINERS['dualsplit3']
+    >, object:rtf::Grid<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='DisbNumber'
+          ControlCaption='No'
+          DataTypeName='INTEGER'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
+          Name='DisbDatePlan'
+          ControlCaption='Tanggal'
+          DataTypeName='TIMESTAMP'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
+          Name='DisbAmountPlan'
+          ControlCaption='Jumlah'
+          DataTypeName='INTEGER'
+          DataLength=0
+        >}Name='gDisbursement'
+      Width=529
+      Height=99
+      UIPart=$UIPARTS['LsDisbursement']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='Tahap Penghimpunan'
+      Columns={*object:rtf::GridColumn<
+          Name='DisbNumber'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='DisbNumber'
+          DisplayFormat=''
+          TitleCaption='No'
+          Width=50
+        >, *object:rtf::GridColumn<
+          Name='DisbDatePlan'
+          InputStyle=cisDate
+          EnumeratedValues=''
+          FieldName='DisbDatePlan'
+          DisplayFormat='dd-mm-yyyy'
+          TitleCaption='Tanggal'
+          Width=80
+        >, *object:rtf::GridColumn<
+          Name='DisbAmountPlan'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='DisbAmountPlan'
+          DisplayFormat=',0.00'
+          TitleCaption='Jumlah'
+          Width=130
+        >}>, object:rtf::Grid<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='ProjectSponsorCode'
+          Hidden=true
+          ControlCaption='Kode sponsor'
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rtf::FieldUIElmtSetting<
+          Name='SponsorId'
+          Hidden=true
+          DataTypeName='INTEGER'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ExtSponsor'
+          ControlCaption='Nama Sponsor'
+          DataTypeName='varchar'
+          DataLength=20
+        >}Name='gSponsor'
+      Width=240
+      Height=209
+      UIPart=$UIPARTS['LsProjectSponsor']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='Sponsor'
+      Columns={*object:rtf::GridColumn<
+          Name='ExtSponsor'
+          InputStyle=cisLookup
+          EnumeratedValues=''
+          OnBeforeLookup='SponsorBeforeLookup'
+          FieldName='ExtSponsor'
+          DisplayFormat=''
+          TitleCaption='Nama Sponsor'
+          Width=200
+        >}>, object:rtf::DualSplit<
+      Name='dualsplit3'
+      Width=529
+      Height=309
+      Container1=$CONTAINERS['gSponsor']
+      Container2=$CONTAINERS['gDisbursement']
+    >}FormClassName='fProjectSponsor'
+>

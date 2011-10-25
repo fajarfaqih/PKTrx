@@ -1,0 +1,95 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{03AB2DCD-D5DA-4DD5-B07D-CD15AE22527E}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rpclass::TPClassUIDefList<
+  UIDefs={object:rpclass::TPClassUIDef<
+      Name='uipData'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='BranchCode'
+          DataTypeName='varchar'
+          DataLength=5
+        >, object:rpclass::TCustomLoadedField<
+          Name='IsAllInvestment'
+          DataTypeName='varchar'
+          DataLength=1
+        >, object:rpclass::TCustomLoadedField<
+          Name='LProductAccount.AccountNo'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='LProductAccount.ProductCode'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='LProductAccount.ProductName'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='LProductAccount.AccountNo'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='LProductAccount.AccountName'
+          DataTypeName='VARCHAR'
+          DataLength=50
+        >, object:rpclass::TCustomLoadedField<
+          Name='LProductAccount.ProductType'
+          DataTypeName='VARCHAR'
+          DataLength=1
+        >, object:rpclass::TCustomLoadedField<
+          Name='InvestmentType'
+          DataTypeName='varchar'
+          DataLength=1
+        >, object:rpclass::TCustomLoadedField<
+          Name='LInvestmentCategory.InvestmentCatId'
+          DataTypeName='INTEGER'
+        >, object:rpclass::TCustomLoadedField<
+          Name='LInvestmentCategory.InvestmentCatCode'
+          DataTypeName='VARCHAR'
+          DataLength=5
+        >, object:rpclass::TCustomLoadedField<
+          Name='LInvestmentCategory.InvestmentCatName'
+          DataTypeName='VARCHAR'
+          DataLength=150
+        >, object:rpclass::TCustomLoadedField<
+          Name='LInvestmentCategory.InvestmentCatId'
+          DataTypeName='INTEGER'
+        >, object:rpclass::TCustomLoadedField<
+          Name='BeginDate'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='EndDate'
+          DataTypeName='timestamp'
+          DataLength=20
+        >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
+          Name='LProductAccount'
+          ClassTypeName='VProduct'
+          FieldNames='AccountNo;ProductCode;ProductName;AccountNo;AccountName;ProductType'
+        >, object:rpclass::TCustomLoadedLink<
+          Name='LInvestmentCategory'
+          ClassTypeName='InvestmentCategory'
+          FieldNames='InvestmentCatId;InvestmentCatCode;InvestmentCatName;InvestmentCatId'
+        >}Mode=imSingleRow
+    >, object:rpclass::TPClassUIDef<
+      Name='uipInvestment'
+      PClassName='Investment'
+      LoadedFieldList='AccountNo;AccountName;InvestmentAmount;InvestmentShare;InvestmentNisbah;OpeningDate'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='InvestmentCatName'
+          DataTypeName='varchar'
+          DataLength=100
+        >, object:rpclass::TCustomLoadedField<
+          Name='TransactionNo'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='InvesteeName'
+          DataTypeName='varchar'
+          DataLength=100
+        >}Mode=imMultiRow
+    >}OnSetDataEx='FormSetDataEx'
+>

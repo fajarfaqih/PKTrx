@@ -1,0 +1,67 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Histori Transaksi'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=617
+  Height=281
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx=''
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  Containers={object:rtf::Query<
+      Name='qryTransaction'
+      Width=617
+      Height=225
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      OQLText=['select  from Transaction'#13#10,
+        '( TransactionId,'#13#10,
+        '  TransactionNo,'#13#10,
+        '  TransactionDate,'#13#10,
+        '  Description,'#13#10,
+        'self) then order by TransactionId;']
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=55
+      Controls={object:rtf::Button<
+          Name='bClose'
+          Layout=clNextSide
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='T&utup'
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=617
+      Height=281
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['qryTransaction']
+      InversedAlign=true
+    >}FormClassName='QryTransactionHistory'
+>

@@ -1,0 +1,8 @@
+; LIBRARY CONFIGURATION FILE
+; EASY DAF(tm) 2.0 component-oriented framework
+
+[liblist]
+BlobRegister=BlobRegister.dll
+
+[classlist]
+BLOBREGISTRATION=BlobRegister

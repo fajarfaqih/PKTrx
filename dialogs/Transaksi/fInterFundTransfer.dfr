@@ -1,0 +1,433 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dsMain']
+  Caption='Pinjaman Antar Dana'
+  Left=50
+  Top=50
+  Width=817
+  Height=425
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx='FormSetDataEx'
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Inputer'
+          Hidden=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='SourceCategory'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=1
+        >, object:rtf::FieldUIElmtSetting<
+          Name='CurrencyCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=3
+        >, object:rtf::FieldUIElmtSetting<
+          Name='FloatTransactionDate'
+          Hidden=true
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ShowMode'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TranCurrencyCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=5
+        >}Name='uipTransaction'
+      AlwaysPostToServer=true
+      PostLinkValues=true
+    >}Containers={object:rtf::DualSplit<
+      Name='dsMain'
+      Width=240
+      Height=96
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['pTransaction']
+      InversedAlign=true
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=425
+      Height=41
+      Controls={object:rtf::Button<
+          Name='bSave'
+          Layout=clAbsolute
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Simpan'
+          Default=true
+          OnClick='bSimpanClick'
+        >, object:rtf::Button<
+          Name='bCancel'
+          Layout=clAbsolute
+          Top=8
+          Left=88
+          Color=0
+          ControlCaption=''
+          Caption='&Batal'
+          Cancel=true
+          ExitAction=eaQuitOK
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Elements={object:rtf::LinkUIElmtSetting<
+          Name='LBatch'
+          ControlCaption='Pilih batch transaksi'
+          ClassTypeName='TransactionBatch'
+          DisplayFields='BatchId;BatchNo;BatchDate;Description'
+          Restrictions='Inputer|Inputer'#13#10
+          OQLText=['Select from TransactionBatch '#13#10,
+            '[IsClosed = ''F'' and IsPosted = ''T'' and Inputer = :Inputer]'#13#10,
+            '(BatchDate,Description, BatchId, BatchNo, self )'#13#10,
+            'then order by Desc BatchDate;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LBatch'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionNo'
+          ReadOnlyControl=true
+          ControlCaption='Nomor Transaksi'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionDate'
+          ReadOnlyControl=true
+          ControlCaption='Tanggal transaksi'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LAccountSource'
+          ControlCaption='Produk'
+          ClassTypeName='VProduct'
+          DisplayFields='AccountNo;AccountName;CurrencyCode;FundCategory;LCurrency.Short_Name;LCurrency.Kurs_Tengah_BI'
+          Restrictions='BranchCode|BranchCode'
+          OQLText=['select from VProduct '#13#10,
+            ' [status = ''A'' and BranchCode = :BranchCode and '#13#10,
+            '     ((currencycode =''000'' and producttype <> ''J'' ) or '#13#10,
+            '     (producttype=''J'')) ] '#13#10,
+            '(  ProductId, '#13#10,
+            '   AccountName, '#13#10,
+            '   ProductName as ProductName, '#13#10,
+            '       FundCategory $ as FundType, FundCategory as FundCategory, '#13#10,
+            '       PercentageOfAmilFunds,ProductCode,Idx, '#13#10,
+            '       AccountNo,CurrencyCode,LCurrency.Short_Name,LCurrency.Kurs_Tengah_BI, self) then order by Idx;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LAccountSource'
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LAccountDestination'
+          ClassTypeName='VProduct'
+          DisplayFields='AccountNo;AccountName;CurrencyCode;FundCategory;LCurrency.Short_Name;LCurrency.Kurs_Tengah_BI'
+          Restrictions='BranchCode|BranchCode'
+          OQLText=['select from VProduct '#13#10,
+            ' [status = ''A'' and BranchCode = :BranchCode and '#13#10,
+            '     ((currencycode =''000'' and producttype <> ''J'' ) or '#13#10,
+            '     (producttype=''J'')) ] '#13#10,
+            '(  ProductId, '#13#10,
+            '   AccountName, '#13#10,
+            '   ProductName as ProductName, '#13#10,
+            '       FundCategory $ as FundType, FundCategory as FundCategory, '#13#10,
+            '       PercentageOfAmilFunds,ProductCode,Idx, '#13#10,
+            '       AccountNo,CurrencyCode,LCurrency.Short_Name,LCurrency.Kurs_Tengah_BI, self) then order by Idx;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LAccountDestination'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount'
+          Hidden=true
+          ControlCaption='Nilai transfer'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Rate'
+          Hidden=true
+          ControlCaption='Nilai kurs'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ReferenceNo'
+          ControlCaption='Nomor referensi'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Description'
+          ControlCaption='Keterangan'
+          DataTypeName='varchar'
+          DataLength=100
+        >, object:rtf::FieldUIElmtSetting<
+          Name='FundEntitySource'
+          ControlCaption='Jenis Dana'
+          DataTypeName='integer'
+          DataLength=1
+          EnumeratedValues=['1=Zakat'#13#10,
+            '2=Infaq'#13#10,
+            '3=Wakaf'#13#10,
+            '4=Amil'#13#10,
+            '5=Non Halal'#13#10]
+        >, object:rtf::FieldUIElmtSetting<
+          Name='FundEntityDestination'
+          ControlCaption='Jenis Dana'
+          DataTypeName='integer'
+          DataLength=1
+          EnumeratedValues=['1=Zakat'#13#10,
+            '2=Infaq'#13#10,
+            '3=Wakaf'#13#10,
+            '4=Amil'#13#10,
+            '5=Non Halal'#13#10]
+        >, object:rtf::FieldUIElmtSetting<
+          Name='SourceAmount'
+          ControlCaption='Nilai Pinjaman (Keluar)'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='DestAmount'
+          ReadOnlyControl=true
+          ControlCaption='Nilai Pinjaman (Masuk)'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='SourceRate'
+          ControlCaption='Nilai Kurs'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='DestRate'
+          ControlCaption='Nilai Kurs'
+          DataTypeName='double'
+          DataLength=20
+        >}Name='pTransaction'
+      Width=857
+      Height=457
+      UIPart=$UIPARTS['uipTransaction']
+      Controls={*object:rtf::DBLookupEdit<
+          Name='LBatch'
+          Top=8
+          Left=8
+          ControlCaption='Pilih batch transaksi'
+          LookupField='LBatch.Description'
+          DisplayLookupField=true
+        >, *object:rtf::DBEdit<
+          Name='TransactionNo'
+          Top=36
+          Left=8
+          Width=225
+          Height=21
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Nomor Transaksi'
+          CharCase=ecUpperCase
+        >, *object:rtf::DBDateEdit<
+          Name='TransactionDate'
+          Top=64
+          Left=8
+          Enabled=false
+          ForceUseEqualCaptionWidth=true
+          Color=-2147483624
+          ControlCaption='Tanggal transaksi'
+          LayoutOrder=9
+        >, *object:rtf::DBLookupEdit<
+          Name='LAccountSource'
+          Layout=clAbsolute
+          Top=140
+          Left=8
+          ForceUseEqualCaptionWidth=true
+          ControlCaption='Produk'
+          FieldName='LAccountSource.AccountNo'
+          DisplayFormat=''
+          LookupField='LAccountSource.AccountName'
+          DisplayLookupField=true
+          OnAfterLookup='SourceAfterLookUp'
+          DisplayLookupColor=-2147483624
+          DisplayLookupWidth=180
+        >, *object:rtf::DBLookupEdit<
+          Name='LAccountDestination'
+          Layout=clAbsolute
+          Top=140
+          Left=392
+          Width=100
+          Height=21
+          ForceUseEqualCaptionWidth=true
+          ControlCaption='Produk'
+          LayoutOrder=5
+          FieldName='LAccountDestination.AccountNo'
+          DisplayFormat=''
+          LookupField='LAccountDestination.AccountName'
+          DisplayLookupField=true
+          OnAfterLookup='DestAfterLookup'
+          DisplayLookupColor=-2147483624
+          DisplayLookupWidth=180
+        >, *object:rtf::DBEdit<
+          Name='ReferenceNo'
+          Layout=clAbsolute
+          Top=310
+          Left=8
+          Width=281
+          Height=21
+          Color=0
+          ControlCaption='Nomor referensi'
+          LayoutOrder=12
+          CaptionWidth=100
+          CharCase=ecUpperCase
+        >, *object:rtf::DBEdit<
+          Name='Description'
+          Layout=clAbsolute
+          Top=336
+          Left=8
+          Width=281
+          Height=21
+          Color=0
+          ControlCaption='Keterangan'
+          LayoutOrder=13
+          CaptionWidth=100
+          CharCase=ecUpperCase
+        >, *object:rtf::DBComboBox<
+          Name='FundEntitySource'
+          Layout=clAbsolute
+          Top=170
+          Left=8
+          ForceUseEqualCaptionWidth=true
+          Color=0
+          ControlCaption='Jenis Dana'
+          LayoutOrder=3
+        >, *object:rtf::DBComboBox<
+          Name='FundEntityDestination'
+          Layout=clAbsolute
+          Top=170
+          Left=392
+          ForceUseEqualCaptionWidth=true
+          Color=0
+          ControlCaption='Jenis Dana'
+          LayoutOrder=6
+        >, *object:rtf::DBEdit<
+          Name='SourceAmount'
+          Layout=clAbsolute
+          Top=260
+          Left=8
+          ForceUseEqualCaptionWidth=true
+          Color=0
+          ControlCaption='Nilai Pinjaman (Keluar)'
+          FieldName='SourceAmount'
+          DisplayFormat=',0.00'
+          OnExit='AmountOnExit'
+        >, *object:rtf::DBEdit<
+          Name='DestAmount'
+          Layout=clAbsolute
+          Top=260
+          Left=392
+          Enabled=false
+          ForceUseEqualCaptionWidth=true
+          Color=-2147483624
+          ControlCaption='Nilai Pinjaman (Masuk)'
+          FieldName='DestAmount'
+          DisplayFormat=',0.00'
+        >, *object:rtf::DBEdit<
+          Name='SourceRate'
+          Layout=clAbsolute
+          Top=230
+          Left=8
+          ForceUseEqualCaptionWidth=true
+          Color=0
+          ControlCaption='Nilai Kurs'
+          FieldName='SourceRate'
+          DisplayFormat=',0.00'
+          OnExit='AmountOnExit'
+        >, *object:rtf::DBEdit<
+          Name='DestRate'
+          Layout=clAbsolute
+          Top=230
+          Left=392
+          ForceUseEqualCaptionWidth=true
+          Color=0
+          ControlCaption='Nilai Kurs'
+          FieldName='DestRate'
+          DisplayFormat=',0.00'
+          OnExit='AmountOnExit'
+        >, object:rtf::Label<
+          Name='label1'
+          Layout=clAbsolute
+          Top=112
+          Left=8
+          Width=169
+          Height=17
+          Color=0
+          ControlCaption=''
+          Caption='Dana sumber'
+          AutoSize=true
+          FontName='Tahoma'
+          FontColor=-2147483640
+          FontSize=8
+          FontStyleBold=true
+          FontStyleUnderline=true
+        >, object:rtf::DBEdit<
+          Name='dbedit1'
+          Layout=clAbsolute
+          Top=200
+          Left=8
+          ForceUseEqualCaptionWidth=true
+          Color=-2147483624
+          ControlCaption='Valuta'
+          LayoutOrder=4
+          FieldName='LAccountSource.CurrencyCode'
+          DisplayFormat=''
+          ReadOnly=true
+        >, object:rtf::Label<
+          Name='label2'
+          Layout=clAbsolute
+          Top=112
+          Left=392
+          Width=137
+          Height=17
+          Color=0
+          ControlCaption=''
+          Caption='Dana tujuan'
+          AutoSize=true
+          FontName='Tahoma'
+          FontColor=-2147483640
+          FontSize=8
+          FontStyleBold=true
+          FontStyleUnderline=true
+        >, object:rtf::DBEdit<
+          Name='dbedit2'
+          Layout=clAbsolute
+          Top=200
+          Left=392
+          Enabled=false
+          ForceUseEqualCaptionWidth=true
+          Color=-2147483624
+          ControlCaption='Valuta'
+          LayoutOrder=7
+          FieldName='LAccountDestination.CurrencyCode'
+          DisplayFormat=''
+          ReadOnly=true
+        >}EqualCaptionWidth=110
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      ControlCharCase=ecUpperCase
+    >}FormClassName='fInterFundTransfer'
+>

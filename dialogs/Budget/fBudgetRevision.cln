@@ -1,0 +1,126 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dsMain']
+  Caption='Revisi Anggaran'
+  Left=100
+  Top=50
+  Width=361
+  Height=201
+  UIParts={object:rtf::PClassUI<
+      Name='uipBudget'
+    >}Containers={object:rtf::DualSplit<
+      Name='dsMain'
+      Width=361
+      Height=201
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['pBudgetPeriod']
+      InversedAlign=true
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=425
+      Height=41
+      Controls={object:rtf::Button<
+          Name='bCreate'
+          Layout=clAbsolute
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Simpan'
+          Default=true
+          OnClick='bSimpanClick'
+        >, object:rtf::Button<
+          Name='bClose'
+          Layout=clAbsolute
+          Top=8
+          Left=88
+          Color=0
+          ControlCaption=''
+          Caption='&Tutup'
+          Cancel=true
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BudgetId'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='OwnerName'
+          ReadOnlyControl=true
+          ControlCaption='Nama Pemilik'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Bulan'
+          ReadOnlyControl=true
+          ControlCaption='Bulan'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Tahun'
+          ReadOnlyControl=true
+          ControlCaption='Tahun'
+          DataTypeName='integer'
+          DataLength=100
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount'
+          ControlCaption='Jumlah Anggaran'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Realization'
+          Hidden=true
+          ControlCaption='Realisasi Anggaran'
+          DataTypeName='double'
+          DataLength=20
+        >}Name='pBudgetPeriod'
+      Width=297
+      Height=153
+      UIPart=$UIPARTS['uipBudget']
+      Controls={*object:rtf::DBEdit<
+          Name='OwnerName'
+          Top=8
+          Left=8
+          Color=-2147483624
+          ControlCaption='Nama Pemilik'
+          CharCase=ecUpperCase
+        >, *object:rtf::DBEdit<
+          Name='Bulan'
+          Top=36
+          Left=8
+          Color=-2147483624
+          ControlCaption='Bulan'
+          ReadOnly=true
+        >, *object:rtf::DBEdit<
+          Name='Tahun'
+          Top=64
+          Left=8
+          Color=-2147483624
+          ControlCaption='Tahun'
+          ReadOnly=true
+        >, *object:rtf::DBEdit<
+          Name='Amount'
+          Top=92
+          Left=8
+          Color=0
+          ControlCaption='Jumlah Anggaran'
+        >}EqualCaptionWidth=75
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      ControlCharCase=ecUpperCase
+    >}FormClassName='fBudgetRevision'
+>

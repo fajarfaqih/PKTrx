@@ -1,0 +1,51 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{97748467-74BA-4499-A160-950CB936A35B}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:appstudio::DPJ<
+  Modules={object:appstudio::ModuleDef<
+      Units={object:appstudio::UnitDef<
+          UnitName='ModUserMgmt.pas'
+          Implemented_Classes=['BRANCHLOCATION'#13#10,
+            'USERAPP'#13#10,
+            'USERGROUP'#13#10,
+            'USERGROUPAPP'#13#10]
+          Implementation_Uses=['Utils2'#13#10,
+            'SecurityUpdate'#13#10,
+            'FileCtrl'#13#10]
+        >}Path='UserMgmt'
+      PClass_Decl_Unit_Name='PModClsDecl.pas'
+      Module_Export_Unit_Name='PModExport.pas'
+      ModuleName='UserMgmt'
+    >, object:appstudio::ModuleDef<
+      Units={object:appstudio::UnitDef<
+          UnitName='modBlobRegister.pas'
+          Implemented_Classes='BLOBREGISTRATION'#13#10
+          Implementation_Uses='Utils2'#13#10
+        >}Path='BlobRegister'
+      PClass_Decl_Unit_Name='PModClsDecl.pas'
+      Module_Export_Unit_Name='PModExport.pas'
+      ModuleName='BlobRegister'
+    >}TypeLibrary='app.mdt'
+  Project_Group='source\transaction.bpg'
+  Lib_Config='default.lcf'
+  Sys_Config='default.cfg'
+  KernelSrcPath='source\kernel'
+  KernelListFile='kernelsrcs.lst'
+  PDB_Alias='transaction'
+  PDB_Driver='INTRBASE'
+  PDB_AliasParams=['SERVER NAME=localhost:c:\dafapp\com\PKPU\transaction\database\AppDB.GDB'#13#10,
+    'USER NAME=SYSDBA']
+  PDB_UserName='sa'
+  PDB_Password='masterkey'
+  SDB_Alias='transaction_TMP'
+  SDB_Driver='INTRBASE'
+  SDB_AliasParams=['SERVER NAME=localhost:c:\dafapp\com\PKPU\transaction\database\AppDB_TMP.GDB'#13#10,
+    'USER NAME=SYSDBA']
+  SDB_UserName='sa'
+  SDB_Password='masterkey'
+  Intf_Decl_Unit='source\PClassIntf.pas'
+  PClass_Decl_Unit='source\PClassDecl.pas'
+>

@@ -1,0 +1,7 @@
+*.pyc
+*.mpyc
+*.bak
+*.zpy
+*.obk
+default.cfg
+dev.cfg

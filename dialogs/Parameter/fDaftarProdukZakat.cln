@@ -1,0 +1,164 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit2']
+  Caption='Daftar Produk Zakat'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=633
+  Height=320
+  UIParts={object:rtf::PClassUI<
+      Name='uipFilter'
+    >}Containers={object:rtf::Panel<
+      Name='pFilter'
+      Width=489
+      Height=57
+      UIPart=$UIPARTS['uipFilter']
+      Controls={object:rtf::Label<
+          Name='lTitle'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Width=345
+          Height=49
+          Color=0
+          ControlCaption='Daftar'
+          Caption='Daftar Produk Zakat'
+          AutoSize=true
+          FontName='Times New Roman'
+          FontSize=30
+          FontStyleBold=true
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Query<
+      Name='ZakahProduct'
+      Width=633
+      Height=210
+      ContextMenuName='popupmenus/parameter/pMasterProduct'
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      OQLText=['select from ZakahProduct'#13#10,
+        '['#13#10,
+        '    Status = ''A'''#13#10,
+        '  or'#13#10,
+        '    Status = ''N'''#13#10,
+        ']'#13#10,
+        '('#13#10,
+        '  ProductId,'#13#10,
+        '  ProductCode as Kode_Produk,'#13#10,
+        '  ProductName as Nama_Produk,'#13#10,
+        '  Description as Keterangan,'#13#10,
+        '  Nishab as Nishab,'#13#10,
+        '  Haul as Haul,'#13#10,
+        '  Rate as Kadar,'#13#10,
+        '  AccountOfCollection as Rekening_Pengumpulan,'#13#10,
+        '  AccountOfDistribution as Rekening_Distribusi,   '#13#10,
+        '  PercentageOfAmilFunds as Persentase_Amil,'#13#10,
+        '  ClosedDate as Tanggal_Tutup,'#13#10,
+        '  Status $,'#13#10,
+        '  Level,'#13#10,
+        '  IsDetail,'#13#10,
+        '  self'#13#10,
+        ') then order by Kode_Produk;']
+      DirectDisplay=true
+      WindowSize=20
+      Columns={object:rtf::QueryColumn<
+          FieldName='ZakahProduct.Kode_Produk'
+          Width=80
+          Caption='Kode Produk'
+        >, object:rtf::QueryColumn<
+          FieldName='ZakahProduct.Nama_Produk'
+          Width=80
+          Hidden=true
+        >, object:rtf::QueryColumn<
+          FieldName='ZakahProduct.Keterangan'
+          Width=240
+          Caption='Produk'
+        >, object:rtf::QueryColumn<
+          FieldName='ZakahProduct.Nishab'
+          Width=80
+          Caption='Nishab'
+          Hidden=true
+        >, object:rtf::QueryColumn<
+          FieldName='ZakahProduct.Haul'
+          Width=80
+          Caption='Haul'
+          Hidden=true
+        >, object:rtf::QueryColumn<
+          FieldName='ZakahProduct.Kadar'
+          Width=80
+          Caption='Rate Zakat (%)'
+        >, object:rtf::QueryColumn<
+          FieldName='ZakahProduct.Persentase_Amil'
+          Width=110
+          Caption='Prosentase Amil (%)'
+        >, object:rtf::QueryColumn<
+          FieldName='ZakahProduct.Tanggal_Tutup'
+          Caption='Tgl Tutup'
+        >, object:rtf::QueryColumn<
+          FieldName='ZakahProduct.Status'
+          Width=80
+          Caption='Status'
+        >, object:rtf::QueryColumn<
+          FieldName='ZakahProduct.Level'
+          Caption='Level'
+        >, object:rtf::QueryColumn<
+          FieldName='ZakahProduct.IsDetail'
+          Caption='Produk Detil'
+        >}EnableColumns=true
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=633
+      Height=268
+      Container1=$CONTAINERS['pFilter']
+      Container2=$CONTAINERS['ZakahProduct']
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=51
+      Controls={object:rtf::Button<
+          Name='bExportExcel'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Width=97
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='&Export Excel'
+          OnClick='bExportExcelClick'
+        >, object:rtf::Button<
+          Name='bClose'
+          Layout=clNextSide
+          Top=8
+          Left=109
+          Color=0
+          ControlCaption=''
+          Caption='T&utup'
+          ExitAction=eaQuitCancel
+          OnClick='bCloseClick'
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit2'
+      Width=633
+      Height=320
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['dualsplit1']
+      InversedAlign=true
+    >}FormClassName='fDaftarProdukZakat'
+>

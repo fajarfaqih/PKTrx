@@ -1,0 +1,46 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{FF6521AE-DCB8-457C-933C-35D88DB5B672}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>
+object:rmn::Menu<
+  MenuItems={
+    object:rmn::MenuItem<
+      Caption='&Peragaan...'
+      OnClick='LihatUserGroupClick'
+      AllowedGroups='MISADM'
+    >
+    , object:rmn::MenuItem<
+      Caption='-'
+      AllowedGroups='MISADM'
+    >
+    , object:rmn::MenuItem<
+      Caption='&Buat Kelompok Pengguna Baru...'
+      OnClick='TambahUserGroupClick'
+      AllowedGroups='MISADM'
+    >
+    , object:rmn::MenuItem<
+      Caption='&Koreksi Kelompok Pengguna...'
+      OnClick='KoreksiUserGroupClick'
+      AllowedGroups='MISADM'
+    >
+    , object:rmn::MenuItem<
+      Caption='&Hapus Kelompok Pengguna...'
+      OnClick='DeleteUserGroupClick'
+      AllowedGroups='MISADM'
+    >
+    , object:rmn::MenuItem<
+      Caption='-'
+      AllowedGroups='MISADM'
+    >
+    , object:rmn::MenuItem<
+      Caption='&Daftar Hak Akses Menu...'
+      OnClick='HakAksesMenuClick'
+      AllowedGroups='MISADM'
+    >
+  }
+  MenuType=mtPopupMenu
+  DenyThenAllow=true
+>

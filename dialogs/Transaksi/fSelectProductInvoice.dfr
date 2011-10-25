@@ -1,0 +1,234 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit6']
+  Caption='Pilih Produk Invoice'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=657
+  Height=497
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx='FormSetDataEx'
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='mode'
+          Hidden=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ID'
+          Hidden=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='UserPengubah'
+          Hidden=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TglUbah'
+          Hidden=true
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TerminalUbah'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ViewType'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=1
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TempData'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rtf::FieldUIElmtSetting<
+          Name='SponsorId'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >}Name='uipFilter'
+    >, object:rtf::PClassUI<
+      Name='uipTransProgram'
+      MultiLine=true
+    >, object:rtf::PClassUI<
+      Name='uipProjectDisbursement'
+      MultiLine=true
+    >}Containers={object:rtf::Panel<
+      Elements={object:rtf::LinkUIElmtSetting<
+          Name='LProject'
+          ControlCaption='Pilih Project'
+          ClassTypeName='ProjectSponsor'
+          DisplayFields='LProjectAccount.AccountNo;LProjectAccount.AccountName'
+          Restrictions='SponsorId|SponsorId'
+          OQLText=['select from ProjectSponsor'#13#10,
+            '[SponsorId=:SponsorId]'#13#10,
+            '('#13#10,
+            ' LProjectAccount.AccountNo,'#13#10,
+            ' LProjectAccount.AccountName,'#13#10,
+            ' self'#13#10,
+            ') then order by AccountName;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LProject'
+        >}Name='pProject'
+      Width=441
+      Height=57
+      UIPart=$UIPARTS['uipFilter']
+      Controls={*object:rtf::DBLookupEdit<
+          Name='LProject'
+          Top=8
+          Left=8
+          ControlCaption='Pilih Project'
+          LookupField='LProject.LProjectAccount.AccountName'
+          DisplayLookupField=true
+        >, object:rtf::Button<
+          Name='button1'
+          Layout=clAbsolute
+          Top=8
+          Left=312
+          Color=0
+          ControlCaption=''
+          Caption='Tampilkan'
+          OnClick='bDisburseClick'
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Grid<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='DisbNumber'
+          ControlCaption='Tahap'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='DisbDatePlan'
+          ControlCaption='Tanggal'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='DisbAmountPlan'
+          ControlCaption='Jumlah'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='DisbId'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >}Name='gProjectDisbursement'
+      Width=649
+      Height=371
+      ContextMenuName='popupmenus/Sponsor/pSponsorProject'
+      UIPart=$UIPARTS['uipProjectDisbursement']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='Tahap Penghimpunan'
+      Columns={*object:rtf::GridColumn<
+          Name='DisbNumber'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='DisbNumber'
+          DisplayFormat=''
+          TitleCaption='Tahap'
+        >, *object:rtf::GridColumn<
+          Name='DisbDatePlan'
+          InputStyle=cisDate
+          EnumeratedValues=''
+          FieldName='DisbDatePlan'
+          DisplayFormat=''
+          TitleCaption='Tanggal'
+        >, *object:rtf::GridColumn<
+          Name='DisbAmountPlan'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='DisbAmountPlan'
+          DisplayFormat=',0.00'
+          TitleCaption='Jumlah'
+        >}ReadOnly=true
+      RowSelect=true
+      SuppressHelpLine=true
+    >, object:rtf::DualSplit<
+      Name='dualsplit5'
+      Width=649
+      Height=429
+      Container1=$CONTAINERS['pProject']
+      Container2=$CONTAINERS['gProjectDisbursement']
+    >, object:rtf::Query<
+      Name='qProgram'
+      Width=649
+      Height=429
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::MultiPages<
+      Name='mpProduct'
+      Width=320
+      Height=320
+      Pages={object:rtf::Page<
+          PageName='mpProject'
+          PageTitle='Project'
+          Container=$CONTAINERS['dualsplit5']
+        >, object:rtf::Page<
+          PageName='mpProgram'
+          PageTitle='Program'
+          Container=$CONTAINERS['qProgram']
+          Index=1
+        >}>, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=39
+      Controls={object:rtf::Button<
+          Name='bClose'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='Pilih'
+          Default=true
+          Cancel=true
+          ExitAction=eaQuitOK
+        >, object:rtf::Button<
+          Name='button1'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Color=0
+          ControlCaption=''
+          Caption='Batal'
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit6'
+      Width=240
+      Height=96
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['mpProduct']
+      InversedAlign=true
+    >}FormClassName='fSelectProductInvoice'
+>

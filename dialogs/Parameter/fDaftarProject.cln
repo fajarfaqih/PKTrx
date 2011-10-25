@@ -1,0 +1,164 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit2']
+  Caption='Daftar Project'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=633
+  Height=320
+  UIParts={object:rtf::PClassUI<
+      Name='uipFilter'
+    >}Containers={object:rtf::Panel<
+      Name='pFilter'
+      Width=529
+      Height=57
+      UIPart=$UIPARTS['uipFilter']
+      Controls={object:rtf::Label<
+          Name='lTitle'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Width=401
+          Height=49
+          Color=0
+          ControlCaption='Daftar'
+          Caption='Daftar Project Induk'
+          AutoSize=true
+          FontName='Times New Roman'
+          FontSize=30
+          FontStyleBold=true
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Query<
+      Name='Project'
+      Width=633
+      Height=217
+      ContextMenuName='popupmenus/parameter/pMasterProject'
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      OQLText=['select from Project'#13#10,
+        '['#13#10,
+        '    Status = ''A'''#13#10,
+        '  or'#13#10,
+        '    Status = ''N'''#13#10,
+        ']'#13#10,
+        '('#13#10,
+        '  ProductId,'#13#10,
+        '  ProductCode as Kode_Proyek,'#13#10,
+        '  ProductName as Nama_Produk,'#13#10,
+        '  Description as Keterangan,'#13#10,
+        '  AccountOfCollection as Rekening_Pengumpulan,'#13#10,
+        '  AccountOfDistribution as Rekening_Distribusi,   '#13#10,
+        '  FundCategory as Kategori_Sumber,'#13#10,
+        ' PercentageOfAmilFunds as Persentase_Amil,'#13#10,
+        ' StartDate as Tgl_Mulai,'#13#10,
+        ' FinsihDate as Tgl_Akhir,'#13#10,
+        ' BudgetAmount as Nilai_Budget,'#13#10,
+        ' ClosedDate as Tanggal_Tutup, '#13#10,
+        ' Status $,'#13#10,
+        ' IsDetail,'#13#10,
+        ' Level, '#13#10,
+        '  self'#13#10,
+        ') then order by Kode_Proyek;']
+      DirectDisplay=true
+      WindowSize=20
+      Columns={object:rtf::QueryColumn<
+          FieldName='Project.Kode_Proyek'
+          Width=80
+          Caption='Kode Proyek'
+        >, object:rtf::QueryColumn<
+          FieldName='Project.Nama_Produk'
+          Caption='Nama Proyek'
+          Hidden=true
+        >, object:rtf::QueryColumn<
+          FieldName='Project.Keterangan'
+          Width=220
+          Caption='Project'
+        >, object:rtf::QueryColumn<
+          FieldName='Project.Persentase_Amil'
+          Width=80
+          Caption='(%) Amil'
+        >, object:rtf::QueryColumn<
+          FieldName='Project.Tgl_Mulai'
+          Caption='Tgl Mulai'
+          Hidden=true
+        >, object:rtf::QueryColumn<
+          FieldName='Project.Tgl_Akhir'
+          Caption='Tgl Akhir'
+          Hidden=true
+        >, object:rtf::QueryColumn<
+          FieldName='Project.Nilai_Budget'
+          Width=80
+          Caption='Nilai Budget'
+          Hidden=true
+        >, object:rtf::QueryColumn<
+          FieldName='Project.Tanggal_Tutup'
+          Caption='Tgl Tutup'
+          Hidden=true
+        >, object:rtf::QueryColumn<
+          FieldName='Project.Status'
+          Width=80
+          Caption='Status'
+        >, object:rtf::QueryColumn<
+          FieldName='Project.Level'
+          Caption='Level'
+        >, object:rtf::QueryColumn<
+          FieldName='Project.IsDetail'
+          Caption='Proyek Detil'
+        >}EnableColumns=true
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=633
+      Height=275
+      Container1=$CONTAINERS['pFilter']
+      Container2=$CONTAINERS['Project']
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=44
+      Controls={object:rtf::Button<
+          Name='bExportExcel'
+          Layout=clNextSide
+          Top=8
+          Left=8
+          Width=89
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='&Export Excel'
+          OnClick='bExportExcelClick'
+        >, object:rtf::Button<
+          Name='bClose'
+          Layout=clNextSide
+          Top=8
+          Left=101
+          Color=0
+          ControlCaption=''
+          Caption='T&utup'
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit2'
+      Width=633
+      Height=320
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['dualsplit1']
+      InversedAlign=true
+    >}FormClassName='fDaftarProject'
+>

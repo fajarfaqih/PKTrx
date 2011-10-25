@@ -1,0 +1,181 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit2']
+  Caption='Ubah GL Interface'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=441
+  Height=320
+  UIParts={object:rtf::PClassUI<
+      Name='uipGLIContainer'
+      ClassTypeName='GLInterfaceContainer'
+      DataBinding=bmMaster
+      AlwaysPostToServer=true
+    >, object:rtf::PClassUI<
+      Name='uipGLIMember'
+      ClassTypeName='GLInterfaceMember'
+      DataBinding=bmList
+      Master=$UIPARTS['uipGLIContainer']
+      ListName='LsGLIMember'
+      AfterNewRecord='ItemAfterNewRecord'
+    >}Containers={object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='GLIContainerName'
+          AccessOption=aoReadOnly
+          ControlCaption='Keterangan'
+          DataTypeName='VARCHAR'
+          DataLength=50
+        >}Name='pGLIContainer'
+      Width=320
+      Height=57
+      UIPart=$UIPARTS['uipGLIContainer']
+      Controls={*object:rtf::DBEdit<
+          Name='GLIContainerName'
+          Top=8
+          Left=8
+          Color=-2147483624
+          ControlCaption='Keterangan'
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Grid<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='GLIMemberCode'
+          AccessOption=aoReadOnly
+          DataTypeName='VARCHAR'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Description'
+          AccessOption=aoReadOnly
+          DataTypeName='VARCHAR'
+          DataLength=100
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LAccount'
+          ClassTypeName='Account'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LAccount.Account_Code'
+              DataTypeName='VARCHAR'
+              DataLength=20
+              UsedAsKey=true
+              KeyOrDisplayName='Account_Code'
+              FinalDisplayFieldName='Account_Code'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LAccount.Account_Code'
+              DataTypeName='VARCHAR'
+              DataLength=20
+              UsedAsDisplay=true
+              KeyOrDisplayName='Account_Code'
+              FinalDisplayFieldName='Account_Code'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LAccount.Account_Name'
+              DataTypeName='VARCHAR'
+              DataLength=100
+              UsedAsDisplay=true
+              KeyOrDisplayName='Account_Name'
+              FinalDisplayFieldName='Account_Name'
+            >}Restrictions=''
+          OQLText=['select from Account'#13#10,
+            '[Is_Detail=''T'']'#13#10,
+            '(Account_Code,'#13#10,
+            ' Account_Name,'#13#10,
+            ' self)'#13#10,
+            'then order by Account_Code;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LAccount'
+        >}Name='gGLInterface'
+      Width=441
+      Height=211
+      UIPart=$UIPARTS['uipGLIMember']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='GL Interface'
+      Columns={*object:rtf::GridColumn<
+          Name='GLIMemberCode'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='GLIMemberCode'
+          DisplayFormat=''
+          TitleCaption='Kode Interface'
+          Width=100
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='Description'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Description'
+          DisplayFormat=''
+          TitleCaption='Keterangan'
+          Width=250
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='LAccount.Account_Code'
+          InputStyle=cisLookup
+          EnumeratedValues=''
+          FieldName='LAccount.Account_Code'
+          DisplayFormat=''
+          TitleCaption='Kode Akun'
+          Width=100
+        >, *object:rtf::GridColumn<
+          Name='LAccount.Account_Name'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='LAccount.Account_Name'
+          DisplayFormat=''
+          TitleCaption='Nama Akun'
+          Width=200
+        >}SuppressHelpLine=true
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=441
+      Height=269
+      Container1=$CONTAINERS['pGLIContainer']
+      Container2=$CONTAINERS['gGLInterface']
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=50
+      Controls={object:rtf::Button<
+          Name='bSimpan'
+          Layout=clNextSide
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Simpan'
+          DefaultAction=daProcessAllUI
+          ExitAction=eaQuitOK
+        >, object:rtf::Button<
+          Name='bBatal'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Color=0
+          ControlCaption=''
+          Caption='&Batal'
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit2'
+      Width=441
+      Height=320
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['dualsplit1']
+      InversedAlign=true
+    >}FormClassName='fGLIMemberEdit'
+>

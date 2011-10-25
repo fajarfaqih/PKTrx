@@ -1,0 +1,110 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dsMain']
+  Caption='Buat batch transaksi'
+  Left=100
+  Top=50
+  Width=369
+  Height=137
+  OnShow='FormOnShow'
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='Inputer'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=20
+        >}Name='uipBatch'
+    >}Containers={object:rtf::DualSplit<
+      Name='dsMain'
+      Width=369
+      Height=137
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['pBatch']
+      InversedAlign=true
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=361
+      Height=35
+      Controls={object:rtf::Button<
+          Name='bCreate'
+          Layout=clAbsolute
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Buat'
+          Default=true
+          OnClick='bCreateClick'
+        >, object:rtf::Button<
+          Name='bClose'
+          Layout=clAbsolute
+          Top=8
+          Left=88
+          Color=0
+          ControlCaption=''
+          Caption='&Tutup'
+          Cancel=true
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BatchDate'
+          ControlCaption='Tanggal Batch'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BatchNo'
+          ReadOnlyControl=true
+          ControlCaption='Nomor batch transaksi'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Description'
+          ReadOnlyControl=true
+          ControlCaption='Keterangan'
+          DataTypeName='varchar'
+          DataLength=100
+        >}Name='pBatch'
+      Width=361
+      Height=97
+      UIPart=$UIPARTS['uipBatch']
+      Controls={*object:rtf::DBDateEdit<
+          Name='BatchDate'
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption='Tanggal Batch'
+        >, *object:rtf::DBEdit<
+          Name='BatchNo'
+          Top=36
+          Left=8
+          Color=-2147483624
+          ControlCaption='Nomor batch transaksi'
+          ReadOnly=true
+          CharCase=ecUpperCase
+        >, *object:rtf::DBEdit<
+          Name='Description'
+          Top=64
+          Left=8
+          Color=-2147483624
+          ControlCaption='Keterangan'
+          ReadOnly=true
+          CharCase=ecUpperCase
+        >}EqualCaptionWidth=120
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      ControlCharCase=ecUpperCase
+    >}FormClassName='fTransactionBatch'
+>

@@ -1,0 +1,348 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Budget Baru'
+  Left=50
+  Top=50
+  Width=457
+  Height=361
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnShow='FormOnShow'
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx='FormSetDataEx'
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=5
+        >}Name='uipBudget'
+      FillInDefaultValues=true
+      AlwaysPostToServer=true
+      InitWithDefaultValues=true
+    >}Containers={object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BudgetCode'
+          ControlCaption='Kode Budget'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='InputGroupType'
+          ControlCaption='Kegiatan'
+          DataTypeName='varchar'
+          DataLength=1
+          EnumeratedValues=['X=Pilih Kegiatan'#13#10,
+            'N=Input Kegiatan Baru'#13#10]
+        >, object:rtf::FieldUIElmtSetting<
+          Name='NewGroupName'
+          DataTypeName='varchar'
+          DataLength=200
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LGroupItem'
+          ControlCaption='Kegiatan'
+          ClassTypeName='BudgetItem'
+          DisplayFields='BudgetItemDescription;ItemId'
+          Restrictions=['OwnerId|OwnerId'#13#10,
+            'BranchCode|BranchCode']
+          OQLText=['select from BudgetItem'#13#10,
+            '[ is_detail=''F'' '#13#10,
+            '   and level=1'#13#10,
+            '   and OwnerId=:OwnerId'#13#10,
+            '   and BranchCode=:BranchCode'#13#10,
+            ']'#13#10,
+            '(BudgetItemDescription,ItemId,self);']
+          LookupOption=loCustomOQL
+          FieldBaseName='LGroupItem'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ItemName'
+          ControlCaption='Rincian Kebutuhan'
+          DataTypeName='varchar'
+          DataLength=60
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount1'
+          ControlCaption='Bulan 1'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount2'
+          ControlCaption='Bulan 2'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount3'
+          ControlCaption='Bulan 3'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount4'
+          ControlCaption='Bulan 4'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount5'
+          ControlCaption='Bulan 5'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount6'
+          ControlCaption='Bulan 6'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount7'
+          ControlCaption='Bulan 7'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount8'
+          ControlCaption='Bulan 8'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount9'
+          ControlCaption='Bulan 9'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount10'
+          ControlCaption='Bulan 10'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount11'
+          ControlCaption='Bulan 11'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount12'
+          ControlCaption='Bulan 12'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TotalAmount'
+          ReadOnlyControl=true
+          ControlCaption='Total'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BudgetId'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='PeriodId'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='OwnerId'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >}Name='pBudget'
+      Width=465
+      Height=313
+      UIPart=$UIPARTS['uipBudget']
+      Controls={*object:rtf::DBEdit<
+          Name='BudgetCode'
+          Top=14
+          Left=10
+          Width=47
+          Height=21
+          Color=0
+          ControlCaption='Kode Budget'
+          CharCase=ecUpperCase
+        >, *object:rtf::DBComboBox<
+          Name='InputGroupType'
+          Top=42
+          Left=10
+          Color=0
+          ControlCaption='Kegiatan'
+          OnChange='InputGroupTypeChange'
+        >, *object:rtf::DBEdit<
+          Name='NewGroupName'
+          Layout=clAbsolute
+          Top=42
+          Left=234
+          Color=0
+          ControlCaption=''
+          CaptionWidth=1
+          CharCase=ecUpperCase
+        >, *object:rtf::DBLookupEdit<
+          Name='LGroupItem'
+          Layout=clAbsolute
+          Top=42
+          Left=234
+          Width=202
+          Height=21
+          ControlCaption='Kegiatan'
+          CaptionWidth=1
+          LookupField='LGroupItem.ItemId'
+          DisplayLookupField=false
+        >, *object:rtf::DBEdit<
+          Name='ItemName'
+          Top=70
+          Left=10
+          Width=319
+          Height=21
+          Color=0
+          ControlCaption='Rincian Kebutuhan'
+          CharCase=ecUpperCase
+        >, *object:rtf::DBEdit<
+          Name='Amount1'
+          Top=98
+          Left=10
+          Color=0
+          ControlCaption='Bulan 1'
+          OnExit='AmountOnExit'
+        >, *object:rtf::DBEdit<
+          Name='Amount2'
+          Top=126
+          Left=10
+          Color=0
+          ControlCaption='Bulan 2'
+          OnExit='AmountOnExit'
+        >, *object:rtf::DBEdit<
+          Name='Amount3'
+          Top=154
+          Left=10
+          Color=0
+          ControlCaption='Bulan 3'
+          OnExit='AmountOnExit'
+        >, *object:rtf::DBEdit<
+          Name='Amount4'
+          Top=182
+          Left=10
+          Color=0
+          ControlCaption='Bulan 4'
+          OnExit='AmountOnExit'
+        >, *object:rtf::DBEdit<
+          Name='Amount5'
+          Top=210
+          Left=10
+          Color=0
+          ControlCaption='Bulan 5'
+          OnExit='AmountOnExit'
+        >, *object:rtf::DBEdit<
+          Name='Amount6'
+          Top=238
+          Left=10
+          Color=0
+          ControlCaption='Bulan 6'
+          OnExit='AmountOnExit'
+        >, *object:rtf::DBEdit<
+          Name='Amount7'
+          Layout=clAbsolute
+          Top=98
+          Left=256
+          Color=0
+          ControlCaption='Bulan 7'
+          CaptionWidth=50
+          OnExit='AmountOnExit'
+        >, *object:rtf::DBEdit<
+          Name='Amount8'
+          Layout=clAbsolute
+          Top=126
+          Left=256
+          Color=0
+          ControlCaption='Bulan 8'
+          CaptionWidth=50
+          OnExit='AmountOnExit'
+        >, *object:rtf::DBEdit<
+          Name='Amount9'
+          Layout=clAbsolute
+          Top=154
+          Left=256
+          Color=0
+          ControlCaption='Bulan 9'
+          CaptionWidth=50
+          OnExit='AmountOnExit'
+        >, *object:rtf::DBEdit<
+          Name='Amount10'
+          Layout=clAbsolute
+          Top=182
+          Left=256
+          Color=0
+          ControlCaption='Bulan 10'
+          CaptionWidth=50
+          OnExit='AmountOnExit'
+        >, *object:rtf::DBEdit<
+          Name='Amount11'
+          Layout=clAbsolute
+          Top=210
+          Left=256
+          Color=0
+          ControlCaption='Bulan 11'
+          CaptionWidth=50
+          OnExit='AmountOnExit'
+        >, *object:rtf::DBEdit<
+          Name='Amount12'
+          Layout=clAbsolute
+          Top=238
+          Left=256
+          Color=0
+          ControlCaption='Bulan 12'
+          CaptionWidth=50
+          OnExit='AmountOnExit'
+        >, *object:rtf::DBEdit<
+          Name='TotalAmount'
+          Layout=clAbsolute
+          Top=274
+          Left=10
+          Color=-2147483624
+          ControlCaption='Total Anggaran 1 Thn'
+          CaptionWidth=120
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=10
+      ControlTopMargin=14
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      ControlCharCase=ecUpperCase
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=56
+      Controls={object:rtf::Button<
+          Name='bSave'
+          Layout=clNextSide
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Simpan'
+          OnClick='SaveClick'
+        >, object:rtf::Button<
+          Name='bCancel'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Color=0
+          ControlCaption=''
+          Caption='&Batal'
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=240
+      Height=96
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['pBudget']
+      InversedAlign=true
+    >}FormClassName='fBudgetNew'
+>

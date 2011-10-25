@@ -1,0 +1,253 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Laporan Transaksi Kas/Bank Harian'
+  Left=50
+  Top=50
+  Width=425
+  Height=201
+  UIParts={object:rtf::PClassUI<
+      Name='uipData'
+      FillInDefaultValues=true
+      AlwaysPostToServer=true
+      PostLinkValues=true
+      InitWithDefaultValues=true
+    >}Containers={object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          Hidden=true
+          ReadOnlyControl=true
+          ControlCaption='Cabang laporan'
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LBranch'
+          ControlCaption='Cabang'
+          ClassTypeName='Branch'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LBranch.BranchCode'
+              DataTypeName='VARCHAR'
+              DataLength=3
+              UsedAsKey=true
+              KeyOrDisplayName='BranchCode'
+              FinalDisplayFieldName='BranchCode'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LBranch.BranchCode'
+              DataTypeName='VARCHAR'
+              DataLength=3
+              UsedAsDisplay=true
+              KeyOrDisplayName='BranchCode'
+              FinalDisplayFieldName='BranchCode'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LBranch.BranchName'
+              DataTypeName='VARCHAR'
+              DataLength=30
+              UsedAsDisplay=true
+              KeyOrDisplayName='BranchName'
+              FinalDisplayFieldName='BranchName'
+            >}Restrictions=''
+          OQLText=['select from Branch'#13#10,
+            '( BranchCode,BranchName,self'#13#10,
+            ') then order by BranchName;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LBranch'
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LCashAccount'
+          ControlCaption='Rekening Kas/Bank'
+          ClassTypeName='CashAccount'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LCashAccount.AccountNo'
+              DataTypeName='VARCHAR'
+              DataLength=30
+              UsedAsKey=true
+              KeyOrDisplayName='AccountNo'
+              FinalDisplayFieldName='AccountNo'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LCashAccount.AccountNo'
+              DataTypeName='VARCHAR'
+              DataLength=30
+              UsedAsDisplay=true
+              KeyOrDisplayName='AccountNo'
+              FinalDisplayFieldName='AccountNo'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LCashAccount.AccountName'
+              DataTypeName='VARCHAR'
+              DataLength=50
+              UsedAsDisplay=true
+              KeyOrDisplayName='AccountName'
+              FinalDisplayFieldName='AccountName'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LCashAccount.CurrencyCode'
+              DataTypeName='VARCHAR'
+              DataLength=20
+              UsedAsDisplay=true
+              KeyOrDisplayName='CurrencyCode'
+              FinalDisplayFieldName='CurrencyCode'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LCashAccount.LCurrency.Short_Name'
+              DataTypeName='VARCHAR'
+              DataLength=10
+              UsedAsDisplay=true
+              KeyOrDisplayName='LCurrency.Short_Name'
+              FinalDisplayFieldName='Short_Name'
+            >}Restrictions='BranchCode|BranchCode'
+          OQLText=['select from CashAccount'#13#10,
+            '[status = ''A'' and BranchCode = :BranchCode]'#13#10,
+            '('#13#10,
+            '  AccountNo, AccountName, Balance, CurrencyCode,'#13#10,
+            '  CashAccountType,LCurrency.Short_Name, self'#13#10,
+            ')'#13#10,
+            'then order by desc CashAccountType;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LCashAccount'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='IsAllCash'
+          Hidden=true
+          ControlCaption='Pilih semua kas'
+          DataTypeName='varchar'
+          DataLength=1
+          EnumeratedValues=['F=False'#13#10,
+            'T=True'#13#10]
+          GenerateCheckBoxForEnum=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BeginDate'
+          ControlCaption='Periode transaksi'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='EndDate'
+          ControlCaption='s/d'
+          DataTypeName='timestamp'
+          DataLength=20
+        >}Name='PData'
+      Width=617
+      Height=153
+      UIPart=$UIPARTS['uipData']
+      Controls={*object:rtf::DBLookupEdit<
+          Name='LBranch'
+          Top=8
+          Left=8
+          Width=100
+          Height=21
+          ControlCaption='Cabang'
+          FieldName='LBranch.BranchCode'
+          DisplayFormat=''
+          LookupField='LBranch.BranchName'
+          DisplayLookupField=true
+          OnAfterLookup='BranchAfterLookup'
+          DisplayLookupColor=-2147483624
+          DisplayLookupWidth=200
+        >, *object:rtf::DBLookupEdit<
+          Name='LCashAccount'
+          Top=36
+          Left=8
+          Width=100
+          Height=21
+          ControlCaption='Rekening Kas/Bank'
+          FieldName='LCashAccount.AccountNo'
+          DisplayFormat=''
+          LookupField='LCashAccount.AccountName'
+          DisplayLookupField=true
+          DisplayLookupColor=-2147483624
+          DisplayLookupWidth=200
+        >, *object:rtf::DBDateEdit<
+          Name='BeginDate'
+          Top=92
+          Left=8
+          Color=0
+          ControlCaption='Periode transaksi'
+          LayoutOrder=5
+        >, *object:rtf::DBDateEdit<
+          Name='EndDate'
+          Layout=clNextSide
+          Top=92
+          Left=236
+          Color=0
+          ControlCaption='s/d'
+          LayoutOrder=6
+        >, object:rtf::DBEdit<
+          Name='edValuta'
+          Layout=clNewLine
+          Top=64
+          Left=8
+          Width=97
+          Height=21
+          Color=-2147483624
+          ControlCaption='Valuta rekening'
+          FieldName='LCashAccount.CurrencyCode'
+          DisplayFormat=''
+          ReadOnly=true
+        >, object:rtf::DBEdit<
+          Name='edValutaName'
+          Layout=clNextSide
+          Top=64
+          Left=213
+          Width=192
+          Height=21
+          Color=-2147483624
+          ControlCaption='-'
+          FieldName='LCashAccount.LCurrency.Short_Name'
+          DisplayFormat=''
+          ReadOnly=true
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      ControlCharCase=ecUpperCase
+    >, object:rtf::Panel<
+      Name='PAction'
+      Width=320
+      Height=41
+      Controls={object:rtf::Button<
+          Name='BPrint'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Cetak Text'
+          Default=true
+          OnClick='PrintTextClick'
+        >, object:rtf::Button<
+          Name='bCancel'
+          Layout=clNextSide
+          Top=8
+          Left=166
+          Color=0
+          ControlCaption=''
+          LayoutOrder=3
+          Caption='&Tutup'
+          Cancel=true
+          DefaultAction=daClear
+          ExitAction=eaQuitCancel
+        >, object:rtf::Button<
+          Name='bExcel'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Color=0
+          ControlCaption=''
+          LayoutOrder=2
+          Caption='Cetak E&xcel'
+          OnClick='PrintExcelClick'
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=425
+      Height=201
+      Container1=$CONTAINERS['PAction']
+      Container2=$CONTAINERS['PData']
+      InversedAlign=true
+    >}FormClassName='fDailyCash'
+>

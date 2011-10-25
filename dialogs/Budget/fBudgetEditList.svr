@@ -1,0 +1,101 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{03AB2DCD-D5DA-4DD5-B07D-CD15AE22527E}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rpclass::TPClassUIDefList<
+  UIDefs={object:rpclass::TPClassUIDef<
+      Name='uipBudget'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='LBudgetOwner.OwnerID'
+          DataTypeName='INTEGER'
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBudgetOwner.OwnerCode'
+          DataTypeName='VARCHAR'
+          DataLength=10
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBudgetOwner.OwnerID'
+          DataTypeName='INTEGER'
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBudgetOwner.OwnerName'
+          DataTypeName='VARCHAR'
+          DataLength=100
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBudgetPeriod.PeriodID'
+          DataTypeName='INTEGER'
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBudgetPeriod.PeriodID'
+          DataTypeName='INTEGER'
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBudgetPeriod.PeriodValue'
+          DataTypeName='INTEGER'
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBudgetPeriod.LParent.PeriodID'
+          DataTypeName='INTEGER'
+        >, object:rpclass::TCustomLoadedField<
+          Name='Bulan'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='Tahun'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='PeriodID'
+          DataTypeName='integer'
+          DataLength=20
+        >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
+          Name='LBudgetOwner'
+          ClassTypeName='BudgetOwner'
+          FieldNames='OwnerID;OwnerCode;OwnerID;OwnerName'
+        >, object:rpclass::TCustomLoadedLink<
+          Name='LBudgetPeriod'
+          ClassTypeName='BudgetPeriod'
+          FieldNames='PeriodID;PeriodID;PeriodValue;LParent.PeriodID'
+        >}Mode=imSingleRow
+    >, object:rpclass::TPClassUIDef<
+      Name='uipBudgetItem'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='BudgetCode'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='ItemGroup'
+          DataTypeName='varchar'
+          DataLength=200
+        >, object:rpclass::TCustomLoadedField<
+          Name='ItemName'
+          DataTypeName='varchar'
+          DataLength=200
+        >, object:rpclass::TCustomLoadedField<
+          Name='Amount'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='AccountCode'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='AccountName'
+          DataTypeName='varchar'
+          DataLength=100
+        >, object:rpclass::TCustomLoadedField<
+          Name='CurrencyCode'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='Realization'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='BudgetId'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='OriAmount'
+          DataTypeName='double'
+          DataLength=20
+        >}Mode=imMultiRow
+    >}OnSetDataEx='FormSetDataEx'
+>

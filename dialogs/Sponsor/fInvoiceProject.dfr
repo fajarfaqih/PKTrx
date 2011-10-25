@@ -1,0 +1,256 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Form Invoice'
+  Left=50
+  Top=50
+  Width=745
+  Height=377
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx='FormOnSetDataEx'
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='TransactionItemId'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >}Name='uipInvoice'
+      AlwaysPostToServer=true
+    >}Containers={object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='InvoiceDate'
+          ControlCaption='Tanggal Invoice'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TermDate'
+          ControlCaption='Tanggal Batas Akhir'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='InvoiceNo'
+          ControlCaption='No Invoice'
+          DataTypeName='varchar'
+          DataLength=100
+        >, object:rtf::FieldUIElmtSetting<
+          Name='SponsorName'
+          ReadOnlyControl=true
+          ControlCaption='Nama Sponsor'
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rtf::FieldUIElmtSetting<
+          Name='SponsorAddress'
+          ControlCaption='Alamat Sponsor'
+          DataTypeName='varchar'
+          DataLength=200
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ProgramName'
+          ControlCaption='Nama Program'
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount'
+          ControlCaption='Jumlah Tagihan'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BankName'
+          ControlCaption='Nama Bank'
+          DataTypeName='varchar'
+          DataLength=150
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BankAccount'
+          ControlCaption='Nomor Rekening'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BankAccountName'
+          ControlCaption='Pemilik Account'
+          DataTypeName='varchar'
+          DataLength=100
+        >, object:rtf::FieldUIElmtSetting<
+          Name='SignName'
+          ControlCaption='Nama'
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rtf::FieldUIElmtSetting<
+          Name='JobPosition'
+          ControlCaption='Jabatan'
+          DataTypeName='varchar'
+          DataLength=50
+        >}Name='pInvoice'
+      Width=737
+      Height=338
+      UIPart=$UIPARTS['uipInvoice']
+      Controls={*object:rtf::DBDateEdit<
+          Name='InvoiceDate'
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption='Tanggal Invoice'
+        >, *object:rtf::DBDateEdit<
+          Name='TermDate'
+          Top=36
+          Left=8
+          Color=0
+          ControlCaption='Tanggal Batas Akhir'
+        >, *object:rtf::DBEdit<
+          Name='InvoiceNo'
+          Top=64
+          Left=8
+          Color=0
+          ControlCaption='No Invoice'
+        >, *object:rtf::DBEdit<
+          Name='SponsorName'
+          Top=92
+          Left=8
+          Width=201
+          Height=21
+          Color=-2147483624
+          ControlCaption='Nama Sponsor'
+          ReadOnly=true
+        >, *object:rtf::DBEdit<
+          Name='SponsorAddress'
+          Top=120
+          Left=8
+          Color=0
+          ControlCaption='Alamat Sponsor'
+        >, *object:rtf::DBEdit<
+          Name='ProgramName'
+          Top=148
+          Left=8
+          Color=0
+          ControlCaption='Nama Program'
+        >, *object:rtf::DBEdit<
+          Name='Amount'
+          Top=176
+          Left=8
+          Color=0
+          ControlCaption='Jumlah Tagihan'
+        >, *object:rtf::DBEdit<
+          Name='BankName'
+          Layout=clAbsolute
+          Top=236
+          Left=8
+          Color=0
+          ControlCaption='Nama Bank'
+          CaptionWidth=100
+        >, *object:rtf::DBEdit<
+          Name='BankAccount'
+          Layout=clAbsolute
+          Top=260
+          Left=8
+          Color=0
+          ControlCaption='Nomor Rekening'
+          CaptionWidth=100
+        >, *object:rtf::DBEdit<
+          Name='BankAccountName'
+          Layout=clAbsolute
+          Top=284
+          Left=8
+          Color=0
+          ControlCaption='Pemilik Account'
+          CaptionWidth=100
+        >, *object:rtf::DBEdit<
+          Name='SignName'
+          Layout=clAbsolute
+          Top=236
+          Left=384
+          Color=0
+          ControlCaption='Nama'
+          CaptionWidth=100
+        >, *object:rtf::DBEdit<
+          Name='JobPosition'
+          Layout=clAbsolute
+          Top=260
+          Left=384
+          Color=0
+          ControlCaption='Jabatan'
+          CaptionWidth=100
+        >, object:rtf::Label<
+          Name='label1'
+          Layout=clAbsolute
+          Top=216
+          Left=8
+          Width=26
+          Height=17
+          Color=0
+          ControlCaption=''
+          Caption='Tujuan Transfer'
+          AutoSize=true
+          FontName='Tahoma'
+          FontColor=-2147483640
+          FontSize=8
+          FontStyleBold=true
+        >, object:rtf::Label<
+          Name='label2'
+          Layout=clAbsolute
+          Top=216
+          Left=384
+          Width=26
+          Height=17
+          Color=0
+          ControlCaption=''
+          Caption='Tanda Tangan'
+          AutoSize=true
+          FontName='Tahoma'
+          FontColor=-2147483640
+          FontSize=8
+          FontStyleBold=true
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=32
+      Controls={object:rtf::Button<
+          Name='bPrintInvoice'
+          Layout=clNextSide
+          Top=8
+          Left=8
+          Width=89
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='&Cetak Invoice'
+          OnClick='PrintInvoiceClick'
+        >, object:rtf::Button<
+          Name='bCancel'
+          Layout=clNextSide
+          Top=8
+          Left=101
+          Color=0
+          ControlCaption=''
+          Caption='&Batal'
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=745
+      Height=377
+      Container1=$CONTAINERS['pInvoice']
+      Container2=$CONTAINERS['pAction']
+    >}FormClassName='fInvoiceProject'
+>

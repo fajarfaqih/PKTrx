@@ -1,0 +1,24 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{03AB2DCD-D5DA-4DD5-B07D-CD15AE22527E}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rpclass::TPClassUIDefList<
+  UIDefs={object:rpclass::TPClassUIDef<
+      Name='uipGLIContainer'
+      PClassName='GLInterfaceContainer'
+      LoadedFieldList='GLIContainerName'
+      Mode=imSingleRow
+    >, object:rpclass::TPClassUIDef<
+      Name='uipGLIMember'
+      MasterUIName='uipGLIContainer'
+      ListName='LsGLIMember'
+      LoadedFieldList='GLIMemberCode;Description;LAccount.Account_Code;LAccount.Account_Code;LAccount.Account_Name'
+      StoredFieldList='LAccount'
+      CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
+          Name='LAccount'
+          ClassTypeName='Account'
+          FieldNames='Account_Code;Account_Code;Account_Name'
+        >}>}OnSetDataEx='FormSetDataEx'
+>

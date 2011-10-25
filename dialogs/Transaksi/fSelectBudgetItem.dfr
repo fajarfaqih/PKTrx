@@ -1,0 +1,123 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dsMain']
+  Caption='Pilih Item Anggaran'
+  Left=50
+  Top=50
+  Width=600
+  Height=550
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx='FormSetDataEx'
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Name='uipBudgetItem'
+      ClassTypeName='BudgetItem'
+      DataBinding=bmMaster
+    >}Containers={object:rtf::DualSplit<
+      Name='dsMain'
+      Width=600
+      Height=550
+      Container1=$CONTAINERS['pSelect']
+      Container2=$CONTAINERS['gBudgetItem']
+      InversedAlign=true
+    >, object:rtf::Panel<
+      Name='pSelect'
+      Width=409
+      Height=41
+      Controls={object:rtf::Button<
+          Name='bSelect'
+          Layout=clAbsolute
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='Pilih'
+          Default=true
+          ExitAction=eaQuitOK
+        >, object:rtf::Button<
+          Name='bCancel'
+          Layout=clAbsolute
+          Top=8
+          Left=88
+          Color=0
+          ControlCaption=''
+          Caption='Batal'
+          Cancel=true
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Grid<
+      ControlDefs={object:rtf::MultiControlDef<
+          Action=caView
+          DataMembers=['BudgetItemCode'#13#10,
+            'BudgetItemDescription'#13#10]
+        >}Elements={*object:rtf::FieldUIElmtSetting<
+          Name='BudgetItemCode'
+          ControlCaption='Kode Item'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='BudgetItemDescription'
+          ControlCaption='Rincian Kebutuhan'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ParentBudgetItemDescription'
+          ControlCaption='Nama Kegiatan'
+          DataTypeName='varchar'
+          DataLength=250
+        >}Name='gBudgetItem'
+      Width=600
+      Height=508
+      UIPart=$UIPARTS['uipBudgetItem']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='Daftar Item Anggaran'
+      Columns={*object:rtf::GridColumn<
+          Name='BudgetItemCode'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='BudgetItemCode'
+          DisplayFormat=''
+          TitleCaption='Kode Item'
+          Width=50
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='BudgetItemDescription'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          Index=3
+          FieldName='BudgetItemDescription'
+          DisplayFormat=''
+          TitleCaption='Rincian Kebutuhan'
+          Width=150
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='ParentBudgetItemDescription'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          Index=2
+          FieldName='ParentBudgetItemDescription'
+          DisplayFormat=''
+          TitleCaption='Nama Kegiatan'
+          Width=150
+        >}ReadOnly=true
+      RowSelect=true
+      SuppressHelpLine=true
+    >}FormClassName='fSelectBudgetItem'
+>

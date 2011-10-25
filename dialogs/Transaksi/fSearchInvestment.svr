@@ -1,0 +1,50 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{03AB2DCD-D5DA-4DD5-B07D-CD15AE22527E}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rpclass::TPClassUIDefList<
+  UIDefs={object:rpclass::TPClassUIDef<
+      Name='uipFilter'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='LInvestee.InvesteeId'
+          DataTypeName='INTEGER'
+        >, object:rpclass::TCustomLoadedField<
+          Name='LInvestee.InvesteeName'
+          DataTypeName='VARCHAR'
+          DataLength=150
+        >, object:rpclass::TCustomLoadedField<
+          Name='InvesteeName'
+          DataTypeName='varchar'
+          DataLength=150
+        >, object:rpclass::TCustomLoadedField<
+          Name='EmployeeName'
+          DataTypeName='varchar'
+          DataLength=100
+        >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
+          Name='LInvestee'
+          ClassTypeName='Investee'
+          FieldNames='InvesteeId;InvesteeName'
+        >}Mode=imSingleRow
+    >, object:rpclass::TPClassUIDef<
+      Name='uipInvestmentNE'
+      PClassName='InvestmentNonEmployee'
+      LoadedFieldList='LInvestee.InvesteeId;LInvestee.InvesteeId;LInvestee.InvesteeName;AccountName;OpeningDate;InvestmentAmount;AccountNo;Balance;FundEntity'
+      CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
+          Name='LInvestee'
+          ClassTypeName='Investee'
+          FieldNames='InvesteeId;InvesteeId;InvesteeName'
+        >}Mode=imMultiRow
+      OnSetData='OnSetData'
+    >, object:rpclass::TPClassUIDef<
+      Name='uipInvestmentE'
+      PClassName='InvestmentEmployee'
+      LoadedFieldList='LEmployee.EmployeeId;LEmployee.EmployeeId;LEmployee.EmployeeName;AccountName;InvestmentAmount;AccountNo;Balance;FundEntity'
+      CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
+          Name='LEmployee'
+          ClassTypeName='VEmployee'
+          FieldNames='EmployeeId;EmployeeId;EmployeeName'
+        >}Mode=imMultiRow
+    >}OnSetDataEx='FormSetDataEx'
+>

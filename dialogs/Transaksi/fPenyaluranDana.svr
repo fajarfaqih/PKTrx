@@ -1,0 +1,89 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{03AB2DCD-D5DA-4DD5-B07D-CD15AE22527E}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rpclass::TPClassUIDefList<
+  UIDefs={object:rpclass::TPClassUIDef<
+      Name='uipData'
+      PClassName='Donor'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='mode'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='ID'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='UserPengubah'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='TglUbah'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='TerminalUbah'
+          DataTypeName='varchar'
+          DataLength=20
+        >}Mode=imSingleRow
+    >, object:rpclass::TPClassUIDef<
+      Name='uipTransaction'
+      PClassName='Transaction'
+      LoadedFieldList='TransactionDate;ReferenceNo;Description;Inputer;TransactionId'
+      StoredFieldList='TransactionDate;ReferenceNo;Description'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='BranchCode'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='SuperUser'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='JumlahTotal'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='Cara_Bayar'
+          DataTypeName='varchar'
+          DataLength=1
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBank.AccountNo'
+          DataTypeName='VARCHAR'
+          DataLength=10
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBank.AccountNo'
+          DataTypeName='VARCHAR'
+          DataLength=10
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBank.BankName'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBank.Status'
+          DataTypeName='VARCHAR'
+          DataLength=1
+        >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
+          Name='LBank'
+          ClassTypeName='BankCash'
+          FieldNames='AccountNo;AccountNo;BankName;Status'
+        >}Mode=imSingleRow
+    >, object:rpclass::TPClassUIDef<
+      Name='uipItem'
+      MasterUIName='uipTransaction'
+      ListName='Ls_DistTransactionItem'
+      LoadedFieldList='TransactionItemId;MutationType;LProduct.ProductId;LProduct.ProductId;LProduct.ProductName;LProduct.FixedValue;LProduct.FixedValueAmount;Amount;CurrencyCode;Rate;EkuivalenAmount'
+      StoredFieldList='MutationType;LProduct;Amount;CurrencyCode;Rate;EkuivalenAmount'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='Ashnaf'
+          DataTypeName='varchar'
+          DataLength=20
+        >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
+          Name='LProduct'
+          ClassTypeName='Product'
+          FieldNames='ProductId;ProductId;ProductName;FixedValue;FixedValueAmount'
+        >}>}OnSetDataEx='FormSetDataEx'
+>

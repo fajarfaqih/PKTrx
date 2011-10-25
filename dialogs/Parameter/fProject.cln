@@ -1,0 +1,315 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Project'
+  Left=50
+  Top=50
+  Width=409
+  Height=297
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='mode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ID'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TglUbah'
+          Hidden=true
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='UserPengubah'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TerminalUbah'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >}Name='uipData'
+      ClassTypeName='Project'
+      DataBinding=bmMaster
+      OnSetData='ProductOnSetData'
+    >}Containers={object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='ProductId'
+          AccessOption=aoReadOnlyOnEdit
+          Hidden=true
+          DataTypeName='INTEGER'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ProductCode'
+          ControlCaption='Kode Proyek'
+          DataTypeName='VARCHAR'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ProductName'
+          ControlCaption='Nama Proyek'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Description'
+          ControlCaption='Keterangan'
+          DataTypeName='VARCHAR'
+          DataLength=100
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AccountOfCollection'
+          Hidden=true
+          ControlCaption='Rekening Pengumpulan'
+          DataTypeName='VARCHAR'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AccountOfDistribution'
+          Hidden=true
+          ControlCaption='Rekening Distribusi'
+          DataTypeName='VARCHAR'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='PercentageOfAmilFunds'
+          ControlCaption='Presentase Amil (%)'
+          DataTypeName='DOUBLE'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ClosedDate'
+          ControlCaption='Tgl Tutup'
+          DataTypeName='TIMESTAMP'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
+          Name='FundCategory'
+          Hidden=true
+          ControlCaption='Kategori Dana'
+          DataTypeName='VARCHAR'
+          DataLength=1
+          EnumeratedValues=['Z=Zakat'#13#10,
+            'I=Infaq'#13#10,
+            'W=Wakaf'#13#10]
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BudgetAmount'
+          Hidden=true
+          ControlCaption='Nilai Budget'
+          DataTypeName='DOUBLE'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
+          Name='StartDate'
+          Hidden=true
+          ControlCaption='Tgl Mulai'
+          DataTypeName='TIMESTAMP'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
+          Name='FinsihDate'
+          Hidden=true
+          ControlCaption='Tgl Berakhir'
+          DataTypeName='TIMESTAMP'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Status'
+          ReadOnlyControl=true
+          LayoutOrder=7
+          DataTypeName='VARCHAR'
+          DataLength=1
+          EnumeratedValues=['A=Active'#13#10,
+            'N=NonActive'#13#10]
+        >, object:rtf::FieldUIElmtSetting<
+          Name='IsDetail'
+          ControlCaption='Detail'
+          LayoutOrder=1
+          DataTypeName='VARCHAR'
+          DataLength=1
+          EnumeratedValues=['F=false'#13#10,
+            'T=true'#13#10]
+          GenerateCheckBoxForEnum=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ParentProductId'
+          Hidden=true
+          DataTypeName='INTEGER'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Level'
+          Hidden=true
+          DataTypeName='INTEGER'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ProductIdID'
+          Hidden=true
+          ControlCaption='Id Proyek'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LProductParent'
+          ControlCaption='Proyek Induk'
+          ClassTypeName='Project'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LProductParent.ProductId'
+              DataTypeName='INTEGER'
+              DataLength=0
+              UsedAsKey=true
+              KeyOrDisplayName='ProductId'
+              FinalDisplayFieldName='ProductId'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LProductParent.ProductId'
+              DataTypeName='INTEGER'
+              DataLength=0
+              UsedAsDisplay=true
+              KeyOrDisplayName='ProductId'
+              FinalDisplayFieldName='ProductId'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LProductParent.ProductCode'
+              DataTypeName='VARCHAR'
+              DataLength=20
+              UsedAsDisplay=true
+              KeyOrDisplayName='ProductCode'
+              FinalDisplayFieldName='ProductCode'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LProductParent.ProductName'
+              DataTypeName='VARCHAR'
+              DataLength=30
+              UsedAsDisplay=true
+              KeyOrDisplayName='ProductName'
+              FinalDisplayFieldName='ProductName'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LProductParent.Level'
+              DataTypeName='INTEGER'
+              DataLength=0
+              UsedAsDisplay=true
+              KeyOrDisplayName='Level'
+              FinalDisplayFieldName='Level'
+            >}Restrictions=''
+          OQLText=['Select from Project'#13#10,
+            '[ Status = ''A'' and IsDetail =''F'']'#13#10,
+            '('#13#10,
+            ' ProductId,'#13#10,
+            ' ProductCode,'#13#10,
+            ' ProductName,'#13#10,
+            ' Description,'#13#10,
+            ' Level, '#13#10,
+            ' self'#13#10,
+            ')'#13#10,
+            'then order by ProductId;'#13#10]
+          LookupOption=loCustomOQL
+          FieldBaseName='LProductParent'
+        >}Name='pData'
+      Width=417
+      Height=257
+      UIPart=$UIPARTS['uipData']
+      Controls={*object:rtf::DBEdit<
+          Name='ProductCode'
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption='Kode Proyek'
+          LayoutOrder=2
+        >, *object:rtf::DBEdit<
+          Name='ProductName'
+          Top=36
+          Left=8
+          Width=219
+          Height=21
+          Color=0
+          ControlCaption='Nama Proyek'
+          LayoutOrder=3
+        >, *object:rtf::DBEdit<
+          Name='Description'
+          Top=92
+          Left=8
+          Width=219
+          Height=21
+          Color=0
+          ControlCaption='Keterangan'
+          LayoutOrder=4
+        >, *object:rtf::DBEdit<
+          Name='PercentageOfAmilFunds'
+          Top=148
+          Left=8
+          Color=0
+          ControlCaption='Presentase Amil (%)'
+          LayoutOrder=7
+        >, *object:rtf::DBDateEdit<
+          Name='ClosedDate'
+          Top=176
+          Left=8
+          Color=0
+          ControlCaption='Tgl Tutup'
+          LayoutOrder=11
+        >, *object:rtf::DBComboBox<
+          Name='Status'
+          Top=204
+          Left=8
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Status'
+          LayoutOrder=12
+        >, *object:rtf::DBCheckBox<
+          Name='IsDetail'
+          Top=120
+          Left=8
+          Enabled=false
+          Color=0
+          ControlCaption='Detail'
+          LayoutOrder=5
+          OnClick='DetailOnClick'
+        >, *object:rtf::DBLookupEdit<
+          Name='LProductParent'
+          Top=64
+          Left=8
+          ControlCaption='Proyek Induk'
+          LayoutOrder=4
+          LookupField='LProductParent.ProductName'
+          DisplayLookupField=true
+          OnAfterLookup='LProductParentAfterLookup'
+        >}EqualCaptionWidth=130
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=41
+      Controls={object:rtf::Button<
+          Name='bOK'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&OK'
+          Default=true
+          OnClick='bOKClick'
+        >, object:rtf::Button<
+          Name='bClose'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Width=82
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='&Cancel / Close'
+          Cancel=true
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=409
+      Height=297
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['pData']
+      InversedAlign=true
+    >}FormClassName='fProject'
+>

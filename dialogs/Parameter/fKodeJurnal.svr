@@ -1,0 +1,27 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{03AB2DCD-D5DA-4DD5-B07D-CD15AE22527E}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rpclass::TPClassUIDefList<
+  UIDefs={object:rpclass::TPClassUIDef<
+      Name='uipJournal'
+      PClassName='ParameterJournal'
+      LoadedFieldList='ParameterJournalId;JournalCode;Description;DataSource'
+      StoredFieldList='JournalCode;Description;DataSource'
+      Mode=imMultiRow
+      CreateInstanceOnNew=true
+      DeleteOnDel=true
+    >, object:rpclass::TPClassUIDef<
+      Name='uipJournalItem'
+      MasterUIName='uipJournal'
+      ListName='Ls_ParameterJournalItem'
+      LoadedFieldList='ParameterJournalItemId;Description;AccountBase;AccountCode;BaseSign;BranchBase;CurrencyBase;AmountBase;RateBase'
+      StoredFieldList='Description;AccountBase;AccountCode;BaseSign;BranchBase;CurrencyBase;AmountBase;RateBase'
+      CreateInstanceOnNew=true
+      DeleteOnDel=true
+      SetMasterDetailRelationship=true
+    >}BeforeDeleteRow='Form_BeforeDeleteRow'
+  OnSetDataEx='Form_SetDataEx'
+>

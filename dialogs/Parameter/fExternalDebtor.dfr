@@ -1,0 +1,174 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Debitur Eksternal'
+  Left=50
+  Top=50
+  Width=369
+  Height=193
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx='FormSetDataEx'
+  OnBeginProcessData='OnBeginProcessData'
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='mode'
+          Hidden=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ID'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TglUbah'
+          Hidden=true
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='UserPengubah'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TerminalUbah'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >}Name='uipData'
+      ClassTypeName='ExternalDebtor'
+      DataBinding=bmMaster
+      AlwaysPostToServer=true
+    >}Containers={object:rtf::Panel<
+      ControlDefs={object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='DebtorId'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='DebtorName'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='Description'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='DebtorPhone'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='DebtorAddress'
+        >}Elements={*object:rtf::FieldUIElmtSetting<
+          Name='DebtorId'
+          Hidden=true
+          ControlCaption='Id Debitur'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='DebtorName'
+          ControlCaption='Nama Debitur'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='Description'
+          ControlCaption='Keterangan'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='DebtorPhone'
+          ControlCaption='No Telp.'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='DebtorAddress'
+          ControlCaption='Alamat'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='DebtorIdID'
+          ControlCaption='Kategori Asset ID'
+          DataTypeName='integer'
+          DataLength=20
+        >}Name='pData'
+      Width=345
+      Height=145
+      UIPart=$UIPARTS['uipData']
+      Controls={*object:rtf::DBEdit<
+          Name='DebtorName'
+          Top=36
+          Left=8
+          Color=0
+          ControlCaption='Nama Debitur'
+          LayoutOrder=2
+        >, *object:rtf::DBEdit<
+          Name='Description'
+          Top=92
+          Left=8
+          Color=0
+          ControlCaption='Keterangan'
+          LayoutOrder=3
+        >, *object:rtf::DBEdit<
+          Name='DebtorPhone'
+          Top=120
+          Left=8
+          Color=0
+          ControlCaption='No Telp.'
+          LayoutOrder=4
+        >, *object:rtf::DBEdit<
+          Name='DebtorAddress'
+          Top=64
+          Left=8
+          Color=0
+          ControlCaption='Alamat'
+          LayoutOrder=3
+        >, *object:rtf::DBEdit<
+          Name='DebtorIdID'
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption='ID Debitur'
+          LayoutOrder=1
+        >}EqualCaptionWidth=130
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=41
+      Controls={object:rtf::Button<
+          Name='bOK'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&OK'
+          Default=true
+          OnClick='bOKClick'
+        >, object:rtf::Button<
+          Name='bClose'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Width=82
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='&Cancel / Close'
+          Cancel=true
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=369
+      Height=193
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['pData']
+      InversedAlign=true
+    >}FormClassName='fExternalDebtor'
+>

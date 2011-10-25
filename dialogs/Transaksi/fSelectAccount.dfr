@@ -1,0 +1,88 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dsMain']
+  Caption='Pilih Account'
+  Left=50
+  Top=50
+  Width=600
+  Height=550
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx=''
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  Containers={object:rtf::DualSplit<
+      Name='dsMain'
+      Width=600
+      Height=550
+      Container1=$CONTAINERS['pSelect']
+      Container2=$CONTAINERS['qAccount']
+      InversedAlign=true
+    >, object:rtf::Panel<
+      Name='pSelect'
+      Width=409
+      Height=41
+      Controls={object:rtf::Button<
+          Name='bSelect'
+          Layout=clAbsolute
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='Pilih'
+          Default=true
+          ExitAction=eaQuitOK
+        >, object:rtf::Button<
+          Name='bCancel'
+          Layout=clAbsolute
+          Top=8
+          Left=88
+          Color=0
+          ControlCaption=''
+          Caption='Batal'
+          Cancel=true
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Query<
+      Name='qAccount'
+      Width=600
+      Height=508
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      SystemContext='accounting'
+      PClassName='Account'
+      WindowSize=20
+      Columns={object:rtf::QueryColumn<
+          FieldName='Account.Account_Code'
+          Width=60
+          Caption='Kode Rekening'
+        >, object:rtf::QueryColumn<
+          FieldName='Account.Account_Name'
+          Width=150
+          Caption='Nama Rekening'
+        >, object:rtf::QueryColumn<
+          FieldName='Account.Account_Type'
+          Width=80
+          Caption='Jenis Rekening'
+          Hidden=true
+        >}EnableColumns=true
+    >}FormClassName='fSelectAccount'
+>

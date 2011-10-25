@@ -1,0 +1,322 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['multisplit1']
+  Caption='Pilih Transaksi Penghimpunan Dana'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=750
+  Height=449
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx='FormSetDataEx'
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='inboxId'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='formId'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=50
+        >}Name='uipTransaction'
+      ClassTypeName='Transaction'
+      DataBinding=bmMaster
+      MultiLine=true
+    >, object:rtf::PClassUI<
+      Name='uipTransactionItem'
+      ClassTypeName='TransactionItem'
+      DataBinding=bmList
+      Master=$UIPARTS['uipTransaction']
+      ListName='Ls_TransactionItem'
+      SetMasterDetailRelationship=true
+    >, object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='Today'
+          Hidden=true
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=3
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BatchNo'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >}Name='uipData'
+    >}Containers={object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=750
+      Height=302
+      Container1=$CONTAINERS['gridTransaksi']
+      Container2=$CONTAINERS['gridDetilTransaksi']
+      DynamicSplit=true
+    >, object:rtf::MultiSplit<
+      Name='multisplit1'
+      Width=750
+      Height=449
+      Side1Containers={$CONTAINERS['pFilter']
+      }Side2Containers={$CONTAINERS['pFormButton']
+      }SpaceContainer=$CONTAINERS['dualsplit1']
+    >, object:rtf::Panel<
+      Name='pFormButton'
+      Width=320
+      Height=48
+      Bordered=true
+      Controls={object:rtf::Button<
+          Name='bProses'
+          Layout=clNextSide
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Pilih'
+          ExitAction=eaQuitOK
+        >, object:rtf::Button<
+          Name='bTutup'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Color=0
+          ControlCaption=''
+          Caption='&Tutup'
+          Cancel=true
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BeginDate'
+          ControlCaption='Tanggal'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='EndDate'
+          ControlCaption='s/d'
+          DataTypeName='timestamp'
+          DataLength=20
+        >}Name='pFilter'
+      Width=745
+      Height=97
+      Bordered=true
+      UIPart=$UIPARTS['uipData']
+      Controls={*object:rtf::DBDateEdit<
+          Name='BeginDate'
+          Top=30
+          Left=15
+          Color=0
+          ControlCaption='Tanggal'
+        >, *object:rtf::DBDateEdit<
+          Name='EndDate'
+          Layout=clNextSide
+          Top=30
+          Left=263
+          Color=0
+          ControlCaption='s/d'
+        >, object:rtf::Button<
+          Name='bLihatTransaksi'
+          Layout=clNextSide
+          Top=30
+          Left=406
+          Width=121
+          Height=21
+          Color=0
+          ControlCaption='Lihat'
+          LayoutOrder=4
+          Caption='&Lihat Daftar Transaksi'
+          OnClick='bViewClick'
+        >}EqualCaptionWidth=120
+      ControlLeftMargin=15
+      ControlTopMargin=30
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='PILIH TRANSAKSI'
+    >, object:rtf::Grid<
+      ControlDefs={object:rtf::MultiControlDef<
+          Action=caView
+          DataMembers=['TransactionTime'#13#10,
+            'Inputer'#13#10,
+            'Description'#13#10,
+            'ReferenceNo'#13#10,
+            'TransactionId'#13#10,
+            'TransactionCode'#13#10]
+        >}Elements={*object:rtf::FieldUIElmtSetting<
+          Name='TransactionId'
+          Hidden=true
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='TransactionCode'
+          Hidden=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Nomor'
+          ControlCaption='Nomor'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Proses'
+          DataTypeName='varchar'
+          DataLength=1
+          EnumeratedValues=['O=Pilih'#13#10,
+            'B=Batal'#13#10,
+            'N=Belum diproses'#13#10]
+        >}Name='gridTransaksi'
+      Width=750
+      Height=206
+      UIPart=$UIPARTS['uipTransaction']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='DAFTAR TRANSAKSI'
+      Columns={*object:rtf::GridColumn<
+          Name='TransactionTime'
+          InputStyle=cisDate
+          EnumeratedValues=''
+          Index=2
+          FieldName='TransactionTime'
+          DisplayFormat='hh:nn:ss'
+          TitleCaption='Jam input'
+          Width=60
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='Inputer'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          Index=3
+          FieldName='Inputer'
+          DisplayFormat=''
+          TitleCaption='User'
+          Width=80
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='Description'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          Index=4
+          FieldName='Description'
+          DisplayFormat=''
+          TitleCaption='Keterangan'
+          Width=200
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='ReferenceNo'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          Index=5
+          FieldName='ReferenceNo'
+          DisplayFormat=''
+          TitleCaption='Nomor referensi'
+          Width=100
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='Nomor'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          Index=1
+          FieldName='Nomor'
+          DisplayFormat=''
+          TitleCaption='No'
+          Width=25
+        >, *object:rtf::GridColumn<
+          Name='Proses'
+          Index=6
+          Width=100
+        >}ReadOnly=true
+      RowSelect=true
+      SuppressHelpLine=true
+    >, object:rtf::Grid<
+      ControlDefs={object:rtf::MultiControlDef<
+          Action=caView
+          DataMembers=['TransactionItemId'#13#10,
+            'ParameterJournalId'#13#10,
+            'RefAccountNo'#13#10,
+            'RefAccountName'#13#10,
+            'CurrencyCode'#13#10,
+            'MutationType'#13#10,
+            'Amount'#13#10,
+            'Rate'#13#10]
+        >}Elements={*object:rtf::FieldUIElmtSetting<
+          Name='TransactionItemId'
+          Hidden=true
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='ParameterJournalId'
+          Hidden=true
+        >}Name='gridDetilTransaksi'
+      Width=750
+      Height=95
+      UIPart=$UIPARTS['uipTransactionItem']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='DETIL TRANSAKSI'
+      Columns={*object:rtf::GridColumn<
+          Name='RefAccountNo'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='RefAccountNo'
+          DisplayFormat=''
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='RefAccountName'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='RefAccountName'
+          DisplayFormat=''
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='CurrencyCode'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='CurrencyCode'
+          DisplayFormat=''
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='MutationType'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='MutationType'
+          DisplayFormat=''
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='Amount'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Amount'
+          DisplayFormat=''
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='Rate'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Rate'
+          DisplayFormat=''
+          ReadOnly=true
+        >}ReadOnly=true
+      RowSelect=true
+      SuppressHelpLine=true
+    >}FormClassName='fSelectTransactionByDate'
+>

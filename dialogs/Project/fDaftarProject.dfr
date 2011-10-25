@@ -1,0 +1,133 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit2']
+  Caption='Daftar Project'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=633
+  Height=320
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx='FormSetDataEx'
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          Hidden=true
+        >}Name='uipFilter'
+    >}Containers={object:rtf::Panel<
+      Name='pFilter'
+      Width=529
+      Height=57
+      UIPart=$UIPARTS['uipFilter']
+      Controls={object:rtf::Label<
+          Name='lTitle'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Width=401
+          Height=49
+          Color=0
+          ControlCaption='Daftar'
+          Caption='Daftar Project'
+          AutoSize=true
+          FontName='Times New Roman'
+          FontSize=30
+          FontStyleBold=true
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Query<
+      Name='qProject'
+      Width=633
+      Height=212
+      ContextMenuName='popupmenus/project/Project'
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      WindowSize=20
+      Columns={object:rtf::QueryColumn<
+          FieldName='ProjectAccount.Kode_Proyek'
+          Width=80
+          Caption='Kode Proyek'
+        >, object:rtf::QueryColumn<
+          FieldName='ProjectAccount.Nama_Produk'
+          Width=120
+          Caption='Nama Proyek'
+        >, object:rtf::QueryColumn<
+          FieldName='ProjectAccount.Tgl_Mulai'
+          Width=80
+          Caption='Tgl Mulai'
+        >, object:rtf::QueryColumn<
+          FieldName='ProjectAccount.Tgl_Akhir'
+          Width=80
+          Caption='Tgl Akhir'
+        >, object:rtf::QueryColumn<
+          FieldName='ProjectAccount.Nilai_Budget'
+          Width=120
+          Caption='Nilai Budget'
+        >, object:rtf::QueryColumn<
+          FieldName='ProjectAccount.Status'
+          Width=80
+          Caption='Status'
+        >}EnableColumns=true
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=633
+      Height=270
+      Container1=$CONTAINERS['pFilter']
+      Container2=$CONTAINERS['qProject']
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=49
+      Controls={object:rtf::Button<
+          Name='bClose'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Color=0
+          ControlCaption=''
+          LayoutOrder=2
+          Caption='T&utup'
+          ExitAction=eaQuitCancel
+        >, object:rtf::Button<
+          Name='button1'
+          Layout=clNextSide
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='Export E&xcel'
+          OnClick='bExportExcelClick'
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit2'
+      Width=633
+      Height=320
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['dualsplit1']
+      InversedAlign=true
+    >}FormClassName='fDaftarProject'
+>

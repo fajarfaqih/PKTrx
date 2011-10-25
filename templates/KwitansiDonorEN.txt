@@ -1,0 +1,35 @@
+                              BUKTI PEMBAYARAN
+
+
+Transaction Number : %(TRANSACTIONNO)s
+Date               : %(TGL_BAYAR)s
+
+
+Id Donor : %(DONOR_ID)s
+Name     : %(DONOR_NAMA)s
+Address  : %(DONOR_ALAMAT1)s
+           %(DONOR_ALAMAT2)s
+
+Dipercayakan pada Badan Lembaga Amil : %(NAMA_LEMBAGA)s
+
+Telah Membayar :
+   Zakat              %(CURRSYMBOL)s %(ZAKAT)24s
+   Infaq/Shadaqah     %(CURRSYMBOL)s %(INFAQ)24s
+   Wakaf              %(CURRSYMBOL)s %(WAKAF)24s
+   Lainnya            %(CURRSYMBOL)s %(LAIN)24s
+                      ---------------------------
+   Jumlah             %(CURRSYMBOL)s %(TOTAL)24s
+
+   Terbilang  : %(TERBILANG1)s
+                %(TERBILANG2)s
+
+Keterangan : %(KETERANGAN)s
+
+Diterima oleh %(NAMA_LEMBAGA)s
+%(CABANG)s, %(TGL_BAYAR)s
+
+
+
+
+%(USER_CETAK)s
+Waktu Cetak : %(WAKTU_CETAK)s

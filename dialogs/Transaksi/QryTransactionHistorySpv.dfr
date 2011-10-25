@@ -1,0 +1,228 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Histori Transaksi ( Supervisor )'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=545
+  Height=369
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx='FormSetDataEx'
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=3
+        >, object:rtf::FieldUIElmtSetting<
+          Name='UserId'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >}Name='uipFilter'
+    >}Containers={object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=240
+      Height=96
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['dualsplit2']
+      InversedAlign=true
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=34
+      Controls={object:rtf::Button<
+          Name='bTutup'
+          Layout=clAbsolute
+          Top=8
+          Left=16
+          Color=0
+          ControlCaption=''
+          Caption='T&utup'
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='UserId'
+          ReadOnlyControl=true
+          ControlCaption='Id User'
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BeginDate'
+          ControlCaption='Periode Tanggal'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='EndDate'
+          ControlCaption='s/d'
+          DataTypeName='timestamp'
+          DataLength=20
+        >}Name='pFilter'
+      Width=473
+      Height=103
+      UIPart=$UIPARTS['uipFilter']
+      Controls={*object:rtf::DBEdit<
+          Name='UserId'
+          Top=10
+          Left=10
+          Color=-2147483624
+          ControlCaption='Id User'
+          ReadOnly=true
+        >, *object:rtf::DBDateEdit<
+          Name='BeginDate'
+          Top=38
+          Left=10
+          Color=0
+          ControlCaption='Periode Tanggal'
+        >, *object:rtf::DBDateEdit<
+          Name='EndDate'
+          Layout=clNextSide
+          Top=38
+          Left=238
+          Color=0
+          ControlCaption='s/d'
+        >, object:rtf::Button<
+          Name='bApply'
+          Layout=clAbsolute
+          Top=38
+          Left=389
+          Color=0
+          ControlCaption=''
+          Caption='&Apply Filter'
+          OnClick='bApplyClick'
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=10
+      ControlTopMargin=10
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit2'
+      Width=240
+      Height=96
+      Container1=$CONTAINERS['pFilter']
+      Container2=$CONTAINERS['dualsplit3']
+    >, object:rtf::Panel<
+      Name='pButton'
+      Width=118
+      Height=240
+      Controls={object:rtf::Button<
+          Name='button1'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Width=105
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='&1. Peragaan Detil'
+          OnClick='ViewDetailClick'
+        >, object:rtf::Button<
+          Name='button2'
+          Layout=clNewLine
+          Top=40
+          Left=8
+          Width=105
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='&2. Ubah Transaksi'
+          OnClick='EditTransClick'
+        >, object:rtf::Button<
+          Name='button3'
+          Layout=clNewLine
+          Top=72
+          Left=8
+          Width=105
+          Height=25
+          Visible=false
+          Color=0
+          ControlCaption=''
+          Caption='&3. Hapus Transaksi'
+          OnClick='DeleteTransClick'
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit3'
+      Width=545
+      Height=230
+      Container1=$CONTAINERS['pButton']
+      Container2=$CONTAINERS['qTransaction']
+      SplitDirection=sdrSplitLeftRight
+    >, object:rtf::Query<
+      Name='qTransaction'
+      Width=426
+      Height=230
+      ContextMenuName='popupmenus/transaksi/pHistoriTransaksiSpv'
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      WindowSize=20
+      Columns={object:rtf::QueryColumn<
+          FieldName='Transaction.Nomor_Transaksi'
+          Width=100
+          Caption='Nomor Transaksi'
+        >, object:rtf::QueryColumn<
+          FieldName='Transaction.Tanggal_Transaksi'
+          Width=100
+          Caption='Tanggal Transaksi'
+        >, object:rtf::QueryColumn<
+          FieldName='Transaction.Tanggal_Aktual'
+          Width=100
+          Caption='Tanggal Aktual'
+        >, object:rtf::QueryColumn<
+          FieldName='Transaction.Nilai_Transaksi'
+          Width=100
+          Caption='Nilai Transaksi'
+        >, object:rtf::QueryColumn<
+          FieldName='Transaction.No_Donor'
+          Width=100
+          Caption='No Donor'
+        >, object:rtf::QueryColumn<
+          FieldName='Transaction.Nama_Donor'
+          Width=100
+          Caption='Nama Donor'
+        >, object:rtf::QueryColumn<
+          FieldName='Transaction.Keterangan'
+          Width=250
+          Caption='Keterangan'
+        >, object:rtf::QueryColumn<
+          FieldName='Transaction.Inputer'
+          Width=100
+          Caption='Inputer'
+        >, object:rtf::QueryColumn<
+          FieldName='Transaction.Status_Otorisasi'
+          Width=75
+          Caption='Status Otorisasi'
+        >, object:rtf::QueryColumn<
+          FieldName='Transaction.Status_Posting'
+          Width=75
+          Caption='Status Posting'
+        >}EnableColumns=true
+    >}FormClassName='QryTransactionHistorySpv'
+>

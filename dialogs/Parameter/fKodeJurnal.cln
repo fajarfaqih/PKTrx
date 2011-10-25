@@ -1,0 +1,243 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['multisplit1']
+  Caption='Parameter kode jurnal...'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=769
+  Height=449
+  UIParts={object:rtf::PClassUI<
+      Name='uipJournal'
+      ClassTypeName='ParameterJournal'
+      DataBinding=bmMaster
+      MultiLine=true
+      CreateInstanceOnNew=true
+      DeleteInstanceOnDel=true
+      ShadowBufferFields='JournalCode'
+      UniqueShadowBufferFields='JournalCode'
+    >, object:rtf::PClassUI<
+      Name='uipJournalItem'
+      ClassTypeName='ParameterJournalItem'
+      DataBinding=bmList
+      Master=$UIPARTS['uipJournal']
+      ListName='Ls_ParameterJournalItem'
+      CreateInstanceOnNew=true
+      DeleteInstanceOnDel=true
+      SetMasterDetailRelationship=true
+    >}Containers={object:rtf::MultiSplit<
+      Name='multisplit1'
+      Width=769
+      Height=449
+      Side1Containers={$CONTAINERS['pJournal']
+      }Side2Containers={$CONTAINERS['pAction']
+      }SpaceContainer=$CONTAINERS['pJournalItem']
+    >, object:rtf::Grid<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='ParameterJournalId'
+          AccessOption=aoReadOnly
+          Hidden=true
+          DataTypeName='INTEGER'
+          DataLength=5
+        >, object:rtf::FieldUIElmtSetting<
+          Name='JournalCode'
+          DataTypeName='VARCHAR'
+          DataLength=5
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Description'
+          DataTypeName='VARCHAR'
+          DataLength=100
+        >, object:rtf::FieldUIElmtSetting<
+          Name='DataSource'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >}Name='pJournal'
+      Width=240
+      Height=332
+      UIPart=$UIPARTS['uipJournal']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='Parameter journal'
+      Columns={*object:rtf::GridColumn<
+          Name='JournalCode'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='JournalCode'
+          DisplayFormat=''
+          TitleCaption='Kode Jurnal'
+          Width=80
+        >, *object:rtf::GridColumn<
+          Name='Description'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Description'
+          DisplayFormat=''
+          TitleCaption='Keterangan'
+          Width=300
+        >, *object:rtf::GridColumn<
+          Name='DataSource'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='DataSource'
+          DisplayFormat=''
+          TitleCaption='Nama datasource'
+          Width=200
+        >}>, object:rtf::Panel<
+      Name='pAction'
+      Width=761
+      Height=43
+      Controls={object:rtf::Button<
+          Name='button1'
+          Layout=clAbsolute
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='Save'
+          Default=true
+          DefaultAction=daProcessAllUI
+          ExitAction=eaQuitOK
+        >, object:rtf::Button<
+          Name='button2'
+          Layout=clAbsolute
+          Top=8
+          Left=88
+          Color=0
+          ControlCaption=''
+          Caption='Cancel'
+          Cancel=true
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Grid<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='ParameterJournalItemId'
+          AccessOption=aoReadOnly
+          Hidden=true
+          DataTypeName='INTEGER'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Description'
+          DataTypeName='VARCHAR'
+          DataLength=50
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AccountBase'
+          DataTypeName='VARCHAR'
+          DataLength=1
+          EnumeratedValues=['P=Parameter'#13#10,
+            'R=Product'#13#10,
+            'T=Transaction'#13#10]
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AccountCode'
+          DataTypeName='VARCHAR'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BaseSign'
+          DataTypeName='VARCHAR'
+          DataLength=1
+          EnumeratedValues=['P=Positive'#13#10,
+            'N=Negative'#13#10]
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BranchBase'
+          DataTypeName='VARCHAR'
+          DataLength=1
+          EnumeratedValues=['M=MainOffice'#13#10,
+            'A=Account'#13#10,
+            'T=Transaction'#13#10]
+        >, object:rtf::FieldUIElmtSetting<
+          Name='CurrencyBase'
+          DataTypeName='VARCHAR'
+          DataLength=1
+          EnumeratedValues=['I=Rupiah (IDR)'#13#10,
+            'A=Account'#13#10,
+            'T=Transaction'#13#10]
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AmountBase'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='RateBase'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >}Name='pJournalItem'
+      Width=240
+      Height=240
+      UIPart=$UIPARTS['uipJournalItem']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='Parameter journal item'
+      Columns={*object:rtf::GridColumn<
+          Name='Description'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Description'
+          DisplayFormat=''
+          TitleCaption='Deskripsi'
+          Width=200
+        >, *object:rtf::GridColumn<
+          Name='AccountBase'
+          InputStyle=cisEnumerated
+          EnumeratedValues=['T=Transaction'#13#10,
+            'P=Parameter'#13#10,
+            'R=Product'#13#10,
+            'I=GLInterface'#13#10]
+          FieldName='AccountBase'
+          DisplayFormat=''
+          TitleCaption='Sumber Account'
+          Width=100
+        >, *object:rtf::GridColumn<
+          Name='AccountCode'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='AccountCode'
+          DisplayFormat=''
+          TitleCaption='Kode Account'
+        >, *object:rtf::GridColumn<
+          Name='BaseSign'
+          InputStyle=cisEnumerated
+          EnumeratedValues=['P=Positive'#13#10,
+            'N=Negative'#13#10]
+          FieldName='BaseSign'
+          DisplayFormat=''
+          TitleCaption='Base Sign'
+        >, *object:rtf::GridColumn<
+          Name='BranchBase'
+          InputStyle=cisEnumerated
+          EnumeratedValues=['T=Transaction'#13#10,
+            'A=Account'#13#10,
+            'M=MainOffice'#13#10]
+          FieldName='BranchBase'
+          DisplayFormat=''
+          TitleCaption='Sumber Cabang'
+        >, *object:rtf::GridColumn<
+          Name='AmountBase'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          Index=8
+          FieldName='AmountBase'
+          DisplayFormat=''
+          TitleCaption='Sumber Nilai'
+        >, *object:rtf::GridColumn<
+          Name='RateBase'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          Index=9
+          FieldName='RateBase'
+          DisplayFormat=''
+          TitleCaption='Sumber Kurs'
+        >}>}FormClassName='fKodeJurnal'
+>

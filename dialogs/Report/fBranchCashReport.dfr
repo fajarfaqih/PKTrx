@@ -1,0 +1,95 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Laporan Transaksi Kas Cabang'
+  Left=50
+  Top=50
+  Width=433
+  Height=321
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx=''
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Name='uipFilter'
+    >}Containers={object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=433
+      Height=321
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['pFilter']
+      InversedAlign=true
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=56
+      Controls={object:rtf::Button<
+          Name='bCetak'
+          Layout=clNextSide
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Cetak'
+          OnClick='bCetakClick'
+        >, object:rtf::Button<
+          Name='bTutup'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Color=0
+          ControlCaption=''
+          Caption='&Tutup'
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='StartDate'
+          ControlCaption='Periode Tanggal'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='UntilDate'
+          ControlCaption='s/d'
+          DataTypeName='timestamp'
+          DataLength=20
+        >}Name='pFilter'
+      Width=457
+      Height=240
+      UIPart=$UIPARTS['uipFilter']
+      Controls={*object:rtf::DBDateEdit<
+          Name='StartDate'
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption='Periode Tanggal'
+        >, *object:rtf::DBDateEdit<
+          Name='UntilDate'
+          Layout=clNextSide
+          Top=36
+          Left=8
+          Color=0
+          ControlCaption='s/d'
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >}FormClassName='fBranchCashReport'
+>

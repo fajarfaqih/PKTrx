@@ -1,0 +1,53 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{03AB2DCD-D5DA-4DD5-B07D-CD15AE22527E}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rpclass::TPClassUIDefList<
+  UIDefs={object:rpclass::TPClassUIDef<
+      Name='uipData'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='user_id'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBatch.BatchId'
+          DataTypeName='INTEGER'
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBatch.BatchId'
+          DataTypeName='INTEGER'
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBatch.BatchNo'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='BeginItemNo'
+          DataTypeName='integer'
+          DataLength=20
+        >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
+          Name='LBatch'
+          ClassTypeName='TransactionBatch'
+          FieldNames='BatchId;BatchId;BatchNo'
+        >}Mode=imSingleRow
+    >, object:rpclass::TPClassUIDef<
+      Name='uipTransaction'
+      PClassName='Transaction'
+      LoadedFieldList='TransactionId;TransactionCode;TransactionTime;Inputer;ReferenceNo;Description;AuthStatus;IsPosted;TransactionId;transactionno;TransactionDate;referenceno;AuthStatus;IsPosted'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='IsPostedMir'
+          DataTypeName='varchar'
+          DataLength=1
+        >, object:rpclass::TCustomLoadedField<
+          Name='IsPostedMir'
+          DataTypeName='varchar'
+          DataLength=1
+        >}Mode=imSingleRow
+    >, object:rpclass::TPClassUIDef<
+      Name='uipTransactionItem'
+      MasterUIName='uipTransaction'
+      ListName='Ls_TransactionItem'
+      LoadedFieldList='TransactionItemId;RefAccountNo;RefAccountName;CurrencyCode;MutationType;Amount;Rate;Description;ParameterJournalId'
+      SetMasterDetailRelationship=true
+    >}OnSetDataEx='FormSetDataEx'
+>

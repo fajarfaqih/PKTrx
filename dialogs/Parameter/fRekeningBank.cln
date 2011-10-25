@@ -1,0 +1,389 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Rekening Bank'
+  Left=50
+  Top=50
+  Width=361
+  Height=353
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='mode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ID'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TglUbah'
+          Hidden=true
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='UserPengubah'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TerminalUbah'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >}Name='uipData'
+      ClassTypeName='BankCash'
+      DataBinding=bmMaster
+      AlwaysPostToServer=true
+      CreateInstanceOnNew=true
+      OnSetData='OnSetData'
+    >}Containers={object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='AccountNo'
+          AccessOption=aoReadOnlyOnEdit
+          Hidden=true
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AccountName'
+          ControlCaption='Nama Rekening'
+          DataTypeName='VARCHAR'
+          DataLength=50
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          Hidden=true
+          ControlCaption='Kode Cabang'
+          DataTypeName='VARCHAR'
+          DataLength=5
+        >, object:rtf::FieldUIElmtSetting<
+          Name='CurrencyCode'
+          Hidden=true
+          ControlCaption='Kode Valuta'
+          DataTypeName='VARCHAR'
+          DataLength=5
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BankName'
+          Hidden=true
+          ControlCaption='Nama Bank'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BankAccountNo'
+          ControlCaption='NoRek Bank'
+          DataTypeName='VARCHAR'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AccountInterface'
+          Hidden=true
+          DataTypeName='VARCHAR'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Balance'
+          ReadOnlyControl=true
+          DataTypeName='DOUBLE'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
+          Name='OpeningDate'
+          ReadOnlyControl=true
+          ControlCaption='Tgl Buka'
+          DataTypeName='TIMESTAMP'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Status'
+          ReadOnlyControl=true
+          LayoutOrder=7
+          DataTypeName='VARCHAR'
+          DataLength=1
+          EnumeratedValues=['A=Active'#13#10,
+            'N=NonActive'#13#10]
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BankCode'
+          Hidden=true
+          DataTypeName='VARCHAR'
+          DataLength=10
+        >, object:rtf::FieldUIElmtSetting<
+          Name='CashCode'
+          DataTypeName='VARCHAR'
+          DataLength=10
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AccountNoID'
+          ControlCaption='AccountNo'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LBranch'
+          ControlCaption='Cabang'
+          ClassTypeName=''
+          ExternalClassTypeName='Cabang'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LBranch.Kode_Cabang'
+              DataTypeName='varchar'
+              DataLength=20
+              UsedAsKey=true
+              KeyOrDisplayName='Kode_Cabang'
+              FinalDisplayFieldName='Kode_Cabang'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LBranch.Nama_Cabang'
+              DataTypeName='varchar'
+              DataLength=20
+              UsedAsDisplay=true
+              KeyOrDisplayName='Nama_Cabang'
+              FinalDisplayFieldName='Nama_Cabang'
+            >}Restrictions=''
+          OQLText=['select from cabang'#13#10,
+            '[Status_Aktif=''T'']'#13#10,
+            '(Kode_Cabang,Nama_Cabang,self);']
+          OQLSystemContext='corporate'
+          LookupOption=loCustomOQL
+          FieldBaseName='LBranch'
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LCurrency'
+          ControlCaption='Valuta'
+          ClassTypeName=''
+          ExternalClassTypeName='currency'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LCurrency.Currency_Code'
+              DataTypeName='varchar'
+              DataLength=20
+              UsedAsKey=true
+              KeyOrDisplayName='Currency_Code'
+              FinalDisplayFieldName='Currency_Code'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LCurrency.Short_Name'
+              DataTypeName='varchar'
+              DataLength=20
+              UsedAsDisplay=true
+              KeyOrDisplayName='Short_Name'
+              FinalDisplayFieldName='Short_Name'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LCurrency.Full_Name'
+              DataTypeName='varchar'
+              DataLength=20
+              UsedAsDisplay=true
+              KeyOrDisplayName='Full_Name'
+              FinalDisplayFieldName='Full_Name'
+            >}Restrictions=''
+          OQLText=['select from currency'#13#10,
+            '(Currency_Code,'#13#10,
+            ' Short_Name,'#13#10,
+            ' Full_Name,'#13#10,
+            'self);']
+          OQLSystemContext='accounting'
+          LookupOption=loCustomOQL
+          FieldBaseName='LCurrency'
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LBank'
+          ControlCaption='Nama Bank'
+          ClassTypeName='Bank'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LBank.BankCode'
+              DataTypeName='VARCHAR'
+              DataLength=10
+              UsedAsKey=true
+              KeyOrDisplayName='BankCode'
+              FinalDisplayFieldName='BankCode'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LBank.BankCode'
+              DataTypeName='VARCHAR'
+              DataLength=10
+              UsedAsDisplay=true
+              KeyOrDisplayName='BankCode'
+              FinalDisplayFieldName='BankCode'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LBank.BankShortName'
+              DataTypeName='VARCHAR'
+              DataLength=20
+              UsedAsDisplay=true
+              KeyOrDisplayName='BankShortName'
+              FinalDisplayFieldName='BankShortName'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LBank.BankName'
+              DataTypeName='VARCHAR'
+              DataLength=60
+              UsedAsDisplay=true
+              KeyOrDisplayName='BankName'
+              FinalDisplayFieldName='BankName'
+            >}Restrictions=''
+          FieldBaseName='LBank'
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LGLInterface'
+          ControlCaption='GL Interface'
+          ClassTypeName=''
+          ExternalClassTypeName='account'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LGLInterface.account_code'
+              DataTypeName='varchar'
+              DataLength=20
+              UsedAsKey=true
+              KeyOrDisplayName='account_code'
+              FinalDisplayFieldName='account_code'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LGLInterface.Account_Name'
+              DataTypeName='varchar'
+              DataLength=20
+              UsedAsDisplay=true
+              KeyOrDisplayName='Account_Name'
+              FinalDisplayFieldName='Account_Name'
+            >}Restrictions=''
+          OQLText=['select from Account'#13#10,
+            '[ is_detail=''T'']'#13#10,
+            '('#13#10,
+            '  Account_Code,'#13#10,
+            '  Account_Name,'#13#10,
+            '  self'#13#10,
+            ') then order by account_code;']
+          OQLSystemContext='accounting'
+          LookupOption=loCustomOQL
+          FieldBaseName='LGLInterface'
+        >}Name='pData'
+      Width=353
+      Height=313
+      UIPart=$UIPARTS['uipData']
+      Controls={*object:rtf::DBEdit<
+          Name='AccountName'
+          Top=36
+          Left=8
+          Color=0
+          ControlCaption='Nama Rekening'
+        >, *object:rtf::DBEdit<
+          Name='BankAccountNo'
+          Top=92
+          Left=8
+          Color=0
+          ControlCaption='No Rekening Bank'
+          LayoutOrder=3
+        >, *object:rtf::DBEdit<
+          Name='Balance'
+          Top=232
+          Left=8
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Balance'
+          LayoutOrder=7
+        >, *object:rtf::DBDateEdit<
+          Name='OpeningDate'
+          Top=260
+          Left=8
+          Color=-2147483624
+          ControlCaption='Tgl Buka'
+          LayoutOrder=8
+        >, *object:rtf::DBComboBox<
+          Name='Status'
+          Top=288
+          Left=8
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Status'
+          LayoutOrder=9
+        >, *object:rtf::DBEdit<
+          Name='CashCode'
+          Top=64
+          Left=8
+          Color=0
+          ControlCaption='Kode Kas'
+        >, *object:rtf::DBEdit<
+          Name='AccountNoID'
+          Top=8
+          Left=8
+          Width=203
+          Height=21
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='No Rekening'
+          LayoutOrder=-2
+        >, *object:rtf::DBLookupEdit<
+          Name='LBranch'
+          Top=148
+          Left=8
+          ControlCaption='Cabang'
+          LayoutOrder=5
+          LookupField='LBranch.Nama_Cabang'
+          DisplayLookupField=true
+          OnAfterLookup='BranchAfterLookup'
+          DirectInput=true
+        >, *object:rtf::DBLookupEdit<
+          Name='LCurrency'
+          Top=176
+          Left=8
+          ControlCaption='Valuta'
+          LayoutOrder=6
+          FieldName='LCurrency.Currency_Code'
+          DisplayFormat=''
+          LookupField='LCurrency.Full_Name'
+          DisplayLookupField=true
+          OnAfterLookup='CurrencyAfterLookup'
+          DisplayLookupColor=-2147483624
+          DisplayLookupWidth=150
+          DirectInput=true
+        >, *object:rtf::DBLookupEdit<
+          Name='LBank'
+          Top=120
+          Left=8
+          ControlCaption='Nama Bank'
+          LayoutOrder=4
+          LookupField='LBank.BankShortName'
+          DisplayLookupField=true
+          OnAfterLookup='BankAfterLookup'
+          DirectInput=true
+        >, *object:rtf::DBLookupEdit<
+          Name='LGLInterface'
+          Top=204
+          Left=8
+          ControlCaption='GL Interface'
+          LayoutOrder=7
+          LookupField='LGLInterface.Account_Name'
+          DisplayLookupField=true
+          OnAfterLookup='GLAfterLookup'
+          DirectInput=true
+        >}EqualCaptionWidth=130
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=41
+      Controls={object:rtf::Button<
+          Name='bOK'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&OK'
+          Default=true
+          OnClick='bOKClick'
+        >, object:rtf::Button<
+          Name='bClose'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Width=82
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='&Cancel / Close'
+          Cancel=true
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=361
+      Height=353
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['pData']
+      InversedAlign=true
+    >}FormClassName='fRekeningBank'
+>

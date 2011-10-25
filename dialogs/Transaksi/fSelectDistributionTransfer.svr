@@ -1,0 +1,96 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{03AB2DCD-D5DA-4DD5-B07D-CD15AE22527E}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rpclass::TPClassUIDefList<
+  UIDefs={object:rpclass::TPClassUIDef<
+      Name='uipFilter'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='BranchCode'
+          DataTypeName='varchar'
+          DataLength=3
+        >, object:rpclass::TCustomLoadedField<
+          Name='UserId'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='EmployeeId'
+          DataTypeName='integer'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='UserId'
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rpclass::TCustomLoadedField<
+          Name='BeginDate'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='EndDate'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LSourceBranch.BranchCode'
+          DataTypeName='VARCHAR'
+          DataLength=3
+        >, object:rpclass::TCustomLoadedField<
+          Name='LSourceBranch.BranchCode'
+          DataTypeName='VARCHAR'
+          DataLength=3
+        >, object:rpclass::TCustomLoadedField<
+          Name='LSourceBranch.BranchName'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
+          Name='LSourceBranch'
+          ClassTypeName='Branch'
+          FieldNames='BranchCode;BranchCode;BranchName'
+        >}Mode=imSingleRow
+    >, object:rpclass::TPClassUIDef<
+      Name='uipCATransactItem'
+      PClassName='AccountTransactionItem'
+      Mode=imMultiRow
+      OnSetData='OnSetData'
+    >, object:rpclass::TPClassUIDef<
+      Name='uipDistributionList'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='TransactionDate'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='BranchNameSource'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='Amount'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='TransactionNo'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='Description'
+          DataTypeName='varchar'
+          DataLength=100
+        >, object:rpclass::TCustomLoadedField<
+          Name='ReportStatus'
+          DataTypeName='varchar'
+          DataLength=1
+        >, object:rpclass::TCustomLoadedField<
+          Name='TransactionId'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='BranchCodeSource'
+          DataTypeName='varchar'
+          DataLength=3
+        >, object:rpclass::TCustomLoadedField<
+          Name='DistributionId'
+          DataTypeName='integer'
+          DataLength=20
+        >}Mode=imSingleRow
+    >}OnSetDataEx='FormSetDataEx'
+>

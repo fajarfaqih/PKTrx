@@ -1,0 +1,81 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{A7242EAA-BE28-4B8C-B332-B7B8D3FDEEC9}'
+  DocumentID=''
+  MajorVersion='1'
+  MinorVersion='0'
+>
+
+object: htr::report <
+
+  Title = 'Daftar Hak Akses Menu User'
+  DisableDefaultHTMLTags = false
+  DataSources = {
+    object: htr::TmpTable <
+      name = 'qMenuUser'
+    >
+  }
+
+  HeadPart = 
+    ['<style>'#13,
+    '<!--'#13,
+    'body         { font-family: Tahoma; font-size: 8pt }'#13,
+    'table        { font-family: Tahoma; font-size: 8pt }'#13,
+    'tabletext    { font-family: Tahoma; font-size: 6pt }'#13,
+    '-->'#13,
+    '</style>']
+
+
+  Items = {
+
+    object: htr::Item <
+      Name = 'heading'
+      TemplateString =
+        ['<h2><font size="3">Daftar Hak Akses Menu User</font></h2>'#13,
+        '<table border="0" width="54%">'#13,
+        '  <tr>'#13,
+        '    <td width="15%"><font size="4"><b>User</b></font></td>'#13,
+        '    <td width="41%"><reportvar userapp></td>'#13,
+        '  </tr>'#13,
+        '  </table>'#13,
+        '<br>'#13]
+
+      Variables = {
+        object: htr::Variable <Name = 'userapp'>
+      } // variables
+    >
+
+    (*---------- heading, loop, footer -------- *)
+
+    object: htr::Item <
+      Name = 'table_heading'
+      TemplateString =
+        ['<table border="1" width="750" height="60" cellspacing="1">'#13,
+        '  <tr>'#13,
+        '    <td width="120" bgcolor="#FF9966" height="10" align="center"><b>Modul Item</b></td>'#13,
+        '    <td width="300" bgcolor="#FF9966" height="10" align="center"><b>Menu Item</b></td>'#13,
+        '  </tr>']
+    >
+
+    object: htr::LoopItem <
+      Name = 'table_loop'
+      LoopDataSource = $DataSources[qMenuUser]
+      TemplateString =
+        ['  <tr>'#13,
+        '    <td align="left" width="400" style="border-style: solid" height="10"><reportvar modul_name></td>'#13,
+        '    <td align="left" width="600" style="border-style: solid" height="10"><reportvar menu_name></td>'#13,
+        '  </tr>']
+
+      Variables={
+        object: htr::DBVariable<Name='modul_name' breakvalue = true>
+        object: htr::DBVariable<Name='menu_name'>
+      }
+    >
+
+    object: htr::Item <
+      Name = 'table_footer'
+      TemplateString = 
+        ['</table>']
+    >
+  } // items
+>

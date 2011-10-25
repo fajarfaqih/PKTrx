@@ -1,0 +1,191 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Laporan penyaluran per produk'
+  Left=50
+  Top=50
+  Width=425
+  Height=225
+  UIParts={object:rtf::PClassUI<
+      Name='uipData'
+      FillInDefaultValues=true
+      AlwaysPostToServer=true
+      PostLinkValues=true
+      InitWithDefaultValues=true
+    >}Containers={object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          ReadOnlyControl=true
+          ControlCaption='Cabang laporan'
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LProductAccount'
+          ControlCaption='Rekening produk'
+          ClassTypeName='ProductAccount'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LProductAccount.AccountNo'
+              DataTypeName='VARCHAR'
+              DataLength=10
+              UsedAsKey=true
+              KeyOrDisplayName='AccountNo'
+              FinalDisplayFieldName='AccountNo'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LProductAccount.AccountNo'
+              DataTypeName='VARCHAR'
+              DataLength=10
+              UsedAsDisplay=true
+              KeyOrDisplayName='AccountNo'
+              FinalDisplayFieldName='AccountNo'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LProductAccount.AccountName'
+              DataTypeName='VARCHAR'
+              DataLength=50
+              UsedAsDisplay=true
+              KeyOrDisplayName='AccountName'
+              FinalDisplayFieldName='AccountName'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LProductAccount.CurrencyCode'
+              DataTypeName='VARCHAR'
+              DataLength=5
+              UsedAsDisplay=true
+              KeyOrDisplayName='CurrencyCode'
+              FinalDisplayFieldName='CurrencyCode'
+            >}Restrictions='BranchCode|BranchCode'
+          OQLText=['select from ProductAccount'#13#10,
+            '[status = ''A'' and BranchCode = :BranchCode]'#13#10,
+            '('#13#10,
+            '  AccountNo, AccountName, Balance, CurrencyCode,'#13#10,
+            '  LProduct.ProductName, self'#13#10,
+            ')'#13#10,
+            'then order by AccountNo;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LProductAccount'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='IsAllProduct'
+          ControlCaption='Pilih semua produk'
+          DataTypeName='varchar'
+          DataLength=1
+          EnumeratedValues=['F=False'#13#10,
+            'T=True'#13#10]
+          GenerateCheckBoxForEnum=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BeginDate'
+          ControlCaption='Tanggal awal'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='EndDate'
+          ControlCaption='Tanggal akhir'
+          DataTypeName='timestamp'
+          DataLength=20
+        >}Name='PData'
+      Width=617
+      Height=177
+      UIPart=$UIPARTS['uipData']
+      Controls={*object:rtf::DBEdit<
+          Name='BranchCode'
+          Top=8
+          Left=8
+          Color=-2147483624
+          ControlCaption='Cabang laporan'
+          ReadOnly=true
+          CharCase=ecUpperCase
+        >, *object:rtf::DBLookupEdit<
+          Name='LProductAccount'
+          Top=36
+          Left=8
+          Width=100
+          Height=21
+          ControlCaption='Rekening produk'
+          FieldName='LProductAccount.AccountNo'
+          DisplayFormat=''
+          LookupField='LProductAccount.AccountName'
+          DisplayLookupField=true
+          DisplayLookupColor=-2147483624
+          DisplayLookupWidth=200
+        >, *object:rtf::DBCheckBox<
+          Name='IsAllProduct'
+          Top=92
+          Left=8
+          Color=0
+          ControlCaption='Pilih semua produk'
+          LayoutOrder=4
+          ValueChecked='T'
+          ValueUnchecked='F'
+        >, *object:rtf::DBDateEdit<
+          Name='BeginDate'
+          Top=120
+          Left=8
+          Color=0
+          ControlCaption='Tanggal awal'
+          LayoutOrder=5
+        >, *object:rtf::DBDateEdit<
+          Name='EndDate'
+          Top=148
+          Left=8
+          Color=0
+          ControlCaption='Tanggal akhir'
+          LayoutOrder=6
+        >, object:rtf::DBEdit<
+          Name='edValuta'
+          Layout=clNewLine
+          Top=64
+          Left=8
+          Color=-2147483624
+          ControlCaption='Valuta rekening'
+          LayoutOrder=3
+          FieldName='LProductAccount.CurrencyCode'
+          DisplayFormat=''
+          ReadOnly=true
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      ControlCharCase=ecUpperCase
+    >, object:rtf::Panel<
+      Name='PAction'
+      Width=320
+      Height=41
+      Controls={object:rtf::Button<
+          Name='BPrint'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Cetak'
+          Default=true
+          OnClick='PrintClick'
+        >, object:rtf::Button<
+          Name='BCancel'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Color=0
+          ControlCaption=''
+          Caption='&Batalkan'
+          Cancel=true
+          DefaultAction=daClear
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=425
+      Height=225
+      Container1=$CONTAINERS['PAction']
+      Container2=$CONTAINERS['PData']
+      InversedAlign=true
+    >}FormClassName='fProductDistribution'
+>

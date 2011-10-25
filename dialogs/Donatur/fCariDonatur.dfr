@@ -1,0 +1,240 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['multisplit1']
+  Caption='Cari Donatur : '
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=721
+  Height=481
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx='FormSetDataEx'
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='ID'
+          Hidden=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='mode'
+          Hidden=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='UserPengubah'
+          Hidden=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TglUbah'
+          Hidden=true
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TerminalUbah'
+          Hidden=true
+        >}Name='uipData'
+      FillInDefaultValues=true
+      InitWithDefaultValues=true
+    >, object:rtf::PClassUI<
+      Name='uipResult'
+      MultiLine=true
+    >}Containers={object:rtf::Grid<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='DonorId'
+          ControlCaption='ID Donatur'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='DonorType'
+          ControlCaption='Jenis Donatur'
+          DataTypeName='varchar'
+          DataLength=1
+          EnumeratedValues=['C=Korporat'#13#10,
+            'I=Perorangan'#13#10]
+        >, object:rtf::FieldUIElmtSetting<
+          Name='DonorName'
+          ControlCaption='Nama Lengkap'
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rtf::FieldUIElmtSetting<
+          Name='PhoneNumber'
+          ControlCaption='Nomor Telp'
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Email'
+          ControlCaption='Email'
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AddressStreet'
+          ControlCaption='Alamat'
+          DataTypeName='varchar'
+          DataLength=200
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Status'
+          ControlCaption='Status'
+          DataTypeName='varchar'
+          DataLength=20
+        >}Name='GResult'
+      Width=721
+      Height=338
+      UIPart=$UIPARTS['uipResult']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='Hasil Pencarian'
+      Columns={*object:rtf::GridColumn<
+          Name='DonorId'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='DonorId'
+          DisplayFormat=''
+          TitleCaption='ID Donatur'
+          Width=90
+        >, *object:rtf::GridColumn<
+          Name='DonorType'
+          InputStyle=cisEnumerated
+          EnumeratedValues=['C=Korporat'#13#10,
+            'I=Perorangan'#13#10]
+          FieldName='DonorType'
+          DisplayFormat=''
+          TitleCaption='Jenis Donatur'
+        >, *object:rtf::GridColumn<
+          Name='DonorName'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='DonorName'
+          DisplayFormat=''
+          TitleCaption='Nama Lengkap'
+          Width=170
+        >, *object:rtf::GridColumn<
+          Name='PhoneNumber'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='PhoneNumber'
+          DisplayFormat=''
+          TitleCaption='Nomor Telp'
+          Width=80
+        >, *object:rtf::GridColumn<
+          Name='Email'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Email'
+          DisplayFormat=''
+          TitleCaption='Email'
+        >, *object:rtf::GridColumn<
+          Name='AddressStreet'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='AddressStreet'
+          DisplayFormat=''
+          TitleCaption='Alamat'
+        >, *object:rtf::GridColumn<
+          Name='Status'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Status'
+          DisplayFormat=''
+          TitleCaption='Status'
+        >}ReadOnly=true
+      OnDoubleClick='PilihClick'
+      SuppressHelpLine=true
+    >, object:rtf::MultiSplit<
+      Name='multisplit1'
+      Width=721
+      Height=481
+      Side1Containers={$CONTAINERS['PData']
+      }Side2Containers={$CONTAINERS['PAction']
+      }SpaceContainer=$CONTAINERS['GResult']
+    >, object:rtf::Panel<
+      Name='PAction'
+      Width=320
+      Height=41
+      Controls={object:rtf::Button<
+          Name='BOK'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Pilih'
+          Default=true
+          OnClick='PilihClick'
+        >, object:rtf::Button<
+          Name='BCancel'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Color=0
+          ControlCaption=''
+          Caption='&Batalkan'
+          Cancel=true
+          DefaultAction=daClear
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='DonorId'
+          ControlCaption='ID Donatur'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='PhoneNumber'
+          ControlCaption='Nomor Tlp'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='DonorName'
+          ControlCaption='Nama '
+        >}Name='PData'
+      Width=617
+      Height=100
+      UIPart=$UIPARTS['uipData']
+      Controls={*object:rtf::DBEdit<
+          Name='DonorId'
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption='ID Donatur'
+          OnChange='OnChange'
+          OnExit='OnExit'
+          CharCase=ecUpperCase
+        >, *object:rtf::DBEdit<
+          Name='PhoneNumber'
+          Top=36
+          Left=8
+          Color=0
+          ControlCaption='Nomor Tlp'
+          OnChange='OnChange'
+          OnExit='OnExit'
+          CharCase=ecUpperCase
+        >, *object:rtf::DBEdit<
+          Name='DonorName'
+          Top=64
+          Left=8
+          Color=0
+          ControlCaption='Nama '
+          OnChange='OnChange'
+          OnExit='OnExit'
+          CharCase=ecUpperCase
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      ControlCharCase=ecUpperCase
+    >}FormClassName='fCariDonatur'
+>

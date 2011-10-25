@@ -1,0 +1,454 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['multisplit1']
+  Caption='Sponsor Program'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=657
+  Height=497
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='mode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ID'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='UserPengubah'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TglUbah'
+          Hidden=true
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TerminalUbah'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ViewType'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=1
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TempData'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >}Name='uipFilter'
+    >, object:rtf::PClassUI<
+      Name='uipTransProgram'
+      MultiLine=true
+    >, object:rtf::PClassUI<
+      Name='uipProjectDisbursement'
+      MultiLine=true
+    >}Containers={object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='No_Sponsor'
+          ControlCaption='Nomor Sponsor'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Nama_Sponsor'
+          ReadOnlyControl=true
+          ControlCaption='Nama Sponsor'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='SponsorId'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >}Name='pSponsor'
+      Width=545
+      Height=73
+      UIPart=$UIPARTS['uipFilter']
+      Controls={*object:rtf::DBEdit<
+          Name='No_Sponsor'
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption='Nomor Sponsor'
+          OnExit='IdSponsorOnExit'
+        >, *object:rtf::DBEdit<
+          Name='Nama_Sponsor'
+          Top=36
+          Left=8
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Nama Sponsor'
+          LayoutOrder=3
+        >, object:rtf::Button<
+          Name='bCari'
+          Layout=clAbsolute
+          Top=8
+          Left=304
+          Width=81
+          Height=25
+          Color=0
+          ControlCaption=''
+          LayoutOrder=2
+          Caption='Cari &Sponsor'
+          OnClick='bCariClick'
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::MultiSplit<
+      Name='multisplit1'
+      Width=657
+      Height=497
+      Side1Containers={$CONTAINERS['pSponsor']
+      }Side2Containers={$CONTAINERS['pAction']
+      }SpaceContainer=$CONTAINERS['multipages1']
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=39
+      Controls={object:rtf::Button<
+          Name='bClose'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&T&utup'
+          Default=true
+          Cancel=true
+          ExitAction=eaQuitOK
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='TglAwal'
+          ControlCaption='Periode Tanggal'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TglAkhir'
+          ControlCaption='s/d'
+          DataTypeName='timestamp'
+          DataLength=20
+        >}Name='pTransFilter'
+      Width=625
+      Height=65
+      UIPart=$UIPARTS['uipFilter']
+      Controls={*object:rtf::DBDateEdit<
+          Name='TglAwal'
+          Top=25
+          Left=8
+          Color=0
+          ControlCaption='Periode Tanggal'
+        >, *object:rtf::DBDateEdit<
+          Name='TglAkhir'
+          Layout=clNextSide
+          Top=25
+          Left=236
+          Color=0
+          ControlCaption='s/d'
+        >, object:rtf::Button<
+          Name='bView'
+          Layout=clAbsolute
+          Top=25
+          Left=387
+          Color=0
+          ControlCaption=''
+          Caption='&Tampilkan'
+          OnClick='bViewHistClick'
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=25
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Grid<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='TransactionItemId'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionDate'
+          ControlCaption='Tgl Transaksi'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionCode'
+          Hidden=true
+          ControlCaption='Kode Transaksi'
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          ControlCaption='Kode Cabang'
+          DataTypeName='varchar'
+          DataLength=5
+        >, object:rtf::FieldUIElmtSetting<
+          Name='MutationType'
+          Hidden=true
+          ControlCaption='Jns Mutasi'
+          DataTypeName='varchar'
+          DataLength=1
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount'
+          ControlCaption='Jumlah'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='CurrencyCode'
+          Hidden=true
+          ControlCaption='Kode Valuta'
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Rate'
+          Hidden=true
+          ControlCaption='Rate'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='EkuivalenAmount'
+          Hidden=true
+          ControlCaption='Jumlah Ekiv'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AccountName'
+          ControlCaption='Nama Program'
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Description'
+          Hidden=true
+          ControlCaption='Keterangan'
+          DataTypeName='varchar'
+          DataLength=200
+        >, object:rtf::FieldUIElmtSetting<
+          Name='InvoiceDate'
+          ControlCaption='Tanggal Invoice'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='InvoiceNo'
+          ControlCaption='Nomor Invoice'
+          DataTypeName='varchar'
+          DataLength=50
+        >}Name='gHist'
+      Width=649
+      Height=289
+      ContextMenuName='popupmenus/Sponsor/pSponsorProgram'
+      UIPart=$UIPARTS['uipTransProgram']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='Daftar Penyaluran Dana Program'
+      Columns={*object:rtf::GridColumn<
+          Name='TransactionDate'
+          InputStyle=cisDate
+          EnumeratedValues=''
+          FieldName='TransactionDate'
+          DisplayFormat=''
+          TitleCaption='Tgl Transaksi'
+        >, *object:rtf::GridColumn<
+          Name='BranchCode'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='BranchCode'
+          DisplayFormat=''
+          TitleCaption='Kode Cabang'
+        >, *object:rtf::GridColumn<
+          Name='Amount'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Amount'
+          DisplayFormat=',0.00'
+          TitleCaption='Jumlah'
+          Width=150
+        >, *object:rtf::GridColumn<
+          Name='AccountName'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='AccountName'
+          DisplayFormat=''
+          TitleCaption='Nama Program'
+        >, *object:rtf::GridColumn<
+          Name='InvoiceDate'
+          InputStyle=cisDate
+          EnumeratedValues=''
+          FieldName='InvoiceDate'
+          DisplayFormat=''
+          TitleCaption='Tanggal Invoice'
+        >, *object:rtf::GridColumn<
+          Name='InvoiceNo'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='InvoiceNo'
+          DisplayFormat=''
+          TitleCaption='Nomor Invoice'
+        >}ReadOnly=true
+      SuppressHelpLine=true
+    >, object:rtf::DualSplit<
+      Name='dualsplit4'
+      Width=649
+      Height=355
+      Container1=$CONTAINERS['pTransFilter']
+      Container2=$CONTAINERS['gHist']
+    >, object:rtf::MultiPages<
+      Name='multipages1'
+      Width=657
+      Height=383
+      Pages={object:rtf::Page<
+          PageName='mpProject'
+          PageTitle='Project'
+          Container=$CONTAINERS['dualsplit5']
+        >, object:rtf::Page<
+          PageName='mpProgram'
+          PageTitle='Program'
+          Container=$CONTAINERS['dualsplit4']
+          Index=1
+        >}>, object:rtf::Panel<
+      Elements={object:rtf::LinkUIElmtSetting<
+          Name='LProject'
+          ControlCaption='Pilih Project'
+          ClassTypeName='ProjectSponsor'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LProject.ProjectSponsorId'
+              DataTypeName='INTEGER'
+              DataLength=0
+              UsedAsKey=true
+              KeyOrDisplayName='ProjectSponsorId'
+              FinalDisplayFieldName='ProjectSponsorId'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LProject.LProjectAccount.AccountNo'
+              DataTypeName='VARCHAR'
+              DataLength=30
+              UsedAsDisplay=true
+              KeyOrDisplayName='LProjectAccount.AccountNo'
+              FinalDisplayFieldName='AccountNo'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LProject.LProjectAccount.AccountName'
+              DataTypeName='VARCHAR'
+              DataLength=50
+              UsedAsDisplay=true
+              KeyOrDisplayName='LProjectAccount.AccountName'
+              FinalDisplayFieldName='AccountName'
+            >}Restrictions='SponsorId|SponsorId'
+          OQLText=['select from ProjectSponsor'#13#10,
+            '[SponsorId=:SponsorId]'#13#10,
+            '('#13#10,
+            ' LProjectAccount.AccountNo,'#13#10,
+            ' LProjectAccount.AccountName,'#13#10,
+            ' self'#13#10,
+            ') then order by AccountName;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LProject'
+        >}Name='pProject'
+      Width=441
+      Height=57
+      UIPart=$UIPARTS['uipFilter']
+      Controls={*object:rtf::DBLookupEdit<
+          Name='LProject'
+          Top=8
+          Left=8
+          ControlCaption='Pilih Project'
+          LookupField='LProject.LProjectAccount.AccountName'
+          DisplayLookupField=true
+        >, object:rtf::Button<
+          Name='button1'
+          Layout=clAbsolute
+          Top=8
+          Left=312
+          Color=0
+          ControlCaption=''
+          Caption='Tampilkan'
+          OnClick='bDisburseClick'
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Grid<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='DisbNumber'
+          ControlCaption='Tahap'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='DisbDatePlan'
+          ControlCaption='Tanggal'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='DisbAmountPlan'
+          ControlCaption='Jumlah'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='DisbId'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >}Name='gProjectDisbursement'
+      Width=649
+      Height=297
+      ContextMenuName='popupmenus/Sponsor/pSponsorProject'
+      UIPart=$UIPARTS['uipProjectDisbursement']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='Tahap Penghimpunan'
+      Columns={*object:rtf::GridColumn<
+          Name='DisbNumber'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='DisbNumber'
+          DisplayFormat=''
+          TitleCaption='Tahap'
+        >, *object:rtf::GridColumn<
+          Name='DisbDatePlan'
+          InputStyle=cisDate
+          EnumeratedValues=''
+          FieldName='DisbDatePlan'
+          DisplayFormat=''
+          TitleCaption='Tanggal'
+        >, *object:rtf::GridColumn<
+          Name='DisbAmountPlan'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='DisbAmountPlan'
+          DisplayFormat=''
+          TitleCaption='Jumlah'
+        >}ReadOnly=true
+      RowSelect=true
+      OnDoubleClick='bShowDisburse'
+      SuppressHelpLine=true
+    >, object:rtf::DualSplit<
+      Name='dualsplit5'
+      Width=649
+      Height=355
+      Container1=$CONTAINERS['pProject']
+      Container2=$CONTAINERS['gProjectDisbursement']
+    >}FormClassName='fSponsorProgram'
+>

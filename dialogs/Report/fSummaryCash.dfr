@@ -1,0 +1,140 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Rekapitulasi transaksi kas'
+  Left=50
+  Top=50
+  Width=345
+  Height=153
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx='FormSetDataEx'
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Name='uipData'
+      FillInDefaultValues=true
+      AlwaysPostToServer=true
+      PostLinkValues=true
+      InitWithDefaultValues=true
+    >}Containers={object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          Hidden=true
+          ReadOnlyControl=true
+          ControlCaption='Cabang laporan'
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LBranch'
+          ControlCaption='Cabang'
+          ClassTypeName='Branch'
+          DisplayFields='BranchCode;BranchName'
+          Restrictions=''
+          OQLText=['select from Branch'#13#10,
+            '( BranchCode,BranchName,self'#13#10,
+            ') then order by BranchName;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LBranch'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BeginDate'
+          ControlCaption='Tanggal Awal'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='EndDate'
+          ControlCaption='Tanggal Akhir'
+          DataTypeName='timestamp'
+          DataLength=20
+        >}Name='PData'
+      Width=337
+      Height=100
+      UIPart=$UIPARTS['uipData']
+      Controls={*object:rtf::DBLookupEdit<
+          Name='LBranch'
+          Top=8
+          Left=8
+          ControlCaption='Cabang'
+          LookupField='LBranch.BranchName'
+          DisplayLookupField=true
+          OnAfterLookup='BranchAfterLookup'
+        >, *object:rtf::DBDateEdit<
+          Name='BeginDate'
+          Top=36
+          Left=8
+          Color=0
+          ControlCaption='Tanggal Awal'
+        >, *object:rtf::DBDateEdit<
+          Name='EndDate'
+          Top=64
+          Left=8
+          Color=0
+          ControlCaption='Tanggal Akhir'
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      ControlCharCase=ecUpperCase
+    >, object:rtf::Panel<
+      Name='PAction'
+      Width=320
+      Height=41
+      Controls={object:rtf::Button<
+          Name='BPrint'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Cetak Text'
+          Default=true
+          OnClick='PrintClick'
+        >, object:rtf::Button<
+          Name='BCancel'
+          Layout=clNextSide
+          Top=8
+          Left=166
+          Color=0
+          ControlCaption=''
+          LayoutOrder=3
+          Caption='&Tutup'
+          Cancel=true
+          DefaultAction=daClear
+          ExitAction=eaQuitCancel
+        >, object:rtf::Button<
+          Name='bExcel'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Color=0
+          ControlCaption=''
+          LayoutOrder=2
+          Caption='Cetak E&xcel'
+          OnClick='ExcelClick'
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=345
+      Height=153
+      Container1=$CONTAINERS['PAction']
+      Container2=$CONTAINERS['PData']
+      InversedAlign=true
+    >}FormClassName='fSummaryCash'
+>

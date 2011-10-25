@@ -1,0 +1,505 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dsMain']
+  Caption='Cetak Kwitansi'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=785
+  Height=505
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx='FormSetDataEx'
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='IsSPV'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=3
+        >}Name='uipData'
+    >, object:rtf::PClassUI<
+      Name='uipTransaction'
+      ClassTypeName='Transaction'
+      DataBinding=bmMaster
+      MultiLine=true
+    >, object:rtf::PClassUI<
+      Name='uipTransactionItem'
+      ClassTypeName='TransactionItem'
+      DataBinding=bmList
+      Master=$UIPARTS['uipTransaction']
+      ListName='Ls_TransactionItem'
+      SetMasterDetailRelationship=true
+    >}Containers={object:rtf::DualSplit<
+      Name='dsMain'
+      Width=785
+      Height=505
+      Container1=$CONTAINERS['pMainAction']
+      Container2=$CONTAINERS['dsTop']
+      InversedAlign=true
+    >, object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BeginItemNo'
+          Hidden=true
+          ControlCaption='Tampilkan mulai no'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='UserId'
+          ReadOnlyControl=true
+          ControlCaption='Id User'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LBranch'
+          ControlCaption='Cabang'
+          ClassTypeName=''
+          ExternalClassTypeName='Cabang'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LBranch.Kode_Cabang'
+              UsedAsKey=true
+              KeyOrDisplayName='Kode_Cabang'
+              FinalDisplayFieldName='Kode_Cabang'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LBranch.Nama_Cabang'
+              UsedAsDisplay=true
+              KeyOrDisplayName='Nama_Cabang'
+              FinalDisplayFieldName='Nama_Cabang'
+            >}Restrictions=''
+          OQLText=['select from cabang'#13#10,
+            '[Status_Aktif=''T'']'#13#10,
+            '(Kode_Cabang,Nama_Cabang,self);']
+          OQLSystemContext='corporate'
+          LookupOption=loCustomOQL
+          FieldBaseName='LBranch'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='IsAllCabang'
+          ControlCaption='Seluruh Cabang'
+          DataTypeName='varchar'
+          DataLength=20
+          EnumeratedValues=['F=False'#13#10,
+            'T=True'#13#10]
+          GenerateCheckBoxForEnum=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='DateCategory'
+          Hidden=true
+          ControlCaption='Periode Tanggal'
+          DataTypeName='integer'
+          DataLength=20
+          EnumeratedValues=['1=Tanggal Aktual'#13#10,
+            '2=Tanggal Transaksi'#13#10]
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BeginDate'
+          ControlCaption=' '
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='EndDate'
+          ControlCaption='-'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='SearchCategory'
+          ControlCaption='Kategori Pencarian'
+          DataTypeName='integer'
+          DataLength=1
+          EnumeratedValues=['0=Tidak ada pencarian'#13#10,
+            '1=Nomor Transaksi'#13#10,
+            '2=No Donor'#13#10,
+            '3=Nama Donor'#13#10,
+            '4=Keterangan'#13#10,
+            '5=FSZ/No Referensi'#13#10]
+        >, object:rtf::FieldUIElmtSetting<
+          Name='SearchText'
+          ControlCaption=' '
+          DataTypeName='varchar'
+          DataLength=100
+        >, object:rtf::FieldUIElmtSetting<
+          Name='SortCategory'
+          ControlCaption='Urut Berdasarkan'
+          DataTypeName='integer'
+          DataLength=20
+          EnumeratedValues=['1=Tanggal Aktual'#13#10,
+            '2=Tanggal Transaksi'#13#10,
+            '3=Nomor Transaksi'#13#10,
+            '4=No Donatur'#13#10,
+            '5=Nama Donor'#13#10,
+            '6=Nama Kas/Bank'#13#10]
+        >, object:rtf::FieldUIElmtSetting<
+          Name='LimitData'
+          ControlCaption='Jml Transaksi Yg Ditampilkan'
+          DataTypeName='integer'
+          DataLength=20
+        >}Name='pBatch'
+      Width=737
+      Height=185
+      UIPart=$UIPARTS['uipData']
+      Controls={*object:rtf::DBEdit<
+          Name='UserId'
+          Top=8
+          Left=8
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Id User'
+        >, *object:rtf::DBLookupEdit<
+          Name='LBranch'
+          Top=36
+          Left=8
+          ControlCaption='Cabang'
+          LookupField='LBranch.Nama_Cabang'
+          DisplayLookupField=true
+        >, *object:rtf::DBCheckBox<
+          Name='IsAllCabang'
+          Layout=clNextSide
+          Top=36
+          Left=378
+          Color=0
+          ControlCaption='Seluruh Cabang'
+          ValueChecked='T'
+          ValueUnchecked='F'
+          OnClick='AllCabangClick'
+        >, *object:rtf::DBDateEdit<
+          Name='BeginDate'
+          Top=64
+          Left=8
+          Color=0
+          ControlCaption='Periode Tanggal '
+          FieldName='BeginDate'
+          DisplayFormat='dd-mm-yyyy'
+        >, *object:rtf::DBDateEdit<
+          Name='EndDate'
+          Layout=clNextSide
+          Top=64
+          Left=276
+          Color=0
+          ControlCaption='-'
+          FieldName='EndDate'
+          DisplayFormat='dd-mm-yyyy'
+        >, *object:rtf::DBComboBox<
+          Name='SearchCategory'
+          Top=92
+          Left=8
+          Color=0
+          ControlCaption='Kategori Pencarian'
+          OnChange='CategoryOnChange'
+        >, *object:rtf::DBEdit<
+          Name='SearchText'
+          Layout=clNextSide
+          Top=92
+          Left=277
+          Color=16777215
+          ControlCaption=' '
+        >, *object:rtf::DBComboBox<
+          Name='SortCategory'
+          Top=120
+          Left=8
+          Color=0
+          ControlCaption='Urut Berdasarkan'
+        >, *object:rtf::DBEdit<
+          Name='LimitData'
+          Top=148
+          Left=8
+          Color=0
+          ControlCaption='Jml Transaksi Yg Ditampilkan'
+        >, object:rtf::Button<
+          Name='bLihatTransaksi'
+          Layout=clAbsolute
+          Top=148
+          Left=284
+          Width=145
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='T&ampilkan daftar transaksi'
+          OnClick='bLihatTransaksiClick'
+        >}EqualCaptionWidth=140
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dsTopOne'
+      Width=785
+      Height=277
+      Container1=$CONTAINERS['pTranAction']
+      Container2=$CONTAINERS['gTransaction']
+    >, object:rtf::Panel<
+      Name='pTranAction'
+      Width=625
+      Height=49
+      Bordered=true
+      UIPart=$UIPARTS['uipData']
+      Controls={object:rtf::Button<
+          Name='bPrintVoucher'
+          Layout=clNextSide
+          Top=8
+          Left=8
+          Width=121
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='Cetak Kwitansi'
+          OnClick='PrintVoucherClick'
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Name='pMainAction'
+      Width=673
+      Height=41
+      Controls={object:rtf::Button<
+          Name='bClose'
+          Layout=clAbsolute
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Tutup'
+          Cancel=true
+          ExitAction=eaQuitOK
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dsTop'
+      Width=785
+      Height=463
+      Container1=$CONTAINERS['pBatch']
+      Container2=$CONTAINERS['dsTopOne']
+    >, object:rtf::Panel<
+      Name='pSearch'
+      Width=377
+      Height=73
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='Pencarian'
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=647
+      Height=333
+    >, object:rtf::Grid<
+      ControlDefs={object:rtf::MultiControlDef<
+          Action=caView
+          DataMembers=['TransactionId'#13#10,
+            'TransactionNo'#13#10,
+            'TransactionCode'#13#10,
+            'TransactionDate'#13#10,
+            'ActualDate'#13#10,
+            'Amount'#13#10,
+            'DonorNo'#13#10,
+            'DonorName'#13#10,
+            'ReferenceNo'#13#10,
+            'Description'#13#10,
+            'Inputer'#13#10,
+            'AuthStatus'#13#10,
+            'IsPosted'#13#10,
+            'BranchCode'#13#10]
+        >}Elements={*object:rtf::FieldUIElmtSetting<
+          Name='TransactionId'
+          Hidden=true
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='TransactionNo'
+          ControlCaption='Nomor Transaksi'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='TransactionCode'
+          Hidden=true
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='TransactionDate'
+          Hidden=true
+          ControlCaption='Tgl Input'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='ActualDate'
+          ControlCaption='Tgl Aktual'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='Amount'
+          ControlCaption='Nilai Transaksi'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='DonorNo'
+          ControlCaption='No Donor'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='DonorName'
+          ControlCaption='Nama Donor'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='ReferenceNo'
+          ControlCaption='FSZ / No Referensi'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='Description'
+          ControlCaption='Keterangan'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='Inputer'
+          ControlCaption='Inputer'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='AuthStatus'
+          ControlCaption='Status Otorisasi'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='IsPosted'
+          Hidden=true
+          ControlCaption='Status Jurnal'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ChannelName'
+          ControlCaption='Nama Kas/Bank'
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rtf::FieldUIElmtSetting<
+          Name='IsPostedMir'
+          ControlCaption='Status Jurnal Accounting'
+          DataTypeName='varchar'
+          DataLength=1
+          EnumeratedValues=['F=Belum'#13#10,
+            'T=Sudah'#13#10]
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BranchName'
+          ControlCaption='Nama Cabang'
+          DataTypeName='varchar'
+          DataLength=30
+        >}Name='gTransaction'
+      Width=785
+      Height=227
+      UIPart=$UIPARTS['uipTransaction']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='Daftar Transaksi'
+      Columns={*object:rtf::GridColumn<
+          Name='TransactionNo'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='TransactionNo'
+          DisplayFormat=''
+          TitleCaption='Nomor Transaksi'
+          Width=150
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='ActualDate'
+          InputStyle=cisDate
+          EnumeratedValues=''
+          FieldName='ActualDate'
+          DisplayFormat=''
+          TitleCaption='Tgl Aktual'
+          Width=70
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='Amount'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Amount'
+          DisplayFormat=',0.00'
+          TitleCaption='Nilai Transaksi'
+          Width=125
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='DonorNo'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='DonorNo'
+          DisplayFormat=''
+          TitleCaption='No Donor'
+          Width=100
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='DonorName'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='DonorName'
+          DisplayFormat=''
+          TitleCaption='Nama Donor'
+          Width=150
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='ReferenceNo'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='ReferenceNo'
+          DisplayFormat=''
+          TitleCaption='FSZ / No Referensi'
+          Width=100
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='Description'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Description'
+          DisplayFormat=''
+          TitleCaption='Keterangan'
+          Width=200
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='Inputer'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Inputer'
+          DisplayFormat=''
+          TitleCaption='Inputer'
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='AuthStatus'
+          InputStyle=cisEnumerated
+          EnumeratedValues=['T=Otorisasi'#13#10,
+            'F=Belum Otorisasi'#13#10]
+          FieldName='AuthStatus'
+          DisplayFormat=''
+          TitleCaption='Status Otorisasi'
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='BranchCode'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='BranchCode'
+          DisplayFormat=''
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='ChannelName'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          Index=1
+          FieldName='ChannelName'
+          DisplayFormat=''
+          TitleCaption='Nama Kas/Bank'
+          Width=120
+        >, *object:rtf::GridColumn<
+          Name='IsPostedMir'
+          InputStyle=cisEnumerated
+          EnumeratedValues=['F=Belum'#13#10,
+            'T=Sudah'#13#10]
+          FieldName='IsPostedMir'
+          DisplayFormat=''
+          TitleCaption='Status Jurnal Accounting'
+        >, *object:rtf::GridColumn<
+          Name='BranchName'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='BranchName'
+          DisplayFormat=''
+          TitleCaption='Nama Cabang'
+        >}ReadOnly=true
+      RowSelect=true
+      SuppressHelpLine=true
+    >}FormClassName='fPrintVoucherDonation'
+>

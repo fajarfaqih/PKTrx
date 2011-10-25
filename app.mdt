@@ -1,0 +1,4695 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{21DE026E-88A6-49ED-87F0-C759D5C018E5}'
+  DocumentID='08733922-D5BA-11D5-AB5B-E3A458EABB2C'
+  MajorVersion='0'
+  MinorVersion='0'
+>object:ODL<
+  ODLName='newodl'
+  TargetDB=object:TargetDBInfo<
+  >TypeDecls={object:BasicTypeDecl<
+      TypeName='INTEGER'
+      Reserved=true
+      DataLength=4
+    >, object:BasicTypeDecl<
+      TypeName='SINGLE'
+      Reserved=true
+      DataLength=4
+      DataTypeID=1
+    >, object:BasicTypeDecl<
+      TypeName='DOUBLE'
+      Reserved=true
+      DataLength=8
+      DataTypeID=2
+    >, object:BasicTypeDecl<
+      TypeName='TIMESTAMP'
+      Reserved=true
+      DataLength=8
+      DataTypeID=3
+    >, object:BasicTypeDecl<
+      TypeName='VARCHAR'
+      Reserved=true
+      VariableLength=true
+      DataTypeID=4
+    >, object:EnumTypeDecl<
+      TypeName='FTBoolean'
+      Reserved=true
+      EnumType=etString
+      EnumMembers={object:EnumMember<
+          StringValue='F'
+          DescriptiveName='false'
+        >, object:EnumMember<
+          StringValue='T'
+          DescriptiveName='true'
+        >}>, object:EnumTypeDecl<
+      TypeName='NYBoolean'
+      Reserved=true
+      EnumType=etString
+      EnumMembers={object:EnumMember<
+          StringValue='F'
+          DescriptiveName='no'
+        >, object:EnumMember<
+          StringValue='T'
+          DescriptiveName='yes'
+        >}>, object:ClassTypeDecl<
+      TypeName='id_gen'
+      Reserved=true
+      PTableName='ID_GEN'
+      Members={object:FieldMember<
+          MemberName='id_code'
+          PhysicalName='id_code'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+          IsPrimaryKey=true
+          DenyNull=true
+        >, object:FieldMember<
+          MemberName='last_id'
+          PhysicalName='last_id'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='locked'
+          PhysicalName='locked'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+        >}ClassID='{69F7F665-C1EC-4A6A-8BD0-5417EE6D09BB}'
+    >, object:ClassTypeDecl<
+      TypeName='enum_varchar'
+      Reserved=true
+      PTableName='ENUM_VARCHAR'
+      Members={object:FieldMember<
+          MemberName='enum_name'
+          PhysicalName='enum_name'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=32
+          IsPrimaryKey=true
+          DenyNull=true
+        >, object:FieldMember<
+          MemberName='enum_value'
+          PhysicalName='enum_value'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=2
+          IsPrimaryKey=true
+          DenyNull=true
+        >, object:FieldMember<
+          MemberName='enum_description'
+          PhysicalName='enum_description'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >}ClassID='{10B653E5-72B8-40D9-9E36-2B434CA11F79}'
+    >, object:ClassTypeDecl<
+      TypeName='enum_int'
+      Reserved=true
+      PTableName='ENUM_INT'
+      Members={object:FieldMember<
+          MemberName='enum_name'
+          PhysicalName='enum_name'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=32
+          IsPrimaryKey=true
+          DenyNull=true
+        >, object:FieldMember<
+          MemberName='enum_value'
+          PhysicalName='enum_value'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+          DenyNull=true
+        >, object:FieldMember<
+          MemberName='enum_description'
+          PhysicalName='enum_description'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >}ClassID='{25C0DA7E-A687-4815-A22A-CBA77FA524A2}'
+    >, object:ClassTypeDecl<
+      TypeName='BranchLocation'
+      PTableName='BRANCHLOCATION'
+      Members={object:FieldMember<
+          MemberName='branch_code'
+          PhysicalName='branch_code'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=5
+          IsPrimaryKey=true
+          DenyNull=true
+        >, object:FieldMember<
+          MemberName='BranchName'
+          PhysicalName='BranchName'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >, object:FieldMember<
+          MemberName='BranchStatus'
+          PhysicalName='BranchStatus'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['eBranchStatus']
+        >, object:FieldMember<
+          MemberName='user_id'
+          PhysicalName='user_id'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='last_update'
+          PhysicalName='last_update'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:FieldMember<
+          MemberName='masterbranch_code'
+          PhysicalName='masterbranch_code'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=5
+        >, object:LinkMember<
+          MemberName='LMasterBranch'
+          Optional=true
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['BranchLocation'].MEMBERS['masterbranch_code']
+              OriginPKey=$TYPEDECLS['BranchLocation'].MEMBERS['branch_code']
+            >}IsWeak=true
+          LinkedClass=$TYPEDECLS['BranchLocation']
+        >, object:Method<
+          MemberName='RegisterData'
+          VisibilityCode=3
+          MethodRole=1
+          Parameters={object:FormalParameter<
+              ParameterName='LMasterBranch'
+              DataType=$TYPEDECLS['BranchLocation']
+            >}MethodID=68
+        >, object:Method<
+          MemberName='SetMasterBranch'
+          VisibilityCode=3
+          Parameters={object:FormalParameter<
+              ParameterName='LMasterBranch'
+              DataType=$TYPEDECLS['BranchLocation']
+            >}MethodID=69
+        >, object:Method<
+          MemberName='ChangeMasterBranch'
+          VisibilityCode=3
+          Parameters={object:FormalParameter<
+              ParameterName='NewMasterBranch'
+              DataType=$TYPEDECLS['BranchLocation']
+            >}MethodID=70
+        >, object:Method<
+          MemberName='Modify'
+          VisibilityCode=3
+          Parameters={object:FormalParameter<
+              ParameterName='NewMasterBranch'
+              DataType=$TYPEDECLS['BranchLocation']
+            >}MethodID=71
+        >, object:Method<
+          MemberName='DeleteData'
+          VisibilityCode=3
+          MethodID=72
+        >, object:Method<
+          MemberName='SendAddRequest'
+          VisibilityCode=3
+          Parameters={object:FormalParameter<
+              ParameterName='branch_code'
+              DataType=$TYPEDECLS['VARCHAR']
+            >, object:FormalParameter<
+              ParameterName='BranchName'
+              DataType=$TYPEDECLS['VARCHAR']
+            >}MethodID=73
+        >, object:Method<
+          MemberName='SendModifyRequest'
+          VisibilityCode=3
+          Parameters={object:FormalParameter<
+              ParameterName='branch_code'
+              DataType=$TYPEDECLS['VARCHAR']
+            >, object:FormalParameter<
+              ParameterName='BranchName'
+              DataType=$TYPEDECLS['VARCHAR']
+            >}MethodID=74
+        >, object:Method<
+          MemberName='SendDeleteRequest'
+          VisibilityCode=3
+          Parameters={object:FormalParameter<
+              ParameterName='branch_code'
+              DataType=$TYPEDECLS['VARCHAR']
+            >}MethodID=75
+        >, object:ListMember<
+          MemberName='Ls_BranchLocation'
+          UsedLink=$TYPEDECLS['BranchLocation'].MEMBERS['LMasterBranch']
+        >}ClassID='{65002A0C-A794-4736-B20C-EE55C8F031A9}'
+    >, object:EnumTypeDecl<
+      TypeName='eBranchStatus'
+      EnumType=etString
+      EnumMembers={object:EnumMember<
+          StringValue='B'
+          DescriptiveName='Branch'
+        >, object:EnumMember<
+          StringValue='S'
+          DescriptiveName='Sub-branch'
+        >}>, object:ClassTypeDecl<
+      TypeName='blobregistration'
+      PTableName='BLOBREGISTRATION'
+      Members={object:FieldMember<
+          MemberName='id'
+          PhysicalName='ID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='actualfilename'
+          PhysicalName='ACTUALFILENAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=128
+        >, object:Method<
+          MemberName='RegisterBLOB'
+          ReturnType=$TYPEDECLS['VARCHAR']
+          Parameters={object:FormalParameter<
+              ParameterName='AExtension'
+              DataType=$TYPEDECLS['VARCHAR']
+            >}MethodID=1
+        >, object:Method<
+          MemberName='SetBLOBField'
+          Parameters={object:FormalParameter<
+              ParameterName='AObj'
+              DataType=$TYPEDECLS['GeneralClass']
+            >, object:FormalParameter<
+              ParameterName='LinkName'
+              DataType=$TYPEDECLS['VARCHAR']
+            >}MethodID=2
+        >, object:Method<
+          MemberName='SetBLOBText'
+          Parameters={object:FormalParameter<
+              ParameterName='AObj'
+              DataType=$TYPEDECLS['GeneralClass']
+            >, object:FormalParameter<
+              ParameterName='LinkName'
+              DataType=$TYPEDECLS['VARCHAR']
+            >, object:FormalParameter<
+              ParameterName='AText'
+              DataType=$TYPEDECLS['VARCHAR']
+            >}MethodID=3
+        >, object:Method<
+          MemberName='GetBLOBText'
+          ReturnType=$TYPEDECLS['VARCHAR']
+          Parameters={object:FormalParameter<
+              ParameterName='AObj'
+              DataType=$TYPEDECLS['GeneralClass']
+            >, object:FormalParameter<
+              ParameterName='LinkName'
+              DataType=$TYPEDECLS['VARCHAR']
+            >}MethodID=4
+        >, object:FieldMember<
+          MemberName='IsTemporary'
+          PhysicalName='ISTEMPORARY'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['FTBoolean']
+        >, object:Method<
+          MemberName='DeleteData'
+          MethodID=5
+        >, object:Method<
+          MemberName='GetURLToData'
+          ReturnType=$TYPEDECLS['VARCHAR']
+          MethodID=6
+        >}ClassID='{130C9CF6-4F4B-4D0D-BFD5-7A7B9AF142A8}'
+      AutoPrimaryKey=$TYPEDECLS['blobregistration'].MEMBERS['id']
+    >, object:ClassTypeDecl<
+      TypeName='GeneralClass'
+      PTableName='GENERALCLASS'
+      Members={object:FieldMember<
+          MemberName='id'
+          PhysicalName='ID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >}ClassID='{7E82E101-D99E-4C8A-BF32-8AFB4C9A7948}'
+    >, object:ClassTypeDecl<
+      TypeName='SessionBLOB'
+      PTableName='SESSIONBLOB'
+      Members={object:FieldMember<
+          MemberName='id'
+          PhysicalName='ID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='SessionID'
+          PhysicalName='SESSIONID'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=100
+        >, object:FieldMember<
+          MemberName='SessionContext'
+          PhysicalName='SESSIONCONTEXT'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LBLOBData'
+          Optional=true
+          LinkedClass=$TYPEDECLS['blobregistration']
+          AutoForeignKey=true
+        >}ClassID='{53FBDDDF-7333-4640-88BA-E165DCC5DCD3}'
+      AutoPrimaryKey=$TYPEDECLS['SessionBLOB'].MEMBERS['id']
+    >, object:ClassTypeDecl<
+      TypeName='Product'
+      PTableName='PRODUCT'
+      Members={object:FieldMember<
+          MemberName='ProductId'
+          PhysicalName='PRODUCTID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='ProductName'
+          PhysicalName='PRODUCTNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='Description'
+          PhysicalName='DESCRIPTION'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=100
+        >, object:FieldMember<
+          MemberName='AccountOfCollection'
+          PhysicalName='ACCOUNTOFCOLLECTION'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='AccountOfDistribution'
+          PhysicalName='ACCOUNTOFDISTRIBUTION'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='PercentageOfAmilFunds'
+          PhysicalName='PERCENTAGEOFAMILFUNDS'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='ProductType'
+          PhysicalName='PRODUCTTYPE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          IsClassifierField=true
+        >, object:FieldMember<
+          MemberName='Status'
+          PhysicalName='STATUS'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['eStatus']
+        >, object:FieldMember<
+          MemberName='ClosedDate'
+          PhysicalName='CLOSEDDATE'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:FieldMember<
+          MemberName='FundCategory'
+          PhysicalName='FUNDCATEGORY'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['eFundCategory']
+        >, object:FieldMember<
+          MemberName='FixedValue'
+          PhysicalName='FIXEDVALUE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['FTBoolean']
+        >, object:FieldMember<
+          MemberName='FixedValueAmount'
+          PhysicalName='FIXEDVALUEAMOUNT'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:LinkMember<
+          MemberName='LProductParent'
+          Optional=true
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['Product'].MEMBERS['ParentProductId']
+              OriginPKey=$TYPEDECLS['Product'].MEMBERS['ProductId']
+            >}LinkedClass=$TYPEDECLS['Product']
+        >, object:FieldMember<
+          MemberName='ParentProductId'
+          PhysicalName='PARENTPRODUCTID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='IsDetail'
+          PhysicalName='ISDETAIL'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['FTBoolean']
+        >, object:FieldMember<
+          MemberName='Level'
+          PhysicalName='LEVEL'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:ListMember<
+          MemberName='Ls_ProductAccount'
+          UsedLink=$TYPEDECLS['ProductAccount'].MEMBERS['LProduct']
+        >, object:ListMember<
+          MemberName='Ls_GLInterface'
+          UsedLink=$TYPEDECLS['GLInterface'].MEMBERS['LProduct']
+        >, object:FieldMember<
+          MemberName='ProductCode'
+          PhysicalName='PRODUCTCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >}ClassID='{3B2321D1-6187-4119-973A-0B818B4F3CE4}'
+      AutoPrimaryKey=$TYPEDECLS['Product'].MEMBERS['ProductId']
+    >, object:EnumTypeDecl<
+      TypeName='eStatus'
+      EnumType=etString
+      EnumMembers={object:EnumMember<
+          StringValue='A'
+          DescriptiveName='Active'
+        >, object:EnumMember<
+          StringValue='N'
+          DescriptiveName='NonActive'
+        >}>, object:ClassTypeDecl<
+      TypeName='Project'
+      PTableName='PROJECT'
+      Members={object:FieldMember<
+          MemberName='BudgetAmount'
+          PhysicalName='BUDGETAMOUNT'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='StartDate'
+          PhysicalName='STARTDATE'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:FieldMember<
+          MemberName='FinsihDate'
+          PhysicalName='FINSIHDATE'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:ListMember<
+          MemberName='Ls_ProjectSponsor'
+          UsedLink=$TYPEDECLS['ProjectSponsor'].MEMBERS['LProject']
+        >, object:FieldMember<
+          MemberName='ProductId'
+          PhysicalName='PRODUCTID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='J'
+          AncestorClass=$TYPEDECLS['Product']
+          InhLinks={object:InheritanceLink<
+              ThisPKey=$TYPEDECLS['Project'].MEMBERS['ProductId']
+              OriginPKey=$TYPEDECLS['Product'].MEMBERS['ProductId']
+            >}>}ClassID='{1B214C88-245F-4A5D-AA79-C10CF3741AC2}'
+      AutoPrimaryKey=$TYPEDECLS['Project'].MEMBERS['ProductId']
+    >, object:ClassTypeDecl<
+      TypeName='Program'
+      PTableName='PRODUCT'
+      Members={object:FieldMember<
+          MemberName='MultiPackage'
+          PhysicalName='MULTIPACKAGE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['FTBoolean']
+        >, object:FieldMember<
+          MemberName='ProductId'
+          PhysicalName='PRODUCTID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='G'
+          AncestorClass=$TYPEDECLS['Product']
+          InhLinks={object:InheritanceLink<
+              ThisPKey=$TYPEDECLS['Program'].MEMBERS['ProductId']
+              OriginPKey=$TYPEDECLS['Product'].MEMBERS['ProductId']
+            >}>}ClassID='{2F602435-7B1B-4DDC-91BF-34CE82F53916}'
+      AutoPrimaryKey=$TYPEDECLS['Program'].MEMBERS['ProductId']
+    >, object:ClassTypeDecl<
+      TypeName='ZakahProduct'
+      PTableName='PRODUCT'
+      Members={object:FieldMember<
+          MemberName='ProductId'
+          PhysicalName='PRODUCTID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='Nishab'
+          PhysicalName='NISHAB'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='Haul'
+          PhysicalName='HAUL'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='Rate'
+          PhysicalName='RATE'
+          DataType=$TYPEDECLS['DOUBLE']
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='Z'
+          AncestorClass=$TYPEDECLS['Product']
+          InhLinks={object:InheritanceLink<
+              ThisPKey=$TYPEDECLS['ZakahProduct'].MEMBERS['ProductId']
+              OriginPKey=$TYPEDECLS['Product'].MEMBERS['ProductId']
+            >}>}ClassID='{12F13499-F55B-44C7-83A5-96DE96BAC4B7}'
+      AutoPrimaryKey=$TYPEDECLS['ZakahProduct'].MEMBERS['ProductId']
+    >, object:ClassTypeDecl<
+      TypeName='ProjectSponsor'
+      PTableName='PROJECTSPONSOR'
+      Members={object:FieldMember<
+          MemberName='ProjectSponsorId'
+          PhysicalName='PROJECTSPONSORID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:LinkMember<
+          MemberName='LProject'
+          LinkedClass=$TYPEDECLS['Project']
+          AutoForeignKey=true
+        >, object:LinkMember<
+          MemberName='LSponsor'
+          LinkedClass=$TYPEDECLS['Sponsor']
+          AutoForeignKey=true
+        >, object:FieldMember<
+          MemberName='ProjectSponsorCode'
+          PhysicalName='PROJECTSPONSORCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=10
+        >, object:ListMember<
+          MemberName='Ls_SponsorTransaction'
+          UsedLink=$TYPEDECLS['SponsorTransaction'].MEMBERS['LProjectSponsor']
+        >, object:FieldMember<
+          MemberName='AgreementDate'
+          PhysicalName='AGREEMENTDATE'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:FieldMember<
+          MemberName='DonationAmount'
+          PhysicalName='DONATIONAMOUNT'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='DisbursedAmount'
+          PhysicalName='DISBURSEDAMOUNT'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='DistributedAmount'
+          PhysicalName='DISTRIBUTEDAMOUNT'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:ListMember<
+          MemberName='Ls_Disbursement'
+          UsedLink=$TYPEDECLS['ProjectSponsorDisbursement'].MEMBERS['LProjectSponsor']
+        >, object:FieldMember<
+          MemberName='AccountNo'
+          PhysicalName='ACCOUNTNO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:LinkMember<
+          MemberName='LProjectAccount'
+          Optional=true
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['ProjectSponsor'].MEMBERS['AccountNo']
+              OriginPKey=$TYPEDECLS['ProjectAccount'].MEMBERS['AccountNo']
+            >}LinkedClass=$TYPEDECLS['ProjectAccount']
+        >}ClassID='{A84AA392-1513-483D-9F26-8E5628F94C3E}'
+      AutoPrimaryKey=$TYPEDECLS['ProjectSponsor'].MEMBERS['ProjectSponsorId']
+    >, object:ClassTypeDecl<
+      TypeName='Sponsor'
+      PTableName='SPONSOR'
+      Members={object:FieldMember<
+          MemberName='SponsorId'
+          PhysicalName='SPONSORID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='Name'
+          PhysicalName='NAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >, object:FieldMember<
+          MemberName='Description'
+          PhysicalName='DESCRIPTION'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=100
+        >, object:FieldMember<
+          MemberName='Address'
+          PhysicalName='ADDRESS'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=200
+        >, object:FieldMember<
+          MemberName='ContactPersonName'
+          PhysicalName='CONTACTPERSONNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=32
+        >, object:FieldMember<
+          MemberName='ContactPersonNumber'
+          PhysicalName='CONTACTPERSONNUMBER'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >}ClassID='{99848837-0AAA-41C4-AF04-3767CE2A7F74}'
+      AutoPrimaryKey=$TYPEDECLS['Sponsor'].MEMBERS['SponsorId']
+    >, object:ClassTypeDecl<
+      TypeName='Donor'
+      PTableName='DONOR'
+      Members={object:FieldMember<
+          MemberName='DonorId'
+          PhysicalName='DONORID'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=11
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='DonorName'
+          PhysicalName='DONORNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >, object:FieldMember<
+          MemberName='AddressStreet'
+          PhysicalName='ADDRESSSTREET'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=200
+        >, object:FieldMember<
+          MemberName='AddressKelurahan'
+          PhysicalName='ADDRESSKELURAHAN'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >, object:FieldMember<
+          MemberName='AddressSubDistrict'
+          PhysicalName='ADDRESSSUBDISTRICT'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >, object:FieldMember<
+          MemberName='AddressCity'
+          PhysicalName='ADDRESSCITY'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >, object:FieldMember<
+          MemberName='AddressProvince'
+          PhysicalName='ADDRESSPROVINCE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >, object:FieldMember<
+          MemberName='AddressPostalCode'
+          PhysicalName='ADDRESSPOSTALCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=10
+        >, object:FieldMember<
+          MemberName='PhoneNumber'
+          PhysicalName='PHONENUMBER'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='MobileNumber'
+          PhysicalName='MOBILENUMBER'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='Email'
+          PhysicalName='EMAIL'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >, object:FieldMember<
+          MemberName='Fax'
+          PhysicalName='FAX'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='ReferenceBy'
+          PhysicalName='REFERENCEBY'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='Status'
+          PhysicalName='STATUS'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['eStatus']
+        >, object:FieldMember<
+          MemberName='DonorType'
+          PhysicalName='DONORTYPE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          IsClassifierField=true
+        >, object:FieldMember<
+          MemberName='AddressState'
+          PhysicalName='ADDRESSSTATE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >, object:FieldMember<
+          MemberName='NPWP'
+          PhysicalName='NPWP'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >}ClassID='{FF44DAB4-B9E3-47C8-BD75-69E61B62EB90}'
+    >, object:ClassTypeDecl<
+      TypeName='IndividualDonor'
+      PTableName='INDIVIDUALDONOR'
+      Members={object:FieldMember<
+          MemberName='Gender'
+          PhysicalName='GENDER'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['eGender']
+        >, object:FieldMember<
+          MemberName='BirthPlace'
+          PhysicalName='BIRTHPLACE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='BirthDate'
+          PhysicalName='BIRTHDATE'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:FieldMember<
+          MemberName='IdentityType'
+          PhysicalName='IDENTITYTYPE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['eIdentityType']
+        >, object:FieldMember<
+          MemberName='Religion'
+          PhysicalName='RELIGION'
+          DataType=$TYPEDECLS['INTEGER']
+          Enumerator=$TYPEDECLS['eReligion']
+        >, object:FieldMember<
+          MemberName='IdentityNumber'
+          PhysicalName='IDENTITYNUMBER'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='MaritalState'
+          PhysicalName='MARITALSTATE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['eMaritalState']
+        >, object:FieldMember<
+          MemberName='Language'
+          PhysicalName='LANGUAGE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['eLanguage']
+        >, object:FieldMember<
+          MemberName='LastFormalEducation'
+          PhysicalName='LASTFORMALEDUCATION'
+          DataType=$TYPEDECLS['INTEGER']
+          Enumerator=$TYPEDECLS['eEducation']
+        >, object:FieldMember<
+          MemberName='FieldOfWork'
+          PhysicalName='FIELDOFWORK'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='IncomePerMonth'
+          PhysicalName='INCOMEPERMONTH'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='ExpensePerMonth'
+          PhysicalName='EXPENSEPERMONTH'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='OfficeAddress'
+          PhysicalName='OFFICEADDRESS'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=200
+        >, object:FieldMember<
+          MemberName='OfficeKelurahan'
+          PhysicalName='OFFICEKELURAHAN'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >, object:FieldMember<
+          MemberName='OfficeSubDistrict'
+          PhysicalName='OFFICESUBDISTRICT'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >, object:FieldMember<
+          MemberName='OfficeCity'
+          PhysicalName='OFFICECITY'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >, object:FieldMember<
+          MemberName='OfficeProvince'
+          PhysicalName='OFFICEPROVINCE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >, object:FieldMember<
+          MemberName='OfficeState'
+          PhysicalName='OFFICESTATE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >, object:FieldMember<
+          MemberName='OfficePostalCode'
+          PhysicalName='OFFICEPOSTALCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=10
+        >, object:FieldMember<
+          MemberName='OfficePhoneNumber'
+          PhysicalName='OFFICEPHONENUMBER'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='I'
+          AncestorClass=$TYPEDECLS['Donor']
+          AutoDescendantKey=true
+        >}ClassID='{83B54D2C-9201-4B91-BB26-32D5F18646D0}'
+    >, object:EnumTypeDecl<
+      TypeName='eGender'
+      EnumType=etString
+      EnumMembers={object:EnumMember<
+          StringValue='L'
+          DescriptiveName='Laki-Laki'
+        >, object:EnumMember<
+          StringValue='P'
+          DescriptiveName='Perempuan'
+        >}>, object:EnumTypeDecl<
+      TypeName='eReligion'
+      EnumMembers={object:EnumMember<
+          IntegerValue=1
+          DescriptiveName='Islam'
+        >, object:EnumMember<
+          IntegerValue=2
+          DescriptiveName='Katolik'
+        >, object:EnumMember<
+          IntegerValue=3
+          DescriptiveName='Protestan'
+        >, object:EnumMember<
+          IntegerValue=4
+          DescriptiveName='Hindu'
+        >, object:EnumMember<
+          IntegerValue=5
+          DescriptiveName='Budha'
+        >, object:EnumMember<
+          IntegerValue=6
+          DescriptiveName='Aliran Kepercayaan'
+        >}>, object:EnumTypeDecl<
+      TypeName='eIdentityType'
+      EnumType=etString
+      EnumMembers={object:EnumMember<
+          StringValue='K'
+          DescriptiveName='KTP'
+        >, object:EnumMember<
+          StringValue='S'
+          DescriptiveName='SIM'
+        >}>, object:EnumTypeDecl<
+      TypeName='eMaritalState'
+      EnumType=etString
+      EnumMembers={object:EnumMember<
+          StringValue='K'
+          DescriptiveName='Menikah'
+        >, object:EnumMember<
+          StringValue='B'
+          DescriptiveName='Belum Menikah'
+        >, object:EnumMember<
+          StringValue='S'
+          DescriptiveName='Duda/Janda'
+        >}>, object:EnumTypeDecl<
+      TypeName='eLanguage'
+      EnumType=etString
+      EnumMembers={object:EnumMember<
+          StringValue='I'
+          DescriptiveName='Indonesia'
+        >, object:EnumMember<
+          StringValue='M'
+          DescriptiveName='Malaysia'
+        >, object:EnumMember<
+          StringValue='A'
+          DescriptiveName='Arab'
+        >, object:EnumMember<
+          StringValue='E'
+          DescriptiveName='English'
+        >}>, object:EnumTypeDecl<
+      TypeName='eEducation'
+      EnumMembers={object:EnumMember<
+          DescriptiveName='Tdk Sekolah Formal'
+        >, object:EnumMember<
+          IntegerValue=1
+          DescriptiveName='SD'
+        >, object:EnumMember<
+          IntegerValue=2
+          DescriptiveName='SMP'
+        >, object:EnumMember<
+          IntegerValue=3
+          DescriptiveName='SMU/Sederajat'
+        >, object:EnumMember<
+          IntegerValue=4
+          DescriptiveName='S1'
+        >, object:EnumMember<
+          IntegerValue=5
+          DescriptiveName='S2'
+        >, object:EnumMember<
+          IntegerValue=6
+          DescriptiveName='S3'
+        >}>, object:ClassTypeDecl<
+      TypeName='CorporateDonor'
+      PTableName='CORPORATEDONOR'
+      Members={object:FieldMember<
+          MemberName='Corporation'
+          PhysicalName='CORPORATION'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['eCorporation']
+        >, object:FieldMember<
+          MemberName='SIUPP'
+          PhysicalName='SIUPP'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='TDP'
+          PhysicalName='TDP'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='LocationType'
+          PhysicalName='LOCATIONTYPE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='OwnerType'
+          PhysicalName='OWNERTYPE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='EconomicSector'
+          PhysicalName='ECONOMICSECTOR'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='EstablishedDate'
+          PhysicalName='ESTABLISHEDDATE'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:FieldMember<
+          MemberName='EstablishedPlace'
+          PhysicalName='ESTABLISHEDPLACE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >, object:FieldMember<
+          MemberName='ContactPerson'
+          PhysicalName='CONTACTPERSON'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >, object:FieldMember<
+          MemberName='PatronageCompany'
+          PhysicalName='PATRONAGECOMPANY'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['FTBoolean']
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='C'
+          AncestorClass=$TYPEDECLS['Donor']
+          AutoDescendantKey=true
+        >}ClassID='{959DBD17-F77A-49A4-BCD9-119C98509BF4}'
+    >, object:EnumTypeDecl<
+      TypeName='eCorporation'
+      EnumType=etString
+      EnumMembers={object:EnumMember<
+          StringValue='B'
+          DescriptiveName='Bank'
+        >, object:EnumMember<
+          StringValue='C'
+          DescriptiveName='CV'
+        >, object:EnumMember<
+          StringValue='D'
+          DescriptiveName='PD'
+        >, object:EnumMember<
+          StringValue='F'
+          DescriptiveName='Firma'
+        >, object:EnumMember<
+          StringValue='K'
+          DescriptiveName='Koperasi'
+        >, object:EnumMember<
+          StringValue='L'
+          DescriptiveName='Lainnya'
+        >, object:EnumMember<
+          StringValue='P'
+          DescriptiveName='PT'
+        >, object:EnumMember<
+          StringValue='Y'
+          DescriptiveName='Yayasan'
+        >}>, object:ClassTypeDecl<
+      TypeName='ProspectiveDonor'
+      PTableName='PROSPECTIVEDONOR'
+      Members={object:FieldMember<
+          MemberName='ProspectiveDonorId'
+          PhysicalName='PROSPECTIVEDONORID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='PhoneNumber'
+          PhysicalName='PHONENUMBER'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='DonorName'
+          PhysicalName='DONORNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='ReferenceBy'
+          PhysicalName='REFERENCEBY'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >}ClassID='{88BE1C71-5A21-465A-9498-537C75785702}'
+      AutoPrimaryKey=$TYPEDECLS['ProspectiveDonor'].MEMBERS['ProspectiveDonorId']
+    >, object:ClassTypeDecl<
+      TypeName='FinancialAccount'
+      PTableName='FINANCIALACCOUNT'
+      Members={object:FieldMember<
+          MemberName='AccountNo'
+          PhysicalName='ACCOUNTNO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='AccountName'
+          PhysicalName='ACCOUNTNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >, object:FieldMember<
+          MemberName='Balance'
+          PhysicalName='BALANCE'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='BranchCode'
+          PhysicalName='BRANCHCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=5
+        >, object:FieldMember<
+          MemberName='CurrencyCode'
+          PhysicalName='CURRENCYCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='FinancialAccountType'
+          PhysicalName='FINANCIALACCOUNTTYPE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          IsClassifierField=true
+        >, object:FieldMember<
+          MemberName='Status'
+          PhysicalName='STATUS'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['eStatus']
+        >, object:FieldMember<
+          MemberName='OpeningDate'
+          PhysicalName='OPENINGDATE'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:ListMember<
+          MemberName='Ls_AccountTransactionItem'
+          UsedLink=$TYPEDECLS['AccountTransactionItem'].MEMBERS['LFinancialAccount']
+        >, object:FieldMember<
+          MemberName='AccountCode'
+          PhysicalName='ACCOUNTCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='LastDayBalance'
+          PhysicalName='LASTDAYBALANCE'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:LinkMember<
+          MemberName='LLastDailyBalance'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['FinancialAccount'].MEMBERS['LastDailyBalanceID']
+              OriginPKey=$TYPEDECLS['DailyBalance'].MEMBERS['DailyBalanceID']
+            >}LinkedClass=$TYPEDECLS['DailyBalance']
+        >, object:FieldMember<
+          MemberName='LastDailyBalanceID'
+          PhysicalName='LASTDAILYBALANCEID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LBranch'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['FinancialAccount'].MEMBERS['BranchCode']
+              OriginPKey=$TYPEDECLS['Branch'].MEMBERS['BranchCode']
+            >}LinkedClass=$TYPEDECLS['Branch']
+        >, object:LinkMember<
+          MemberName='LCurrency'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['FinancialAccount'].MEMBERS['CurrencyCode']
+              OriginPKey=$TYPEDECLS['Currency'].MEMBERS['Currency_Code']
+            >}LinkedClass=$TYPEDECLS['Currency']
+        >}ClassID='{2CD4D824-0B4D-4921-9518-5E7403FBEDDA}'
+    >, object:ClassTypeDecl<
+      TypeName='CashAccount'
+      PTableName='CASHACCOUNT'
+      Members={object:FieldMember<
+          MemberName='CashAccountType'
+          PhysicalName='CASHACCOUNTTYPE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          IsClassifierField=true
+        >, object:FieldMember<
+          MemberName='CashCode'
+          PhysicalName='CASHCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=10
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='C'
+          AncestorClass=$TYPEDECLS['FinancialAccount']
+          AutoDescendantKey=true
+        >}ClassID='{F03D37C2-755F-4E45-A86D-22B80417AE62}'
+    >, object:ClassTypeDecl<
+      TypeName='BranchCash'
+      PTableName='CASHACCOUNT'
+      Members={}Ancestors={object:Inheritance<
+          ClassifierStringValue='R'
+          AncestorClass=$TYPEDECLS['CashAccount']
+          AutoDescendantKey=true
+        >}ClassID='{0C4899A3-15A5-402C-ACD4-BB60A27DDD6A}'
+    >, object:ClassTypeDecl<
+      TypeName='BankCash'
+      PTableName='CASHACCOUNT'
+      Members={object:FieldMember<
+          MemberName='BankName'
+          PhysicalName='BANKNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='BankAccountNo'
+          PhysicalName='BANKACCOUNTNO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='AccountCurrency'
+          PhysicalName='ACCOUNTCURRENCY'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=5
+        >, object:FieldMember<
+          MemberName='AccountInterface'
+          PhysicalName='ACCOUNTINTERFACE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:LinkMember<
+          MemberName='LBank'
+          LinkedClass=$TYPEDECLS['Bank']
+          AutoForeignKey=true
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='A'
+          AncestorClass=$TYPEDECLS['CashAccount']
+          AutoDescendantKey=true
+        >}ClassID='{BD022B6C-C644-48CD-A4BD-85679A7A777C}'
+    >, object:ClassTypeDecl<
+      TypeName='PettyCash'
+      PTableName='CASHACCOUNT'
+      Members={object:FieldMember<
+          MemberName='UserName'
+          PhysicalName='USERNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='P'
+          AncestorClass=$TYPEDECLS['CashAccount']
+          AutoDescendantKey=true
+        >}ClassID='{61D9D729-1F2E-4C20-97DB-67FAA4167AF5}'
+    >, object:EnumTypeDecl<
+      TypeName='ePeriodType'
+      EnumType=etString
+      EnumMembers={object:EnumMember<
+          StringValue='T'
+          DescriptiveName='Tahunan'
+        >, object:EnumMember<
+          StringValue='B'
+          DescriptiveName='Bulanan'
+        >, object:EnumMember<
+          StringValue='H'
+          DescriptiveName='Harian'
+        >}>, object:ClassTypeDecl<
+      TypeName='Transaction'
+      PTableName='TRANSACTION'
+      Members={object:FieldMember<
+          MemberName='TransactionId'
+          PhysicalName='TRANSACTIONID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='TransactionDate'
+          PhysicalName='TRANSACTIONDATE'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:FieldMember<
+          MemberName='ReferenceNo'
+          PhysicalName='REFERENCENO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='Description'
+          PhysicalName='DESCRIPTION'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=300
+        >, object:FieldMember<
+          MemberName='Inputer'
+          PhysicalName='INPUTER'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='TransactionCode'
+          PhysicalName='TRANSACTIONCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=10
+        >, object:FieldMember<
+          MemberName='BranchCode'
+          PhysicalName='BRANCHCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=5
+        >, object:FieldMember<
+          MemberName='AuthUser'
+          PhysicalName='AUTHUSER'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='TransactionTime'
+          PhysicalName='TRANSACTIONTIME'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:FieldMember<
+          MemberName='AuthDate'
+          PhysicalName='AUTHDATE'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:FieldMember<
+          MemberName='AuthStatus'
+          PhysicalName='AUTHSTATUS'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['eAuthStatus']
+        >, object:ListMember<
+          MemberName='Ls_TransactionItem'
+          UsedLink=$TYPEDECLS['TransactionItem'].MEMBERS['LTransaction']
+        >, object:ListMember<
+          MemberName='Ls_GLTransactionItem'
+          UsedLink=$TYPEDECLS['GLTransactionItem'].MEMBERS['LTransaction']
+        >, object:ListMember<
+          MemberName='Ls_DonorTransactionItem'
+          UsedLink=$TYPEDECLS['DonorTransactionItem'].MEMBERS['LTransaction']
+        >, object:ListMember<
+          MemberName='Ls_AccountTransactionItem'
+          UsedLink=$TYPEDECLS['AccountTransactionItem'].MEMBERS['LTransaction']
+        >, object:LinkMember<
+          MemberName='LBatch'
+          LinkedClass=$TYPEDECLS['TransactionBatch']
+          AutoForeignKey=true
+        >, object:FieldMember<
+          MemberName='IsPosted'
+          PhysicalName='ISPOSTED'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['FTBoolean']
+        >, object:FieldMember<
+          MemberName='AuthAction'
+          PhysicalName='AUTHACTION'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['eAuthAction']
+        >, object:FieldMember<
+          MemberName='JournalBlockId'
+          PhysicalName='JOURNALBLOCKID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LTransactionType'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['Transaction'].MEMBERS['TransactionCode']
+              OriginPKey=$TYPEDECLS['TransactionType'].MEMBERS['TransactionCode']
+            >}LinkedClass=$TYPEDECLS['TransactionType']
+        >, object:FieldMember<
+          MemberName='ChannelCode'
+          PhysicalName='CHANNELCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+        >, object:FieldMember<
+          MemberName='SponsorId'
+          PhysicalName='SPONSORID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='DonorId'
+          PhysicalName='DONORID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='VolunteerId'
+          PhysicalName='VOLUNTEERID'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='ActualDate'
+          PhysicalName='ACTUALDATE'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:FieldMember<
+          MemberName='TransactionNo'
+          PhysicalName='TRANSACTIONNO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='PaidTo'
+          PhysicalName='PAIDTO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='DonorNo'
+          PhysicalName='DONORNO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='DonorName'
+          PhysicalName='DONORNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=150
+        >, object:FieldMember<
+          MemberName='Amount'
+          PhysicalName='AMOUNT'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='CurrencyCode'
+          PhysicalName='CURRENCYCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='ReceivedFrom'
+          PhysicalName='RECEIVEDFROM'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='MarketerId'
+          PhysicalName='MARKETERID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='ChannelAccountNo'
+          PhysicalName='CHANNELACCOUNTNO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='Rate'
+          PhysicalName='RATE'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:LinkMember<
+          MemberName='LMarketer'
+          Optional=true
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['Transaction'].MEMBERS['MarketerId']
+              OriginPKey=$TYPEDECLS['Marketer'].MEMBERS['MarketerId']
+            >}LinkedClass=$TYPEDECLS['Marketer']
+        >, object:LinkMember<
+          MemberName='LCurrency'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['Transaction'].MEMBERS['CurrencyCode']
+              OriginPKey=$TYPEDECLS['Currency'].MEMBERS['Currency_Code']
+            >}LinkedClass=$TYPEDECLS['Currency']
+        >}ClassID='{9E0C9A6E-AAB9-4950-8D93-3AAE12F4660B}'
+      AutoPrimaryKey=$TYPEDECLS['Transaction'].MEMBERS['TransactionId']
+    >, object:EnumTypeDecl<
+      TypeName='eAuthStatus'
+      EnumType=etString
+      EnumMembers={object:EnumMember<
+          StringValue='T'
+          DescriptiveName='Otorisasi'
+        >, object:EnumMember<
+          StringValue='F'
+          DescriptiveName='Belum Otorisasi'
+        >}>, object:ClassTypeDecl<
+      TypeName='ReverseTransaction'
+      PTableName='REVERSETRANSACTION'
+      Members={object:LinkMember<
+          MemberName='LSourceTransaction'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['ReverseTransaction'].MEMBERS['SourceTransactionId']
+              OriginPKey=$TYPEDECLS['Transaction'].MEMBERS['TransactionId']
+            >}LinkedClass=$TYPEDECLS['Transaction']
+        >, object:LinkMember<
+          MemberName='LReverseTransaction'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['ReverseTransaction'].MEMBERS['RevTransactionId']
+              OriginPKey=$TYPEDECLS['Transaction'].MEMBERS['TransactionId']
+            >}LinkedClass=$TYPEDECLS['Transaction']
+        >, object:FieldMember<
+          MemberName='SourceTransactionId'
+          PhysicalName='SOURCETRANSACTIONID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='RevTransactionId'
+          PhysicalName='REVTRANSACTIONID'
+          DataType=$TYPEDECLS['INTEGER']
+        >}ClassID='{B46BDC68-AA82-483B-9370-03A29339E952}'
+    >, object:ClassTypeDecl<
+      TypeName='TransactionItem'
+      PTableName='TRANSACTIONITEM'
+      Members={object:FieldMember<
+          MemberName='TransactionItemId'
+          PhysicalName='TRANSACTIONITEMID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:LinkMember<
+          MemberName='LTransaction'
+          LinkedClass=$TYPEDECLS['Transaction']
+          AutoForeignKey=true
+        >, object:FieldMember<
+          MemberName='BranchCode'
+          PhysicalName='BRANCHCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=5
+        >, object:FieldMember<
+          MemberName='CurrencyCode'
+          PhysicalName='CURRENCYCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='MutationType'
+          PhysicalName='MUTATIONTYPE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+        >, object:FieldMember<
+          MemberName='Amount'
+          PhysicalName='AMOUNT'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='Rate'
+          PhysicalName='RATE'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='EkuivalenAmount'
+          PhysicalName='EKUIVALENAMOUNT'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='TransactionItemType'
+          PhysicalName='TRANSACTIONITEMTYPE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          IsClassifierField=true
+        >, object:FieldMember<
+          MemberName='Description'
+          PhysicalName='DESCRIPTION'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=300
+        >, object:FieldMember<
+          MemberName='RefAccountNo'
+          PhysicalName='REFACCOUNTNO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='RefAccountName'
+          PhysicalName='REFACCOUNTNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=60
+        >, object:FieldMember<
+          MemberName='AccountCode'
+          PhysicalName='ACCOUNTCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='ParameterJournalId'
+          PhysicalName='PARAMETERJOURNALID'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=5
+        >, object:LinkMember<
+          MemberName='LCurrency'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['TransactionItem'].MEMBERS['CurrencyCode']
+              OriginPKey=$TYPEDECLS['Currency'].MEMBERS['Currency_Code']
+            >}LinkedClass=$TYPEDECLS['Currency']
+        >}ClassID='{87D3E9B6-DCB2-4400-ADA5-CB2B94D2BAE9}'
+      AutoPrimaryKey=$TYPEDECLS['TransactionItem'].MEMBERS['TransactionItemId']
+    >, object:ClassTypeDecl<
+      TypeName='ParameterJournal'
+      PTableName='PARAMETERJOURNAL'
+      Members={object:FieldMember<
+          MemberName='ParameterJournalId'
+          PhysicalName='PARAMETERJOURNALID'
+          DataType=$TYPEDECLS['INTEGER']
+          DataLength=5
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='Description'
+          PhysicalName='DESCRIPTION'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=100
+        >, object:FieldMember<
+          MemberName='DataSource'
+          PhysicalName='DATASOURCE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:ListMember<
+          MemberName='Ls_ParameterJournalItem'
+          UsedLink=$TYPEDECLS['ParameterJournalItem'].MEMBERS['LParameterJournal']
+        >, object:FieldMember<
+          MemberName='JournalCode'
+          PhysicalName='JOURNALCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=5
+        >}ClassID='{87517B94-FB67-42A7-8CE2-8BE59F6E3B44}'
+      AutoPrimaryKey=$TYPEDECLS['ParameterJournal'].MEMBERS['ParameterJournalId']
+    >, object:EnumTypeDecl<
+      TypeName='eAshnaf'
+      EnumType=etString
+      EnumMembers={object:EnumMember<
+          StringValue='F'
+          DescriptiveName='Fakir'
+        >, object:EnumMember<
+          StringValue='M'
+          DescriptiveName='Miskin'
+        >, object:EnumMember<
+          StringValue='U'
+          DescriptiveName='Mualaf'
+        >, object:EnumMember<
+          StringValue='H'
+          DescriptiveName='Hamba Sahaya'
+        >, object:EnumMember<
+          StringValue='G'
+          DescriptiveName='Gharimin'
+        >, object:EnumMember<
+          StringValue='S'
+          DescriptiveName='Fisabillillah'
+        >, object:EnumMember<
+          StringValue='I'
+          DescriptiveName='Ibnu Sabil'
+        >}>, object:ClassTypeDecl<
+      TypeName='ZakahDistTransactItem'
+      PTableName='ACCOUNTTRANSACTIONITEM'
+      Members={object:FieldMember<
+          MemberName='Ashnaf'
+          PhysicalName='ASHNAF'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['eAshnaf']
+        >, object:FieldMember<
+          MemberName='TransactionItemId'
+          PhysicalName='TRANSACTIONITEMID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='DistributionItemAccount'
+          PhysicalName='DISTRIBUTIONITEMACCOUNT'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='Z'
+          AncestorClass=$TYPEDECLS['AccountTransactionItem']
+          InhLinks={object:InheritanceLink<
+              ThisPKey=$TYPEDECLS['ZakahDistTransactItem'].MEMBERS['TransactionItemId']
+              OriginPKey=$TYPEDECLS['AccountTransactionItem'].MEMBERS['TransactionItemId']
+            >}>}ClassID='{2212EAF1-EE60-44BC-AF2C-C21A13CB39AD}'
+      AutoPrimaryKey=$TYPEDECLS['ZakahDistTransactItem'].MEMBERS['TransactionItemId']
+    >, object:ClassTypeDecl<
+      TypeName='AccountTransactionItem'
+      PTableName='ACCOUNTTRANSACTIONITEM'
+      Members={object:LinkMember<
+          MemberName='LFinancialAccount'
+          LinkedClass=$TYPEDECLS['FinancialAccount']
+          AutoForeignKey=true
+        >, object:FieldMember<
+          MemberName='AccountTIType '
+          PhysicalName='ACCOUNTTITYPE '
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          IsClassifierField=true
+        >, object:FieldMember<
+          MemberName='TransactionItemId'
+          PhysicalName='TRANSACTIONITEMID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:LinkMember<
+          MemberName='LTransaction'
+          LinkedClass=$TYPEDECLS['Transaction']
+          SharedLink=$TYPEDECLS['TransactionItem'].MEMBERS['LTransaction']
+        >, object:FieldMember<
+          MemberName='FundEntity'
+          PhysicalName='FUNDENTITY'
+          DataType=$TYPEDECLS['INTEGER']
+          Enumerator=$TYPEDECLS['eFundEntity']
+        >, object:FieldMember<
+          MemberName='IsUpdateBalance'
+          PhysicalName='ISUPDATEBALANCE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['FTBoolean']
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='A'
+          AncestorClass=$TYPEDECLS['TransactionItem']
+          InhLinks={object:InheritanceLink<
+              ThisPKey=$TYPEDECLS['AccountTransactionItem'].MEMBERS['TransactionItemId']
+              OriginPKey=$TYPEDECLS['TransactionItem'].MEMBERS['TransactionItemId']
+            >}>}ClassID='{0CEDE40C-A77D-4EC8-9539-34EEB8C3253A}'
+      AutoPrimaryKey=$TYPEDECLS['AccountTransactionItem'].MEMBERS['TransactionItemId']
+    >, object:ClassTypeDecl<
+      TypeName='DonorTransactionItem'
+      PTableName='ACCOUNTTRANSACTIONITEM'
+      Members={object:FieldMember<
+          MemberName='TransactionItemId'
+          PhysicalName='TRANSACTIONITEMID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='AmountPerUnit'
+          PhysicalName='AMOUNTPERUNIT'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='TotalUnit'
+          PhysicalName='TOTALUNIT'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LTransaction'
+          LinkedClass=$TYPEDECLS['Transaction']
+          SharedLink=$TYPEDECLS['TransactionItem'].MEMBERS['LTransaction']
+        >, object:FieldMember<
+          MemberName='PercentageOfAmil'
+          PhysicalName='PERCENTAGEOFAMIL'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='DonorId'
+          PhysicalName='DONORID'
+          DataType=$TYPEDECLS['INTEGER']
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='D'
+          AncestorClass=$TYPEDECLS['AccountTransactionItem']
+          InhLinks={object:InheritanceLink<
+              ThisPKey=$TYPEDECLS['DonorTransactionItem'].MEMBERS['TransactionItemId']
+              OriginPKey=$TYPEDECLS['AccountTransactionItem'].MEMBERS['TransactionItemId']
+            >}>}ClassID='{5574B506-5A9E-4975-80B7-6DEE7C9315D9}'
+      AutoPrimaryKey=$TYPEDECLS['DonorTransactionItem'].MEMBERS['TransactionItemId']
+    >, object:ClassTypeDecl<
+      TypeName='ParameterJournalItem'
+      PTableName='PARAMETERJOURNALITEM'
+      Members={object:FieldMember<
+          MemberName='ParameterJournalItemId'
+          PhysicalName='PARAMETERJOURNALITEMID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:LinkMember<
+          MemberName='LParameterJournal'
+          LinkedClass=$TYPEDECLS['ParameterJournal']
+          AutoForeignKey=true
+        >, object:FieldMember<
+          MemberName='AccountCode'
+          PhysicalName='ACCOUNTCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='BranchBase'
+          PhysicalName='BRANCHBASE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['eBranchBase']
+        >, object:FieldMember<
+          MemberName='Description'
+          PhysicalName='DESCRIPTION'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >, object:FieldMember<
+          MemberName='BaseSign'
+          PhysicalName='BASESIGN'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['eBaseSign']
+        >, object:FieldMember<
+          MemberName='CurrencyBase'
+          PhysicalName='CURRENCYBASE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['eCurrencyBase']
+        >, object:FieldMember<
+          MemberName='AmountBase'
+          PhysicalName='AMOUNTBASE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='RateBase'
+          PhysicalName='RATEBASE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='AccountBase'
+          PhysicalName='ACCOUNTBASE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['eAccountBase']
+        >}ClassID='{F87F4970-4AE6-4822-97D2-2B55578E44B9}'
+      AutoPrimaryKey=$TYPEDECLS['ParameterJournalItem'].MEMBERS['ParameterJournalItemId']
+    >, object:EnumTypeDecl<
+      TypeName='eAccountBase'
+      EnumType=etString
+      EnumMembers={object:EnumMember<
+          StringValue='P'
+          DescriptiveName='Parameter'
+        >, object:EnumMember<
+          StringValue='R'
+          DescriptiveName='Product'
+        >, object:EnumMember<
+          StringValue='T'
+          DescriptiveName='Transaction'
+        >}>, object:EnumTypeDecl<
+      TypeName='eBranchBase'
+      EnumType=etString
+      EnumMembers={object:EnumMember<
+          StringValue='M'
+          DescriptiveName='MainOffice'
+        >, object:EnumMember<
+          StringValue='A'
+          DescriptiveName='Account'
+        >, object:EnumMember<
+          StringValue='T'
+          DescriptiveName='Transaction'
+        >}>, object:EnumTypeDecl<
+      TypeName='eBaseSign'
+      EnumType=etString
+      EnumMembers={object:EnumMember<
+          StringValue='P'
+          DescriptiveName='Positive'
+        >, object:EnumMember<
+          StringValue='N'
+          DescriptiveName='Negative'
+        >}>, object:EnumTypeDecl<
+      TypeName='eCurrencyBase'
+      EnumType=etString
+      EnumMembers={object:EnumMember<
+          StringValue='I'
+          DescriptiveName='Rupiah (IDR)'
+        >, object:EnumMember<
+          StringValue='A'
+          DescriptiveName='Account'
+        >, object:EnumMember<
+          StringValue='T'
+          DescriptiveName='Transaction'
+        >}>, object:ClassTypeDecl<
+      TypeName='GLTransactionItem'
+      PTableName='TRANSACTIONITEM'
+      Members={object:FieldMember<
+          MemberName='GLNumber'
+          PhysicalName='GLNUMBER'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='GLName'
+          PhysicalName='GLNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=100
+        >, object:FieldMember<
+          MemberName='TransactionItemId'
+          PhysicalName='TRANSACTIONITEMID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:LinkMember<
+          MemberName='LTransaction'
+          LinkedClass=$TYPEDECLS['Transaction']
+          SharedLink=$TYPEDECLS['TransactionItem'].MEMBERS['LTransaction']
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='G'
+          AncestorClass=$TYPEDECLS['TransactionItem']
+          InhLinks={object:InheritanceLink<
+              ThisPKey=$TYPEDECLS['GLTransactionItem'].MEMBERS['TransactionItemId']
+              OriginPKey=$TYPEDECLS['TransactionItem'].MEMBERS['TransactionItemId']
+            >}>}ClassID='{72CF7825-5F60-4696-BDB2-F4A337F9E854}'
+      AutoPrimaryKey=$TYPEDECLS['GLTransactionItem'].MEMBERS['TransactionItemId']
+    >, object:ClassTypeDecl<
+      TypeName='HistoryOfChanges'
+      PTableName='HISTORYOFCHANGES'
+      Members={object:FieldMember<
+          MemberName='HistoryId'
+          PhysicalName='HISTORYID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='ChangeType'
+          PhysicalName='CHANGETYPE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['eChangeType']
+        >, object:FieldMember<
+          MemberName='DomainOfChange'
+          PhysicalName='DOMAINOFCHANGE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='ProcessTime'
+          PhysicalName='PROCESSTIME'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:FieldMember<
+          MemberName='UserId'
+          PhysicalName='USERID'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='DataSourceType'
+          PhysicalName='DATASOURCETYPE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['eDataSourceType']
+        >, object:FieldMember<
+          MemberName='DataSourceRef'
+          PhysicalName='DATASOURCEREF'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=100
+        >, object:FieldMember<
+          MemberName='DataSourceClass'
+          PhysicalName='DATASOURCECLASS'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >, object:FieldMember<
+          MemberName='DataSourceRefInteger'
+          PhysicalName='DATASOURCEREFINTEGER'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='TerminalId'
+          PhysicalName='TERMINALID'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >}ClassID='{7A405303-FAAE-4D7A-8C87-BCBC627A81F1}'
+      AutoPrimaryKey=$TYPEDECLS['HistoryOfChanges'].MEMBERS['HistoryId']
+    >, object:EnumTypeDecl<
+      TypeName='eChangeType'
+      EnumType=etString
+      EnumMembers={object:EnumMember<
+          StringValue='C'
+          DescriptiveName='Create'
+        >, object:EnumMember<
+          StringValue='E'
+          DescriptiveName='Edit'
+        >, object:EnumMember<
+          StringValue='D'
+          DescriptiveName='Delete'
+        >}>, object:EnumTypeDecl<
+      TypeName='eDataSourceType'
+      EnumType=etString
+      EnumMembers={object:EnumMember<
+          StringValue='F'
+          DescriptiveName='File'
+        >, object:EnumMember<
+          StringValue='S'
+          DescriptiveName='ClassString'
+        >, object:EnumMember<
+          StringValue='I'
+          DescriptiveName='ClassInteger'
+        >}>, object:ClassTypeDecl<
+      TypeName='ParameterGlobal'
+      PTableName='PARAMETERGLOBAL'
+      Members={object:FieldMember<
+          MemberName='kode_parameter'
+          PhysicalName='KODE_PARAMETER'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=10
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='tipe_parameter'
+          PhysicalName='TIPE_PARAMETER'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+        >, object:FieldMember<
+          MemberName='nilai_parameter'
+          PhysicalName='NILAI_PARAMETER'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='deskripsi'
+          PhysicalName='DESKRIPSI'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=60
+        >, object:FieldMember<
+          MemberName='is_parameter_system'
+          PhysicalName='IS_PARAMETER_SYSTEM'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['FTBoolean']
+        >, object:FieldMember<
+          MemberName='nilai_parameter_tanggal'
+          PhysicalName='NILAI_PARAMETER_TANGGAL'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:FieldMember<
+          MemberName='nilai_parameter_string'
+          PhysicalName='NILAI_PARAMETER_STRING'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='tag'
+          PhysicalName='TAG'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=15
+        >, object:FieldMember<
+          MemberName='default_code'
+          PhysicalName='DEFAULT_CODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >}ClassID='{1A52CCB4-8783-4F5C-AAA1-B57C287EB582}'
+    >, object:EnumTypeDecl<
+      TypeName='eFundCategory'
+      EnumType=etString
+      EnumMembers={object:EnumMember<
+          StringValue='Z'
+          DescriptiveName='Zakat'
+        >, object:EnumMember<
+          StringValue='I'
+          DescriptiveName='Infaq'
+        >, object:EnumMember<
+          StringValue='W'
+          DescriptiveName='Wakaf'
+        >}>, object:ClassTypeDecl<
+      TypeName='ProductAccount'
+      PTableName='PRODUCTACCOUNT'
+      Members={object:FieldMember<
+          MemberName='AccountNo'
+          PhysicalName='ACCOUNTNO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+          IsPrimaryKey=true
+        >, object:LinkMember<
+          MemberName='LProduct'
+          LinkedClass=$TYPEDECLS['Product']
+          AutoForeignKey=true
+        >, object:FieldMember<
+          MemberName='ZakatBalance'
+          PhysicalName='ZAKATBALANCE'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='InfaqBalance'
+          PhysicalName='INFAQBALANCE'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='WakafBalance'
+          PhysicalName='WAKAFBALANCE'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='AmilBalance'
+          PhysicalName='AMILBALANCE'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='NonHalalBalance'
+          PhysicalName='NONHALALBALANCE'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='ProductType'
+          PhysicalName='PRODUCTTYPE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          IsClassifierField=true
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='P'
+          AncestorClass=$TYPEDECLS['FinancialAccount']
+          InhLinks={object:InheritanceLink<
+              ThisPKey=$TYPEDECLS['ProductAccount'].MEMBERS['AccountNo']
+              OriginPKey=$TYPEDECLS['FinancialAccount'].MEMBERS['AccountNo']
+            >}>}ClassID='{053E43F4-8A4A-4DD3-A6D6-B109E6E38F7C}'
+    >, object:ClassTypeDecl<
+      TypeName='Bank'
+      PTableName='BANK'
+      Members={object:FieldMember<
+          MemberName='BankCode'
+          PhysicalName='BANKCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=10
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='BankShortName'
+          PhysicalName='BANKSHORTNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='BankName'
+          PhysicalName='BANKNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=60
+        >}ClassID='{39A39298-1832-48E7-82B7-1A06E65AD7ED}'
+    >, object:ClassTypeDecl<
+      TypeName='Employee'
+      PTableName='EMPLOYEE'
+      Members={object:FieldMember<
+          MemberName='EmployeeId'
+          PhysicalName='EMPLOYEEID'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='EmployeeName'
+          PhysicalName='EMPLOYEENAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >, object:FieldMember<
+          MemberName='HomeAddress'
+          PhysicalName='HOMEADDRESS'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=200
+        >, object:FieldMember<
+          MemberName='IdentityType'
+          PhysicalName='IDENTITYTYPE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['eIdentityType']
+        >, object:FieldMember<
+          MemberName='IdentityID'
+          PhysicalName='IDENTITYID'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='BirthDate'
+          PhysicalName='BIRTHDATE'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:FieldMember<
+          MemberName='BirthPlace'
+          PhysicalName='BIRTHPLACE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='PhoneNumber'
+          PhysicalName='PHONENUMBER'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >}ClassID='{572A8A6C-E94C-492E-B112-25D430D63412}'
+    >, object:ClassTypeDecl<
+      TypeName='AccountReceivable'
+      PTableName='ACCOUNTRECEIVABLE'
+      Members={object:FieldMember<
+          MemberName='AccountReceivableType'
+          PhysicalName='ACCOUNTRECEIVABLETYPE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          IsClassifierField=true
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='R'
+          AncestorClass=$TYPEDECLS['FinancialAccount']
+          AutoDescendantKey=true
+        >}ClassID='{8E4E8373-10F3-47A2-9E9C-32A4B295CEA3}'
+    >, object:ClassTypeDecl<
+      TypeName='EmployeeAccountReceivable'
+      PTableName='ACCOUNTRECEIVABLE'
+      Members={object:LinkMember<
+          MemberName='LEmployee'
+          Optional=true
+          IsWeak=true
+          LinkedClass=$TYPEDECLS['Employee']
+          AutoForeignKey=true
+        >, object:FieldMember<
+          MemberName='EmployeeIdNumber'
+          PhysicalName='EMPLOYEEIDNUMBER'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LVEmployee'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['EmployeeAccountReceivable'].MEMBERS['EmployeeIdNumber']
+              OriginPKey=$TYPEDECLS['VEmployee'].MEMBERS['EmployeeId']
+            >}LinkedClass=$TYPEDECLS['VEmployee']
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='E'
+          AncestorClass=$TYPEDECLS['AccountReceivable']
+          AutoDescendantKey=true
+        >}ClassID='{968CB818-B1F7-472E-A037-46DE4982AAB8}'
+    >, object:EnumTypeDecl<
+      TypeName='eFundEntity'
+      EnumMembers={object:EnumMember<
+          IntegerValue=1
+          DescriptiveName='Zakat'
+        >, object:EnumMember<
+          IntegerValue=2
+          DescriptiveName='Infaq'
+        >, object:EnumMember<
+          IntegerValue=3
+          DescriptiveName='Wakaf'
+        >, object:EnumMember<
+          IntegerValue=4
+          DescriptiveName='Amil'
+        >, object:EnumMember<
+          IntegerValue=5
+          DescriptiveName='Non Halal'
+        >}>, object:ClassTypeDecl<
+      TypeName='TransactionBatch'
+      PTableName='TRANSACTIONBATCH'
+      Members={object:FieldMember<
+          MemberName='BatchId'
+          PhysicalName='BATCHID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='BatchNo'
+          PhysicalName='BATCHNO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='BatchDate'
+          PhysicalName='BATCHDATE'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:FieldMember<
+          MemberName='Description'
+          PhysicalName='DESCRIPTION'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=100
+        >, object:FieldMember<
+          MemberName='BranchCode'
+          PhysicalName='BRANCHCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=10
+        >, object:FieldMember<
+          MemberName='Inputer'
+          PhysicalName='INPUTER'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='IsClosed'
+          PhysicalName='ISCLOSED'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['FTBoolean']
+        >, object:FieldMember<
+          MemberName='IsPosted'
+          PhysicalName='ISPOSTED'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['FTBoolean']
+        >, object:FieldMember<
+          MemberName='BatchTag'
+          PhysicalName='BATCHTAG'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=5
+        >}ClassID='{A9602C73-6638-4DC1-93F9-34F76038D122}'
+      AutoPrimaryKey=$TYPEDECLS['TransactionBatch'].MEMBERS['BatchId']
+    >, object:ClassTypeDecl<
+      TypeName='VolunteerTransaction'
+      PTableName='VOLUNTEERTRANSACTION'
+      Members={object:FieldMember<
+          MemberName='TransactionItemId'
+          PhysicalName='TRANSACTIONITEMID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:LinkMember<
+          MemberName='LTransaction'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['VolunteerTransaction'].MEMBERS['TransactionItemId']
+              OriginPKey=$TYPEDECLS['AccountTransactionItem'].MEMBERS['TransactionItemId']
+            >}LinkedClass=$TYPEDECLS['AccountTransactionItem']
+        >, object:LinkMember<
+          MemberName='LVolunteer'
+          LinkedClass=$TYPEDECLS['Volunteer']
+          AutoForeignKey=true
+        >}ClassID='{A932BD6B-6DDB-4E6A-A53B-26B07143EE17}'
+    >, object:ClassTypeDecl<
+      TypeName='Volunteer'
+      PTableName='VOLUNTEER'
+      Members={object:FieldMember<
+          MemberName='VolunteerId'
+          PhysicalName='VOLUNTEERID'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='VolunteerName'
+          PhysicalName='VOLUNTEERNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >, object:FieldMember<
+          MemberName='HomeAddress'
+          PhysicalName='HOMEADDRESS'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=150
+        >, object:FieldMember<
+          MemberName='HomePhone'
+          PhysicalName='HOMEPHONE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='MobilePhone'
+          PhysicalName='MOBILEPHONE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='Email'
+          PhysicalName='EMAIL'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >, object:FieldMember<
+          MemberName='TotalAmount'
+          PhysicalName='TOTALAMOUNT'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:ListMember<
+          MemberName='Ls_VolunteerTransaction'
+          UsedLink=$TYPEDECLS['VolunteerTransaction'].MEMBERS['LVolunteer']
+        >, object:FieldMember<
+          MemberName='BranchCode'
+          PhysicalName='BRANCHCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=5
+        >}ClassID='{59716DA5-D1A8-423A-9EA8-E7B361CA4E16}'
+    >, object:ClassTypeDecl<
+      TypeName='SponsorTransaction'
+      PTableName='SPONSORTRANSACTION'
+      Members={object:FieldMember<
+          MemberName='TransactionItemId'
+          PhysicalName='TRANSACTIONITEMID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:LinkMember<
+          MemberName='LTransaction'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['SponsorTransaction'].MEMBERS['TransactionItemId']
+              OriginPKey=$TYPEDECLS['AccountTransactionItem'].MEMBERS['TransactionItemId']
+            >}LinkedClass=$TYPEDECLS['AccountTransactionItem']
+        >, object:LinkMember<
+          MemberName='LProjectSponsor'
+          Optional=true
+          LinkedClass=$TYPEDECLS['ProjectSponsor']
+          AutoForeignKey=true
+        >, object:FieldMember<
+          MemberName='SponsorId'
+          PhysicalName='SPONSORID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='STType'
+          PhysicalName='STTYPE'
+          DataType=$TYPEDECLS['VARCHAR']
+          IsClassifierField=true
+        >}ClassID='{2F7E8A8F-2B41-442F-8E59-ADA2DF709238}'
+    >, object:ClassTypeDecl<
+      TypeName='TransactionType'
+      PTableName='TRANSACTIONTYPE'
+      Members={object:FieldMember<
+          MemberName='TransactionCode'
+          PhysicalName='TRANSACTIONCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=10
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='Description'
+          PhysicalName='DESCRIPTION'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >, object:FieldMember<
+          MemberName='VoucherCode'
+          PhysicalName='VOUCHERCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=10
+        >}ClassID='{486FE178-FE5D-4350-B9D8-2D702290942A}'
+    >, object:ClassTypeDecl<
+      TypeName='ProductHierarchy'
+      PTableName='PRODUCTHIERARCHY'
+      Members={object:FieldMember<
+          MemberName='HierarchyId'
+          PhysicalName='HIERARCHYID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='ParentProductId'
+          PhysicalName='PARENTPRODUCTID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='ChildProductId'
+          PhysicalName='CHILDPRODUCTID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='Level'
+          PhysicalName='LEVEL'
+          DataType=$TYPEDECLS['INTEGER']
+        >}ClassID='{D962BF2B-A62D-4781-84B5-2C761A267F1C}'
+      AutoPrimaryKey=$TYPEDECLS['ProductHierarchy'].MEMBERS['HierarchyId']
+    >, object:EnumTypeDecl<
+      TypeName='eAuthAction'
+      EnumType=etString
+      EnumMembers={object:EnumMember<
+          StringValue='A'
+          DescriptiveName='Approve'
+        >, object:EnumMember<
+          StringValue='R'
+          DescriptiveName='Reject'
+        >}>, object:ClassTypeDecl<
+      TypeName='DailyBalance'
+      PTableName='DAILYBALANCE'
+      Members={object:FieldMember<
+          MemberName='DailyBalanceID'
+          PhysicalName='DAILYBALANCEID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='BalanceDate'
+          PhysicalName='BALANCEDATE'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:FieldMember<
+          MemberName='LastDayBalance'
+          PhysicalName='LASTDAYBALANCE'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='Debit'
+          PhysicalName='DEBIT'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='Credit'
+          PhysicalName='CREDIT'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='Balance'
+          PhysicalName='BALANCE'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='TrialBalance'
+          PhysicalName='TRIALBALANCE'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='IsClosed'
+          PhysicalName='ISCLOSED'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['FTBoolean']
+        >, object:LinkMember<
+          MemberName='LFinancialAccount'
+          LinkedClass=$TYPEDECLS['FinancialAccount']
+          AutoForeignKey=true
+        >}ClassID='{ACD9AE61-165A-4D9A-9B95-D6B965041700}'
+      AutoPrimaryKey=$TYPEDECLS['DailyBalance'].MEMBERS['DailyBalanceID']
+    >, object:ClassTypeDecl<
+      TypeName='GLInterface'
+      PTableName='GLINTERFACE'
+      Members={object:FieldMember<
+          MemberName='InterfaceID'
+          PhysicalName='INTERFACEID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='InterfaceCode'
+          PhysicalName='INTERFACECODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='Description'
+          PhysicalName='DESCRIPTION'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=100
+        >, object:FieldMember<
+          MemberName='AccountCode'
+          PhysicalName='ACCOUNTCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='AccountName'
+          PhysicalName='ACCOUNTNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=100
+        >, object:LinkMember<
+          MemberName='LProduct'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['GLInterface'].MEMBERS['ProductId']
+              OriginPKey=$TYPEDECLS['Product'].MEMBERS['ProductId']
+            >}LinkedClass=$TYPEDECLS['Product']
+        >, object:FieldMember<
+          MemberName='ProductId'
+          PhysicalName='PRODUCTID'
+          DataType=$TYPEDECLS['INTEGER']
+        >}ClassID='{5F3FE89D-F3EA-495D-B851-9D9E5D7EE001}'
+      AutoPrimaryKey=$TYPEDECLS['GLInterface'].MEMBERS['InterfaceID']
+    >, object:ClassTypeDecl<
+      TypeName='BudgetPeriod'
+      PTableName='BUDGETPERIOD'
+      Members={object:FieldMember<
+          MemberName='PeriodID'
+          PhysicalName='PERIODID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='PeriodValue'
+          PhysicalName='PERIODVALUE'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='IsOpen'
+          PhysicalName='ISOPEN'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['FTBoolean']
+        >, object:FieldMember<
+          MemberName='ParentPeriodID'
+          PhysicalName='PARENTPERIODID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LParent'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['BudgetPeriod'].MEMBERS['ParentPeriodID']
+              OriginPKey=$TYPEDECLS['BudgetPeriod'].MEMBERS['PeriodID']
+            >}LinkedClass=$TYPEDECLS['BudgetPeriod']
+        >}ClassID='{074D5C99-8429-4A96-BEA0-B0BB5C5164E0}'
+      AutoPrimaryKey=$TYPEDECLS['BudgetPeriod'].MEMBERS['PeriodID']
+    >, object:ClassTypeDecl<
+      TypeName='Budget'
+      PTableName='BUDGET'
+      Members={object:FieldMember<
+          MemberName='BudgetID'
+          PhysicalName='BUDGETID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='PeriodID'
+          PhysicalName='PERIODID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='OwnerID'
+          PhysicalName='OWNERID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LPeriod'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['Budget'].MEMBERS['PeriodID']
+              OriginPKey=$TYPEDECLS['BudgetPeriod'].MEMBERS['PeriodID']
+            >}LinkedClass=$TYPEDECLS['BudgetPeriod']
+        >, object:LinkMember<
+          MemberName='LOwner'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['Budget'].MEMBERS['OwnerID']
+              OriginPKey=$TYPEDECLS['BudgetOwner'].MEMBERS['OwnerID']
+            >}LinkedClass=$TYPEDECLS['BudgetOwner']
+        >, object:FieldMember<
+          MemberName='ItemCode'
+          PhysicalName='ITEMCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='ItemName'
+          PhysicalName='ITEMNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=60
+        >, object:FieldMember<
+          MemberName='CurrencyCode'
+          PhysicalName='CURRENCYCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=5
+        >, object:FieldMember<
+          MemberName='Amount'
+          PhysicalName='AMOUNT'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='Realization'
+          PhysicalName='REALIZATION'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:LinkMember<
+          MemberName='LLastRevision'
+          Optional=true
+          LinkedClass=$TYPEDECLS['BudgetRevision']
+          AutoForeignKey=true
+        >, object:LinkMember<
+          MemberName='LBudgetItem'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['Budget'].MEMBERS['ItemId']
+              OriginPKey=$TYPEDECLS['BudgetItem'].MEMBERS['ItemId']
+            >}LinkedClass=$TYPEDECLS['BudgetItem']
+        >, object:FieldMember<
+          MemberName='BudgetCode'
+          PhysicalName='BUDGETCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='BranchCode'
+          PhysicalName='BRANCHCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=5
+        >, object:LinkMember<
+          MemberName='LParent'
+          Optional=true
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['Budget'].MEMBERS['ParentBudgetID']
+              OriginPKey=$TYPEDECLS['Budget'].MEMBERS['BudgetID']
+            >}LinkedClass=$TYPEDECLS['Budget']
+        >, object:FieldMember<
+          MemberName='Level'
+          PhysicalName='LEVEL'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='ParentBudgetID'
+          PhysicalName='PARENTBUDGETID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='IsDetail'
+          PhysicalName='ISDETAIL'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['FTBoolean']
+        >, object:FieldMember<
+          MemberName='BudgetType'
+          PhysicalName='BUDGETTYPE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          IsClassifierField=true
+        >, object:FieldMember<
+          MemberName='ItemId'
+          PhysicalName='ITEMID'
+          DataType=$TYPEDECLS['INTEGER']
+        >}ClassID='{69CD4B42-A915-4413-B5C0-F34FCE6423F4}'
+      AutoPrimaryKey=$TYPEDECLS['Budget'].MEMBERS['BudgetID']
+    >, object:ClassTypeDecl<
+      TypeName='BudgetOwner'
+      PTableName='BUDGETOWNER'
+      Members={object:FieldMember<
+          MemberName='OwnerID'
+          PhysicalName='OWNERID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='OwnerName'
+          PhysicalName='OWNERNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=100
+        >, object:FieldMember<
+          MemberName='Level'
+          PhysicalName='LEVEL'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='Is_Detail'
+          PhysicalName='IS_DETAIL'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['FTBoolean']
+        >, object:FieldMember<
+          MemberName='ParentOwnerID'
+          PhysicalName='PARENTOWNERID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LParent'
+          Optional=true
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['BudgetOwner'].MEMBERS['ParentOwnerID']
+              OriginPKey=$TYPEDECLS['BudgetOwner'].MEMBERS['OwnerID']
+            >}LinkedClass=$TYPEDECLS['BudgetOwner']
+        >, object:FieldMember<
+          MemberName='OwnerCode'
+          PhysicalName='OWNERCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=10
+        >}ClassID='{229C034F-F75E-4421-AE73-A01868DEB423}'
+      AutoPrimaryKey=$TYPEDECLS['BudgetOwner'].MEMBERS['OwnerID']
+    >, object:ClassTypeDecl<
+      TypeName='BudgetOwnerHierarchy'
+      PTableName='BUDGETOWNERHIERARCHY'
+      Members={object:FieldMember<
+          MemberName='HierarchyID'
+          PhysicalName='HIERARCHYID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='ParentOwnerID'
+          PhysicalName='PARENTOWNERID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='ChildOwnerID'
+          PhysicalName='CHILDOWNERID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='Level'
+          PhysicalName='LEVEL'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LParent'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['BudgetOwnerHierarchy'].MEMBERS['ParentOwnerID']
+              OriginPKey=$TYPEDECLS['BudgetOwner'].MEMBERS['OwnerID']
+            >}LinkedClass=$TYPEDECLS['BudgetOwner']
+        >, object:LinkMember<
+          MemberName='LChild'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['BudgetOwnerHierarchy'].MEMBERS['ChildOwnerID']
+              OriginPKey=$TYPEDECLS['BudgetOwner'].MEMBERS['OwnerID']
+            >}LinkedClass=$TYPEDECLS['BudgetOwner']
+        >}ClassID='{D7606CBC-48FD-4DD4-A60F-B7F7C9C7B292}'
+      AutoPrimaryKey=$TYPEDECLS['BudgetOwnerHierarchy'].MEMBERS['HierarchyID']
+    >, object:ClassTypeDecl<
+      TypeName='BudgetRevision'
+      PTableName='BUDGETREVISION'
+      Members={object:FieldMember<
+          MemberName='RevisionID'
+          PhysicalName='REVISIONID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='BudgetID'
+          PhysicalName='BUDGETID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LBudget'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['BudgetRevision'].MEMBERS['BudgetID']
+              OriginPKey=$TYPEDECLS['Budget'].MEMBERS['BudgetID']
+            >}LinkedClass=$TYPEDECLS['Budget']
+        >, object:FieldMember<
+          MemberName='Amount'
+          PhysicalName='AMOUNT'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='UserID'
+          PhysicalName='USERID'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='LastAmount'
+          PhysicalName='LASTAMOUNT'
+          DataType=$TYPEDECLS['DOUBLE']
+        >}ClassID='{1767E124-DD69-47EA-B793-F014BE4B1125}'
+      AutoPrimaryKey=$TYPEDECLS['BudgetRevision'].MEMBERS['RevisionID']
+    >, object:EnumTypeDecl<
+      TypeName='ePaymentChannel'
+      EnumType=etString
+      EnumMembers={object:EnumMember<
+          StringValue='P'
+          DescriptiveName='Petty Cash'
+        >, object:EnumMember<
+          StringValue='R'
+          DescriptiveName='Branch Cash'
+        >, object:EnumMember<
+          StringValue='A'
+          DescriptiveName='Bank Cash'
+        >, object:EnumMember<
+          StringValue='G'
+          DescriptiveName='GL'
+        >}>, object:ClassTypeDecl<
+      TypeName='BudgetItem'
+      PTableName='BUDGETITEM'
+      Members={object:FieldMember<
+          MemberName='BudgetItemCode'
+          PhysicalName='BUDGETITEMCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='BudgetItemDescription'
+          PhysicalName='BUDGETITEMDESCRIPTION'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=250
+        >, object:FieldMember<
+          MemberName='ParentItemId'
+          PhysicalName='PARENTITEMID'
+          DataType=$TYPEDECLS['INTEGER']
+          DataLength=20
+        >, object:LinkMember<
+          MemberName='LParent'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['BudgetItem'].MEMBERS['ParentItemId']
+              OriginPKey=$TYPEDECLS['BudgetItem'].MEMBERS['ItemId']
+            >}LinkedClass=$TYPEDECLS['BudgetItem']
+        >, object:FieldMember<
+          MemberName='Level'
+          PhysicalName='LEVEL'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='Is_Detail'
+          PhysicalName='IS_DETAIL'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['FTBoolean']
+        >, object:FieldMember<
+          MemberName='BudgetItemName'
+          PhysicalName='BUDGETITEMNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=200
+        >, object:FieldMember<
+          MemberName='ItemId'
+          PhysicalName='ITEMID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='OwnerId'
+          PhysicalName='OWNERID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LOwner'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['BudgetItem'].MEMBERS['OwnerId']
+              OriginPKey=$TYPEDECLS['BudgetOwner'].MEMBERS['OwnerID']
+            >}LinkedClass=$TYPEDECLS['BudgetOwner']
+        >, object:FieldMember<
+          MemberName='BranchCode'
+          PhysicalName='BRANCHCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=5
+        >}ClassID='{9111D302-4AD7-476B-87FF-8D392B90F042}'
+      AutoPrimaryKey=$TYPEDECLS['BudgetItem'].MEMBERS['ItemId']
+    >, object:ClassTypeDecl<
+      TypeName='BudgetItemHierarchy'
+      PTableName='BUDGETITEMHIERARCHY'
+      Members={object:FieldMember<
+          MemberName='HierarchyID'
+          PhysicalName='HIERARCHYID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='ParentItemId'
+          PhysicalName='PARENTITEMID'
+          DataType=$TYPEDECLS['INTEGER']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='ChildItemId'
+          PhysicalName='CHILDITEMID'
+          DataType=$TYPEDECLS['INTEGER']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='Level'
+          PhysicalName='LEVEL'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LParent'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['BudgetItemHierarchy'].MEMBERS['ParentItemId']
+              OriginPKey=$TYPEDECLS['BudgetItem'].MEMBERS['ItemId']
+            >}LinkedClass=$TYPEDECLS['BudgetItem']
+        >, object:LinkMember<
+          MemberName='LChild'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['BudgetItemHierarchy'].MEMBERS['ChildItemId']
+              OriginPKey=$TYPEDECLS['BudgetItem'].MEMBERS['ItemId']
+            >}LinkedClass=$TYPEDECLS['BudgetItem']
+        >}ClassID='{EB51F5EB-A404-4FEA-9C4E-402F1A8C8863}'
+      AutoPrimaryKey=$TYPEDECLS['BudgetItemHierarchy'].MEMBERS['HierarchyID']
+    >, object:ClassTypeDecl<
+      TypeName='BSZ'
+      PTableName='BSZ'
+      Members={object:FieldMember<
+          MemberName='BSZID'
+          PhysicalName='BSZID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='BSZNumber'
+          PhysicalName='BSZNUMBER'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='DonorId'
+          PhysicalName='DONORID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='BSZDate'
+          PhysicalName='BSZDATE'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:ListMember<
+          MemberName='Ls_BSZDetail'
+          UsedLink=$TYPEDECLS['BSZDetail'].MEMBERS['LBSZ']
+        >, object:ListMember<
+          MemberName='Ls_BSZTransaction'
+          UsedLink=$TYPEDECLS['BSZTransaction'].MEMBERS['LBSZ']
+        >, object:LinkMember<
+          MemberName='LDonor'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['BSZ'].MEMBERS['DonorId']
+              OriginPKey=$TYPEDECLS['VDonor'].MEMBERS['ID']
+            >}LinkedClass=$TYPEDECLS['VDonor']
+        >}ClassID='{6B67A824-85CF-474D-B6E8-B2FE6EFB5D6B}'
+      AutoPrimaryKey=$TYPEDECLS['BSZ'].MEMBERS['BSZID']
+    >, object:ClassTypeDecl<
+      TypeName='BSZTransaction'
+      PTableName='BSZTRANSACTION'
+      Members={object:FieldMember<
+          MemberName='BSZID'
+          PhysicalName='BSZID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='TransactionItemId'
+          PhysicalName='TRANSACTIONITEMID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LTransaction'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['BSZTransaction'].MEMBERS['TransactionItemId']
+              OriginPKey=$TYPEDECLS['DonorTransactionItem'].MEMBERS['TransactionItemId']
+            >}LinkedClass=$TYPEDECLS['DonorTransactionItem']
+        >, object:LinkMember<
+          MemberName='LBSZ'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['BSZTransaction'].MEMBERS['BSZID']
+              OriginPKey=$TYPEDECLS['BSZ'].MEMBERS['BSZID']
+            >}LinkedClass=$TYPEDECLS['BSZ']
+        >, object:FieldMember<
+          MemberName='BSZTransactionId'
+          PhysicalName='BSZTRANSACTIONID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >}ClassID='{76512EF4-2D7E-4368-BF70-9DD313BB4CDD}'
+      AutoPrimaryKey=$TYPEDECLS['BSZTransaction'].MEMBERS['BSZTransactionId']
+    >, object:ClassTypeDecl<
+      TypeName='BSZDetail'
+      PTableName='BSZDETAIL'
+      Members={object:FieldMember<
+          MemberName='BSZID'
+          PhysicalName='BSZID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='BSZDetailID'
+          PhysicalName='BSZDETAILID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:LinkMember<
+          MemberName='LBSZ'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['BSZDetail'].MEMBERS['BSZID']
+              OriginPKey=$TYPEDECLS['BSZ'].MEMBERS['BSZID']
+            >}LinkedClass=$TYPEDECLS['BSZ']
+        >, object:FieldMember<
+          MemberName='Item'
+          PhysicalName='ITEM'
+          DataType=$TYPEDECLS['INTEGER']
+          Enumerator=$TYPEDECLS['eItemBSZ']
+        >, object:FieldMember<
+          MemberName='Year'
+          PhysicalName='YEAR'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='Percentage'
+          PhysicalName='PERCENTAGE'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='ZakahValue'
+          PhysicalName='ZAKAHVALUE'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='BasicValue'
+          PhysicalName='BASICVALUE'
+          DataType=$TYPEDECLS['DOUBLE']
+        >}ClassID='{0EF30718-4ED1-40F6-A4B6-93D171F8F070}'
+      AutoPrimaryKey=$TYPEDECLS['BSZDetail'].MEMBERS['BSZDetailID']
+    >, object:EnumTypeDecl<
+      TypeName='eItemBSZ'
+      EnumMembers={object:EnumMember<
+          IntegerValue=1
+          DescriptiveName='Emas,Perak,Uang'
+        >, object:EnumMember<
+          IntegerValue=2
+          DescriptiveName='Perdagangan dan Perusahaan'
+        >, object:EnumMember<
+          IntegerValue=3
+          DescriptiveName='Hasil Pertanian Perkebunan dan'
+        >, object:EnumMember<
+          IntegerValue=4
+          DescriptiveName='Hasil Pertambangan'
+        >, object:EnumMember<
+          IntegerValue=5
+          DescriptiveName='Hasil Peternakan'
+        >, object:EnumMember<
+          IntegerValue=6
+          DescriptiveName='Hasil Pendapatan Jasa'
+        >, object:EnumMember<
+          IntegerValue=7
+          DescriptiveName='Rikaz'
+        >}>, object:ClassTypeDecl<
+      TypeName='BudgetHierarchy'
+      PTableName='BUDGETHIERARCHY'
+      Members={object:FieldMember<
+          MemberName='HierarchyID'
+          PhysicalName='HIERARCHYID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:LinkMember<
+          MemberName='LParent'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['BudgetHierarchy'].MEMBERS['ParentBudgetID']
+              OriginPKey=$TYPEDECLS['Budget'].MEMBERS['BudgetID']
+            >}LinkedClass=$TYPEDECLS['Budget']
+        >, object:LinkMember<
+          MemberName='LChild'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['BudgetHierarchy'].MEMBERS['ChildBudgetID']
+              OriginPKey=$TYPEDECLS['Budget'].MEMBERS['BudgetID']
+            >}LinkedClass=$TYPEDECLS['Budget']
+        >, object:FieldMember<
+          MemberName='ParentBudgetID'
+          PhysicalName='PARENTBUDGETID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='ChildBudgetID'
+          PhysicalName='CHILDBUDGETID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='Level'
+          PhysicalName='LEVEL'
+          DataType=$TYPEDECLS['INTEGER']
+        >}ClassID='{306E17CE-C80F-455C-A194-56890E9A0029}'
+      AutoPrimaryKey=$TYPEDECLS['BudgetHierarchy'].MEMBERS['HierarchyID']
+    >, object:ClassTypeDecl<
+      TypeName='ProjectSponsorDisbursement'
+      PTableName='PROJECTSPONSORDISBURSEMENT'
+      Members={object:FieldMember<
+          MemberName='DisbID'
+          PhysicalName='DISBID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='DisbNumber'
+          PhysicalName='DISBNUMBER'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='DisbDatePlan'
+          PhysicalName='DISBDATEPLAN'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:FieldMember<
+          MemberName='DisbAmountPlan'
+          PhysicalName='DISBAMOUNTPLAN'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='IsDisbursed'
+          PhysicalName='ISDISBURSED'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['FTBoolean']
+        >, object:LinkMember<
+          MemberName='LDisbTransaction'
+          Optional=true
+          LinkedClass=$TYPEDECLS['SponsorTransaction']
+          AutoForeignKey=true
+        >, object:FieldMember<
+          MemberName='ProjectSponsorID'
+          PhysicalName='PROJECTSPONSORID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LProjectSponsor'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['ProjectSponsorDisbursement'].MEMBERS['ProjectSponsorID']
+              OriginPKey=$TYPEDECLS['ProjectSponsor'].MEMBERS['ProjectSponsorId']
+            >}LinkedClass=$TYPEDECLS['ProjectSponsor']
+        >}ClassID='{D6B74CA0-555E-48D8-A8E3-70A49ED7F140}'
+      AutoPrimaryKey=$TYPEDECLS['ProjectSponsorDisbursement'].MEMBERS['DisbID']
+    >, object:ClassTypeDecl<
+      TypeName='Custom_Idgen'
+      PTableName='CUSTOM_IDGEN'
+      Members={object:FieldMember<
+          MemberName='idName'
+          PhysicalName='IDNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='idCode'
+          PhysicalName='IDCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='Last_Id'
+          PhysicalName='LAST_ID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='Locked'
+          PhysicalName='LOCKED'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['FTBoolean']
+        >}ClassID='{21462561-6CD7-4022-B301-A43A165F6E21}'
+    >, object:ClassTypeDecl<
+      TypeName='EmployeeCashAdvance'
+      PTableName='ACCOUNTRECEIVABLE'
+      Members={object:FieldMember<
+          MemberName='EmployeeId'
+          PhysicalName='EMPLOYEEID'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='EmployeeIdNumber'
+          PhysicalName='EMPLOYEEIDNUMBER'
+          DataType=$TYPEDECLS['INTEGER']
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='C'
+          AncestorClass=$TYPEDECLS['AccountReceivable']
+          AutoDescendantKey=true
+        >}ClassID='{C86D26C9-8055-4F8E-B60A-7456FDF2A44C}'
+    >, object:ClassTypeDecl<
+      TypeName='CashAdvanceTransactItem'
+      PTableName='ACCOUNTTRANSACTIONITEM'
+      Members={object:FieldMember<
+          MemberName='TransactionItemId'
+          PhysicalName='TRANSACTIONITEMID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='CATType'
+          PhysicalName='CATTYPE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          IsClassifierField=true
+        >, object:LinkMember<
+          MemberName='LCashAdvanceAccount'
+          LinkedClass=$TYPEDECLS['EmployeeCashAdvance']
+          SharedLink=$TYPEDECLS['AccountTransactionItem'].MEMBERS['LFinancialAccount']
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='C'
+          AncestorClass=$TYPEDECLS['AccountTransactionItem']
+          InhLinks={object:InheritanceLink<
+              ThisPKey=$TYPEDECLS['CashAdvanceTransactItem'].MEMBERS['TransactionItemId']
+              OriginPKey=$TYPEDECLS['AccountTransactionItem'].MEMBERS['TransactionItemId']
+            >}>}ClassID='{5EABF4B9-4822-45AE-A66A-9EE0BD91C023}'
+      AutoPrimaryKey=$TYPEDECLS['CashAdvanceTransactItem'].MEMBERS['TransactionItemId']
+    >, object:ClassTypeDecl<
+      TypeName='CAReturnTransactItem'
+      PTableName='ACCOUNTTRANSACTIONITEM'
+      Members={object:FieldMember<
+          MemberName='TransactionItemId'
+          PhysicalName='TRANSACTIONITEMID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='CATransactionId'
+          PhysicalName='CATRANSACTIONID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LCATransaction'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['CAReturnTransactItem'].MEMBERS['CATransactionId']
+              OriginPKey=$TYPEDECLS['Transaction'].MEMBERS['TransactionId']
+            >}LinkedClass=$TYPEDECLS['Transaction']
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='C'
+          AncestorClass=$TYPEDECLS['CashAdvanceTransactItem']
+          InhLinks={object:InheritanceLink<
+              ThisPKey=$TYPEDECLS['CAReturnTransactItem'].MEMBERS['TransactionItemId']
+              OriginPKey=$TYPEDECLS['CashAdvanceTransactItem'].MEMBERS['TransactionItemId']
+            >}>}ClassID='{2B9E3768-9129-41A4-BEA5-99EEFB111C81}'
+      AutoPrimaryKey=$TYPEDECLS['CAReturnTransactItem'].MEMBERS['TransactionItemId']
+    >, object:ClassTypeDecl<
+      TypeName='CATransactItem'
+      PTableName='ACCOUNTTRANSACTIONITEM'
+      Members={object:FieldMember<
+          MemberName='TransactionItemId'
+          PhysicalName='TRANSACTIONITEMID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='ReturnTransactionItemId'
+          PhysicalName='RETURNTRANSACTIONITEMID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LTransactionReturn'
+          Optional=true
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['CATransactItem'].MEMBERS['ReturnTransactionItemId']
+              OriginPKey=$TYPEDECLS['CAReturnTransactItem'].MEMBERS['TransactionItemId']
+            >}LinkedClass=$TYPEDECLS['CAReturnTransactItem']
+        >, object:FieldMember<
+          MemberName='DistributionTransferId'
+          PhysicalName='DISTRIBUTIONTRANSFERID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LDistributionTransfer'
+          Optional=true
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['CATransactItem'].MEMBERS['DistributionTransferId']
+              OriginPKey=$TYPEDECLS['DistributionTransferInfo'].MEMBERS['DistributionId']
+            >}LinkedClass=$TYPEDECLS['DistributionTransferInfo']
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='D'
+          AncestorClass=$TYPEDECLS['CashAdvanceTransactItem']
+          InhLinks={object:InheritanceLink<
+              ThisPKey=$TYPEDECLS['CATransactItem'].MEMBERS['TransactionItemId']
+              OriginPKey=$TYPEDECLS['CashAdvanceTransactItem'].MEMBERS['TransactionItemId']
+            >}>}ClassID='{E42DEB69-3C8B-4CEE-AC9B-0DAEA40E86CD}'
+      AutoPrimaryKey=$TYPEDECLS['CATransactItem'].MEMBERS['TransactionItemId']
+    >, object:ClassTypeDecl<
+      TypeName='ParameterInbox'
+      PTableName='PARAMETERINBOX'
+      Members={object:FieldMember<
+          MemberName='KodeInbox'
+          PhysicalName='KODEINBOX'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=10
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='Description'
+          PhysicalName='DESCRIPTION'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >, object:FieldMember<
+          MemberName='NamaForm'
+          PhysicalName='NAMAFORM'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=100
+        >, object:FieldMember<
+          MemberName='TagInbox'
+          PhysicalName='TAGINBOX'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >}ClassID='{3F065F16-EFDF-4DF0-9777-F7E13F8AB346}'
+    >, object:ClassTypeDecl<
+      TypeName='Inbox'
+      PTableName='INBOX'
+      Members={object:FieldMember<
+          MemberName='InboxId'
+          PhysicalName='INBOXID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='Description'
+          PhysicalName='DESCRIPTION'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=100
+        >, object:FieldMember<
+          MemberName='BranchCode'
+          PhysicalName='BRANCHCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=5
+        >, object:FieldMember<
+          MemberName='UserId'
+          PhysicalName='USERID'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='FileName'
+          PhysicalName='FILENAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=200
+        >, object:FieldMember<
+          MemberName='KodeInbox'
+          PhysicalName='KODEINBOX'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=10
+        >, object:LinkMember<
+          MemberName='LParameterInbox'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['Inbox'].MEMBERS['KodeInbox']
+              OriginPKey=$TYPEDECLS['ParameterInbox'].MEMBERS['KodeInbox']
+            >}LinkedClass=$TYPEDECLS['ParameterInbox']
+        >, object:FieldMember<
+          MemberName='InputDate'
+          PhysicalName='INPUTDATE'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:FieldMember<
+          MemberName='InputTime'
+          PhysicalName='INPUTTIME'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:FieldMember<
+          MemberName='InboxType'
+          PhysicalName='INBOXTYPE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          IsClassifierField=true
+        >, object:FieldMember<
+          MemberName='LastInboxHistoryId'
+          PhysicalName='LASTINBOXHISTORYID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LHistory'
+          Optional=true
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['Inbox'].MEMBERS['LastInboxHistoryId']
+              OriginPKey=$TYPEDECLS['InboxHistory'].MEMBERS['InboxHistoryId']
+            >}IsWeak=true
+          LinkedClass=$TYPEDECLS['InboxHistory']
+        >, object:ListMember<
+          MemberName='Ls_History'
+          UsedLink=$TYPEDECLS['InboxHistory'].MEMBERS['LInbox']
+        >}ClassID='{4ACDE8E7-BB7A-412F-9F19-8F6BC7790EAE}'
+      AutoPrimaryKey=$TYPEDECLS['Inbox'].MEMBERS['InboxId']
+    >, object:ClassTypeDecl<
+      TypeName='InboxHistory'
+      PTableName='INBOXHISTORY'
+      Members={object:FieldMember<
+          MemberName='InboxHistoryId'
+          PhysicalName='INBOXHISTORYID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='InboxId'
+          PhysicalName='INBOXID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LInbox'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['InboxHistory'].MEMBERS['InboxId']
+              OriginPKey=$TYPEDECLS['Inbox'].MEMBERS['InboxId']
+            >}LinkedClass=$TYPEDECLS['Inbox']
+        >, object:FieldMember<
+          MemberName='FileName'
+          PhysicalName='FILENAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=200
+        >, object:FieldMember<
+          MemberName='InputDate'
+          PhysicalName='INPUTDATE'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:FieldMember<
+          MemberName='InputTime'
+          PhysicalName='INPUTTIME'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:FieldMember<
+          MemberName='UserId'
+          PhysicalName='USERID'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='NextInboxHistoryId'
+          PhysicalName='NEXTINBOXHISTORYID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LNextHistory'
+          Optional=true
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['InboxHistory'].MEMBERS['InboxHistoryId']
+              OriginPKey=$TYPEDECLS['InboxHistory'].MEMBERS['InboxHistoryId']
+            >}IsWeak=true
+          LinkedClass=$TYPEDECLS['InboxHistory']
+        >}ClassID='{FEB1907C-7B1F-4DB9-8FDD-3E399825475F}'
+      AutoPrimaryKey=$TYPEDECLS['InboxHistory'].MEMBERS['InboxHistoryId']
+    >, object:ClassTypeDecl<
+      TypeName='InboxTransaction'
+      PTableName='INBOXTRANSACTION'
+      Members={object:FieldMember<
+          MemberName='TransactionId'
+          PhysicalName='TRANSACTIONID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LTransaction'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['InboxTransaction'].MEMBERS['TransactionId']
+              OriginPKey=$TYPEDECLS['Transaction'].MEMBERS['TransactionId']
+            >}LinkedClass=$TYPEDECLS['Transaction']
+        >, object:FieldMember<
+          MemberName='InboxId'
+          PhysicalName='INBOXID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='T'
+          AncestorClass=$TYPEDECLS['Inbox']
+          InhLinks={object:InheritanceLink<
+              ThisPKey=$TYPEDECLS['InboxTransaction'].MEMBERS['InboxId']
+              OriginPKey=$TYPEDECLS['Inbox'].MEMBERS['InboxId']
+            >}>}ClassID='{1349878F-B00A-49B5-BCCD-D8E9D30A1D1A}'
+      AutoPrimaryKey=$TYPEDECLS['InboxTransaction'].MEMBERS['InboxId']
+    >, object:ClassTypeDecl<
+      TypeName='ProjectAccount'
+      PTableName='PROJECTACCOUNT'
+      Members={object:FieldMember<
+          MemberName='AccountNo'
+          PhysicalName='ACCOUNTNO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='StartDate'
+          PhysicalName='STARTDATE'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:FieldMember<
+          MemberName='FinishDate'
+          PhysicalName='FINISHDATE'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:ListMember<
+          MemberName='Ls_ProjectSponsor'
+          UsedLink=$TYPEDECLS['ProjectSponsor'].MEMBERS['LProjectAccount']
+        >, object:FieldMember<
+          MemberName='BudgetAmount'
+          PhysicalName='BUDGETAMOUNT'
+          DataType=$TYPEDECLS['DOUBLE']
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='J'
+          AncestorClass=$TYPEDECLS['ProductAccount']
+          InhLinks={object:InheritanceLink<
+              ThisPKey=$TYPEDECLS['ProjectAccount'].MEMBERS['AccountNo']
+              OriginPKey=$TYPEDECLS['ProductAccount'].MEMBERS['AccountNo']
+            >}>}ClassID='{9AC8DAE1-90F8-43B2-8343-71231B7CFFCD}'
+    >, object:ClassTypeDecl<
+      TypeName='BudgetYear'
+      PTableName='BUDGET'
+      Members={object:FieldMember<
+          MemberName='BudgetId'
+          PhysicalName='BUDGETID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='Y'
+          AncestorClass=$TYPEDECLS['Budget']
+          InhLinks={object:InheritanceLink<
+              ThisPKey=$TYPEDECLS['BudgetYear'].MEMBERS['BudgetId']
+              OriginPKey=$TYPEDECLS['Budget'].MEMBERS['BudgetID']
+            >}>}ClassID='{150F3D58-778B-47F8-917D-559F9492A916}'
+      AutoPrimaryKey=$TYPEDECLS['BudgetYear'].MEMBERS['BudgetId']
+    >, object:ClassTypeDecl<
+      TypeName='BudgetTransaction'
+      PTableName='BUDGETTRANSACTION'
+      Members={object:FieldMember<
+          MemberName='TransactionItemId'
+          PhysicalName='TRANSACTIONITEMID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='BudgetId'
+          PhysicalName='BUDGETID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LBudget'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['BudgetTransaction'].MEMBERS['BudgetId']
+              OriginPKey=$TYPEDECLS['Budget'].MEMBERS['BudgetID']
+            >}LinkedClass=$TYPEDECLS['Budget']
+        >, object:LinkMember<
+          MemberName='LTransaction'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['BudgetTransaction'].MEMBERS['TransactionItemId']
+              OriginPKey=$TYPEDECLS['TransactionItem'].MEMBERS['TransactionItemId']
+            >}LinkedClass=$TYPEDECLS['TransactionItem']
+        >, object:FieldMember<
+          MemberName='BudgetTransType'
+          PhysicalName='BUDGETTRANSTYPE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+        >}ClassID='{81C6AE42-4339-4DAE-9F9B-4A445DE8988D}'
+    >, object:ClassTypeDecl<
+      TypeName='SponsorTransactionProgram'
+      PTableName='SPONSORTRANSACTION'
+      Members={object:FieldMember<
+          MemberName='InvoiceStatus'
+          PhysicalName='INVOICESTATUS'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+        >, object:FieldMember<
+          MemberName='InvoiceDate'
+          PhysicalName='INVOICEDATE'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:FieldMember<
+          MemberName='InvoiceNo'
+          PhysicalName='INVOICENO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='G'
+          AncestorClass=$TYPEDECLS['SponsorTransaction']
+          AutoDescendantKey=true
+        >}ClassID='{96D46A45-5C13-49C6-92FD-15A7E5CC6A4F}'
+    >, object:ClassTypeDecl<
+      TypeName='Branch'
+      PTableName='BRANCH'
+      Members={object:FieldMember<
+          MemberName='BranchCode'
+          PhysicalName='BRANCHCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=3
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='BranchName'
+          PhysicalName='BRANCHNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='BranchId'
+          PhysicalName='BRANCHID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='ShortCode'
+          PhysicalName='SHORTCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=5
+        >, object:FieldMember<
+          MemberName='Branch_Address'
+          PhysicalName='BRANCH_ADDRESS'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=200
+        >, object:FieldMember<
+          MemberName='Branch_Phone'
+          PhysicalName='BRANCH_PHONE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >, object:FieldMember<
+          MemberName='Branch_Fax'
+          PhysicalName='BRANCH_FAX'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='Branch_BankAccount1'
+          PhysicalName='BRANCH_BANKACCOUNT1'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='Branch_BankAccount2'
+          PhysicalName='BRANCH_BANKACCOUNT2'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='Location'
+          PhysicalName='LOCATION'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >, object:FieldMember<
+          MemberName='MasterBranchCode'
+          PhysicalName='MASTERBRANCHCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=5
+        >}ClassID='{559686C2-135C-4801-ADBA-4E530DBD198F}'
+    >, object:ClassTypeDecl<
+      TypeName='Currency'
+      PTableName='CURRENCY'
+      Members={object:FieldMember<
+          MemberName='Currency_Code'
+          PhysicalName='CURRENCY_CODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='Short_Name'
+          PhysicalName='SHORT_NAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=10
+        >, object:FieldMember<
+          MemberName='Full_Name'
+          PhysicalName='FULL_NAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >, object:FieldMember<
+          MemberName='Kurs_Tengah_BI'
+          PhysicalName='KURS_TENGAH_BI'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='Symbol'
+          PhysicalName='SYMBOL'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=10
+        >, object:FieldMember<
+          MemberName='Symbol_Says'
+          PhysicalName='SYMBOL_SAYS'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >}ClassID='{43F1C768-3DDB-48C9-BE72-88CD410ACE04}'
+    >, object:ClassTypeDecl<
+      TypeName='Marketer'
+      PTableName='MARKETER'
+      Members={object:FieldMember<
+          MemberName='MarketerId'
+          PhysicalName='MARKETERID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='Full_Name'
+          PhysicalName='FULL_NAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=150
+        >, object:FieldMember<
+          MemberName='Branch_Id'
+          PhysicalName='BRANCH_ID'
+          DataType=$TYPEDECLS['INTEGER']
+        >}ClassID='{C076A834-33FB-4276-9D09-C997CDC51C50}'
+    >, object:ClassTypeDecl<
+      TypeName='Account'
+      PTableName='ACCOUNT'
+      Members={object:FieldMember<
+          MemberName='Account_Code'
+          PhysicalName='ACCOUNT_CODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='Account_Name'
+          PhysicalName='ACCOUNT_NAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=100
+        >, object:FieldMember<
+          MemberName='Account_Level'
+          PhysicalName='ACCOUNT_LEVEL'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='Is_Detail'
+          PhysicalName='IS_DETAIL'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+        >}ClassID='{37BE411F-DBAD-4095-AE05-A2A361217554}'
+    >, object:ClassTypeDecl<
+      TypeName='VProduct'
+      PTableName='VPRODUCT'
+      Members={object:FieldMember<
+          MemberName='ProductCode'
+          PhysicalName='PRODUCTCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='ProductName'
+          PhysicalName='PRODUCTNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='AccountNo'
+          PhysicalName='ACCOUNTNO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='AccountName'
+          PhysicalName='ACCOUNTNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >, object:FieldMember<
+          MemberName='BranchCode'
+          PhysicalName='BRANCHCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=5
+        >, object:FieldMember<
+          MemberName='ProductType'
+          PhysicalName='PRODUCTTYPE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+        >, object:FieldMember<
+          MemberName='Status'
+          PhysicalName='STATUS'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['eStatus']
+        >, object:FieldMember<
+          MemberName='CurrencyCode'
+          PhysicalName='CURRENCYCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='FundCategory'
+          PhysicalName='FUNDCATEGORY'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['eFundCategory']
+        >, object:FieldMember<
+          MemberName='PercentageOfAmilFunds'
+          PhysicalName='PERCENTAGEOFAMILFUNDS'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='ProductId'
+          PhysicalName='PRODUCTID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='Idx'
+          PhysicalName='IDX'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=40
+        >, object:LinkMember<
+          MemberName='LCurrency'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['VProduct'].MEMBERS['CurrencyCode']
+              OriginPKey=$TYPEDECLS['Currency'].MEMBERS['Currency_Code']
+            >}LinkedClass=$TYPEDECLS['Currency']
+        >}ClassID='{40D623C6-D0D7-45D8-ACFE-3DA04FFB0EBF}'
+    >, object:ClassTypeDecl<
+      TypeName='VEmployee'
+      PTableName='VEMPLOYEE'
+      Members={object:FieldMember<
+          MemberName='EmployeeId'
+          PhysicalName='EMPLOYEEID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='EmployeeName'
+          PhysicalName='EMPLOYEENAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=150
+        >, object:FieldMember<
+          MemberName='Email'
+          PhysicalName='EMAIL'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=100
+        >, object:FieldMember<
+          MemberName='Permanent_Address'
+          PhysicalName='PERMANENT_ADDRESS'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=250
+        >, object:FieldMember<
+          MemberName='Permanent_Phone_No'
+          PhysicalName='PERMANENT_PHONE_NO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=15
+        >, object:FieldMember<
+          MemberName='Current_Phone_No'
+          PhysicalName='CURRENT_PHONE_NO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=15
+        >, object:FieldMember<
+          MemberName='Branch_Id'
+          PhysicalName='BRANCH_ID'
+          DataType=$TYPEDECLS['INTEGER']
+        >}ClassID='{2281AB29-80A8-4A65-B2A1-97026B8D47BB}'
+    >, object:ClassTypeDecl<
+      TypeName='InvoiceProduct'
+      PTableName='INVOICEPRODUCT'
+      Members={object:FieldMember<
+          MemberName='InvoiceId'
+          PhysicalName='INVOICEID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='InvoiceTermDate'
+          PhysicalName='INVOICETERMDATE'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:FieldMember<
+          MemberName='SponsorId'
+          PhysicalName='SPONSORID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='InvoiceAddress'
+          PhysicalName='INVOICEADDRESS'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=250
+        >, object:FieldMember<
+          MemberName='InvoiceBankName'
+          PhysicalName='INVOICEBANKNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=100
+        >, object:FieldMember<
+          MemberName='InvoiceBankAccountNumber'
+          PhysicalName='INVOICEBANKACCOUNTNUMBER'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='InvoiceBankAccountName'
+          PhysicalName='INVOICEBANKACCOUNTNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=100
+        >, object:FieldMember<
+          MemberName='InvoiceOfficerPosition'
+          PhysicalName='INVOICEOFFICERPOSITION'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=100
+        >, object:FieldMember<
+          MemberName='InvoiceOfficerName'
+          PhysicalName='INVOICEOFFICERNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=100
+        >, object:FieldMember<
+          MemberName='ProductAccountNo'
+          PhysicalName='PRODUCTACCOUNTNO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:LinkMember<
+          MemberName='LProductAccount'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['InvoiceProduct'].MEMBERS['ProductAccountNo']
+              OriginPKey=$TYPEDECLS['ProductAccount'].MEMBERS['AccountNo']
+            >}LinkedClass=$TYPEDECLS['ProductAccount']
+        >, object:LinkMember<
+          MemberName='LSponsor'
+          Optional=true
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['InvoiceProduct'].MEMBERS['SponsorId']
+              OriginPKey=$TYPEDECLS['VDonor'].MEMBERS['ID']
+            >}LinkedClass=$TYPEDECLS['VDonor']
+        >, object:FieldMember<
+          MemberName='InvoiceContactPerson'
+          PhysicalName='INVOICECONTACTPERSON'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=100
+        >, object:FieldMember<
+          MemberName='InvoiceContactPhone'
+          PhysicalName='INVOICECONTACTPHONE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='P'
+          AncestorClass=$TYPEDECLS['Invoice']
+          InhLinks={object:InheritanceLink<
+              ThisPKey=$TYPEDECLS['InvoiceProduct'].MEMBERS['InvoiceId']
+              OriginPKey=$TYPEDECLS['Invoice'].MEMBERS['InvoiceId']
+            >}>}ClassID='{33A6693E-88D1-4794-B51A-B6F22CDFA6F1}'
+      AutoPrimaryKey=$TYPEDECLS['InvoiceProduct'].MEMBERS['InvoiceId']
+    >, object:ClassTypeDecl<
+      TypeName='DistributionTransferInfo'
+      PTableName='DISTRIBUTIONTRANSFERINFO'
+      Members={object:FieldMember<
+          MemberName='AccountNo'
+          PhysicalName='ACCOUNTNO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='TransactionId'
+          PhysicalName='TRANSACTIONID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='BranchSource'
+          PhysicalName='BRANCHSOURCE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=3
+        >, object:FieldMember<
+          MemberName='BranchDestination'
+          PhysicalName='BRANCHDESTINATION'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=3
+        >, object:FieldMember<
+          MemberName='ReportStatus'
+          PhysicalName='REPORTSTATUS'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['FTBoolean']
+        >, object:FieldMember<
+          MemberName='ReportTransactionId'
+          PhysicalName='REPORTTRANSACTIONID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LTransaction'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['DistributionTransferInfo'].MEMBERS['TransactionId']
+              OriginPKey=$TYPEDECLS['Transaction'].MEMBERS['TransactionId']
+            >}LinkedClass=$TYPEDECLS['Transaction']
+        >, object:LinkMember<
+          MemberName='LTransactionReport'
+          Optional=true
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['DistributionTransferInfo'].MEMBERS['ReportTransactionId']
+              OriginPKey=$TYPEDECLS['Transaction'].MEMBERS['TransactionId']
+            >}LinkedClass=$TYPEDECLS['Transaction']
+        >, object:LinkMember<
+          MemberName='LBranchSource'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['DistributionTransferInfo'].MEMBERS['BranchSource']
+              OriginPKey=$TYPEDECLS['Branch'].MEMBERS['BranchCode']
+            >}LinkedClass=$TYPEDECLS['Branch']
+        >, object:LinkMember<
+          MemberName='LBranchDestination'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['DistributionTransferInfo'].MEMBERS['BranchDestination']
+              OriginPKey=$TYPEDECLS['Branch'].MEMBERS['BranchCode']
+            >}LinkedClass=$TYPEDECLS['Branch']
+        >, object:FieldMember<
+          MemberName='BranchReportTransId'
+          PhysicalName='BRANCHREPORTTRANSID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='BranchReportStatus'
+          PhysicalName='BRANCHREPORTSTATUS'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+        >, object:FieldMember<
+          MemberName='DistributionId'
+          PhysicalName='DISTRIBUTIONID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:ListMember<
+          MemberName='LsCashAdvance'
+          UsedLink=$TYPEDECLS['CATransactItem'].MEMBERS['LDistributionTransfer']
+        >}ClassID='{31EBA381-7CFF-49F2-B5F7-D41B80260C28}'
+      AutoPrimaryKey=$TYPEDECLS['DistributionTransferInfo'].MEMBERS['DistributionId']
+    >, object:ClassTypeDecl<
+      TypeName='CashAdvanceReturnInfo'
+      PTableName='CASHADVANCERETURNINFO'
+      Members={object:FieldMember<
+          MemberName='SourceTransactionId'
+          PhysicalName='SOURCETRANSACTIONID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='BranchCode'
+          PhysicalName='BRANCHCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=5
+        >, object:FieldMember<
+          MemberName='ReturnTransactionId'
+          PhysicalName='RETURNTRANSACTIONID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LSourceTransaction'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['CashAdvanceReturnInfo'].MEMBERS['SourceTransactionId']
+              OriginPKey=$TYPEDECLS['Transaction'].MEMBERS['TransactionId']
+            >}LinkedClass=$TYPEDECLS['Transaction']
+        >, object:LinkMember<
+          MemberName='LReturnTransaction'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['CashAdvanceReturnInfo'].MEMBERS['ReturnTransactionId']
+              OriginPKey=$TYPEDECLS['Transaction'].MEMBERS['TransactionId']
+            >}LinkedClass=$TYPEDECLS['Transaction']
+        >}ClassID='{64CEC6F1-4C05-4FDD-8EF0-11A53D622B48}'
+    >, object:ClassTypeDecl<
+      TypeName='AssetCategory'
+      PTableName='ASSETCATEGORY'
+      Members={object:FieldMember<
+          MemberName='AssetCategoryId'
+          PhysicalName='ASSETCATEGORYID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='ParentAssetCategoryId'
+          PhysicalName='PARENTASSETCATEGORYID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='AssetCategoryCode'
+          PhysicalName='ASSETCATEGORYCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='AssetCategoryName'
+          PhysicalName='ASSETCATEGORYNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >, object:FieldMember<
+          MemberName='DefaultLifeTime'
+          PhysicalName='DEFAULTLIFETIME'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='ThresholdValue'
+          PhysicalName='THRESHOLDVALUE'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='Inputer'
+          PhysicalName='INPUTER'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >, object:FieldMember<
+          MemberName='InputDate'
+          PhysicalName='INPUTDATE'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:FieldMember<
+          MemberName='InputTime'
+          PhysicalName='INPUTTIME'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:LinkMember<
+          MemberName='LParentAssetCategory'
+          Optional=true
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['AssetCategory'].MEMBERS['ParentAssetCategoryId']
+              OriginPKey=$TYPEDECLS['AssetCategory'].MEMBERS['AssetCategoryId']
+            >}LinkedClass=$TYPEDECLS['AssetCategory']
+        >, object:FieldMember<
+          MemberName='GLIContainerId'
+          PhysicalName='GLICONTAINERID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LGLIContainer'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['AssetCategory'].MEMBERS['GLIContainerId']
+              OriginPKey=$TYPEDECLS['GLInterfaceContainer'].MEMBERS['GLIContainerId']
+            >}LinkedClass=$TYPEDECLS['GLInterfaceContainer']
+        >, object:FieldMember<
+          MemberName='IsDepreciable'
+          PhysicalName='ISDEPRECIABLE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['FTBoolean']
+        >, object:FieldMember<
+          MemberName='AssetType'
+          PhysicalName='ASSETTYPE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+        >}ClassID='{F651E7B3-418B-495A-960E-A8D3AFF2A796}'
+      AutoPrimaryKey=$TYPEDECLS['AssetCategory'].MEMBERS['AssetCategoryId']
+    >, object:ClassTypeDecl<
+      TypeName='DepreciableAsset'
+      PTableName='DEPRECIABLEASSET'
+      Members={object:FieldMember<
+          MemberName='AccountNo'
+          PhysicalName='ACCOUNTNO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='LifeTime'
+          PhysicalName='LIFETIME'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='NilaiAwal'
+          PhysicalName='NILAIAWAL'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='TotalPenyusutan'
+          PhysicalName='TOTALPENYUSUTAN'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='PenyusutanKe'
+          PhysicalName='PENYUSUTANKE'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='TanggalPerolehan'
+          PhysicalName='TANGGALPEROLEHAN'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:FieldMember<
+          MemberName='TanggalProsesTerakhir'
+          PhysicalName='TANGGALPROSESTERAKHIR'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:FieldMember<
+          MemberName='TanggalProsesBerikut'
+          PhysicalName='TANGGALPROSESBERIKUT'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:FieldMember<
+          MemberName='NilaiSisa'
+          PhysicalName='NILAISISA'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='TanggalAkhirPenyusutan'
+          PhysicalName='TANGGALAKHIRPENYUSUTAN'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:FieldMember<
+          MemberName='AccountNoProduct'
+          PhysicalName='ACCOUNTNOPRODUCT'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='DepreciableAssetType'
+          PhysicalName='DEPRECIABLEASSETTYPE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          IsClassifierField=true
+        >, object:FieldMember<
+          MemberName='NominalPenyusutan'
+          PhysicalName='NOMINALPENYUSUTAN'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:LinkMember<
+          MemberName='LProductAccount'
+          Optional=true
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['DepreciableAsset'].MEMBERS['AccountNoProduct']
+              OriginPKey=$TYPEDECLS['ProductAccount'].MEMBERS['AccountNo']
+            >}IsWeak=true
+          LinkedClass=$TYPEDECLS['ProductAccount']
+        >, object:FieldMember<
+          MemberName='DeprState'
+          PhysicalName='DEPRSTATE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='D'
+          AncestorClass=$TYPEDECLS['FinancialAccount']
+          InhLinks={object:InheritanceLink<
+              ThisPKey=$TYPEDECLS['DepreciableAsset'].MEMBERS['AccountNo']
+              OriginPKey=$TYPEDECLS['FinancialAccount'].MEMBERS['AccountNo']
+            >}>}ClassID='{E0AFD513-FB89-4F22-8821-8D1828C3F694}'
+    >, object:ClassTypeDecl<
+      TypeName='InvoiceFA'
+      PTableName='INVOICEFA'
+      Members={object:FieldMember<
+          MemberName='AccountNo'
+          PhysicalName='ACCOUNTNO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='InvoiceId'
+          PhysicalName='INVOICEID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:LinkMember<
+          MemberName='LFixedAsset'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['InvoiceFA'].MEMBERS['AccountNo']
+              OriginPKey=$TYPEDECLS['FixedAsset'].MEMBERS['AccountNo']
+            >}LinkedClass=$TYPEDECLS['FixedAsset']
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='F'
+          AncestorClass=$TYPEDECLS['Invoice']
+          InhLinks={object:InheritanceLink<
+              ThisPKey=$TYPEDECLS['InvoiceFA'].MEMBERS['InvoiceId']
+              OriginPKey=$TYPEDECLS['Invoice'].MEMBERS['InvoiceId']
+            >}>}ClassID='{DCA3DF64-26A8-4000-9B7C-632086E4F920}'
+      AutoPrimaryKey=$TYPEDECLS['InvoiceFA'].MEMBERS['InvoiceId']
+    >, object:ClassTypeDecl<
+      TypeName='FixedAsset'
+      PTableName='FIXEDASSET'
+      Members={object:FieldMember<
+          MemberName='AccountNo'
+          PhysicalName='ACCOUNTNO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='TotalDibayar'
+          PhysicalName='TOTALDIBAYAR'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='Qty'
+          PhysicalName='QTY'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='AssetCategoryId'
+          PhysicalName='ASSETCATEGORYID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LAssetCategory'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['FixedAsset'].MEMBERS['AssetCategoryId']
+              OriginPKey=$TYPEDECLS['AssetCategory'].MEMBERS['AssetCategoryId']
+            >}LinkedClass=$TYPEDECLS['AssetCategory']
+        >, object:FieldMember<
+          MemberName='UangMuka'
+          PhysicalName='UANGMUKA'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='HargaJual'
+          PhysicalName='HARGAJUAL'
+          DataType=$TYPEDECLS['DOUBLE']
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='F'
+          AncestorClass=$TYPEDECLS['DepreciableAsset']
+          InhLinks={object:InheritanceLink<
+              ThisPKey=$TYPEDECLS['FixedAsset'].MEMBERS['AccountNo']
+              OriginPKey=$TYPEDECLS['DepreciableAsset'].MEMBERS['AccountNo']
+            >}>}ClassID='{D37A7E7E-056B-4129-BD17-A9CB15E3E4AF}'
+    >, object:ClassTypeDecl<
+      TypeName='AmortizedCost'
+      PTableName='AMORTIZEDCOST'
+      Members={object:FieldMember<
+          MemberName='AccountNo'
+          PhysicalName='ACCOUNTNO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='Description'
+          PhysicalName='DESCRIPTION'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=150
+        >, object:FieldMember<
+          MemberName='AmortizedCostType'
+          PhysicalName='AMORTIZEDCOSTTYPE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          IsClassifierField=true
+        >, object:FieldMember<
+          MemberName='CostAccountNo'
+          PhysicalName='COSTACCOUNTNO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:LinkMember<
+          MemberName='LAccount'
+          Optional=true
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['AmortizedCost'].MEMBERS['CostAccountNo']
+              OriginPKey=$TYPEDECLS['Account'].MEMBERS['Account_Code']
+            >}LinkedClass=$TYPEDECLS['Account']
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='A'
+          AncestorClass=$TYPEDECLS['DepreciableAsset']
+          InhLinks={object:InheritanceLink<
+              ThisPKey=$TYPEDECLS['AmortizedCost'].MEMBERS['AccountNo']
+              OriginPKey=$TYPEDECLS['DepreciableAsset'].MEMBERS['AccountNo']
+            >}>}ClassID='{DC364E32-222C-4740-A4DA-53D2F1796065}'
+    >, object:ClassTypeDecl<
+      TypeName='CostPaidInAdvance'
+      PTableName='COSTPAIDINADVANCE'
+      Members={object:FieldMember<
+          MemberName='AccountNo'
+          PhysicalName='ACCOUNTNO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='HasContract'
+          PhysicalName='HASCONTRACT'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['FTBoolean']
+        >, object:FieldMember<
+          MemberName='ContractBeginDate'
+          PhysicalName='CONTRACTBEGINDATE'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:FieldMember<
+          MemberName='ContractNo'
+          PhysicalName='CONTRACTNO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >, object:FieldMember<
+          MemberName='ContractDuration'
+          PhysicalName='CONTRACTDURATION'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='ContractEndDate'
+          PhysicalName='CONTRACTENDDATE'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:FieldMember<
+          MemberName='CPIACatId'
+          PhysicalName='CPIACATID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LCPIACategory'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['CostPaidInAdvance'].MEMBERS['CPIACatId']
+              OriginPKey=$TYPEDECLS['CPIACategory'].MEMBERS['CPIACatId']
+            >}LinkedClass=$TYPEDECLS['CPIACategory']
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='C'
+          AncestorClass=$TYPEDECLS['AmortizedCost']
+          InhLinks={object:InheritanceLink<
+              ThisPKey=$TYPEDECLS['CostPaidInAdvance'].MEMBERS['AccountNo']
+              OriginPKey=$TYPEDECLS['AmortizedCost'].MEMBERS['AccountNo']
+            >}>}ClassID='{2D716FA1-693C-4C75-9F0B-BB853C57FE45}'
+    >, object:ClassTypeDecl<
+      TypeName='Inventory'
+      PTableName='INVENTORY'
+      Members={object:FieldMember<
+          MemberName='QtyTotal'
+          PhysicalName='QTYTOTAL'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='QtySisa'
+          PhysicalName='QTYSISA'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='NilaiAwal'
+          PhysicalName='NILAIAWAL'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='NilaiSisa'
+          PhysicalName='NILAISISA'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='InventoryCategoryId'
+          PhysicalName='INVENTORYCATEGORYID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LInventoryCategory'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['Inventory'].MEMBERS['InventoryCategoryId']
+              OriginPKey=$TYPEDECLS['InventoryCategory'].MEMBERS['InventoryCategoryId']
+            >}LinkedClass=$TYPEDECLS['InventoryCategory']
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='I'
+          AncestorClass=$TYPEDECLS['FinancialAccount']
+          AutoDescendantKey=true
+        >}ClassID='{7A205346-17EE-46E1-9017-0FA2253D8A2A}'
+    >, object:ClassTypeDecl<
+      TypeName='InventoryCategory'
+      PTableName='INVENTORYCATEGORY'
+      Members={object:FieldMember<
+          MemberName='InventoryCategoryId'
+          PhysicalName='INVENTORYCATEGORYID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='InventoryCategoryCode'
+          PhysicalName='INVENTORYCATEGORYCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='InventoryCategoryName'
+          PhysicalName='INVENTORYCATEGORYNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=100
+        >, object:FieldMember<
+          MemberName='ParentInventoryCategoryId'
+          PhysicalName='PARENTINVENTORYCATEGORYID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LParentInventoryCategory'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['InventoryCategory'].MEMBERS['InventoryCategoryId']
+              OriginPKey=$TYPEDECLS['InventoryCategory'].MEMBERS['InventoryCategoryId']
+            >}LinkedClass=$TYPEDECLS['InventoryCategory']
+        >, object:FieldMember<
+          MemberName='GLIContainerId'
+          PhysicalName='GLICONTAINERID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LGLIContainer'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['InventoryCategory'].MEMBERS['GLIContainerId']
+              OriginPKey=$TYPEDECLS['GLInterfaceContainer'].MEMBERS['GLIContainerId']
+            >}LinkedClass=$TYPEDECLS['GLInterfaceContainer']
+        >}ClassID='{B69AA5D5-20A7-4152-A46D-A77AD0E02B27}'
+      AutoPrimaryKey=$TYPEDECLS['InventoryCategory'].MEMBERS['InventoryCategoryId']
+    >, object:ClassTypeDecl<
+      TypeName='GLInterfaceContainer'
+      PTableName='GLINTERFACECONTAINER'
+      Members={object:FieldMember<
+          MemberName='GLIContainerId'
+          PhysicalName='GLICONTAINERID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='GLIContainerCode'
+          PhysicalName='GLICONTAINERCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='GLIContainerName'
+          PhysicalName='GLICONTAINERNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >, object:ListMember<
+          MemberName='LsGLIMember'
+          UsedLink=$TYPEDECLS['GLInterfaceMember'].MEMBERS['LContainer']
+        >}ClassID='{939E3F48-B785-405B-9E2A-9A3D7FDFB211}'
+      AutoPrimaryKey=$TYPEDECLS['GLInterfaceContainer'].MEMBERS['GLIContainerId']
+    >, object:ClassTypeDecl<
+      TypeName='GLInterfaceMember'
+      PTableName='GLINTERFACEMEMBER'
+      Members={object:FieldMember<
+          MemberName='GLIMemberId'
+          PhysicalName='GLIMEMBERID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='AccountCode'
+          PhysicalName='ACCOUNTCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='AccountName'
+          PhysicalName='ACCOUNTNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=100
+        >, object:FieldMember<
+          MemberName='GLIMemberCode'
+          PhysicalName='GLIMEMBERCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='Description'
+          PhysicalName='DESCRIPTION'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=100
+        >, object:FieldMember<
+          MemberName='GLIContainerId'
+          PhysicalName='GLICONTAINERID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LContainer'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['GLInterfaceMember'].MEMBERS['GLIContainerId']
+              OriginPKey=$TYPEDECLS['GLInterfaceContainer'].MEMBERS['GLIContainerId']
+            >}LinkedClass=$TYPEDECLS['GLInterfaceContainer']
+        >, object:LinkMember<
+          MemberName='LAccount'
+          Optional=true
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['GLInterfaceMember'].MEMBERS['AccountCode']
+              OriginPKey=$TYPEDECLS['Account'].MEMBERS['Account_Code']
+            >}LinkedClass=$TYPEDECLS['Account']
+        >}ClassID='{B30C87FE-588A-4BE7-9E3B-3EA1D4DDF61E}'
+      AutoPrimaryKey=$TYPEDECLS['GLInterfaceMember'].MEMBERS['GLIMemberId']
+    >, object:ClassTypeDecl<
+      TypeName='Invoice'
+      PTableName='INVOICE'
+      Members={object:FieldMember<
+          MemberName='InvoiceId'
+          PhysicalName='INVOICEID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='InvoiceNo'
+          PhysicalName='INVOICENO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='InvoiceDate'
+          PhysicalName='INVOICEDATE'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:FieldMember<
+          MemberName='InvoiceType'
+          PhysicalName='INVOICETYPE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          IsClassifierField=true
+        >, object:FieldMember<
+          MemberName='InvoicePaymentStatus'
+          PhysicalName='INVOICEPAYMENTSTATUS'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['FTBoolean']
+        >, object:FieldMember<
+          MemberName='InvoiceAmount'
+          PhysicalName='INVOICEAMOUNT'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='BranchCode'
+          PhysicalName='BRANCHCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=10
+        >, object:FieldMember<
+          MemberName='TransactionId'
+          PhysicalName='TRANSACTIONID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='PaymentTransactionId'
+          PhysicalName='PAYMENTTRANSACTIONID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LTransaction'
+          Optional=true
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['Invoice'].MEMBERS['TransactionId']
+              OriginPKey=$TYPEDECLS['Transaction'].MEMBERS['TransactionId']
+            >}LinkedClass=$TYPEDECLS['Transaction']
+        >, object:LinkMember<
+          MemberName='LPaymentTransaction'
+          Optional=true
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['Invoice'].MEMBERS['PaymentTransactionId']
+              OriginPKey=$TYPEDECLS['Transaction'].MEMBERS['TransactionId']
+            >}LinkedClass=$TYPEDECLS['Transaction']
+        >, object:FieldMember<
+          MemberName='Description'
+          PhysicalName='DESCRIPTION'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=200
+        >}ClassID='{ED559D68-4D88-48B5-9CE0-E5C16D4965CA}'
+    >, object:ClassTypeDecl<
+      TypeName='VDonor'
+      PTableName='VDONOR'
+      Members={object:FieldMember<
+          MemberName='ID'
+          PhysicalName='ID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='User_Name'
+          PhysicalName='USER_NAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=40
+        >, object:FieldMember<
+          MemberName='Email'
+          PhysicalName='EMAIL'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=100
+        >, object:FieldMember<
+          MemberName='Full_Name'
+          PhysicalName='FULL_NAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=150
+        >, object:FieldMember<
+          MemberName='User_Status'
+          PhysicalName='USER_STATUS'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='Address'
+          PhysicalName='ADDRESS'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=250
+        >, object:FieldMember<
+          MemberName='Donor_No'
+          PhysicalName='DONOR_NO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='NPWP_No'
+          PhysicalName='NPWP_NO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=24
+        >, object:FieldMember<
+          MemberName='NPWZ_No'
+          PhysicalName='NPWZ_NO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=24
+        >, object:FieldMember<
+          MemberName='Donor_Type_Id'
+          PhysicalName='DONOR_TYPE_ID'
+          DataType=$TYPEDECLS['INTEGER']
+        >}ClassID='{48864397-BDFA-4F35-95DF-58E633714B56}'
+    >, object:ClassTypeDecl<
+      TypeName='FixedAssetTransactInfo'
+      PTableName='FIXEDASSETTRANSACTINFO'
+      Members={object:FieldMember<
+          MemberName='TransactionItemId'
+          PhysicalName='TRANSACTIONITEMID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='AccountNo'
+          PhysicalName='ACCOUNTNO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='CashAdvance'
+          PhysicalName='CASHADVANCE'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='SellAmount'
+          PhysicalName='SELLAMOUNT'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:LinkMember<
+          MemberName='LTransactionItem'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['FixedAssetTransactInfo'].MEMBERS['TransactionItemId']
+              OriginPKey=$TYPEDECLS['TransactionItem'].MEMBERS['TransactionItemId']
+            >}LinkedClass=$TYPEDECLS['TransactionItem']
+        >, object:LinkMember<
+          MemberName='LFixedAsset'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['FixedAssetTransactInfo'].MEMBERS['AccountNo']
+              OriginPKey=$TYPEDECLS['FixedAsset'].MEMBERS['AccountNo']
+            >}LinkedClass=$TYPEDECLS['FixedAsset']
+        >}ClassID='{75B4F528-81D8-4E84-B075-6156E0717155}'
+    >, object:ClassTypeDecl<
+      TypeName='InvestmentManager'
+      PTableName='INVESTMENTMANAGER'
+      Members={object:FieldMember<
+          MemberName='ManagerId'
+          PhysicalName='MANAGERID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='ManagerName'
+          PhysicalName='MANAGERNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=150
+        >, object:FieldMember<
+          MemberName='ManagerCode'
+          PhysicalName='MANAGERCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=10
+        >, object:FieldMember<
+          MemberName='BranchCode'
+          PhysicalName='BRANCHCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=5
+        >}ClassID='{18AF7891-ADF0-48FA-A23F-B0DB41C29B99}'
+      AutoPrimaryKey=$TYPEDECLS['InvestmentManager'].MEMBERS['ManagerId']
+    >, object:ClassTypeDecl<
+      TypeName='Investment'
+      PTableName='INVESTMENT'
+      Members={object:FieldMember<
+          MemberName='InvestmentAmount'
+          PhysicalName='INVESTMENTAMOUNT'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='FundEntity'
+          PhysicalName='FUNDENTITY'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='InvestmentCatId'
+          PhysicalName='INVESTMENTCATID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LInvestmentCategory'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['Investment'].MEMBERS['InvestmentCatId']
+              OriginPKey=$TYPEDECLS['InvestmentCategory'].MEMBERS['InvestmentCatId']
+            >}LinkedClass=$TYPEDECLS['InvestmentCategory']
+        >, object:FieldMember<
+          MemberName='InvestmentType'
+          PhysicalName='INVESTMENTTYPE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          IsClassifierField=true
+        >, object:FieldMember<
+          MemberName='LifeTime'
+          PhysicalName='LIFETIME'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='InvestmentShare'
+          PhysicalName='INVESTMENTSHARE'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='StartDate'
+          PhysicalName='STARTDATE'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:FieldMember<
+          MemberName='InvestmentNisbah'
+          PhysicalName='INVESTMENTNISBAH'
+          DataType=$TYPEDECLS['DOUBLE']
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='I'
+          AncestorClass=$TYPEDECLS['AccountReceivable']
+          AutoDescendantKey=true
+        >}ClassID='{92D1BA79-0906-4641-840F-7606452AF3A4}'
+    >, object:ClassTypeDecl<
+      TypeName='InvoiceProductDefaultData'
+      PTableName='INVOICEPRODUCTDEFAULTDATA'
+      Members={object:FieldMember<
+          MemberName='BranchCode'
+          PhysicalName='BRANCHCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=5
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='InvoiceBankName'
+          PhysicalName='INVOICEBANKNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=100
+        >, object:FieldMember<
+          MemberName='InvoiceBankAccountNumber'
+          PhysicalName='INVOICEBANKACCOUNTNUMBER'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='InvoiceBankAccountName'
+          PhysicalName='INVOICEBANKACCOUNTNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=100
+        >, object:FieldMember<
+          MemberName='InvoiceOfficerName'
+          PhysicalName='INVOICEOFFICERNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=100
+        >, object:FieldMember<
+          MemberName='InvoiceOfficerPosition'
+          PhysicalName='INVOICEOFFICERPOSITION'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=100
+        >, object:FieldMember<
+          MemberName='InvoiceContactPerson'
+          PhysicalName='INVOICECONTACTPERSON'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=100
+        >, object:FieldMember<
+          MemberName='InvoiceContactPhone'
+          PhysicalName='INVOICECONTACTPHONE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >}ClassID='{D8356100-91D2-4B58-B919-864851352F28}'
+    >, object:ClassTypeDecl<
+      TypeName='InvestmentCategory'
+      PTableName='INVESTMENTCATEGORY'
+      Members={object:FieldMember<
+          MemberName='InvestmentCatId'
+          PhysicalName='INVESTMENTCATID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='InvestmentCatName'
+          PhysicalName='INVESTMENTCATNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=150
+        >, object:FieldMember<
+          MemberName='InvestmentCatType'
+          PhysicalName='INVESTMENTCATTYPE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['eInvestmentCatType']
+        >, object:FieldMember<
+          MemberName='GLIContainerId'
+          PhysicalName='GLICONTAINERID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LGLIContainer'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['InvestmentCategory'].MEMBERS['GLIContainerId']
+              OriginPKey=$TYPEDECLS['GLInterfaceContainer'].MEMBERS['GLIContainerId']
+            >}LinkedClass=$TYPEDECLS['GLInterfaceContainer']
+        >, object:FieldMember<
+          MemberName='InvestmentCatCode'
+          PhysicalName='INVESTMENTCATCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=5
+        >}ClassID='{A721E50B-BC23-4523-AE9D-59AFEC1C3919}'
+      AutoPrimaryKey=$TYPEDECLS['InvestmentCategory'].MEMBERS['InvestmentCatId']
+    >, object:EnumTypeDecl<
+      TypeName='eInvestmentCatType'
+      EnumType=etString
+      EnumMembers={object:EnumMember<
+          StringValue='S'
+          DescriptiveName='Investasi Jangka Pendek'
+        >, object:EnumMember<
+          StringValue='L'
+          DescriptiveName='Investasi Jangka Panjang'
+        >}>, object:ClassTypeDecl<
+      TypeName='BranchParameter'
+      PTableName='BRANCHPARAMETER'
+      Members={object:FieldMember<
+          MemberName='BranchCode'
+          PhysicalName='BRANCHCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=5
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='Inputer'
+          PhysicalName='INPUTER'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=100
+        >, object:FieldMember<
+          MemberName='PrinterType'
+          PhysicalName='PRINTERTYPE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+        >, object:FieldMember<
+          MemberName='VoucherFormat'
+          PhysicalName='VOUCHERFORMAT'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+        >}ClassID='{12006518-20DB-4806-8DD0-D2BFE359F5B5}'
+    >, object:ClassTypeDecl<
+      TypeName='Investee'
+      PTableName='INVESTEE'
+      Members={object:FieldMember<
+          MemberName='InvesteeId'
+          PhysicalName='INVESTEEID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='InvesteeName'
+          PhysicalName='INVESTEENAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=150
+        >, object:FieldMember<
+          MemberName='InvesteeCode'
+          PhysicalName='INVESTEECODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=5
+        >, object:FieldMember<
+          MemberName='BranchCode'
+          PhysicalName='BRANCHCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=5
+        >, object:FieldMember<
+          MemberName='Description'
+          PhysicalName='DESCRIPTION'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=200
+        >, object:FieldMember<
+          MemberName='InvesteePhone'
+          PhysicalName='INVESTEEPHONE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='InvesteeAddress'
+          PhysicalName='INVESTEEADDRESS'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=250
+        >}ClassID='{C6B81C59-B760-4D9D-A4E4-F0735AE61E5F}'
+      AutoPrimaryKey=$TYPEDECLS['Investee'].MEMBERS['InvesteeId']
+    >, object:ClassTypeDecl<
+      TypeName='InvestmentEmployee'
+      PTableName='INVESTMENT'
+      Members={object:FieldMember<
+          MemberName='EmployeeId'
+          PhysicalName='EMPLOYEEID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LEmployee'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['InvestmentEmployee'].MEMBERS['EmployeeId']
+              OriginPKey=$TYPEDECLS['VEmployee'].MEMBERS['EmployeeId']
+            >}LinkedClass=$TYPEDECLS['VEmployee']
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='E'
+          AncestorClass=$TYPEDECLS['Investment']
+          AutoDescendantKey=true
+        >}ClassID='{DAA23143-83F8-4946-AA08-BBB35CB93759}'
+    >, object:ClassTypeDecl<
+      TypeName='InvestmentNonEmployee'
+      PTableName='INVESTMENT'
+      Members={object:FieldMember<
+          MemberName='InvesteeId'
+          PhysicalName='INVESTEEID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LInvestee'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['InvestmentNonEmployee'].MEMBERS['InvesteeId']
+              OriginPKey=$TYPEDECLS['Investee'].MEMBERS['InvesteeId']
+            >}LinkedClass=$TYPEDECLS['Investee']
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='N'
+          AncestorClass=$TYPEDECLS['Investment']
+          AutoDescendantKey=true
+        >}ClassID='{7A0F6C39-613F-47E6-9B69-2BDBD7145B9D}'
+    >, object:ClassTypeDecl<
+      TypeName='ExternalDebtor'
+      PTableName='EXTERNALDEBTOR'
+      Members={object:FieldMember<
+          MemberName='DebtorId'
+          PhysicalName='DEBTORID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='DebtorCode'
+          PhysicalName='DEBTORCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=5
+        >, object:FieldMember<
+          MemberName='BranchCode'
+          PhysicalName='BRANCHCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=3
+        >, object:FieldMember<
+          MemberName='DebtorName'
+          PhysicalName='DEBTORNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=100
+        >, object:FieldMember<
+          MemberName='DebtorPhone'
+          PhysicalName='DEBTORPHONE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='DebtorAddress'
+          PhysicalName='DEBTORADDRESS'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=200
+        >, object:FieldMember<
+          MemberName='Description'
+          PhysicalName='DESCRIPTION'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=200
+        >}ClassID='{BB9074A5-C0E3-44E8-89C4-E2A6CF45EB55}'
+      AutoPrimaryKey=$TYPEDECLS['ExternalDebtor'].MEMBERS['DebtorId']
+    >, object:ClassTypeDecl<
+      TypeName='ExternalAccountReceivable'
+      PTableName='ACCOUNTRECEIVABLE'
+      Members={object:LinkMember<
+          MemberName='LExternalDebtor'
+          LinkedClass=$TYPEDECLS['ExternalDebtor']
+          AutoForeignKey=true
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='D'
+          AncestorClass=$TYPEDECLS['AccountReceivable']
+          AutoDescendantKey=true
+        >}ClassID='{F47E0FA0-1DBB-44F5-874A-1BC0FB8A9DB6}'
+    >, object:ClassTypeDecl<
+      TypeName='CPIACategory'
+      PTableName='CPIACATEGORY'
+      Members={object:FieldMember<
+          MemberName='CPIACatId'
+          PhysicalName='CPIACATID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='CPIACatCode'
+          PhysicalName='CPIACATCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=10
+        >, object:FieldMember<
+          MemberName='CPIACatName'
+          PhysicalName='CPIACATNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=100
+        >, object:FieldMember<
+          MemberName='GLIContainerId'
+          PhysicalName='GLICONTAINERID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LGLIContainer'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['CPIACategory'].MEMBERS['GLIContainerId']
+              OriginPKey=$TYPEDECLS['GLInterfaceContainer'].MEMBERS['GLIContainerId']
+            >}LinkedClass=$TYPEDECLS['GLInterfaceContainer']
+        >}ClassID='{10323137-202A-4B36-8085-2ED4F2F476FE}'
+      AutoPrimaryKey=$TYPEDECLS['CPIACategory'].MEMBERS['CPIACatId']
+    >}PhysicalDB=object:ODLDatabase<
+  >LastMethodID=6
+>

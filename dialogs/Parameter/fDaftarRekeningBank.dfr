@@ -1,0 +1,161 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit2']
+  Caption='Daftar Rekening Bank'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=633
+  Height=320
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx=''
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Name='uipFilter'
+    >}Containers={object:rtf::Panel<
+      Name='pFilter'
+      Width=809
+      Height=57
+      UIPart=$UIPARTS['uipFilter']
+      Controls={object:rtf::Label<
+          Name='lTitle'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Width=521
+          Height=49
+          Color=0
+          ControlCaption='Daftar'
+          Caption='Daftar Rekening Bank'
+          AutoSize=true
+          FontName='Times New Roman'
+          FontSize=30
+          FontStyleBold=true
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Query<
+      Name='fRekeningBank'
+      Width=633
+      Height=212
+      ContextMenuName='popupmenus/parameter/masterpopup'
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      OQLText=['select from BankCash'#13#10,
+        '('#13#10,
+        '  AccountNo,'#13#10,
+        '  CashCode,'#13#10,
+        '  AccountName as Nama_Rekening,'#13#10,
+        '  Balance,'#13#10,
+        '  BranchCode as Kode_Cabang,'#13#10,
+        '  CurrencyCode as Kode_Valuta,'#13#10,
+        '  BankAccountNo as NoRek_Bank,'#13#10,
+        '  BankName as Nama_Bank, '#13#10,
+        '  OpeningDate as Tgl_Buka,'#13#10,
+        '  Status $, '#13#10,
+        '  self'#13#10,
+        ') then order by AccountNo;']
+      DirectDisplay=true
+      WindowSize=20
+      Columns={object:rtf::QueryColumn<
+          FieldName='BankCash.AccountNo'
+          Width=90
+          Caption='Nomor Rekening'
+        >, object:rtf::QueryColumn<
+          FieldName='BankCash.CashCode'
+          Width=90
+          Caption='Kode Kas'
+        >, object:rtf::QueryColumn<
+          FieldName='BankCash.Nama_Rekening'
+          Width=200
+          Caption='Nama Rekening'
+        >, object:rtf::QueryColumn<
+          FieldName='BankCash.Balance'
+          Width=120
+          Caption='Saldo'
+        >, object:rtf::QueryColumn<
+          FieldName='BankCash.Kode_Cabang'
+          Width=60
+          Caption='Kd Cabang'
+        >, object:rtf::QueryColumn<
+          FieldName='BankCash.Kode_Valuta'
+          Width=60
+          Caption='Kd Valuta'
+        >, object:rtf::QueryColumn<
+          FieldName='BankCash.NoRek_Bank'
+          Width=120
+          Caption='No Rekening Bank'
+        >, object:rtf::QueryColumn<
+          FieldName='BankCash.Nama_Bank'
+          Width=150
+          Caption='Nama Bank'
+        >, object:rtf::QueryColumn<
+          FieldName='BankCash.Tgl_Buka'
+          Caption='Tgl Buka'
+        >, object:rtf::QueryColumn<
+          FieldName='BankCash.Status'
+          Width=80
+          Caption='Status'
+        >}EnableColumns=true
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=633
+      Height=270
+      Container1=$CONTAINERS['pFilter']
+      Container2=$CONTAINERS['fRekeningBank']
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=49
+      Controls={object:rtf::Button<
+          Name='bExportExcel'
+          Layout=clNextSide
+          Top=8
+          Left=8
+          Width=89
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='&Export Excel'
+          OnClick='bExportExcelClick'
+        >, object:rtf::Button<
+          Name='bClose'
+          Layout=clNextSide
+          Top=8
+          Left=101
+          Color=0
+          ControlCaption=''
+          Caption='T&utup'
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit2'
+      Width=633
+      Height=320
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['dualsplit1']
+      InversedAlign=true
+    >}FormClassName='fDaftarRekeningBank'
+>

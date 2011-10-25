@@ -1,0 +1,436 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Daftar Asset Tetap'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=585
+  Height=377
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=5
+        >}Name='uipData'
+    >, object:rtf::PClassUI<
+      Name='uipFixedAsset'
+      ClassTypeName='FixedAsset'
+      DataBinding=bmMaster
+      MultiLine=true
+    >}Containers={object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='IsAllAsset'
+          ControlCaption='Seluruh Asset'
+          DataTypeName='varchar'
+          DataLength=1
+          EnumeratedValues=['F=False'#13#10,
+            'T=True'#13#10]
+          GenerateCheckBoxForEnum=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AssetType'
+          ControlCaption='Jenis Asset'
+          DataTypeName='varchar'
+          DataLength=1
+          EnumeratedValues=['T=Asset Terikat'#13#10,
+            'N=Asset Tidak Terikat'#13#10]
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LAssetCategory'
+          ControlCaption='Kategori Asset'
+          ClassTypeName='AssetCategory'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LAssetCategory.AssetCategoryId'
+              DataTypeName='INTEGER'
+              DataLength=0
+              UsedAsKey=true
+              KeyOrDisplayName='AssetCategoryId'
+              FinalDisplayFieldName='AssetCategoryId'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LAssetCategory.AssetCategoryCode'
+              DataTypeName='VARCHAR'
+              DataLength=20
+              UsedAsDisplay=true
+              KeyOrDisplayName='AssetCategoryCode'
+              FinalDisplayFieldName='AssetCategoryCode'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LAssetCategory.AssetCategoryName'
+              DataTypeName='VARCHAR'
+              DataLength=50
+              UsedAsDisplay=true
+              KeyOrDisplayName='AssetCategoryName'
+              FinalDisplayFieldName='AssetCategoryName'
+            >}Restrictions='AssetType|AssetType'
+          OQLText=['select from AssetCategory'#13#10,
+            '[AssetType = :AssetType]'#13#10,
+            '('#13#10,
+            'AssetCategoryCode,'#13#10,
+            'AssetCategoryName,'#13#10,
+            'AssetCategoryId,'#13#10,
+            'self)'#13#10,
+            'then order by AssetCategoryName;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LAssetCategory'
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LProductAccount'
+          ControlCaption='Program / Project'
+          ClassTypeName='VProduct'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LProductAccount.AccountNo'
+              DataTypeName='VARCHAR'
+              DataLength=30
+              UsedAsKey=true
+              KeyOrDisplayName='AccountNo'
+              FinalDisplayFieldName='AccountNo'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LProductAccount.ProductCode'
+              DataTypeName='VARCHAR'
+              DataLength=30
+              UsedAsDisplay=true
+              KeyOrDisplayName='ProductCode'
+              FinalDisplayFieldName='ProductCode'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LProductAccount.ProductName'
+              DataTypeName='VARCHAR'
+              DataLength=30
+              UsedAsDisplay=true
+              KeyOrDisplayName='ProductName'
+              FinalDisplayFieldName='ProductName'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LProductAccount.AccountNo'
+              DataTypeName='VARCHAR'
+              DataLength=30
+              UsedAsDisplay=true
+              KeyOrDisplayName='AccountNo'
+              FinalDisplayFieldName='AccountNo'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LProductAccount.AccountName'
+              DataTypeName='VARCHAR'
+              DataLength=50
+              UsedAsDisplay=true
+              KeyOrDisplayName='AccountName'
+              FinalDisplayFieldName='AccountName'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LProductAccount.ProductType'
+              DataTypeName='VARCHAR'
+              DataLength=1
+              UsedAsDisplay=true
+              KeyOrDisplayName='ProductType'
+              FinalDisplayFieldName='ProductType'
+            >}Restrictions='BranchCode|BranchCode'
+          OQLText=['select from VProduct '#13#10,
+            '[  status = ''A'' and '#13#10,
+            '   BranchCode = :BranchCode and '#13#10,
+            '  ( (currencycode =''000'' and producttype = ''G'') '#13#10,
+            '     or (producttype=''J'')'#13#10,
+            '  ) '#13#10,
+            '] '#13#10,
+            '(   ProductCode, '#13#10,
+            '   AccountName, '#13#10,
+            '   ProductName, '#13#10,
+            '   FundCategory $ as FundType, '#13#10,
+            '   FundCategory, '#13#10,
+            '   PercentageOfAmilFunds, '#13#10,
+            '  ProductId, '#13#10,
+            '   Idx,'#13#10,
+            '   AccountNo, '#13#10,
+            'self) then order by ProductCode;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LProductAccount'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BeginDate'
+          ControlCaption='Tgl Pembelian'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='EndDate'
+          ControlCaption='s/d'
+          DataTypeName='timestamp'
+          DataLength=20
+        >}Name='pFilter'
+      Width=505
+      Height=193
+      Bordered=true
+      UIPart=$UIPARTS['uipData']
+      Controls={*object:rtf::DBCheckBox<
+          Name='IsAllAsset'
+          Layout=clAbsolute
+          Top=20
+          Left=20
+          Color=0
+          ControlCaption='Seluruh Asset'
+          ValueChecked='T'
+          ValueUnchecked='F'
+          OnClick='IsAllAssetOnClick'
+        >, *object:rtf::DBComboBox<
+          Name='AssetType'
+          Top=50
+          Left=40
+          Width=225
+          Height=21
+          Color=0
+          ControlCaption='Jenis Asset'
+          OnChange='AssetTypeChange'
+        >, *object:rtf::DBLookupEdit<
+          Name='LAssetCategory'
+          Top=78
+          Left=40
+          ControlCaption='Kategori Asset'
+          LookupField='LAssetCategory.AssetCategoryName'
+          DisplayLookupField=true
+        >, *object:rtf::DBLookupEdit<
+          Name='LProductAccount'
+          Top=106
+          Left=40
+          ControlCaption='Program / Project'
+          LookupField='LProductAccount.ProductName'
+          DisplayLookupField=true
+        >, *object:rtf::DBDateEdit<
+          Name='BeginDate'
+          Top=134
+          Left=40
+          Color=0
+          ControlCaption='Tgl Pembelian'
+        >, *object:rtf::DBDateEdit<
+          Name='EndDate'
+          Layout=clNextSide
+          Top=134
+          Left=268
+          Color=0
+          ControlCaption='s/d'
+        >, object:rtf::Button<
+          Name='bApplyFilter'
+          Layout=clAbsolute
+          Top=162
+          Left=24
+          Color=0
+          ControlCaption=''
+          Caption='&Apply Filter'
+          OnClick='FilterClick'
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=40
+      ControlTopMargin=50
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=240
+      Height=96
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['dualsplit2']
+      InversedAlign=true
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=545
+      Height=42
+      Controls={object:rtf::Button<
+          Name='bClose'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Tutup'
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit2'
+      Width=240
+      Height=96
+      Container1=$CONTAINERS['pFilter']
+      Container2=$CONTAINERS['dualsplit3']
+    >, object:rtf::Panel<
+      Name='pGrid'
+      Width=320
+      Height=49
+      Bordered=true
+      Controls={object:rtf::Button<
+          Name='button1'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='Export E&xcel'
+          OnClick='bExportExcel'
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Grid<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='AccountNo'
+          AccessOption=aoReadOnly
+          ControlCaption='Kode Asset'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AccountName'
+          AccessOption=aoReadOnly
+          ControlCaption='Nama Asset'
+          DataTypeName='VARCHAR'
+          DataLength=50
+        >, object:rtf::FieldUIElmtSetting<
+          Name='NilaiAwal'
+          AccessOption=aoReadOnly
+          ControlCaption='Nilai Pembelian'
+          DataTypeName='DOUBLE'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Balance'
+          AccessOption=aoReadOnly
+          ControlCaption='Nilai Buku'
+          DataTypeName='DOUBLE'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TotalPenyusutan'
+          AccessOption=aoReadOnly
+          ControlCaption='Total Penyusutan'
+          DataTypeName='DOUBLE'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
+          Name='OpeningDate'
+          AccessOption=aoReadOnly
+          ControlCaption='Tanggal Pembelian'
+          DataTypeName='TIMESTAMP'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ProductName'
+          ControlCaption='Nama Program / Project'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionNo'
+          ControlCaption='Nomor Transaksi Pembelian'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AssetTypeName'
+          ControlCaption='Jenis Asset'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AssetCategoryName'
+          ControlCaption='Kategori Asset'
+          DataTypeName='varchar'
+          DataLength=50
+        >}Name='gFixedAsset'
+      Width=585
+      Height=90
+      ContextMenuName='popupmenus\DepreciableAsset\pFixedAssetView'
+      UIPart=$UIPARTS['uipFixedAsset']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='Daftar Asset'
+      Columns={*object:rtf::GridColumn<
+          Name='AccountNo'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='AccountNo'
+          DisplayFormat=''
+          TitleCaption='Kode Asset'
+          Width=80
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='AccountName'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='AccountName'
+          DisplayFormat=''
+          TitleCaption='Nama Asset'
+          Width=150
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='NilaiAwal'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='NilaiAwal'
+          DisplayFormat=',0.00'
+          TitleCaption='Nilai Pembelian'
+          Width=120
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='Balance'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Balance'
+          DisplayFormat=',0.00'
+          TitleCaption='Nilai Buku'
+          Width=120
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='TotalPenyusutan'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='TotalPenyusutan'
+          DisplayFormat=',0.00'
+          TitleCaption='Total Penyusutan'
+          Width=120
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='OpeningDate'
+          InputStyle=cisDate
+          EnumeratedValues=''
+          FieldName='OpeningDate'
+          DisplayFormat=''
+          TitleCaption='Tanggal Pembelian'
+          Width=80
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='ProductName'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='ProductName'
+          DisplayFormat=''
+          TitleCaption='Nama Program / Project'
+          Width=120
+        >, *object:rtf::GridColumn<
+          Name='TransactionNo'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='TransactionNo'
+          DisplayFormat=''
+          TitleCaption='Nomor Transaksi Pembelian'
+          Width=120
+        >, *object:rtf::GridColumn<
+          Name='AssetTypeName'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='AssetTypeName'
+          DisplayFormat=''
+          TitleCaption='Jenis Asset'
+          Width=120
+        >, *object:rtf::GridColumn<
+          Name='AssetCategoryName'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='AssetCategoryName'
+          DisplayFormat=''
+          TitleCaption='Kategori Asset'
+          Width=120
+        >}ReadOnly=true
+      RowSelect=true
+      SuppressHelpLine=true
+    >, object:rtf::DualSplit<
+      Name='dualsplit3'
+      Width=585
+      Height=140
+      Container1=$CONTAINERS['pGrid']
+      Container2=$CONTAINERS['gFixedAsset']
+      InversedAlign=true
+    >}FormClassName='fFixedAssetList'
+>

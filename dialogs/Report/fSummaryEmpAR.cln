@@ -1,0 +1,122 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Rekapitulasi piutang karyawan'
+  Left=50
+  Top=50
+  Width=425
+  Height=153
+  UIParts={object:rtf::PClassUI<
+      Name='uipData'
+      FillInDefaultValues=true
+      AlwaysPostToServer=true
+      PostLinkValues=true
+      InitWithDefaultValues=true
+    >}Containers={object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          ReadOnlyControl=true
+          ControlCaption='Cabang laporan'
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BranchName'
+          ReadOnlyControl=true
+          ControlCaption='-'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BeginDate'
+          ControlCaption='Tanggal Awal'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='EndDate'
+          ControlCaption='Tanggal Akhir'
+          DataTypeName='timestamp'
+          DataLength=20
+        >}Name='PData'
+      Width=409
+      Height=100
+      UIPart=$UIPARTS['uipData']
+      Controls={*object:rtf::DBEdit<
+          Name='BranchCode'
+          Top=8
+          Left=8
+          Width=49
+          Height=21
+          Color=-2147483624
+          ControlCaption='Cabang laporan'
+          ReadOnly=true
+          CharCase=ecUpperCase
+        >, *object:rtf::DBEdit<
+          Name='BranchName'
+          Layout=clNextSide
+          Top=8
+          Left=165
+          Color=-2147483624
+          ControlCaption='-'
+          CharCase=ecUpperCase
+        >, *object:rtf::DBDateEdit<
+          Name='BeginDate'
+          Top=36
+          Left=8
+          Color=0
+          ControlCaption='Tanggal Awal'
+        >, *object:rtf::DBDateEdit<
+          Name='EndDate'
+          Top=64
+          Left=8
+          Color=0
+          ControlCaption='Tanggal Akhir'
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      ControlCharCase=ecUpperCase
+    >, object:rtf::Panel<
+      Name='PAction'
+      Width=320
+      Height=41
+      Controls={object:rtf::Button<
+          Name='BPrint'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Cetak Excel'
+          Default=true
+          OnClick='PrintExcelClick'
+        >, object:rtf::Button<
+          Name='BCancel'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Color=0
+          ControlCaption=''
+          Caption='&Tutup'
+          Cancel=true
+          DefaultAction=daClear
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=425
+      Height=153
+      Container1=$CONTAINERS['PAction']
+      Container2=$CONTAINERS['PData']
+      InversedAlign=true
+    >}FormClassName='fSummaryEmpAR'
+>

@@ -1,0 +1,410 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Peragaan Anggaran'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=721
+  Height=481
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BranchName'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=50
+        >}Name='uipBudget'
+      FillInDefaultValues=true
+      AlwaysPostToServer=true
+      InitWithDefaultValues=true
+    >, object:rtf::PClassUI<
+      Name='uipBudgetItem'
+      MultiLine=true
+      AlwaysPostToServer=true
+      PostLinkValues=true
+    >}Containers={object:rtf::Panel<
+      Elements={object:rtf::LinkUIElmtSetting<
+          Name='LBudgetOwner'
+          ControlCaption='Pemilik Anggaran'
+          ClassTypeName='BudgetOwner'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LBudgetOwner.OwnerID'
+              DataTypeName='INTEGER'
+              DataLength=0
+              UsedAsKey=true
+              KeyOrDisplayName='OwnerID'
+              FinalDisplayFieldName='OwnerID'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LBudgetOwner.OwnerCode'
+              DataTypeName='VARCHAR'
+              DataLength=10
+              UsedAsDisplay=true
+              KeyOrDisplayName='OwnerCode'
+              FinalDisplayFieldName='OwnerCode'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LBudgetOwner.OwnerID'
+              DataTypeName='INTEGER'
+              DataLength=0
+              UsedAsDisplay=true
+              KeyOrDisplayName='OwnerID'
+              FinalDisplayFieldName='OwnerID'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LBudgetOwner.OwnerName'
+              DataTypeName='VARCHAR'
+              DataLength=100
+              UsedAsDisplay=true
+              KeyOrDisplayName='OwnerName'
+              FinalDisplayFieldName='OwnerName'
+            >}Restrictions=''
+          OQLText=['select from BudgetOwner'#13#10,
+            '[ Is_Detail=''T'' ]'#13#10,
+            '('#13#10,
+            '  OwnerCode,  '#13#10,
+            '  OwnerID,'#13#10,
+            '  OwnerName,'#13#10,
+            '  self'#13#10,
+            ') then order by ownercode;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LBudgetOwner'
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LBudgetPeriod'
+          Hidden=true
+          ControlCaption='Periode'
+          ClassTypeName='BudgetPeriod'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LBudgetPeriod.PeriodID'
+              DataTypeName='INTEGER'
+              DataLength=0
+              UsedAsKey=true
+              KeyOrDisplayName='PeriodID'
+              FinalDisplayFieldName='PeriodID'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LBudgetPeriod.PeriodID'
+              DataTypeName='INTEGER'
+              DataLength=0
+              UsedAsDisplay=true
+              KeyOrDisplayName='PeriodID'
+              FinalDisplayFieldName='PeriodID'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LBudgetPeriod.PeriodValue'
+              DataTypeName='INTEGER'
+              DataLength=0
+              UsedAsDisplay=true
+              KeyOrDisplayName='PeriodValue'
+              FinalDisplayFieldName='PeriodValue'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LBudgetPeriod.LParent.PeriodID'
+              DataTypeName='INTEGER'
+              DataLength=0
+              UsedAsDisplay=true
+              KeyOrDisplayName='LParent.PeriodID'
+              FinalDisplayFieldName='PeriodID'
+            >}Restrictions=''
+          OQLText=['select from BudgetPeriod'#13#10,
+            '[ ParentPeriodID <> 0 or ParentPeriodID is not null]'#13#10,
+            '('#13#10,
+            '  PeriodValue as Bulan,'#13#10,
+            '  LParent.PeriodValue as Tahun,'#13#10,
+            '  self'#13#10,
+            ');']
+          LookupOption=loCustomOQL
+          FieldBaseName='LBudgetPeriod'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Bulan'
+          Hidden=true
+          ReadOnlyControl=true
+          ControlCaption='Bulan / Tahun'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Tahun'
+          Hidden=true
+          ReadOnlyControl=true
+          ControlCaption='/'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='PeriodID'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='IsAllOwner'
+          ControlCaption='Seluruh Pemilik Anggaran'
+          DataTypeName='varchar'
+          DataLength=1
+          EnumeratedValues=['F=False'#13#10,
+            'T=True'#13#10]
+          GenerateCheckBoxForEnum=true
+        >}Name='pBudget'
+      Width=721
+      Height=97
+      UIPart=$UIPARTS['uipBudget']
+      Controls={*object:rtf::DBLookupEdit<
+          Name='LBudgetOwner'
+          Top=8
+          Left=8
+          ControlCaption='Pemilik Anggaran'
+          FieldName='LBudgetOwner.OwnerCode'
+          DisplayFormat=''
+          LookupField='LBudgetOwner.OwnerName'
+          DisplayLookupField=true
+          DisplayLookupColor=-2147483624
+          DisplayLookupWidth=270
+        >, *object:rtf::DBCheckBox<
+          Name='IsAllOwner'
+          Layout=clNextSide
+          Top=8
+          Left=458
+          Width=177
+          Height=17
+          Color=0
+          ControlCaption='Seluruh Pemilik Anggaran'
+          ValueChecked='T'
+          ValueUnchecked='F'
+          OnClick='AllOnCheck'
+        >, object:rtf::DBComboBox<
+          Name='cbPeriod'
+          Layout=clNewLine
+          Top=36
+          Left=8
+          Width=185
+          Height=21
+          Color=0
+          ControlCaption='Tahun'
+          FieldName='PeriodID'
+          DisplayFormat=''
+          Items=''
+          Values=''
+        >, object:rtf::Button<
+          Name='bShow'
+          Layout=clAbsolute
+          Top=40
+          Left=304
+          Color=0
+          ControlCaption=''
+          Caption='&Tampilkan'
+          OnClick='ShowDataClick'
+        >, object:rtf::Button<
+          Name='button1'
+          Layout=clAbsolute
+          Top=40
+          Left=384
+          Color=0
+          ControlCaption=''
+          Caption='Export E&xcel'
+          OnClick='ExcelClick'
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      ControlCharCase=ecUpperCase
+    >, object:rtf::Grid<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BudgetCode'
+          ControlCaption='Kode Budget'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ItemGroup'
+          ControlCaption='Kegiatan'
+          DataTypeName='varchar'
+          DataLength=200
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ItemName'
+          ControlCaption='Rincian Kebutuhan'
+          DataTypeName='varchar'
+          DataLength=200
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount'
+          ControlCaption='Nilai Budget'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AccountCode'
+          Hidden=true
+          ReadOnlyControl=true
+          ControlCaption='Kode Account'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AccountName'
+          Hidden=true
+          ReadOnlyControl=true
+          ControlCaption='Nama Account'
+          DataTypeName='varchar'
+          DataLength=100
+        >, object:rtf::FieldUIElmtSetting<
+          Name='CurrencyCode'
+          Hidden=true
+          ReadOnlyControl=true
+          ControlCaption='Valuta'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Realization'
+          ReadOnlyControl=true
+          ControlCaption='Realisasi'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BudgetId'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='OriAmount'
+          Hidden=true
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='SalvageValue'
+          ControlCaption='Sisa Budget'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='OwnerName'
+          ControlCaption='Pemilik Anggaran'
+          DataTypeName='varchar'
+          DataLength=200
+        >}Name='gBudgetItem'
+      Width=567
+      Height=383
+      UIPart=$UIPARTS['uipBudgetItem']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='Daftar Item Anggaran'
+      Columns={*object:rtf::GridColumn<
+          Name='BudgetCode'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='BudgetCode'
+          DisplayFormat=''
+          TitleCaption='Kode Budget'
+          Width=80
+        >, *object:rtf::GridColumn<
+          Name='ItemGroup'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='ItemGroup'
+          DisplayFormat=''
+          TitleCaption='Kegiatan'
+          Width=200
+        >, *object:rtf::GridColumn<
+          Name='ItemName'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='ItemName'
+          DisplayFormat=''
+          TitleCaption='Rincian Kebutuhan'
+          Width=200
+        >, *object:rtf::GridColumn<
+          Name='Amount'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Amount'
+          DisplayFormat=',0.00'
+          TitleCaption='Nilai Budget'
+          Width=180
+        >, *object:rtf::GridColumn<
+          Name='Realization'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Realization'
+          DisplayFormat=',0.00'
+          TitleCaption='Realisasi'
+          Width=150
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='SalvageValue'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='SalvageValue'
+          DisplayFormat=',0.00'
+          TitleCaption='Sisa Budget'
+          Width=150
+        >, *object:rtf::GridColumn<
+          Name='OwnerName'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='OwnerName'
+          DisplayFormat=''
+          TitleCaption='Pemilik Anggaran'
+        >}ReadOnly=true
+      RowSelect=true
+      SuppressHelpLine=true
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=240
+      Height=96
+      Container1=$CONTAINERS['pBudget']
+      Container2=$CONTAINERS['dualsplit2']
+    >, object:rtf::DualSplit<
+      Name='dualsplit2'
+      Width=721
+      Height=383
+      Container1=$CONTAINERS['PAction']
+      Container2=$CONTAINERS['gBudgetItem']
+      SplitDirection=sdrSplitLeftRight
+    >, object:rtf::Panel<
+      Name='PAction'
+      Width=153
+      Height=233
+      Controls={object:rtf::Button<
+          Name='BCancel'
+          Layout=clNewLine
+          Top=72
+          Left=8
+          Width=121
+          Height=25
+          Color=0
+          ControlCaption=''
+          LayoutOrder=4
+          Caption='T&utup'
+          Cancel=true
+          DefaultAction=daClear
+          ExitAction=eaQuitCancel
+        >, object:rtf::Button<
+          Name='bNew'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Width=120
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='&1. Lihat Detil Anggaran'
+          OnClick='ViewDetailClick'
+        >, object:rtf::Button<
+          Name='button2'
+          Layout=clNewLine
+          Top=40
+          Left=8
+          Width=120
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='&2. Lihat Detil Transaksi'
+          OnClick='ViewTransactionClick'
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >}FormClassName='fBudgetViewList'
+>

@@ -1,0 +1,961 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['multisplit1']
+  Caption='Peragaan Donatur'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=657
+  Height=497
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx='FormSetDataEx'
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='mode'
+          Hidden=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ID'
+          Hidden=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='UserPengubah'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TglUbah'
+          Hidden=true
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TerminalUbah'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >}Name='uipDataI'
+      ClassTypeName='IndividualDonor'
+      DataBinding=bmMaster
+    >, object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='mode'
+          Hidden=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ID'
+          Hidden=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='UserPengubah'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TglUbah'
+          Hidden=true
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TerminalUbah'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >}Name='uipDataC'
+      ClassTypeName='CorporateDonor'
+      DataBinding=bmMaster
+    >, object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='mode'
+          Hidden=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ID'
+          Hidden=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='UserPengubah'
+          Hidden=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TglUbah'
+          Hidden=true
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TerminalUbah'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ViewType'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=1
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TempData'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >}Name='uipFilter'
+    >, object:rtf::PClassUI<
+      Name='uipTrans'
+      MultiLine=true
+    >}Containers={object:rtf::Panel<
+      ControlDefs={object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='DonorId'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='DonorName'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='AddressStreet'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='AddressKelurahan'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='AddressSubDistrict'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='AddressCity'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='AddressProvince'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='AddressPostalCode'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='PhoneNumber'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='MobileNumber'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='Email'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='Fax'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='ReferenceBy'
+        >}Elements={*object:rtf::FieldUIElmtSetting<
+          Name='DonorId'
+          ControlCaption='Donor Id'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='DonorName'
+          ControlCaption='Nama Donatur'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='AddressStreet'
+          ControlCaption='Alamat'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='AddressKelurahan'
+          ControlCaption='Alamat Kelurahan'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='AddressSubDistrict'
+          ControlCaption='Alamat Kecamatan'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='AddressCity'
+          ControlCaption='Alamat Kota/Kab'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='AddressProvince'
+          ControlCaption='Alamat Provinsi'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='AddressPostalCode'
+          ControlCaption='Kode Pos'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='PhoneNumber'
+          ControlCaption='No Telepon'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='MobileNumber'
+          ControlCaption='No Telepon Mobile '
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='Email'
+          ControlCaption='Email'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='Fax'
+          ControlCaption='Fax'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='ReferenceBy'
+          ControlCaption='Referensi Oleh'
+        >}Name='pDataI'
+      Width=320
+      Height=353
+      UIPart=$UIPARTS['uipDataI']
+      Controls={*object:rtf::DBEdit<
+          Name='DonorId'
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption='Donor Id'
+        >, *object:rtf::DBEdit<
+          Name='DonorName'
+          Top=36
+          Left=8
+          Color=0
+          ControlCaption='Nama Donatur'
+        >, *object:rtf::DBEdit<
+          Name='AddressStreet'
+          Top=64
+          Left=8
+          Color=0
+          ControlCaption='Alamat'
+        >, *object:rtf::DBEdit<
+          Name='AddressKelurahan'
+          Top=92
+          Left=8
+          Color=0
+          ControlCaption='Alamat Kelurahan'
+        >, *object:rtf::DBEdit<
+          Name='AddressSubDistrict'
+          Top=120
+          Left=8
+          Color=0
+          ControlCaption='Alamat Kecamatan'
+        >, *object:rtf::DBEdit<
+          Name='AddressCity'
+          Top=148
+          Left=8
+          Color=0
+          ControlCaption='Alamat Kota/Kab'
+        >, *object:rtf::DBEdit<
+          Name='AddressProvince'
+          Top=176
+          Left=8
+          Color=0
+          ControlCaption='Alamat Provinsi'
+        >, *object:rtf::DBEdit<
+          Name='AddressPostalCode'
+          Top=204
+          Left=8
+          Color=0
+          ControlCaption='Kode Pos'
+        >, *object:rtf::DBEdit<
+          Name='PhoneNumber'
+          Top=232
+          Left=8
+          Color=0
+          ControlCaption='No Telepon'
+        >, *object:rtf::DBEdit<
+          Name='MobileNumber'
+          Top=260
+          Left=8
+          Color=0
+          ControlCaption='No Telepon Mobile'
+        >, *object:rtf::DBEdit<
+          Name='Email'
+          Top=288
+          Left=8
+          Color=0
+          ControlCaption='Email'
+        >, *object:rtf::DBEdit<
+          Name='Fax'
+          Top=316
+          Left=8
+          Color=0
+          ControlCaption='Fax'
+        >, *object:rtf::DBEdit<
+          Name='ReferenceBy'
+          Top=344
+          Left=8
+          Color=0
+          ControlCaption='Referensi Oleh'
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      ControlDefs={object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='DonorId'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='DonorName'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='AddressStreet'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='AddressKelurahan'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='AddressSubDistrict'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='AddressCity'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='AddressProvince'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='AddressPostalCode'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='PhoneNumber'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='MobileNumber'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='Email'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='Fax'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='ReferenceBy'
+        >}Elements={*object:rtf::FieldUIElmtSetting<
+          Name='DonorId'
+          ControlCaption='Donor Id'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='DonorName'
+          ControlCaption='Nama Donatur'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='AddressStreet'
+          ControlCaption='Alamat'
+          DataTypeName='varchar'
+          DataLength=200
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='AddressKelurahan'
+          ControlCaption='Alamat Kelurahan'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='AddressSubDistrict'
+          ControlCaption='Alamat Kecamatan'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='AddressCity'
+          ControlCaption='Alamat Kota/Kab'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='AddressProvince'
+          ControlCaption='Alamat Provinsi'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='AddressPostalCode'
+          ControlCaption='Kode Pos'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='PhoneNumber'
+          ControlCaption='No Telepon'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='MobileNumber'
+          ControlCaption='No Telepon Mobile'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='Email'
+          ControlCaption='Email'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='Fax'
+          ControlCaption='Fax'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='ReferenceBy'
+          ControlCaption='Referensi Oleh'
+        >}Name='pDataC'
+      Width=377
+      Height=337
+      UIPart=$UIPARTS['uipDataC']
+      Controls={*object:rtf::DBEdit<
+          Name='DonorId'
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption='Donor Id'
+        >, *object:rtf::DBEdit<
+          Name='DonorName'
+          Top=36
+          Left=8
+          Color=0
+          ControlCaption='Nama Donatur'
+        >, *object:rtf::DBEdit<
+          Name='AddressStreet'
+          Top=64
+          Left=8
+          Color=0
+          ControlCaption='Alamat'
+        >, *object:rtf::DBEdit<
+          Name='AddressKelurahan'
+          Top=92
+          Left=8
+          Color=0
+          ControlCaption='Alamat Kelurahan'
+        >, *object:rtf::DBEdit<
+          Name='AddressSubDistrict'
+          Top=120
+          Left=8
+          Color=0
+          ControlCaption='Alamat Kecamatan'
+        >, *object:rtf::DBEdit<
+          Name='AddressCity'
+          Top=148
+          Left=8
+          Color=0
+          ControlCaption='Alamat Kota/Kab'
+        >, *object:rtf::DBEdit<
+          Name='AddressProvince'
+          Top=176
+          Left=8
+          Color=0
+          ControlCaption='Alamat Provinsi'
+        >, *object:rtf::DBEdit<
+          Name='AddressPostalCode'
+          Top=204
+          Left=8
+          Color=0
+          ControlCaption='Kode Pos'
+        >, *object:rtf::DBEdit<
+          Name='PhoneNumber'
+          Top=232
+          Left=8
+          Color=0
+          ControlCaption='No Telepon'
+        >, *object:rtf::DBEdit<
+          Name='MobileNumber'
+          Top=260
+          Left=8
+          Color=0
+          ControlCaption='No Telepon Mobile'
+        >, *object:rtf::DBEdit<
+          Name='Email'
+          Top=288
+          Left=8
+          Color=0
+          ControlCaption='Email'
+        >, *object:rtf::DBEdit<
+          Name='Fax'
+          Top=316
+          Left=8
+          Color=0
+          ControlCaption='Fax'
+        >, *object:rtf::DBEdit<
+          Name='ReferenceBy'
+          Top=344
+          Left=8
+          Color=0
+          ControlCaption='Referensi Oleh'
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      ControlDefs={object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='Gender'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='BirthPlace'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='BirthDate'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='IdentityType'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='IdentityNumber'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='Religion'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='NPWP'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='MaritalState'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='Language'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='LastFormalEducation'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='FieldOfWork'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='IncomePerMonth'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='ExpensePerMonth'
+        >}Elements={*object:rtf::FieldUIElmtSetting<
+          Name='Gender'
+          ControlCaption='Jenis Kelamin'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='BirthPlace'
+          ControlCaption='Tempat Lahir'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='BirthDate'
+          ControlCaption='Tanggal Lahir'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='IdentityType'
+          ControlCaption='Jenis Identitas'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='IdentityNumber'
+          ControlCaption='No Identitas'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='Religion'
+          ControlCaption='Agama'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='NPWP'
+          ControlCaption='No NPWP'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='MaritalState'
+          ControlCaption='Status Pernikahan'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='Language'
+          ControlCaption='Bahasa'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='LastFormalEducation'
+          ControlCaption='Pendidikan Terakhir'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='FieldOfWork'
+          ControlCaption='Bidang Pekerjaan'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='IncomePerMonth'
+          ControlCaption='Pendapatan Per bln'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='ExpensePerMonth'
+          ControlCaption='Pengeluaran per bln'
+        >}Name='pDataIR'
+      Width=320
+      Height=361
+      UIPart=$UIPARTS['uipDataI']
+      Controls={*object:rtf::DBComboBox<
+          Name='Gender'
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption='Jenis Kelamin'
+        >, *object:rtf::DBEdit<
+          Name='BirthPlace'
+          Top=36
+          Left=8
+          Color=0
+          ControlCaption='Tempat Lahir'
+        >, *object:rtf::DBDateEdit<
+          Name='BirthDate'
+          Top=64
+          Left=8
+          Color=0
+          ControlCaption='Tanggal Lahir'
+        >, *object:rtf::DBComboBox<
+          Name='IdentityType'
+          Top=92
+          Left=8
+          Color=0
+          ControlCaption='Jenis Identitas'
+        >, *object:rtf::DBEdit<
+          Name='IdentityNumber'
+          Top=120
+          Left=8
+          Color=0
+          ControlCaption='No Identitas'
+        >, *object:rtf::DBComboBox<
+          Name='Religion'
+          Top=148
+          Left=8
+          Color=0
+          ControlCaption='Agama'
+        >, *object:rtf::DBEdit<
+          Name='NPWP'
+          Top=176
+          Left=8
+          Color=0
+          ControlCaption='No NPWP'
+        >, *object:rtf::DBComboBox<
+          Name='MaritalState'
+          Top=204
+          Left=8
+          Color=0
+          ControlCaption='Status Pernikahan'
+        >, *object:rtf::DBComboBox<
+          Name='Language'
+          Top=232
+          Left=8
+          Color=0
+          ControlCaption='Bahasa'
+        >, *object:rtf::DBComboBox<
+          Name='LastFormalEducation'
+          Top=260
+          Left=8
+          Color=0
+          ControlCaption='Pendidikan Terakhir'
+        >, *object:rtf::DBEdit<
+          Name='FieldOfWork'
+          Top=288
+          Left=8
+          Color=0
+          ControlCaption='Bidang Pekerjaan'
+        >, *object:rtf::DBEdit<
+          Name='IncomePerMonth'
+          Top=316
+          Left=8
+          Color=0
+          ControlCaption='Pendapatan Per bln'
+        >, *object:rtf::DBEdit<
+          Name='ExpensePerMonth'
+          Top=344
+          Left=8
+          Color=0
+          ControlCaption='Pengeluaran per bln'
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      ControlDefs={object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='Corporation'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='NPWP'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='SIUPP'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='TDP'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='LocationType'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='OwnerType'
+        >, object:rtf::ControlDef<
+          Action=caEdit
+          DataMember='EconomicSector'
+        >}Elements={*object:rtf::FieldUIElmtSetting<
+          Name='Corporation'
+          ControlCaption='Jns Perusahaan'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='NPWP'
+          ControlCaption='NPWP'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='SIUPP'
+          ControlCaption='SIUPP'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='TDP'
+          ControlCaption='TDP'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='LocationType'
+          ControlCaption='Lokasi'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='OwnerType'
+          ControlCaption='Pemiliki'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='EconomicSector'
+          ControlCaption='Sektor Ekonomi'
+        >}Name='pDataCR'
+      Width=320
+      Height=353
+      UIPart=$UIPARTS['uipDataC']
+      Controls={*object:rtf::DBComboBox<
+          Name='Corporation'
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption='Jns Perusahaan'
+        >, *object:rtf::DBEdit<
+          Name='NPWP'
+          Top=36
+          Left=8
+          Color=0
+          ControlCaption='NPWP'
+        >, *object:rtf::DBEdit<
+          Name='SIUPP'
+          Top=64
+          Left=8
+          Color=0
+          ControlCaption='SIUPP'
+        >, *object:rtf::DBEdit<
+          Name='TDP'
+          Top=92
+          Left=8
+          Color=0
+          ControlCaption='TDP'
+        >, *object:rtf::DBEdit<
+          Name='LocationType'
+          Top=120
+          Left=8
+          Color=0
+          ControlCaption='Lokasi'
+        >, *object:rtf::DBEdit<
+          Name='OwnerType'
+          Top=148
+          Left=8
+          Color=0
+          ControlCaption='Pemiliki'
+        >, *object:rtf::DBEdit<
+          Name='EconomicSector'
+          Top=176
+          Left=8
+          Color=0
+          ControlCaption='Sektor Ekonomi'
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='Input_Data'
+          DataTypeName='varchar'
+          DataLength=1
+          EnumeratedValues=['I=ID Donatur'#13#10,
+            'T=Telepon'#13#10]
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Data'
+          ControlCaption='-'
+        >}Name='pInput'
+      Width=545
+      Height=41
+      UIPart=$UIPARTS['uipFilter']
+      Controls={*object:rtf::DBComboBox<
+          Name='Input_Data'
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption='Data'
+        >, *object:rtf::DBEdit<
+          Name='Data'
+          Layout=clNextSide
+          Top=8
+          Left=160
+          Color=0
+          ControlCaption='-'
+          OnExit='OnExit_Data'
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::MultiPages<
+      Name='mpPeragaan'
+      Width=320
+      Height=320
+      Pages={object:rtf::Page<
+          PageName='Individu'
+          PageTitle='Individu'
+          Container=$CONTAINERS['dualsplit3']
+        >, object:rtf::Page<
+          PageName='Korporat'
+          PageTitle='Korporat'
+          Container=$CONTAINERS['dualsplit2']
+          Index=1
+        >, object:rtf::Page<
+          PageName='HistTransaksi'
+          PageTitle='Histori'
+          Container=$CONTAINERS['dualsplit4']
+          Index=2
+        >}TabStyle=tsrFlatButtons
+    >, object:rtf::DualSplit<
+      Name='dualsplit3'
+      Width=649
+      Height=384
+      Container1=$CONTAINERS['pDataI']
+      Container2=$CONTAINERS['pDataIR']
+      SplitDirection=sdrSplitLeftRight
+    >, object:rtf::MultiSplit<
+      Name='multisplit1'
+      Width=657
+      Height=497
+      Side1Containers={$CONTAINERS['pInput']
+      }Side2Containers={$CONTAINERS['pAction']
+      }SpaceContainer=$CONTAINERS['mpPeragaan']
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=39
+      Controls={object:rtf::Button<
+          Name='bClose'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Close'
+          Default=true
+          Cancel=true
+          ExitAction=eaQuitOK
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit2'
+      Width=649
+      Height=384
+      Container1=$CONTAINERS['pDataC']
+      Container2=$CONTAINERS['pDataCR']
+      SplitDirection=sdrSplitLeftRight
+    >, object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='TglAwal'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TglAkhir'
+          DataTypeName='timestamp'
+          DataLength=20
+        >}Name='pTransFilter'
+      Width=625
+      Height=49
+      UIPart=$UIPARTS['uipFilter']
+      Controls={*object:rtf::DBDateEdit<
+          Name='TglAwal'
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption='tgl awal'
+        >, *object:rtf::DBDateEdit<
+          Name='TglAkhir'
+          Layout=clNextSide
+          Top=8
+          Left=173
+          Color=0
+          ControlCaption='tgl akhir'
+        >, object:rtf::Button<
+          Name='bView'
+          Layout=clNextSide
+          Top=8
+          Left=339
+          Color=0
+          ControlCaption=''
+          Caption='&Tampilkan'
+          OnClick='OnClick_bView'
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Grid<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='TransactionItemId'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionDate'
+          ControlCaption='Tgl Transaksi'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionCode'
+          ControlCaption='Kode Transaksi'
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          ControlCaption='Kode Cabang'
+          DataTypeName='varchar'
+          DataLength=5
+        >, object:rtf::FieldUIElmtSetting<
+          Name='MutationType'
+          ControlCaption='Jns Mutasi'
+          DataTypeName='varchar'
+          DataLength=1
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amout'
+          ControlCaption='Jumlah'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='CurrencyCode'
+          ControlCaption='Kode Valuta'
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Rate'
+          ControlCaption='Rate'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='EkuivalenAmount'
+          ControlCaption='Jumlah Ekiv'
+          DataTypeName='double'
+          DataLength=20
+        >}Name='gHist'
+      Width=240
+      Height=240
+      UIPart=$UIPARTS['uipTrans']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Columns={*object:rtf::GridColumn<
+          Name='TransactionDate'
+          InputStyle=cisDate
+          EnumeratedValues=''
+          FieldName='TransactionDate'
+          DisplayFormat=''
+          TitleCaption='Tgl Transaksi'
+        >, *object:rtf::GridColumn<
+          Name='TransactionCode'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='TransactionCode'
+          DisplayFormat=''
+          TitleCaption='Kode Transaksi'
+        >, *object:rtf::GridColumn<
+          Name='BranchCode'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='BranchCode'
+          DisplayFormat=''
+          TitleCaption='Kode Cabang'
+        >, *object:rtf::GridColumn<
+          Name='MutationType'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='MutationType'
+          DisplayFormat=''
+          TitleCaption='Jns Mutasi'
+        >, *object:rtf::GridColumn<
+          Name='Amout'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Amout'
+          DisplayFormat=''
+          TitleCaption='Jumlah'
+        >, *object:rtf::GridColumn<
+          Name='CurrencyCode'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='CurrencyCode'
+          DisplayFormat=''
+          TitleCaption='Kode Valuta'
+        >, *object:rtf::GridColumn<
+          Name='Rate'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Rate'
+          DisplayFormat=''
+          TitleCaption='Rate'
+        >, *object:rtf::GridColumn<
+          Name='EkuivalenAmount'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='EkuivalenAmount'
+          DisplayFormat=''
+          TitleCaption='Jumlah Ekiv'
+        >}ReadOnly=true
+      SuppressHelpLine=true
+    >, object:rtf::DualSplit<
+      Name='dualsplit4'
+      Width=649
+      Height=299
+      Container1=$CONTAINERS['pTransFilter']
+      Container2=$CONTAINERS['gHist']
+    >}FormClassName='fPeragaanDonatur'
+>

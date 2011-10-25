@@ -1,0 +1,193 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Sponsor Project'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=441
+  Height=320
+  UIParts={object:rtf::PClassUI<
+      Name='uipProject'
+      ClassTypeName='Project'
+      DataBinding=bmMaster
+      AlwaysPostToServer=true
+    >, object:rtf::PClassUI<
+      Name='LsProjectSponsor'
+      ClassTypeName='ProjectSponsor'
+      DataBinding=bmList
+      Master=$UIPARTS['uipProject']
+      ListName='Ls_ProjectSponsor'
+      AlwaysPostToServer=true
+      CreateInstanceOnNew=true
+      DeleteInstanceOnDel=true
+      SetMasterDetailRelationship=true
+    >}Containers={object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='ProductId'
+          AccessOption=aoReadOnly
+          Hidden=true
+          ControlCaption='Id Project'
+          DataTypeName='INTEGER'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ProductCode'
+          AccessOption=aoReadOnly
+          ControlCaption='Kode Project'
+          DataTypeName='VARCHAR'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ProductName'
+          AccessOption=aoReadOnly
+          ControlCaption='Nama Project'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Description'
+          AccessOption=aoReadOnly
+          ControlCaption='Deskripsi'
+          DataTypeName='VARCHAR'
+          DataLength=100
+        >}Name='pProject'
+      Width=320
+      Height=105
+      UIPart=$UIPARTS['uipProject']
+      Controls={*object:rtf::DBEdit<
+          Name='ProductCode'
+          Top=8
+          Left=8
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Kode Project'
+        >, *object:rtf::DBEdit<
+          Name='ProductName'
+          Top=36
+          Left=8
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Nama Project'
+        >, *object:rtf::DBEdit<
+          Name='Description'
+          Top=64
+          Left=8
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Deskripsi'
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Grid<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='ProjectSponsorCode'
+          ControlCaption='Kode sponsor'
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LSponsor'
+          RequiredOption=roAlwaysRequired
+          ClassTypeName='Sponsor'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LSponsor.SponsorId'
+              DataTypeName='INTEGER'
+              DataLength=0
+              UsedAsKey=true
+              KeyOrDisplayName='SponsorId'
+              FinalDisplayFieldName='SponsorId'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LSponsor.SponsorId'
+              DataTypeName='INTEGER'
+              DataLength=0
+              UsedAsDisplay=true
+              KeyOrDisplayName='SponsorId'
+              FinalDisplayFieldName='SponsorId'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LSponsor.Name'
+              DataTypeName='VARCHAR'
+              DataLength=50
+              UsedAsDisplay=true
+              KeyOrDisplayName='Name'
+              FinalDisplayFieldName='Name'
+            >}Restrictions=''
+          FieldBaseName='LSponsor'
+        >}Name='gSponsor'
+      Width=441
+      Height=164
+      UIPart=$UIPARTS['LsProjectSponsor']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='Sponsor'
+      Columns={*object:rtf::GridColumn<
+          Name='ProjectSponsorCode'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='ProjectSponsorCode'
+          DisplayFormat=''
+          TitleCaption='Kode sponsor'
+        >, *object:rtf::GridColumn<
+          Name='LSponsor.SponsorId'
+          InputStyle=cisLookup
+          EnumeratedValues=''
+          FieldName='LSponsor.SponsorId'
+          DisplayFormat=''
+          TitleCaption='Id Sponsor'
+        >, *object:rtf::GridColumn<
+          Name='LSponsor.Name'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='LSponsor.Name'
+          DisplayFormat=''
+          TitleCaption='Nama Sponsor'
+        >}>, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=49
+      Controls={object:rtf::Button<
+          Name='bSimpan'
+          Layout=clNextSide
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Simpan'
+          DefaultAction=daProcessAllUI
+          ExitAction=eaQuitOK
+        >, object:rtf::Button<
+          Name='bBatal'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Color=0
+          ControlCaption=''
+          Caption='&Batal'
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=441
+      Height=320
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['dualsplit2']
+      InversedAlign=true
+    >, object:rtf::DualSplit<
+      Name='dualsplit2'
+      Width=441
+      Height=270
+      Container1=$CONTAINERS['pProject']
+      Container2=$CONTAINERS['gSponsor']
+    >}FormClassName='fProjectSponsor'
+>

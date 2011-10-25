@@ -1,0 +1,373 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Daftar Penyaluran Dana Cabang'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=545
+  Height=369
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=3
+        >, object:rtf::FieldUIElmtSetting<
+          Name='UserId'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='EmployeeId'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=30
+        >}Name='uipFilter'
+    >, object:rtf::PClassUI<
+      Name='uipCATransactItem'
+      ClassTypeName='AccountTransactionItem'
+      DataBinding=bmMaster
+      MultiLine=true
+      OnSetData='OnSetData'
+    >, object:rtf::PClassUI<
+      Name='uipDistributionList'
+    >}Containers={object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=240
+      Height=96
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['dualsplit2']
+      InversedAlign=true
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=34
+      Controls={object:rtf::Button<
+          Name='bTutup'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Color=0
+          ControlCaption=''
+          LayoutOrder=2
+          Caption='T&utup'
+          ExitAction=eaQuitCancel
+        >, object:rtf::Button<
+          Name='bPilih'
+          Layout=clNextSide
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Proses'
+          ExitAction=eaQuitOK
+          OnClick='ProsesClick'
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='UserId'
+          Hidden=true
+          ReadOnlyControl=true
+          ControlCaption='Id User'
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BeginDate'
+          ControlCaption='Periode Tanggal'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='EndDate'
+          ControlCaption='s/d'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LSourceBranch'
+          ControlCaption='Cabang Pengirim'
+          ClassTypeName='Branch'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LSourceBranch.BranchCode'
+              DataTypeName='VARCHAR'
+              DataLength=3
+              UsedAsKey=true
+              KeyOrDisplayName='BranchCode'
+              FinalDisplayFieldName='BranchCode'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LSourceBranch.BranchCode'
+              DataTypeName='VARCHAR'
+              DataLength=3
+              UsedAsDisplay=true
+              KeyOrDisplayName='BranchCode'
+              FinalDisplayFieldName='BranchCode'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LSourceBranch.BranchName'
+              DataTypeName='VARCHAR'
+              DataLength=30
+              UsedAsDisplay=true
+              KeyOrDisplayName='BranchName'
+              FinalDisplayFieldName='BranchName'
+            >}Restrictions=''
+          OQLText=['select from Branch'#13#10,
+            '( BranchCode,'#13#10,
+            '  BranchName,'#13#10,
+            ' self'#13#10,
+            ');']
+          LookupOption=loCustomOQL
+          FieldBaseName='LSourceBranch'
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LDestBranch'
+          ControlCaption='Cabang Penerima'
+          ClassTypeName='Branch'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LDestBranch.BranchCode'
+              DataTypeName='VARCHAR'
+              DataLength=3
+              UsedAsKey=true
+              KeyOrDisplayName='BranchCode'
+              FinalDisplayFieldName='BranchCode'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LDestBranch.BranchCode'
+              DataTypeName='VARCHAR'
+              DataLength=3
+              UsedAsDisplay=true
+              KeyOrDisplayName='BranchCode'
+              FinalDisplayFieldName='BranchCode'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LDestBranch.BranchName'
+              DataTypeName='VARCHAR'
+              DataLength=30
+              UsedAsDisplay=true
+              KeyOrDisplayName='BranchName'
+              FinalDisplayFieldName='BranchName'
+            >}Restrictions=''
+          OQLText=['select from Branch'#13#10,
+            '( BranchCode,'#13#10,
+            '  BranchName,'#13#10,
+            ' self'#13#10,
+            ');']
+          LookupOption=loCustomOQL
+          FieldBaseName='LDestBranch'
+        >}Name='pFilter'
+      Width=473
+      Height=137
+      Bordered=true
+      UIPart=$UIPARTS['uipFilter']
+      Controls={*object:rtf::DBDateEdit<
+          Name='BeginDate'
+          Top=10
+          Left=10
+          Color=0
+          ControlCaption='Periode Tanggal'
+        >, *object:rtf::DBDateEdit<
+          Name='EndDate'
+          Layout=clNextSide
+          Top=10
+          Left=238
+          Color=0
+          ControlCaption='s/d'
+        >, *object:rtf::DBLookupEdit<
+          Name='LSourceBranch'
+          Top=38
+          Left=10
+          ControlCaption='Cabang Pengirim'
+          LookupField='LSourceBranch.BranchName'
+          DisplayLookupField=true
+        >, *object:rtf::DBLookupEdit<
+          Name='LDestBranch'
+          Top=66
+          Left=10
+          ControlCaption='Cabang Penerima'
+          LookupField='LDestBranch.BranchName'
+          DisplayLookupField=true
+        >, object:rtf::Button<
+          Name='bApply'
+          Layout=clNewLine
+          Top=94
+          Left=10
+          Width=143
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='&Apply Filter'
+          OnClick='bApplyClick'
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=10
+      ControlTopMargin=10
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit2'
+      Width=240
+      Height=96
+      Container1=$CONTAINERS['pFilter']
+      Container2=$CONTAINERS['dualsplit3']
+    >, object:rtf::Panel<
+      Name='pButton'
+      Width=489
+      Height=41
+      Bordered=true
+      Controls={object:rtf::Button<
+          Name='button1'
+          Layout=clAbsolute
+          Top=8
+          Left=10
+          Width=169
+          Height=25
+          Visible=false
+          Color=0
+          ControlCaption=''
+          Caption='&1. Buat Transaksi Pengembalian'
+          OnClick='CreateReturnTransactionClick'
+        >, object:rtf::Button<
+          Name='button2'
+          Layout=clAbsolute
+          Top=8
+          Left=192
+          Width=225
+          Height=25
+          Visible=false
+          Color=0
+          ControlCaption=''
+          Caption='&2. Detil Transaksi Penyerahan Uang Muka'
+          OnClick='DetilUMClick'
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Grid<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='TransactionDate'
+          ControlCaption='Tgl Transaksi'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BranchNameSource'
+          ControlCaption='Cabang Pengirim'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BranchNameDest'
+          ControlCaption='Cabang Penerima'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount'
+          ControlCaption='Nilai Transaksi'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionNo'
+          ControlCaption='No. Transaksi'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Description'
+          ControlCaption='Keterangan'
+          DataTypeName='varchar'
+          DataLength=100
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ReportStatus'
+          ControlCaption='Status Laporan'
+          DataTypeName='varchar'
+          DataLength=1
+          EnumeratedValues=['F=Belum Dilaporkan'#13#10,
+            'T=Telah Dilaporkan'#13#10]
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionId'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='DistributionId'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >}Name='gDistributionList'
+      Width=545
+      Height=154
+      UIPart=$UIPARTS['uipDistributionList']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Columns={*object:rtf::GridColumn<
+          Name='TransactionDate'
+          InputStyle=cisDate
+          EnumeratedValues=''
+          FieldName='TransactionDate'
+          DisplayFormat=''
+          TitleCaption='Tgl Transaksi'
+          Width=80
+        >, *object:rtf::GridColumn<
+          Name='BranchNameSource'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='BranchNameSource'
+          DisplayFormat=''
+          TitleCaption='Cabang Pengirim'
+          Width=100
+        >, *object:rtf::GridColumn<
+          Name='BranchNameDest'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='BranchNameDest'
+          DisplayFormat=''
+          TitleCaption='Cabang Tujuan'
+          Width=100
+        >, *object:rtf::GridColumn<
+          Name='Amount'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Amount'
+          DisplayFormat=',0.00'
+          TitleCaption='Nilai Transaksi'
+          Width=120
+        >, *object:rtf::GridColumn<
+          Name='TransactionNo'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='TransactionNo'
+          DisplayFormat=''
+          TitleCaption='No. Transaksi'
+          Width=180
+        >, *object:rtf::GridColumn<
+          Name='Description'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Description'
+          DisplayFormat=''
+          TitleCaption='Keterangan'
+          Width=200
+        >, *object:rtf::GridColumn<
+          Name='ReportStatus'
+          InputStyle=cisEnumerated
+          EnumeratedValues=['F=Belum Dilaporkan'#13#10,
+            'T=Telah Dilaporkan'#13#10]
+          FieldName='ReportStatus'
+          DisplayFormat=''
+          TitleCaption='Status Laporan'
+          Hidden=true
+        >}ReadOnly=true
+      RowSelect=true
+      SuppressHelpLine=true
+    >, object:rtf::DualSplit<
+      Name='dualsplit3'
+      Width=545
+      Height=196
+      Container1=$CONTAINERS['pButton']
+      Container2=$CONTAINERS['gDistributionList']
+    >}FormClassName='fBranchDistributionList'
+>

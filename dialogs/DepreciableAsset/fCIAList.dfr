@@ -1,0 +1,128 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Daftar Biaya Dibayar Dimuka'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=585
+  Height=320
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx='FormSetDataEx'
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=5
+        >}Name='uipData'
+    >}Containers={object:rtf::Panel<
+      Elements={object:rtf::LinkUIElmtSetting<
+          Name='LProductAccount'
+          ControlCaption='Produk'
+          ClassTypeName='VProduct'
+          DisplayFields='ProductCode;ProductName;AccountNo;AccountName;ProductType'
+          Restrictions='BranchCode|BranchCode'
+          OQLText=['select from VProduct '#13#10,
+            '[  status = ''A'' and '#13#10,
+            '   BranchCode = :BranchCode and '#13#10,
+            '  ( (currencycode =''000'' and producttype = ''G'') '#13#10,
+            '     or (producttype=''J'')'#13#10,
+            '  ) '#13#10,
+            '] '#13#10,
+            '(   ProductCode, '#13#10,
+            '   AccountName, '#13#10,
+            '   ProductName, '#13#10,
+            '   FundCategory $ as FundType, '#13#10,
+            '   FundCategory, '#13#10,
+            '   PercentageOfAmilFunds, '#13#10,
+            '  ProductId, '#13#10,
+            '   Idx,'#13#10,
+            '   AccountNo, '#13#10,
+            'self) then order by ProductCode;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LProductAccount'
+        >}Name='pFilter'
+      Width=409
+      Height=87
+      UIPart=$UIPARTS['uipData']
+      Controls={*object:rtf::DBLookupEdit<
+          Name='LProductAccount'
+          Top=10
+          Left=8
+          ControlCaption='Produk'
+          LookupField='LProductAccount.ProductName'
+          DisplayLookupField=true
+        >, object:rtf::Button<
+          Name='button1'
+          Layout=clAbsolute
+          Top=56
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Filter Data'
+          OnClick='FilterClick'
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=10
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Query<
+      Name='qCPIA'
+      Width=585
+      Height=189
+      ContextMenuName='popupmenus\DepreciableAsset\pCIAList'
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      HideSearchPanel=true
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=585
+      Height=320
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['dualsplit2']
+      InversedAlign=true
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=42
+      Controls={object:rtf::Button<
+          Name='bClose'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Tutup'
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit2'
+      Width=585
+      Height=277
+      Container1=$CONTAINERS['pFilter']
+      Container2=$CONTAINERS['qCPIA']
+    >}FormClassName='fCIAList'
+>

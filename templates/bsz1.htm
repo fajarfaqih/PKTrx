@@ -1,0 +1,216 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<style type="text/css">
+<!--
+.style5 {font-family: Arial, Helvetica, sans-serif}
+.style14 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; }
+.style15 {font-family: Arial, Helvetica, sans-serif; font-size: 10px; font-weight: bold;}
+.style16 {font-family: Arial, Helvetica, sans-serif; font-size: 10px; }
+.style18 {font-family: Arial, Helvetica, sans-serif; font-size: 12; }
+.style19 {font-size: 12px}
+.style20 { font-family: Arial, Helvetica, sans-serif;
+	font-size: 36px;
+	font-weight: bold;
+}
+.style22 {font-family: Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold; }
+-->
+</style>
+</head>
+
+<body>
+<div>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <table border="0" cellpadding="0">
+    <tr class="style16"><td>%(BSZNo)s</td></tr>
+  </table>
+  <p>&nbsp;</p>
+  <table border="0" cellpadding="0">
+    <tr class="style16">
+      <td width="100" height="15">Telah Diterima Dari</td>
+      <td width="360">
+        <table width="340" border="1" cellspacing="0" bordercolor="#000000">
+          <tr>
+            <td height="15">%(DONOR_NAMA)s</td>
+          </tr>
+        </table></td>
+    </tr>
+    <tr class="style16">
+      <td>NPWP</td>
+      <td><table width="340" border="1" cellspacing="0" bordercolor="#000000">
+        <tr>
+          <td height="15">%(NPWP)s</td>
+        </tr>
+      </table></td>
+    </tr>
+    <tr class="style16">
+      <td>NPWZ</td>
+      <td ><table width="340" border="1" cellspacing="0" bordercolor="#000000">
+        <tr>
+          <td height="15" class="style16">%(NPWZ)s</td>
+        </tr>
+      </table></td>
+    </tr>
+    <tr class="style16">
+      <td>Nama Wajib Zakat</td>
+      <td><table width="340" border="1" cellspacing="0" bordercolor="#000000">
+        <tr>
+          <td height="15" >%(DONOR_NAMA)s</td>
+        </tr>
+      </table></td>
+    </tr>
+    <tr class="style16">
+      <td align="left" valign="middle">Alamat Wajib Zakat    </td>
+      <td ><table width="340" border="1" cellspacing="0" bordercolor="#000000">
+        <tr height="25">
+          <td valign="top">%(DONOR_ALAMAT)s</td>
+        </tr>
+      </table></td>
+    </tr>
+  </table>
+  <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000">
+    <tr class="style16">
+      <th width="15" scope="col">No</th>
+      <th width="210" scope="col">Objek Zakat</th>
+      <th width="60" scope="col">Thn Perolehan</th>
+      <th width="40" scope="col">Kadar  %%**</th>
+      <th width="110" scope="col">Dasar Pengenaan Zakat</th>
+      <th width="110" scope="col">Jumlah Zakat</th>
+    </tr>
+    <tr class="style16">
+      <td align="center">1</td>
+      <td>Emas, Perak dan Uang</td>
+      <td align="center">%(A_THN)s</td>
+      <td align="right">%(A_KADAR)s%%</td>
+      <td align="right">%(A_DASAR)s</td>
+      <td align="right">%(A_ZAKAT)s</td>
+    </tr>
+    <tr class="style16">
+      <td align="center">2</td>
+      <td>Perdagangan Dan Perusahaan *</td>
+      <td align="center">%(B_THN)s</td>
+      <td align="right" >%(B_KADAR)s%%</td>
+      <td align="right">%(B_DASAR)s</td>
+      <td align="right">%(B_ZAKAT)s</td>
+    </tr>
+    <tr class="style16">
+      <td align="center">3</td>
+      <td>Hasil Pertanian Perkebunan dan Perikanan *</td>
+      <td align="center">%(C_THN)s</td>
+      <td align="right" >%(C_KADAR)s%%</td>
+      <td align="right" >%(C_DASAR)s</td>
+      <td align="right" >%(C_ZAKAT)s</td>
+    </tr>
+    <tr class="style16">
+      <td align="center">4</td>
+      <td >Hasil Pertambangan *</td>
+      <td align="center">%(D_THN)s</td>
+      <td align="right" >%(D_KADAR)s%%</td>
+      <td align="right" >%(D_DASAR)s</td>
+      <td align="right" >%(D_ZAKAT)s</td>
+    </tr>
+    <tr class="style16">
+      <td align="center">5</td>
+      <td >Hasil Peternakan *</td>
+      <td align="center">%(E_THN)s</td>
+      <td align="right" >%(E_KADAR)s%%</td>
+      <td align="right" >%(E_DASAR)s</td>
+      <td align="right" >%(E_ZAKAT)s</td>
+    </tr>
+    <tr class="style16">
+      <td align="center">6</td>
+      <td>Hasil Pendapatan Jasa *</td>
+      <td align="center">%(F_THN)s</td>
+      <td align="right" >%(F_KADAR)s%%</td>
+      <td align="right" >%(F_DASAR)s</td>
+      <td align="right" >%(F_ZAKAT)s</td>
+    </tr>
+    <tr class="style16">
+      <td align="center">7</td>
+      <td>Rikaz</td>
+      <td align="center">%(G_THN)s</td>
+      <td align="right" >%(G_KADAR)s%%</td>
+      <td align="right" >%(G_DASAR)s</td>
+      <td align="right" >%(G_ZAKAT)s</td>
+    </tr>
+  </table>
+  <table border="0" cellpadding="0" cellspacing="0" height="2"><tr><td></td></tr></table>
+  <table border="0" cellpadding="0" cellspacing="0">
+    <tr>
+      <td width="50" valign="top" class="style15" >Terbilang</td>
+      <td ><table height="30" border="1" cellpadding="0" cellspacing="0" bordercolor="#000000">
+        <tr class="style16">
+          <td width="402" valign="top">%(TERBILANG)s
+            </td>
+          <th width="110" valign="top" align="right">%(TOTAL)s</th>
+        </tr>
+      </table></td>
+    </tr>
+  </table>
+  <table border="0" cellpadding="0" cellspacing="0" height="2"><tr><td></td></tr></table>
+  <table width="567" border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" class="style16">
+    <tr>
+      <td width="281" align="center">
+        <table width="200" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td><div align="center">Diterima Oleh LAZNAZ PKPU </div></td>
+          </tr>
+          <tr>
+            <td><div align="center">%(CABANG)s, %(TGL_BAYAR)s </div></td>
+          </tr>
+        </table>
+		<p>&nbsp;</p>
+        <p>%(USER_CETAK)s</p>
+      </td>
+      <td width="280" align="center">
+        <table width="200" border="0" cellspacing="0" cellpadding="0" class="style16">
+          <tr>
+            <td><div align="center">Penyetor / Wajib Zakat </div></td>
+          </tr>
+          <tr>
+            <td><div align="center">%(TGL_BAYAR)s </div></td>
+          </tr>
+        </table>
+        <p>&nbsp;</p>
+        <p>%(DONOR_NAMA)s</p>
+      </td>
+    </tr>
+  </table>
+  <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000">
+    <tr>
+      <td width="405" align="center">
+	  <table border="0" width="380" cellpadding="0" cellspacing="0">
+        <tr>
+          <td width="15" valign="top" class="style16">*</td>
+          <td ><div align="justify" class="style16">Dapat dikreditkan sebagai pengurangan Penghasilan Kena Pajak sesuai ketentuan yang berlaku (Pasal 9 ayat (1) huruf g Undang-Undang Nomor 17 Tahun 2000 tentang Pajak Penghasilan) </div></td>
+        </tr>
+        <tr>
+          <td valign="top" class="style16">**</td>
+          <td><div align="justify" class="style16">Diisi sesuai kadar yang berlaku, berdasarkan lampiran I Keputusan Direktur Jendral Bimas Islam dan Urusan Haji Nomor D/291 Tahun 2000 Tanggal 15 Desember 2000 </div></td>
+        </tr>
+      </table></td>
+      <td width="156" align="center"> <table width="148" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+          <td width="67" height="37"><div align="center"><span class="style5"><strong>Lembar</strong></span></div></td>
+          <td width="81"><table width="66" border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
+            <tr>
+              <td width="62"><div align="center" class="style20">1</div></td>
+            </tr>
+          </table>            </td>
+        </tr>
+        <tr>
+          <td height="58" colspan="2"><div align="center"><span class="style22">Untuk Kantor Pajak Melalui Muzakki </span></div></td>
+          </tr>
+      </table></td>
+    </tr>
+  </table>
+  <p>&nbsp;</p>
+</div>
+</body>
+</html>
+

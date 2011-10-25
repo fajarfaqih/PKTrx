@@ -1,0 +1,363 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Daftar Invoice'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=673
+  Height=329
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=10
+        >}Name='uipFilter'
+    >, object:rtf::PClassUI<
+      Name='uipInvoice'
+    >}Containers={object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=50
+      Controls={object:rtf::Button<
+          Name='button1'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Tutup'
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=673
+      Height=329
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['dualsplit2']
+      InversedAlign=true
+    >, object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BeginDate'
+          ControlCaption='Periode Tanggal'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='EndDate'
+          ControlCaption='s.d.'
+          DataTypeName='timestamp'
+          DataLength=20
+        >}Name='pFilter'
+      Width=473
+      Height=97
+      Bordered=true
+      UIPart=$UIPARTS['uipFilter']
+      Controls={*object:rtf::DBDateEdit<
+          Name='BeginDate'
+          Top=20
+          Left=8
+          Color=0
+          ControlCaption='Periode Tanggal'
+        >, *object:rtf::DBDateEdit<
+          Name='EndDate'
+          Layout=clNextSide
+          Top=20
+          Left=213
+          Color=0
+          ControlCaption='s.d.'
+        >, object:rtf::Button<
+          Name='bView'
+          Layout=clAbsolute
+          Top=56
+          Left=8
+          Width=97
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='Tampilkan Data'
+          OnClick='bViewClick'
+        >, object:rtf::Button<
+          Name='button1'
+          Layout=clAbsolute
+          Top=56
+          Left=112
+          Width=97
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='Export Excel'
+          OnClick='bExcelClick'
+        >}ControlLeftMargin=8
+      ControlTopMargin=20
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='Filter Data'
+    >, object:rtf::DualSplit<
+      Name='dualsplit2'
+      Width=673
+      Height=278
+      Container1=$CONTAINERS['pFilter']
+      Container2=$CONTAINERS['dualsplit3']
+    >, object:rtf::Panel<
+      Name='pButton'
+      Width=641
+      Height=49
+      Bordered=true
+      Controls={object:rtf::Button<
+          Name='bNewInvoice'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Width=115
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='&1. Buat Invoice Baru'
+          OnClick='bNewInvoiceClick'
+        >, object:rtf::Button<
+          Name='bPrint'
+          Layout=clNextSide
+          Top=8
+          Left=127
+          Width=115
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='&2. Cetak Invoice'
+          OnClick='bPrintClick'
+        >, object:rtf::Button<
+          Name='button2'
+          Layout=clNextSide
+          Top=40
+          Left=8
+          Width=115
+          Height=25
+          Color=0
+          ControlCaption=''
+          LayoutOrder=5
+          Caption='&5. Hapus Invoice'
+          OnClick='bDeleteClick'
+        >, object:rtf::Button<
+          Name='button3'
+          Layout=clNextSide
+          Top=8
+          Left=365
+          Width=115
+          Height=25
+          Color=0
+          ControlCaption=''
+          LayoutOrder=4
+          Caption='&4. Ubah Invoice'
+          OnClick='bEditClick'
+        >, object:rtf::Button<
+          Name='button4'
+          Layout=clNextSide
+          Top=8
+          Left=246
+          Width=115
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='&3. Cetak Kwitansi'
+          OnClick='bPrintVoucherClick'
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Grid<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='InvoiceId'
+          Hidden=true
+          ControlCaption='No. Invoice'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='InvoiceNo'
+          ControlCaption='No Invoice'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='InvoiceDate'
+          ControlCaption='Tgl Invoice'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='InvoiceAmount'
+          ControlCaption='Nilai Invoice'
+          DataTypeName='double'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='InvoicePaymentStatus'
+          ControlCaption='Status Pembayaran'
+          DataTypeName='varchar'
+          DataLength=1
+          EnumeratedValues=['F=Belum Dibayar'#13#10,
+            'T=Sudah Dibayar'#13#10]
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LSponsor'
+          ControlCaption='Sponsor'
+          ClassTypeName='VDonor'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LSponsor.ID'
+              DataTypeName='INTEGER'
+              DataLength=0
+              UsedAsKey=true
+              KeyOrDisplayName='ID'
+              FinalDisplayFieldName='ID'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LSponsor.ID'
+              DataTypeName='INTEGER'
+              DataLength=0
+              UsedAsDisplay=true
+              KeyOrDisplayName='ID'
+              FinalDisplayFieldName='ID'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LSponsor.Full_Name'
+              DataTypeName='VARCHAR'
+              DataLength=150
+              UsedAsDisplay=true
+              KeyOrDisplayName='Full_Name'
+              FinalDisplayFieldName='Full_Name'
+            >}Restrictions=''
+          FieldBaseName='LSponsor'
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LProductAccount'
+          ControlCaption='Nama Program/Project'
+          ClassTypeName='ProductAccount'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LProductAccount.AccountNo'
+              DataTypeName='VARCHAR'
+              DataLength=30
+              UsedAsKey=true
+              KeyOrDisplayName='AccountNo'
+              FinalDisplayFieldName='AccountNo'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LProductAccount.AccountNo'
+              DataTypeName='VARCHAR'
+              DataLength=30
+              UsedAsDisplay=true
+              KeyOrDisplayName='AccountNo'
+              FinalDisplayFieldName='AccountNo'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LProductAccount.AccountName'
+              DataTypeName='VARCHAR'
+              DataLength=50
+              UsedAsDisplay=true
+              KeyOrDisplayName='AccountName'
+              FinalDisplayFieldName='AccountName'
+            >}Restrictions=''
+          FieldBaseName='LProductAccount'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='SponsorId'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Description'
+          DataTypeName='varchar'
+          DataLength=200
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionId'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >}Name='gInvoice'
+      Width=673
+      Height=130
+      UIPart=$UIPARTS['uipInvoice']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='Daftar Invoice'
+      Columns={*object:rtf::GridColumn<
+          Name='InvoiceNo'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='InvoiceNo'
+          DisplayFormat=''
+          TitleCaption='No Invoice'
+          Width=120
+        >, *object:rtf::GridColumn<
+          Name='InvoiceDate'
+          InputStyle=cisDate
+          EnumeratedValues=''
+          FieldName='InvoiceDate'
+          DisplayFormat='dd-mm-yyyy'
+          TitleCaption='Tgl Invoice'
+          Width=80
+        >, *object:rtf::GridColumn<
+          Name='InvoiceAmount'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='InvoiceAmount'
+          DisplayFormat=',0.00'
+          TitleCaption='Nilai Invoice'
+          Width=150
+        >, *object:rtf::GridColumn<
+          Name='InvoicePaymentStatus'
+          InputStyle=cisEnumerated
+          EnumeratedValues=['F=Belum Dibayar'#13#10,
+            'T=Sudah Dibayar'#13#10]
+          FieldName='InvoicePaymentStatus'
+          DisplayFormat=''
+          TitleCaption='Status Pembayaran'
+        >, *object:rtf::GridColumn<
+          Name='LSponsor.ID'
+          InputStyle=cisLookup
+          EnumeratedValues=''
+          FieldName='LSponsor.ID'
+          DisplayFormat=''
+          TitleCaption='Sponsor'
+          Hidden=true
+        >, *object:rtf::GridColumn<
+          Name='LSponsor.Full_Name'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='LSponsor.Full_Name'
+          DisplayFormat=''
+          TitleCaption='Sponsor'
+          Width=150
+        >, *object:rtf::GridColumn<
+          Name='LProductAccount.AccountNo'
+          InputStyle=cisLookup
+          EnumeratedValues=''
+          FieldName='LProductAccount.AccountNo'
+          DisplayFormat=''
+          TitleCaption='Nama Program/Project'
+          Hidden=true
+        >, *object:rtf::GridColumn<
+          Name='LProductAccount.AccountName'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='LProductAccount.AccountName'
+          DisplayFormat=''
+          TitleCaption='Nama Program/Project'
+          Width=120
+        >, *object:rtf::GridColumn<
+          Name='Description'
+          Width=150
+        >}ReadOnly=true
+      RowSelect=true
+      SuppressHelpLine=true
+    >, object:rtf::DualSplit<
+      Name='dualsplit3'
+      Width=673
+      Height=180
+      Container1=$CONTAINERS['pButton']
+      Container2=$CONTAINERS['gInvoice']
+    >}FormClassName='fInvoiceList'
+>
