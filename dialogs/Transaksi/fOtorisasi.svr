@@ -32,37 +32,41 @@ document <
           DataTypeName='integer'
           DataLength=1
         >, object:rpclass::TCustomLoadedField<
-          Name='LUser.Id_User'
-          DataTypeName='varchar'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='LUser.Nama_User'
-          DataTypeName='varchar'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='LBatch.BatchId'
-          DataTypeName='varchar'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='LBatch.BatchNo'
-          DataTypeName='varchar'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='LBatch.Inputer'
-          DataTypeName='varchar'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='LBatch.Description'
-          DataTypeName='varchar'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
           Name='BeginNo'
           DataTypeName='integer'
           DataLength=20
         >, object:rpclass::TCustomLoadedField<
+          Name='LTransactionType.TransactionCode'
+          DataTypeName='VARCHAR'
+          DataLength=10
+        >, object:rpclass::TCustomLoadedField<
+          Name='LTransactionType.TransactionCode'
+          DataTypeName='VARCHAR'
+          DataLength=10
+        >, object:rpclass::TCustomLoadedField<
+          Name='LTransactionType.Description'
+          DataTypeName='VARCHAR'
+          DataLength=50
+        >, object:rpclass::TCustomLoadedField<
+          Name='IsAllTransactionType'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='SearchCategory'
+          DataTypeName='integer'
+          DataLength=1
+        >, object:rpclass::TCustomLoadedField<
+          Name='SearchText'
+          DataTypeName='varchar'
+          DataLength=100
+        >, object:rpclass::TCustomLoadedField<
           Name='TransactionNumber'
           DataTypeName='integer'
           DataLength=20
+        >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
+          Name='LTransactionType'
+          ClassTypeName='TransactionType'
+          FieldNames='TransactionCode;TransactionCode;Description'
         >}Mode=imSingleRow
       CreateInstanceOnNew=true
     >, object:rpclass::TPClassUIDef<

@@ -12,21 +12,44 @@ class fOtorisasi:
     self.uipData.BeginNo   = 1
     self.uipData.TransactionType = 1
     self.uipData.TransactionNumber = 100
+    self.uipData.IsAllTransactionType = 'T'
+    self.uipData.SearchCategory = 0
     self.FormContainer.Show()
 
+  def IsAllTransCodeClick(self,sender):
+    self.form.GetPanelByName('pBatch').GetControlByName('LTransactionType').enabled = not sender.Checked
+    
+    if sender.Checked :
+      self.uipData.Edit()
+      self.uipData.SetFieldValue('LTransactionType.TransactionCode','')
+      self.uipData.SetFieldValue('LTransactionType.Description','')
+    # endif
+      
+  def SearchCategoryChange(self,sender):
+    if sender.ItemIndex == 0 :
+      self.uipData.Edit()
+      self.uipData.SearchText = ''
+      
   def bViewClick(self, sender):
     self.form.CommitBuffer()
     self.uipTransaction.ClearData()
     uipData = self.uipData
-    Inputer = uipData.GetFieldValue('LUser.Id_User') or ''
-    NamaUser = uipData.GetFieldValue('LUser.Nama_User') or ''
     BeginDate = uipData.BeginDate or 0
     EndDate = uipData.EndDate or 0
     TransactionNumber = uipData.TransactionNumber or 0
-    TransactionType = uipData.TransactionType
+    TransactionCode = uipData.GetFieldValue('LTransactionType.TransactionCode') or ''
+    IsAllTransactionType = uipData.IsAllTransactionType
+    SearchCategory = uipData.SearchCategory or 0
+    SearchText = uipData.SearchText or ''
 
     if BeginDate == 0 or EndDate == 0:
-      raise '','Masukkan tanggal transaksi terlebih dahulu'
+      raise 'PERINGATAN','Masukkan tanggal transaksi terlebih dahulu'
+
+    if BeginDate > EndDate :
+      raise 'PERINGATAN','Tanggal awal tidak boleh lebih besar dari tanggal akhir'
+      
+    if IsAllTransactionType == 'F' and TransactionCode == '':
+      raise 'PERINGATAN','Jenis transaksi belum dipilih'
 
     if TransactionNumber == 0 :
       TransactionNumber = 100
@@ -34,11 +57,13 @@ class fOtorisasi:
       uipData.TransactionNumber = TransactionNumber
       
     ph = self.app.CreateValues(
-       ['Inputer', Inputer],
        ['BeginDate',BeginDate],
        ['EndDate',EndDate],
        ['TransactionNumber', TransactionNumber],
-       ['TransactionType',TransactionType],
+       ['TransactionCode',TransactionCode],
+       ['IsAllTransactionType',IsAllTransactionType],
+       ['SearchCategory',SearchCategory],
+       ['SearchText',SearchText],
        )
 
     self.FormObject.SetDataWithParameters(ph)
@@ -152,7 +177,7 @@ class fOtorisasi:
         raise 'PERINGATAN', st.Err_Message
       #-- if
 
-      sMessage = 'Transaksi dalam batch telah berhasil di otorisasi!'
+      sMessage = 'Transaksi yang dipilih telah berhasil di otorisasi!'
       if st.Is_Err == 2:
         sMessage += '\nTetapi gagal dijurnal : '
         sMessage += st.Err_Message

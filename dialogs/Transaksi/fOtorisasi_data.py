@@ -26,12 +26,14 @@ def FormSetDataEx(uideflist, parameter):
     rec = parameter.FirstRecord
     #batchId = rec.BatchId
     #beginNo = rec.BeginNo
-    Inputer = rec.Inputer
     BeginDate = rec.BeginDate
     EndDate = rec.EndDate
     LIMIT_TRANSAKSI = rec.TransactionNumber
-    TransactionType = rec.TransactionType
+    TransactionCode = rec.TransactionCode
+    IsAllTransactionType = rec.IsAllTransactionType
     BranchCode = config.SecurityContext.GetUserInfo()[4]
+    SearchText = rec.SearchText
+    SearchCategory = rec.SearchCategory
 
 #    oBatch = helper.GetObjectByNames('TransactionBatch',
 #        { 'Inputer' : Inputer,
@@ -45,15 +47,17 @@ def FormSetDataEx(uideflist, parameter):
     #uipData.BatchNo = oBatch.BatchNo
     #batchId = oBatch.BatchId
     AddParam = ''
-    if TransactionType == 1 :
-      AddParam = " and TransactionCode not in ('DD001','CA','EAR','CO') "
-    else:
-      AddParam = " and TransactionCode in ('DD001','CA','EAR','CO') "
+    if IsAllTransactionType == 'F' :
+      AddParam += " and TransactionCode = '%s' " % TransactionCode
     #end if
     
-    if Inputer != '' :
-      AddParam = " and inputer = '%s' " % Inputer
-
+    if SearchCategory != 0 :
+      SearchCategoryList = {
+        1 : 'TransactionNo',
+        2 : 'Description',
+      }
+      AddParam += " and upper(%s) LIKE '%%%s%%' " % (SearchCategoryList[SearchCategory],SearchText.upper())
+    
     res = config.CreateSQL("\
       select * from transaction a \
       where authstatus = 'F'\
