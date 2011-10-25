@@ -135,23 +135,23 @@ document <
               KeyOrDisplayName='TransactionCode'
               FinalDisplayFieldName='TransactionCode'
             >}DisplayedFields={object:rtf::FieldUIElmtSetting<
-              Name='LTransactionType.TransactionCode'
-              DataTypeName='VARCHAR'
-              DataLength=10
-              UsedAsDisplay=true
-              KeyOrDisplayName='TransactionCode'
-              FinalDisplayFieldName='TransactionCode'
-            >, object:rtf::FieldUIElmtSetting<
               Name='LTransactionType.Description'
               DataTypeName='VARCHAR'
               DataLength=50
               UsedAsDisplay=true
               KeyOrDisplayName='Description'
               FinalDisplayFieldName='Description'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LTransactionType.TransactionCode'
+              DataTypeName='VARCHAR'
+              DataLength=10
+              UsedAsDisplay=true
+              KeyOrDisplayName='TransactionCode'
+              FinalDisplayFieldName='TransactionCode'
             >}Restrictions=''
           OQLText=['select from TransactionType'#13#10,
-            '(TransactionCode,Description,self)'#13#10,
-            'then order by TransactionCode;']
+            '(Description,TransactionCode,self)'#13#10,
+            'then order by Description;']
           LookupOption=loCustomOQL
           FieldBaseName='LTransactionType'
         >, object:rtf::FieldUIElmtSetting<
@@ -205,14 +205,16 @@ document <
           Name='LTransactionType'
           Top=58
           Left=15
+          Width=208
+          Height=21
           ControlCaption='Jenis Transaksi'
-          LookupField='LTransactionType.Description'
-          DisplayLookupField=true
+          LookupField='LTransactionType.TransactionCode'
+          DisplayLookupField=false
         >, *object:rtf::DBCheckBox<
           Name='IsAllTransactionType'
           Layout=clNextSide
           Top=58
-          Left=395
+          Left=381
           Width=138
           Height=17
           Color=0
