@@ -318,7 +318,16 @@ class EmployeeCashAdvance(AccountReceivable):
     self.AccountNo = 'CA.' + str(aEmployeeId).zfill(7)
     #self.EmployeeId = str(aEmployeeId)
     self.EmployeeIdNumber = aEmployeeId
-
+  
+  # Fungsi in dipake sementara dan mengijinkan untuk saldo minus !!!!!
+  # Nanti perlu ditutup lagi  26 Oct 2011 by Wisnu 
+  def UpdateBalance(self, jenis, amount,isBalanceIgnored=0):
+    if jenis == 'D':
+      self.Balance += amount
+    else: # jenis == 'C'       
+      self.Balance -= amount
+    #self.UpdateDailyBalance(jenis,amount)
+    
   def GetAccountInterface(self):
     return self.Helper.GetObject('ParameterGlobal', 'GLICASHADV').Get()
 

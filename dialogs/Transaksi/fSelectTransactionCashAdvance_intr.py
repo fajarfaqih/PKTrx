@@ -58,6 +58,6 @@ class fSelectTransactionCashAdvance:
     
     if self.uipCATransactItem.ReturnStatus == 'T' : raise 'PERINGATAN','Transaksi yang dipilih telah memiliki LPJ'
     
-    if self.uipCATransactItem.AuthStatus == 'F' : raise 'PERINGATAN','Transaksi yang dipilih belum diotorisasi'
+    #if self.uipCATransactItem.AuthStatus == 'F' : raise 'PERINGATAN','Transaksi yang dipilih belum diotorisasi'
 
     self.FormObject.Close(1)
