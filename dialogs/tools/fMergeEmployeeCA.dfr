@@ -9,7 +9,7 @@ document <
   Caption='Form Koreksi Redundansi Uang Muka Karyawan'
   Left=50
   Top=50
-  Width=745
+  Width=785
   Height=193
   BeforeDeleteRow=''
   BeforeResultSent=''
@@ -34,8 +34,8 @@ document <
         >}Name='uipData2'
     >}Containers={object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=240
-      Height=96
+      Width=785
+      Height=193
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dualsplit2']
       InversedAlign=true
@@ -61,7 +61,7 @@ document <
     >, object:rtf::Panel<
       Elements={object:rtf::LinkUIElmtSetting<
           Name='LEmployeeCashAdvance'
-          ControlCaption='Akun Piutang'
+          ControlCaption='Akun Uang Muka'
           ClassTypeName='EmployeeCashAdvance'
           DisplayFields='AccountName;AccountNo;Balance'
           Restrictions='BranchCode|BranchCode'
@@ -80,7 +80,7 @@ document <
           DataTypeName='varchar'
           DataLength=30
         >}Name='pData1'
-      Width=345
+      Width=392
       Height=240
       Bordered=true
       UIPart=$UIPARTS['uipData1']
@@ -88,10 +88,12 @@ document <
           Name='LEmployeeCashAdvance'
           Top=25
           Left=8
-          ControlCaption='Akun Piutang'
-          FieldName='LEmployeeCashAdvance.AccountName'
+          Width=110
+          Height=21
+          ControlCaption='Akun Uang Muka'
+          FieldName='LEmployeeCashAdvance.AccountNo'
           DisplayFormat=''
-          LookupField='LEmployeeCashAdvance.AccountNo'
+          LookupField='LEmployeeCashAdvance.AccountName'
           DisplayLookupField=true
           DisplayLookupColor=-2147483624
           DisplayLookupWidth=150
@@ -125,7 +127,7 @@ document <
     >, object:rtf::Panel<
       Elements={object:rtf::LinkUIElmtSetting<
           Name='LEmployeeCashAdvance'
-          ControlCaption='Akun Piutang'
+          ControlCaption='Akun Uang Muka'
           ClassTypeName='EmployeeCashAdvance'
           DisplayFields='AccountName;AccountNo;Balance'
           Restrictions='BranchCode|BranchCode'
@@ -159,9 +161,15 @@ document <
           Name='LEmployeeCashAdvance'
           Top=25
           Left=8
-          ControlCaption='Akun Piutang'
-          LookupField='LEmployeeCashAdvance.AccountNo'
+          Width=110
+          Height=21
+          ControlCaption='Akun Uang Muka'
+          FieldName='LEmployeeCashAdvance.AccountNo'
+          DisplayFormat=''
+          LookupField='LEmployeeCashAdvance.AccountName'
           DisplayLookupField=true
+          DisplayLookupColor=-2147483624
+          DisplayLookupWidth=150
         >, object:rtf::Button<
           Name='button1'
           Layout=clAbsolute
@@ -191,8 +199,8 @@ document <
       Caption='Data 2'
     >, object:rtf::DualSplit<
       Name='dualsplit2'
-      Width=240
-      Height=96
+      Width=785
+      Height=149
       Container1=$CONTAINERS['pData1']
       Container2=$CONTAINERS['pData2']
       SplitDirection=sdrSplitLeftRight

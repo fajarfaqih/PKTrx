@@ -1,4 +1,4 @@
-class fMergeAccountReceivable:
+class fMergeEmployeeAccountReceivable:
   def __init__(self,formObj,parentForm):
     self.form = formObj
     self.app = formObj.ClientApplication
@@ -15,22 +15,25 @@ class fMergeAccountReceivable:
   def DoMerge(self,SourceData,ToData,sender):
     OPPOSITE_DATA = {'1' : '2' ,'2' : '1'}
     
-    AccountNo = self.uipData1.GetFieldValue('LAccountReceivable.AccountNo') or ''
-    if AccountNo == '' :
+    AccountNo1 = self.uipData1.GetFieldValue('LEmployeeAccountReceivable.AccountNo') or ''
+    if AccountNo1 == '' :
       raise 'Peringatan','Pilih Dahulu Akun Piutang Data 1'
 
-    AccountNo = self.uipData2.GetFieldValue('LAccountReceivable.AccountNo') or ''
-    if AccountNo == '' :
+    AccountNo2 = self.uipData2.GetFieldValue('LEmployeeAccountReceivable.AccountNo') or ''
+    if AccountNo2 == '' :
       raise 'Peringatan','Pilih Dahulu Akun Piutang Data 2'
 
+    if AccountNo1 == AccountNo2 :
+      raise 'Peringatan','Data 1 dan Data 2 adalah data yang sama.\nSilakan Periksa kembali data yang diinputkan'\
+      
     if self.app.ConfirmDialog(
          "Anda Yakin Akan Menggabung Data %s Ke Data %s " % (
            sender.ControlCaption, OPPOSITE_DATA[sender.ControlCaption]) ):
-      SourceAccountNo = SourceData.GetFieldValue('LAccountReceivable.AccountNo')
-      ToAccountNo = ToData.GetFieldValue('LAccountReceivable.AccountNo')
+      SourceAccountNo = SourceData.GetFieldValue('LEmployeeAccountReceivable.AccountNo')
+      ToAccountNo = ToData.GetFieldValue('LEmployeeAccountReceivable.AccountNo')
       
       rph = self.form.CallServerMethod(
-          "MergeAccountReceivable",
+          "MergeEmployeeAccountReceivable",
           self.app.CreateValues(
                ["SourceAccountNo",SourceAccountNo],
                ["ToAccountNo",ToAccountNo] )
@@ -40,5 +43,6 @@ class fMergeAccountReceivable:
       if status.IsErr :
         raise 'PERINGATAN',status.ErrMessage
 
+      self.app.ShowMessage('Data Telah Berhasil Digabungkan')
       sender.ExitAction = 1
 

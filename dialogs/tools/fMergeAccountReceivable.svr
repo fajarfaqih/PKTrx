@@ -12,27 +12,27 @@ document <
           DataTypeName='varchar'
           DataLength=20
         >, object:rpclass::TCustomLoadedField<
-          Name='LAccountReceivable.AccountNo'
+          Name='LEmployeeAccountReceivable.AccountNo'
           DataTypeName='VARCHAR'
           DataLength=30
         >, object:rpclass::TCustomLoadedField<
-          Name='LAccountReceivable.AccountName'
+          Name='LEmployeeAccountReceivable.AccountName'
           DataTypeName='VARCHAR'
           DataLength=50
         >, object:rpclass::TCustomLoadedField<
-          Name='LAccountReceivable.AccountNo'
+          Name='LEmployeeAccountReceivable.AccountNo'
           DataTypeName='VARCHAR'
           DataLength=30
         >, object:rpclass::TCustomLoadedField<
-          Name='LAccountReceivable.Balance'
+          Name='LEmployeeAccountReceivable.Balance'
           DataTypeName='DOUBLE'
         >, object:rpclass::TCustomLoadedField<
           Name='EmployeeName'
           DataTypeName='varchar'
           DataLength=30
         >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
-          Name='LAccountReceivable'
-          ClassTypeName='AccountReceivable'
+          Name='LEmployeeAccountReceivable'
+          ClassTypeName='EmployeeAccountReceivable'
           FieldNames='AccountNo;AccountName;AccountNo;Balance'
         >}Mode=imSingleRow
     >, object:rpclass::TPClassUIDef<
@@ -42,19 +42,19 @@ document <
           DataTypeName='varchar'
           DataLength=20
         >, object:rpclass::TCustomLoadedField<
-          Name='LAccountReceivable.AccountNo'
+          Name='LEmployeeAccountReceivable.AccountNo'
           DataTypeName='VARCHAR'
           DataLength=30
         >, object:rpclass::TCustomLoadedField<
-          Name='LAccountReceivable.AccountName'
+          Name='LEmployeeAccountReceivable.AccountName'
           DataTypeName='VARCHAR'
           DataLength=50
         >, object:rpclass::TCustomLoadedField<
-          Name='LAccountReceivable.AccountNo'
+          Name='LEmployeeAccountReceivable.AccountNo'
           DataTypeName='VARCHAR'
           DataLength=30
         >, object:rpclass::TCustomLoadedField<
-          Name='LAccountReceivable.Balance'
+          Name='LEmployeeAccountReceivable.Balance'
           DataTypeName='DOUBLE'
         >, object:rpclass::TCustomLoadedField<
           Name='EmployeeName'
@@ -65,8 +65,9 @@ document <
           DataTypeName='double'
           DataLength=20
         >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
-          Name='LAccountReceivable'
-          ClassTypeName='AccountReceivable'
+          Name='LEmployeeAccountReceivable'
+          ClassTypeName='EmployeeAccountReceivable'
           FieldNames='AccountNo;AccountName;AccountNo;Balance'
         >}Mode=imSingleRow
-    >}>
+    >}OnSetDataEx='FormSetDataEx'
+>

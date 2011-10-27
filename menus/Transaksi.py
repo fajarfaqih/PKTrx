@@ -380,6 +380,10 @@ def MergeCashAdvanceClick(menu,app):
   dlg = app.CreateForm('Tools/fMergeEmployeeCA', 'Tools/fMergeEmployeeCA', 0, None, None)
   dlg.Show()
 
+def MergeAccountReceivableClick(menu,app):
+  dlg = app.CreateForm('Tools/fMergeAccountReceivable', 'Tools/fMergeAccountReceivable', 0, None, None)
+  dlg.Show()
+
 def OnDepreciationClick(menuitem, app):
   #GetAccess(app, menu.Name)
   #if app.ConfirmDialog("Yakin proses penyusutan (Y/N) ?"):

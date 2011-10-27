@@ -43,5 +43,6 @@ class fMergeEmployeeCA:
       if status.IsErr :
         raise 'PERINGATAN',status.ErrMessage
 
+      self.app.ShowMessage('Data Telah Berhasil Digabungkan')
       sender.ExitAction = 1
 

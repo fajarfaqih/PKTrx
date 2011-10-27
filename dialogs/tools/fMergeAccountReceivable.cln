@@ -9,7 +9,7 @@ document <
   Caption='Form Koreksi Redundansi Piutang Karyawan'
   Left=50
   Top=50
-  Width=745
+  Width=873
   Height=193
   UIParts={object:rtf::PClassUI<
       Elements={object:rtf::FieldUIElmtSetting<
@@ -27,7 +27,7 @@ document <
         >}Name='uipData2'
     >}Containers={object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=745
+      Width=873
       Height=193
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dualsplit2']
@@ -36,6 +36,7 @@ document <
       Name='pAction'
       Width=320
       Height=43
+      Bordered=true
       Controls={object:rtf::Button<
           Name='bClose'
           Layout=clNewLine
@@ -52,44 +53,45 @@ document <
       RowControlGap=7
     >, object:rtf::Panel<
       Elements={object:rtf::LinkUIElmtSetting<
-          Name='LAccountReceivable'
+          Name='LEmployeeAccountReceivable'
           ControlCaption='Akun Piutang'
-          ClassTypeName='AccountReceivable'
+          ClassTypeName='EmployeeAccountReceivable'
           KeyFields={object:rtf::FieldUIElmtSetting<
-              Name='LAccountReceivable.AccountNo'
+              Name='LEmployeeAccountReceivable.AccountNo'
               DataTypeName='VARCHAR'
               DataLength=30
               UsedAsKey=true
               KeyOrDisplayName='AccountNo'
               FinalDisplayFieldName='AccountNo'
             >}DisplayedFields={object:rtf::FieldUIElmtSetting<
-              Name='LAccountReceivable.AccountName'
+              Name='LEmployeeAccountReceivable.AccountName'
               DataTypeName='VARCHAR'
               DataLength=50
               UsedAsDisplay=true
               KeyOrDisplayName='AccountName'
               FinalDisplayFieldName='AccountName'
             >, object:rtf::FieldUIElmtSetting<
-              Name='LAccountReceivable.AccountNo'
+              Name='LEmployeeAccountReceivable.AccountNo'
               DataTypeName='VARCHAR'
               DataLength=30
               UsedAsDisplay=true
               KeyOrDisplayName='AccountNo'
               FinalDisplayFieldName='AccountNo'
             >, object:rtf::FieldUIElmtSetting<
-              Name='LAccountReceivable.Balance'
+              Name='LEmployeeAccountReceivable.Balance'
               DataTypeName='DOUBLE'
               DataLength=0
               UsedAsDisplay=true
               KeyOrDisplayName='Balance'
               FinalDisplayFieldName='Balance'
-            >}Restrictions=''
-          OQLText=['select from AccountReceivable'#13#10,
+            >}Restrictions='BranchCode|BranchCode'
+          OQLText=['select from EmployeeAccountReceivable'#13#10,
+            '[BranchCode=:BranchCode]'#13#10,
             '( AccountName,'#13#10,
             '  AccountNo,'#13#10,
             '  Balance,'#13#10,
             '  self) then order by AccountName;']
-          FieldBaseName='LAccountReceivable'
+          FieldBaseName='LEmployeeAccountReceivable'
         >, object:rtf::FieldUIElmtSetting<
           Name='EmployeeName'
           Hidden=true
@@ -98,17 +100,20 @@ document <
           DataTypeName='varchar'
           DataLength=30
         >}Name='pData1'
-      Width=345
+      Width=410
       Height=240
+      Bordered=true
       UIPart=$UIPARTS['uipData1']
       Controls={*object:rtf::DBLookupEdit<
-          Name='LAccountReceivable'
-          Top=20
+          Name='LEmployeeAccountReceivable'
+          Top=25
           Left=8
+          Width=100
+          Height=21
           ControlCaption='Akun Piutang'
-          FieldName='LAccountReceivable.AccountName'
+          FieldName='LEmployeeAccountReceivable.AccountNo'
           DisplayFormat=''
-          LookupField='LAccountReceivable.AccountNo'
+          LookupField='LEmployeeAccountReceivable.AccountName'
           DisplayLookupField=true
           DisplayLookupColor=-2147483624
           DisplayLookupWidth=150
@@ -126,59 +131,60 @@ document <
         >, object:rtf::DBEdit<
           Name='dbBalance'
           Layout=clNewLine
-          Top=48
+          Top=53
           Left=8
           Color=-2147483624
           ControlCaption='Saldo'
-          FieldName='LAccountReceivable.Balance'
+          FieldName='LEmployeeAccountReceivable.Balance'
           DisplayFormat=''
         >}EqualCaptionWidth=100
       ControlLeftMargin=8
-      ControlTopMargin=20
+      ControlTopMargin=25
       DefaultControlHeight=21
       HorizontalControlGap=4
       RowControlGap=7
       Caption='Data 1'
     >, object:rtf::Panel<
       Elements={object:rtf::LinkUIElmtSetting<
-          Name='LAccountReceivable'
+          Name='LEmployeeAccountReceivable'
           ControlCaption='Akun Piutang'
-          ClassTypeName='AccountReceivable'
+          ClassTypeName='EmployeeAccountReceivable'
           KeyFields={object:rtf::FieldUIElmtSetting<
-              Name='LAccountReceivable.AccountNo'
+              Name='LEmployeeAccountReceivable.AccountNo'
               DataTypeName='VARCHAR'
               DataLength=30
               UsedAsKey=true
               KeyOrDisplayName='AccountNo'
               FinalDisplayFieldName='AccountNo'
             >}DisplayedFields={object:rtf::FieldUIElmtSetting<
-              Name='LAccountReceivable.AccountName'
+              Name='LEmployeeAccountReceivable.AccountName'
               DataTypeName='VARCHAR'
               DataLength=50
               UsedAsDisplay=true
               KeyOrDisplayName='AccountName'
               FinalDisplayFieldName='AccountName'
             >, object:rtf::FieldUIElmtSetting<
-              Name='LAccountReceivable.AccountNo'
+              Name='LEmployeeAccountReceivable.AccountNo'
               DataTypeName='VARCHAR'
               DataLength=30
               UsedAsDisplay=true
               KeyOrDisplayName='AccountNo'
               FinalDisplayFieldName='AccountNo'
             >, object:rtf::FieldUIElmtSetting<
-              Name='LAccountReceivable.Balance'
+              Name='LEmployeeAccountReceivable.Balance'
               DataTypeName='DOUBLE'
               DataLength=0
               UsedAsDisplay=true
               KeyOrDisplayName='Balance'
               FinalDisplayFieldName='Balance'
-            >}Restrictions=''
-          OQLText=['select from AccountReceivable'#13#10,
+            >}Restrictions='BranchCode|BranchCode'
+          OQLText=['select from EmployeeAccountReceivable'#13#10,
+            '[BranchCode=:BranchCode]'#13#10,
             '( AccountName,'#13#10,
             '  AccountNo,'#13#10,
             '  Balance,'#13#10,
             '  self) then order by AccountName;']
-          FieldBaseName='LAccountReceivable'
+          FieldBaseName='LEmployeeAccountReceivable'
         >, object:rtf::FieldUIElmtSetting<
           Name='EmployeeName'
           Hidden=true
@@ -196,14 +202,21 @@ document <
         >}Name='pData2'
       Width=377
       Height=240
+      Bordered=true
       UIPart=$UIPARTS['uipData2']
       Controls={*object:rtf::DBLookupEdit<
-          Name='LAccountReceivable'
-          Top=20
+          Name='LEmployeeAccountReceivable'
+          Top=25
           Left=8
+          Width=100
+          Height=21
           ControlCaption='Akun Piutang'
-          LookupField='LAccountReceivable.AccountNo'
+          FieldName='LEmployeeAccountReceivable.AccountNo'
+          DisplayFormat=''
+          LookupField='LEmployeeAccountReceivable.AccountName'
           DisplayLookupField=true
+          DisplayLookupColor=-2147483624
+          DisplayLookupWidth=150
         >, object:rtf::Button<
           Name='button1'
           Layout=clAbsolute
@@ -218,25 +231,25 @@ document <
         >, object:rtf::DBEdit<
           Name='dbBalance'
           Layout=clNewLine
-          Top=48
+          Top=53
           Left=8
           Color=-2147483624
           ControlCaption='Saldo'
-          FieldName='LAccountReceivable.Balance'
+          FieldName='LEmployeeAccountReceivable.Balance'
           DisplayFormat=''
         >}EqualCaptionWidth=100
       ControlLeftMargin=8
-      ControlTopMargin=20
+      ControlTopMargin=25
       DefaultControlHeight=21
       HorizontalControlGap=4
       RowControlGap=7
       Caption='Data 2'
     >, object:rtf::DualSplit<
       Name='dualsplit2'
-      Width=745
+      Width=873
       Height=149
       Container1=$CONTAINERS['pData1']
       Container2=$CONTAINERS['pData2']
       SplitDirection=sdrSplitLeftRight
-    >}FormClassName='fMergeAccountReceivable'
+    >}FormClassName='fMergeEmployeeAccountReceivable'
 >

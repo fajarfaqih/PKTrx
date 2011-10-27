@@ -604,9 +604,17 @@ document <
           OnClick='SaldoAwalClick'
           AllowedGroups='ADM;SPV'
         >, object:rmn::MenuItem<
+          Caption='-'
+          AllowedGroups='HIDDEN'
+        >, object:rmn::MenuItem<
           Name='TR0037B'
           Caption='Koreksi Redundansi Uang Muka Karyawan'
           OnClick='MergeCashAdvanceClick'
+          AllowedGroups='ADM;SPV'
+        >, object:rmn::MenuItem<
+          Name='TR0037B'
+          Caption='Koreksi Redundansi Piutang Karyawan'
+          OnClick='MergeAccountReceivableClick'
           AllowedGroups='ADM;SPV'
         >, object:rmn::MenuItem<
           Caption='Tes'

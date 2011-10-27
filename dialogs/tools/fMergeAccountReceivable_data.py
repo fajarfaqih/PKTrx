@@ -9,7 +9,7 @@ def FormSetDataEx(uideflist,params):
   recData2 = uideflist.uipData2.Dataset.AddRecord()
   recData2.BranchCode = config.SecurityContext.GetUserInfo()[4]
   
-def MergeAccountReceivable(config,params,returns):
+def MergeEmployeeAccountReceivable(config,params,returns):
   status = returns.CreateValues(
     ['IsErr',0],
     ['ErrMessage','']
@@ -21,7 +21,31 @@ def MergeAccountReceivable(config,params,returns):
     
     helper = phelper.PObjectHelper(config)
     
-    oSourceAR = helper.GetObject("EmployeeCashAdvance")
+    SourceAccountNo = param.SourceAccountNo
+    ToAccountNo = param.ToAccountNo
+
+    oSourceEmployeeCA = helper.GetObject("EmployeeAccountReceivable",param.SourceAccountNo)
+    oEmployee = helper.GetObject("VEmployee",oSourceEmployeeCA.EmployeeIdNumber)
+
+    """
+    if not oEmployee.isnull:
+      message = "Proses tidak dapat dilanjutkan karena data karyawan yang akan digabungkan masih ada pada database php."
+      message += "\nSilahkan hubungi administrator database untuk menghapus atau menggabungkan data karyawan dengan data berikut :"
+      message += "\n- ID\t: %d" % oSourceEmployeeCA.EmployeeIdNumber
+      message += "\n- Nama\t: %s" % oEmployee.EmployeeName
+      raise 'PERINGATAN', message"""
+    
+    oToEmployeeCA = helper.GetObject("EmployeeAccountReceivable",param.ToAccountNo)
+    
+    sUpdate = "update accounttransactionitem set accountno='%s' where accountno='%s' " % (ToAccountNo,SourceAccountNo)
+    sqlRes = config.ExecSQL(sUpdate)
+    
+    if sqlRes == -9999:
+      raise "SQL Error", config.GetDBConnErrorInfo()
+
+    oToEmployeeCA.Balance += oSourceEmployeeCA.Balance
+    
+    oSourceEmployeeCA.Delete()
 
     config.Commit()
   except:
