@@ -9,6 +9,12 @@ def FormSetDataEx(uideflist,params):
   recData2 = uideflist.uipData2.Dataset.AddRecord()
   recData2.BranchCode = config.SecurityContext.GetUserInfo()[4]
   
+def ExecuteSQL(config,sSQL):
+  sqlRes = config.ExecSQL(sSQL)
+
+  if sqlRes == -9999:
+    raise "SQL Error", config.GetDBConnErrorInfo()
+
 def MergeEmployeeAccountReceivable(config,params,returns):
   status = returns.CreateValues(
     ['IsErr',0],
@@ -28,6 +34,7 @@ def MergeEmployeeAccountReceivable(config,params,returns):
     oEmployee = helper.GetObject("VEmployee",oSourceEmployeeCA.EmployeeIdNumber)
 
 
+
     if not oEmployee.isnull:
       message = "Proses tidak dapat dilanjutkan karena data karyawan yang akan digabungkan masih ada pada database php."
       message += "\nSilahkan hubungi administrator database untuk menghapus atau menggabungkan data karyawan dengan data berikut :"
@@ -37,11 +44,14 @@ def MergeEmployeeAccountReceivable(config,params,returns):
     
     oToEmployeeCA = helper.GetObject("EmployeeAccountReceivable",param.ToAccountNo)
     
+    sBackup = "\
+         insert into logmergeaccount (transactionitemid,oldaccount,newaccount,mergedate) \
+         select transactionitemid,accountno,'%s','%s' \
+         from accounttransactionitem where accountno='%s' " % ( ToAccountNo,config.FormatDateTime('yyyy-mm-dd',config.Now()),SourceAccountNo)
+    ExecuteSQL(config,sBackup)
+
     sUpdate = "update accounttransactionitem set accountno='%s' where accountno='%s' " % (ToAccountNo,SourceAccountNo)
-    sqlRes = config.ExecSQL(sUpdate)
-    
-    if sqlRes == -9999:
-      raise "SQL Error", config.GetDBConnErrorInfo()
+    ExecuteSQL(config,sUpdate)
 
     oToEmployeeCA.Balance += oSourceEmployeeCA.Balance
     

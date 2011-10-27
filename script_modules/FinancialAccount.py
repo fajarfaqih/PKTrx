@@ -263,6 +263,7 @@ class AccountReceivable(FinancialAccount):
     if sqlRes == -9999:
       raise "SQL Error", config.GetDBConnErrorInfo()
     
+ 
   def UpdateBalance(self, jenis, amount,isBalanceIgnored=0):
     if jenis == 'D':
       self.Balance += amount
