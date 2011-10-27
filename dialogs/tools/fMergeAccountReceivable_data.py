@@ -27,13 +27,13 @@ def MergeEmployeeAccountReceivable(config,params,returns):
     oSourceEmployeeCA = helper.GetObject("EmployeeAccountReceivable",param.SourceAccountNo)
     oEmployee = helper.GetObject("VEmployee",oSourceEmployeeCA.EmployeeIdNumber)
 
-    """
+
     if not oEmployee.isnull:
       message = "Proses tidak dapat dilanjutkan karena data karyawan yang akan digabungkan masih ada pada database php."
       message += "\nSilahkan hubungi administrator database untuk menghapus atau menggabungkan data karyawan dengan data berikut :"
       message += "\n- ID\t: %d" % oSourceEmployeeCA.EmployeeIdNumber
       message += "\n- Nama\t: %s" % oEmployee.EmployeeName
-      raise 'PERINGATAN', message"""
+      raise 'PERINGATAN', message
     
     oToEmployeeCA = helper.GetObject("EmployeeAccountReceivable",param.ToAccountNo)
     
