@@ -376,6 +376,10 @@ def SaldoAwalClick(menu, app):
   dlg = app.CreateForm('Tools/fSaldoAwal', 'Tools/fSaldoAwal', 0, None, None)
   dlg.Show()
 
+def MergeCashAdvanceClick(menu,app):
+  dlg = app.CreateForm('Tools/fMergeEmployeeCA', 'Tools/fMergeEmployeeCA', 0, None, None)
+  dlg.Show()
+
 def OnDepreciationClick(menuitem, app):
   #GetAccess(app, menu.Name)
   #if app.ConfirmDialog("Yakin proses penyusutan (Y/N) ?"):

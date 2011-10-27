@@ -132,4 +132,11 @@ class Account(pobject.PObject):
 class Branch(pobject.PObject):
   # static variable
   pobject_classname = 'Branch'
-  pobject_keys = ['BranchCode']  
+  pobject_keys = ['BranchCode']
+  
+class VEmployee(pobject.PObject):
+  # static variable
+  pobject_classname = 'VEmployee'
+  pobject_keys = ['EmployeeId']
+  
+    

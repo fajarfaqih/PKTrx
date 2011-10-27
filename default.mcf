@@ -115,6 +115,7 @@ ExternObjectAccess=mextern
 ExtDonor=mextern
 Account=mextern
 Branch=mextern
+VEmployee=mextern
 
 ExternalDebtor=mextdebtor
 PrintHelper=mclass

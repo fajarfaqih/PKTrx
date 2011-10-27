@@ -97,7 +97,7 @@ document <
           StringTag='parameter/fDaftarBudgetItem'
         >, object:rmn::MenuItem<
           Caption='-'
-          AllowedGroups='ADM'          
+          AllowedGroups='ADM'
         >, object:rmn::MenuItem<
           Name='TR0010'
           Caption='Daftar Kategori Aset'
@@ -118,12 +118,12 @@ document <
           StringTag='parameter/fDaftarCPIACategory'
         >, object:rmn::MenuItem<
           Caption='-'
-          AllowedGroups='ADM'          
+          AllowedGroups='ADM'
         >, object:rmn::MenuItem<
           Name='TR0010'
           Caption='Daftar Kategori Investasi'
           OnClick='ShowQueryClick'
-          AllowedGroups='ADM'          
+          AllowedGroups='ADM'
           StringTag='parameter/fDaftarInvestmentCategory'
         >, object:rmn::MenuItem<
           Name='TR0010'
@@ -599,18 +599,23 @@ document <
           OnClick='GenerateJournalClick'
           AllowedGroups='ADM;SPV'
         >, object:rmn::MenuItem<
-          Caption='Tes'
-          OnClick='TesClick'
-          AllowedUsers='SYSTEM'
-          StringTag='test/fBranch'
-        >, object:rmn::MenuItem<
-          Caption='Script Test'
-          OnClick='ScriptTestClick'
-        >, object:rmn::MenuItem<
           Name='TR0037B'
           Caption='Saldo Awal'
           OnClick='SaldoAwalClick'
           AllowedGroups='ADM;SPV'
+        >, object:rmn::MenuItem<
+          Name='TR0037B'
+          Caption='Koreksi Redundansi Uang Muka Karyawan'
+          OnClick='MergeCashAdvanceClick'
+          AllowedGroups='ADM;SPV'
+        >, object:rmn::MenuItem<
+          Caption='Tes'
+          OnClick='TesClick'
+          MenuItems={object:rmn::MenuItem<
+              Caption='Script Test'
+              OnClick='ScriptTestClick'
+            >}AllowedUsers='SYSTEM'
+          StringTag='test/fBranch'
         >}AllowedGroups='ADM;SPV'
     >, object:rmn::MenuItem<
       Caption='Batch Process'

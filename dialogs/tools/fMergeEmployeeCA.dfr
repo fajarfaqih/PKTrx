@@ -1,0 +1,200 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Form Koreksi Redundansi Uang Muka Karyawan'
+  Left=50
+  Top=50
+  Width=745
+  Height=193
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx='FormSetDataEx'
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          Hidden=true
+        >}Name='uipData1'
+    >, object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          Hidden=true
+        >}Name='uipData2'
+    >}Containers={object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=240
+      Height=96
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['dualsplit2']
+      InversedAlign=true
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=43
+      Bordered=true
+      Controls={object:rtf::Button<
+          Name='bClose'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='Tutup'
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Elements={object:rtf::LinkUIElmtSetting<
+          Name='LEmployeeCashAdvance'
+          ControlCaption='Akun Piutang'
+          ClassTypeName='EmployeeCashAdvance'
+          DisplayFields='AccountName;AccountNo;Balance'
+          Restrictions='BranchCode|BranchCode'
+          OQLText=['select from EmployeeCashAdvance'#13#10,
+            '[BranchCode=:BranchCode]'#13#10,
+            '( AccountName,'#13#10,
+            '  AccountNo,'#13#10,
+            '  Balance,'#13#10,
+            '  self) then order by AccountName;']
+          FieldBaseName='LEmployeeCashAdvance'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='EmployeeName'
+          Hidden=true
+          ReadOnlyControl=true
+          ControlCaption='Nama Karyawan'
+          DataTypeName='varchar'
+          DataLength=30
+        >}Name='pData1'
+      Width=345
+      Height=240
+      Bordered=true
+      UIPart=$UIPARTS['uipData1']
+      Controls={*object:rtf::DBLookupEdit<
+          Name='LEmployeeCashAdvance'
+          Top=25
+          Left=8
+          ControlCaption='Akun Piutang'
+          FieldName='LEmployeeCashAdvance.AccountName'
+          DisplayFormat=''
+          LookupField='LEmployeeCashAdvance.AccountNo'
+          DisplayLookupField=true
+          DisplayLookupColor=-2147483624
+          DisplayLookupWidth=150
+        >, object:rtf::Button<
+          Name='button1'
+          Layout=clAbsolute
+          Top=96
+          Left=104
+          Width=155
+          Height=25
+          Color=0
+          ControlCaption='1'
+          Caption='Satukan Dengan Data 2'
+          OnClick='Merge1Click'
+        >, object:rtf::DBEdit<
+          Name='dbBalance'
+          Layout=clNewLine
+          Top=53
+          Left=8
+          Color=-2147483624
+          ControlCaption='Saldo'
+          FieldName='LEmployeeCashAdvance.Balance'
+          DisplayFormat=''
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=25
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='Data 1'
+    >, object:rtf::Panel<
+      Elements={object:rtf::LinkUIElmtSetting<
+          Name='LEmployeeCashAdvance'
+          ControlCaption='Akun Piutang'
+          ClassTypeName='EmployeeCashAdvance'
+          DisplayFields='AccountName;AccountNo;Balance'
+          Restrictions='BranchCode|BranchCode'
+          OQLText=['select from EmployeeCashAdvance'#13#10,
+            '[BranchCode=:BranchCode]'#13#10,
+            '( AccountName,'#13#10,
+            '  AccountNo,'#13#10,
+            '  Balance,'#13#10,
+            '  self) then order by AccountName;']
+          FieldBaseName='LEmployeeCashAdvance'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='EmployeeName'
+          Hidden=true
+          ReadOnlyControl=true
+          ControlCaption='Nama Karyawan'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Balance'
+          Hidden=true
+          ReadOnlyControl=true
+          ControlCaption='Saldo Piutang'
+          DataTypeName='double'
+          DataLength=20
+        >}Name='pData2'
+      Width=377
+      Height=240
+      Bordered=true
+      UIPart=$UIPARTS['uipData2']
+      Controls={*object:rtf::DBLookupEdit<
+          Name='LEmployeeCashAdvance'
+          Top=25
+          Left=8
+          ControlCaption='Akun Piutang'
+          LookupField='LEmployeeCashAdvance.AccountNo'
+          DisplayLookupField=true
+        >, object:rtf::Button<
+          Name='button1'
+          Layout=clAbsolute
+          Top=96
+          Left=112
+          Width=155
+          Height=25
+          Color=0
+          ControlCaption='2'
+          Caption='Satukan Dengan Data 1'
+          OnClick='Merge2Click'
+        >, object:rtf::DBEdit<
+          Name='dbBalance'
+          Layout=clNewLine
+          Top=53
+          Left=8
+          Color=-2147483624
+          ControlCaption='Saldo'
+          FieldName='LEmployeeCashAdvance.Balance'
+          DisplayFormat=''
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=25
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='Data 2'
+    >, object:rtf::DualSplit<
+      Name='dualsplit2'
+      Width=240
+      Height=96
+      Container1=$CONTAINERS['pData1']
+      Container2=$CONTAINERS['pData2']
+      SplitDirection=sdrSplitLeftRight
+    >}FormClassName='fMergeEmployeeCA'
+>

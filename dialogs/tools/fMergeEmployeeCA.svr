@@ -1,0 +1,73 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{03AB2DCD-D5DA-4DD5-B07D-CD15AE22527E}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rpclass::TPClassUIDefList<
+  UIDefs={object:rpclass::TPClassUIDef<
+      Name='uipData1'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='BranchCode'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LEmployeeCashAdvance.AccountNo'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='LEmployeeCashAdvance.AccountName'
+          DataTypeName='VARCHAR'
+          DataLength=50
+        >, object:rpclass::TCustomLoadedField<
+          Name='LEmployeeCashAdvance.AccountNo'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='LEmployeeCashAdvance.Balance'
+          DataTypeName='DOUBLE'
+        >, object:rpclass::TCustomLoadedField<
+          Name='EmployeeName'
+          DataTypeName='varchar'
+          DataLength=30
+        >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
+          Name='LEmployeeCashAdvance'
+          ClassTypeName='EmployeeCashAdvance'
+          FieldNames='AccountNo;AccountName;AccountNo;Balance'
+        >}Mode=imSingleRow
+    >, object:rpclass::TPClassUIDef<
+      Name='uipData2'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='BranchCode'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LEmployeeCashAdvance.AccountNo'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='LEmployeeCashAdvance.AccountName'
+          DataTypeName='VARCHAR'
+          DataLength=50
+        >, object:rpclass::TCustomLoadedField<
+          Name='LEmployeeCashAdvance.AccountNo'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='LEmployeeCashAdvance.Balance'
+          DataTypeName='DOUBLE'
+        >, object:rpclass::TCustomLoadedField<
+          Name='EmployeeName'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='Balance'
+          DataTypeName='double'
+          DataLength=20
+        >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
+          Name='LEmployeeCashAdvance'
+          ClassTypeName='EmployeeCashAdvance'
+          FieldNames='AccountNo;AccountName;AccountNo;Balance'
+        >}Mode=imSingleRow
+    >}OnSetDataEx='FormSetDataEx'
+>
