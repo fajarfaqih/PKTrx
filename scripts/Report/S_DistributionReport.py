@@ -199,7 +199,7 @@ def GetData(config,param):
         and a.AccountNo = f.AccountNo \
         and f.AccountNo = p.AccountNo \
         and b.branchcode = i.branchcode \
-        and t.TransactionCode in ('DD001','CAR','EAR','FA') \
+        and t.TransactionCode in ('DD001','CAR','EAR','FA','GT') \
         and t.ActualDate >= '%(BDATE)s' \
         and t.ActualDate <= '%(EDATE)s' \
         and i.MutationType = 'D' \

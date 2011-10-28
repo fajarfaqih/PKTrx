@@ -128,7 +128,7 @@ def GetReportData(config,param):
           and a.AccountNo = f.AccountNo \
           and a.DonorId = d.id \
           and b.branchcode = i.branchcode \
-          and t.TransactionCode in ('SD001','INVP')  \
+          and t.TransactionCode in ('SD001','INVP','GT')  \
           and t.ActualDate >= '%(BDATE)s' \
           and t.ActualDate <= '%(EDATE)s' \
           and i.MutationType='C' \
@@ -495,7 +495,7 @@ def FundEntityBalance(config,Branch=None,Date=None, FundEntity=1,addFilter=''):
       and t.actualdate < '%(DATE)s' \
       and i.mutationtype = 'C' \
       and b.branchcode = i.branchcode \
-      and t.TransactionCode in ('SD001','INVP')  \
+      and t.TransactionCode in ('SD001','INVP','GT')  \
   " % param 
   
   res = config.CreateSQL(sSQL + addFilter).rawresult
