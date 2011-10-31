@@ -36,6 +36,7 @@ class fCollectionReport:
 
 
     uipFilter.IsAllBranch = 'F'
+    uipFilter.IsIncludeChildBranch = 'F'
     uipFilter.IsAllDonor = 'T'
     uipFilter.IsAllChannel = 'T'
     uipFilter.IsAllProgram = 'T'
@@ -83,7 +84,7 @@ class fCollectionReport:
   def CheckClick(self,sender):
     form = self.form
     CtlNames = {
-      'IsAllBranch' : ['LBranch'],
+      'IsAllBranch' : ['LBranch','IsIncludeChildBranch'],
       'IsAllDonor' : ['NoDonor','NamaDonor','bSelectDonor'],
       'IsAllChannel' : ['ChannelCode'],
       'IsAllProgram' : ['ProgramName','bSelectProgram'],

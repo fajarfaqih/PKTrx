@@ -48,6 +48,10 @@ document <
           DataTypeName='VARCHAR'
           DataLength=30
         >, object:rpclass::TCustomLoadedField<
+          Name='IsIncludeChildBranch'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
           Name='IdDonor'
           DataTypeName='integer'
           DataLength=20
@@ -76,11 +80,11 @@ document <
         >, object:rpclass::TCustomLoadedField<
           Name='LVolunteer.VolunteerId'
           DataTypeName='VARCHAR'
-          DataLength=10
+          DataLength=20
         >, object:rpclass::TCustomLoadedField<
           Name='LVolunteer.VolunteerId'
           DataTypeName='VARCHAR'
-          DataLength=10
+          DataLength=20
         >, object:rpclass::TCustomLoadedField<
           Name='LVolunteer.VolunteerName'
           DataTypeName='VARCHAR'

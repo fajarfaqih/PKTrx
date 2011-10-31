@@ -9,7 +9,7 @@ document <
   Caption='Laporan Penghimpunan Dana'
   Left=50
   Top=50
-  Width=625
+  Width=793
   Height=329
   BeforeDeleteRow=''
   BeforeResultSent=''
@@ -53,8 +53,8 @@ document <
       PostLinkValues=true
     >}Containers={object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=625
-      Height=329
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dualsplit2']
       InversedAlign=true
@@ -131,8 +131,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit2'
-      Width=625
-      Height=286
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pFilter']
       Container2=$CONTAINERS['dualsplit3']
     >, object:rtf::Panel<
@@ -150,6 +150,14 @@ document <
             ') then order by BranchName;']
           LookupOption=loCustomOQL
           FieldBaseName='LBranch'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='IsIncludeChildBranch'
+          ControlCaption='Termasuk KCP di Bawahnya'
+          DataTypeName='varchar'
+          DataLength=20
+          EnumeratedValues=['F=False'#13#10,
+            'T=True'#13#10]
+          GenerateCheckBoxForEnum=true
         >, object:rtf::FieldUIElmtSetting<
           Name='IdDonor'
           Hidden=true
@@ -235,7 +243,7 @@ document <
           LookupOption=loCustomOQL
           FieldBaseName='LMarketer'
         >}Name='pFilter3'
-      Width=505
+      Width=577
       Height=225
       UIPart=$UIPARTS['uipFilter']
       Controls={*object:rtf::DBLookupEdit<
@@ -243,8 +251,23 @@ document <
           Top=10
           Left=8
           ControlCaption='Cabang / Capem'
+          FieldName='LBranch.BranchCode'
+          DisplayFormat=''
           LookupField='LBranch.BranchName'
           DisplayLookupField=true
+          DisplayLookupColor=-2147483624
+          DisplayLookupWidth=168
+        >, *object:rtf::DBCheckBox<
+          Name='IsIncludeChildBranch'
+          Layout=clNextSide
+          Top=10
+          Left=356
+          Width=161
+          Height=17
+          Color=0
+          ControlCaption='Termasuk KCP di Bawahnya'
+          ValueChecked='T'
+          ValueUnchecked='F'
         >, *object:rtf::DBEdit<
           Name='NamaDonor'
           Layout=clNextSide
@@ -254,7 +277,7 @@ document <
           Height=21
           Color=-2147483624
           ControlCaption=''
-          LayoutOrder=2
+          LayoutOrder=3
           CaptionWidth=2
           ReadOnly=true
         >, *object:rtf::DBComboBox<
@@ -263,7 +286,7 @@ document <
           Left=8
           Color=0
           ControlCaption='Jenis Pembayaran'
-          LayoutOrder=4
+          LayoutOrder=5
         >, *object:rtf::DBEdit<
           Name='ProgramName'
           Top=94
@@ -272,7 +295,7 @@ document <
           Height=21
           Color=-2147483624
           ControlCaption='Program'
-          LayoutOrder=5
+          LayoutOrder=6
           ReadOnly=true
         >, *object:rtf::DBLookupEdit<
           Name='LVolunteer'
@@ -299,7 +322,7 @@ document <
           Height=21
           Color=-2147483624
           ControlCaption='Donatur/Sponsor'
-          LayoutOrder=1
+          LayoutOrder=2
           ReadOnly=true
         >, *object:rtf::DBLookupEdit<
           Name='LMarketer'
@@ -320,7 +343,7 @@ document <
           Height=21
           Color=0
           ControlCaption=''
-          LayoutOrder=3
+          LayoutOrder=4
           Caption='Pilih Donatur'
           OnClick='bPilihDonor'
         >, object:rtf::Button<
@@ -332,7 +355,7 @@ document <
           Height=21
           Color=0
           ControlCaption=''
-          LayoutOrder=6
+          LayoutOrder=7
           Caption='Pilih Program'
           OnClick='bSelectProgram'
         >}EqualCaptionWidth=100
@@ -491,8 +514,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit3'
-      Width=625
-      Height=236
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pFilter2']
       Container2=$CONTAINERS['pFilter3']
       SplitDirection=sdrSplitLeftRight

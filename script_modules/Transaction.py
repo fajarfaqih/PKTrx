@@ -269,6 +269,8 @@ class Transaction(pobject.PObject):
 
   def OnDelete(self):
     helper = self.Helper    
+    """
+    # Sementara Dinonaktifkan karena belum bisa menangkap message raise dari database
     
     # Delete Inbox Transaction
     oInbox = helper.GetObjectByNames('InboxTransaction',{'TransactionId':self.TransactionId})
@@ -276,7 +278,7 @@ class Transaction(pobject.PObject):
       oInbox.Delete()
     
     # Delete Detail Transaction
-    self.DeleteTransactionItem()
+    self.DeleteTransactionItem()"""
     
   def CancelTransaction(self):
     #self.AuthStatus = 'F'

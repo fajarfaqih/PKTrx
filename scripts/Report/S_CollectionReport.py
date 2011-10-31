@@ -55,14 +55,25 @@ def GetReportData(config,param):
       addFilter2 += " and false"
 
     if param.IsAllBranch == 'F' :
-      addFilter += " and i.BranchCode='%s' " % aBranchCode
-      addFilter2 += " and i.BranchCode='%s' " % aBranchCode
+      if param.IsIncludeChildBranch == 'F' :
+        # jika hanya menampilkan cabang tanpa anak di bawahnya
+        SQLParam = " and i.BranchCode='%s' " % aBranchCode
+        addFilter += SQLParam 
+        addFilter2 += SQLParam
+      else :
+        # jika inging menampilkan cabang termasuk anak di bawahnya
+        SQLParam = " and ( b.BranchCode='%(BranchCode)s'  or b.MasterBranchCode='%(BranchCode)s' ) " % {'BranchCode' : aBranchCode}  
+        addFilter += SQLParam
+        addFilter2 += SQLParam
+      # end if  
     else : # Show All Branch
       if not IsHeadOffice :
+        # Jika bukan kantor pusat maka jika yang dipilih adalah seluruh cabang maka yang tampil tetap
+        # cabang itu sendiri dan anak2nya 
         UserBranchCode = config.SecurityContext.GetUserInfo()[4]
-        SQLParam = "and ( b.BranchCode='%(BranchCode)s'  or b.MasterBranchCode='%(BranchCode)s' ) " 
-        addFilter += SQLParam % {'BranchCode' : UserBranchCode}
-        addFilter2 += SQLParam % {'BranchCode' : UserBranchCode}        
+        SQLParam = "and ( b.BranchCode='%(BranchCode)s'  or b.MasterBranchCode='%(BranchCode)s' ) " % {'BranchCode' : UserBranchCode} 
+        addFilter += SQLParam 
+        addFilter2 += SQLParam
       
     if param.IsAllChannel == 'F' :
       addFilter += " and t.ChannelCode='%s' " % param.ChannelCode
@@ -376,7 +387,9 @@ def GetDataTransaction(config,parameters,returns):
       BranchCode = param.GetFieldByName('LBranch.BranchCode') #config.SecurityContext.GetUserInfo()[4]
       CabangInfo = corporate.GetCabangInfo(BranchCode)
       Cabang = '%s - %s' % (BranchCode,CabangInfo.Nama_Cabang)
-  
+      if param.IsIncludeChildBranch == 'T' :
+        Cabang += " dan KCP"
+      
     aBeginDate = param.BeginDate
     aEndDate = param.EndDate
       
