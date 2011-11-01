@@ -84,7 +84,7 @@ def GetHistTransaction(config, params, returns):
 
   qParam['ADDFILTER'] = AddFilter
   
-  sSQL = " select t.TransactionDate, t.ReferenceNo, a.account_code as AccountNo ,a.account_name as AccountName, \
+  sSQL = " select t.ActualDate, t.ReferenceNo, a.account_code as AccountNo ,a.account_name as AccountName, \
         t.Description, i.Amount, t.Inputer,t.donorname, \
         t.AuthStatus, t.TransactionId, b.branchname, \
         (case when t.ChannelCode = 'R' then 'Kas Cabang' \
@@ -99,17 +99,17 @@ def GetHistTransaction(config, params, returns):
         and t.transactioncode = 'CO' \
         and i.mutationtype='D' \
         and a.account_code = refaccountno \
-        and t.TransactionDate >= '%(BDATE)s' \
-        and t.TransactionDate <= '%(EDATE)s' \
+        and t.ActualDate >= '%(BDATE)s' \
+        and t.ActualDate <= '%(EDATE)s' \
         %(ADDFILTER)s\
-        order by TransactionDate, TransactionId " % qParam
+        order by ActualDate, TransactionId " % qParam
         
   data  = config.CreateSQL(sSQL).rawresult
 
   TotalAmount = 0.0
   while not data.Eof:
     recData = dsHist.AddRecord()
-    aDate = data.TransactionDate
+    aDate = data.ActualDate
     recData.TransactionDateStr = '%2s-%2s-%4s' % (str(aDate[2]).zfill(2),
                                                str(aDate[1]).zfill(2),
                                                str(aDate[0]))
