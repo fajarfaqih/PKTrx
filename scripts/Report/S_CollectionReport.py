@@ -118,7 +118,7 @@ def GetReportData(config,param):
     sSQL = "\
         select t.ActualDate, t.ReferenceNo, f.AccountName, \
           t.Description, i.Amount, i.Rate, i.Ekuivalenamount,i.CurrencyCode, t.Inputer, \
-          t.AuthStatus, t.TransactionId, t.donorname, \
+          t.AuthStatus, t.TransactionId, t.donorname, d.full_name, \
           (case when t.ChannelCode = 'R' then 'Kas Cabang' \
                 when t.ChannelCode = 'P' then 'Kas Kecil' \
                 when t.ChannelCode = 'A' then 'Bank' else 'Aktiva' end) as Channel ,\
@@ -139,7 +139,7 @@ def GetReportData(config,param):
           and a.AccountNo = f.AccountNo \
           and a.DonorId = d.id \
           and b.branchcode = i.branchcode \
-          and t.TransactionCode in ('SD001','INVP','GT')  \
+          and a.Accounttitype = 'D' \
           and t.ActualDate >= '%(BDATE)s' \
           and t.ActualDate <= '%(EDATE)s' \
           and i.MutationType='C' \
@@ -428,7 +428,12 @@ def GetDataTransaction(config,parameters,returns):
       recData.EkuivalenAmount = res.EkuivalenAmount
       recData.Inputer     = res.Inputer
       recData.AuthStatus  = res.AuthStatus
-      recData.SponsorName = res.DonorName
+      
+      DonorName = res.DonorName
+      if DonorName == '' :
+        DonorName = res.Full_Name
+      recData.SponsorName = DonorName
+      
       recData.Channel     = res.Channel
       recData.Fundentity  = res.FundEntity
       recData.BranchName  = res.BranchName
@@ -508,7 +513,7 @@ def FundEntityBalance(config,Branch=None,Date=None, FundEntity=1,addFilter=''):
       and t.actualdate < '%(DATE)s' \
       and i.mutationtype = 'C' \
       and b.branchcode = i.branchcode \
-      and t.TransactionCode in ('SD001','INVP','GT')  \
+      and a.Accounttitype = 'D' \
   " % param 
   
   res = config.CreateSQL(sSQL + addFilter).rawresult
