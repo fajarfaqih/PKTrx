@@ -63,7 +63,7 @@ document <
         >, object:rpclass::TCustomLoadedField<
           Name='Description'
           DataTypeName='varchar'
-          DataLength=300
+          DataLength=500
         >, object:rpclass::TCustomLoadedField<
           Name='Rate'
           DataTypeName='double'
@@ -291,7 +291,7 @@ document <
         >, object:rpclass::TCustomLoadedField<
           Name='Description'
           DataTypeName='varchar'
-          DataLength=300
+          DataLength=500
         >, object:rpclass::TCustomLoadedField<
           Name='ItemIdx'
           DataTypeName='integer'

@@ -1197,7 +1197,7 @@ document <
           MemberName='Description'
           PhysicalName='DESCRIPTION'
           DataType=$TYPEDECLS['VARCHAR']
-          DataLength=300
+          DataLength=500
         >, object:FieldMember<
           MemberName='Inputer'
           PhysicalName='INPUTER'
@@ -1436,7 +1436,7 @@ document <
           MemberName='Description'
           PhysicalName='DESCRIPTION'
           DataType=$TYPEDECLS['VARCHAR']
-          DataLength=300
+          DataLength=500
         >, object:FieldMember<
           MemberName='RefAccountNo'
           PhysicalName='REFACCOUNTNO'

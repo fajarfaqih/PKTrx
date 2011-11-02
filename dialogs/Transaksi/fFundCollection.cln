@@ -42,7 +42,7 @@ document <
           Name='Description'
           Hidden=true
           DataTypeName='varchar'
-          DataLength=300
+          DataLength=500
         >, object:rtf::FieldUIElmtSetting<
           Name='Rate'
           Hidden=true
@@ -173,7 +173,7 @@ document <
           Name='Description'
           Hidden=true
           DataTypeName='varchar'
-          DataLength=300
+          DataLength=500
         >, object:rtf::FieldUIElmtSetting<
           Name='ItemIdx'
           Hidden=true
@@ -227,8 +227,8 @@ document <
       BeforeDelete='ItemBeforeDelete'
     >}Containers={object:rtf::MultiSplit<
       Name='msMain'
-      Width=800
-      Height=550
+      Width=320
+      Height=320
       Side1Containers={$CONTAINERS['dualsplit1']
       }Side2Containers={$CONTAINERS['pAction']
       }SpaceContainer=$CONTAINERS['dsTransaction']
@@ -705,8 +705,8 @@ document <
       RowControlGap=7
     >, object:rtf::MultiPages<
       Name='mpBayar'
-      Width=800
-      Height=288
+      Width=320
+      Height=320
       Pages={object:rtf::Page<
           PageName='pgCash'
           PageTitle='Kas'
@@ -933,8 +933,8 @@ document <
       ControlCharCase=ecUpperCase
     >, object:rtf::DualSplit<
       Name='dsTransaction'
-      Width=800
-      Height=309
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pPaymentType']
       Container2=$CONTAINERS['mpBayar']
     >, object:rtf::DualSplit<
@@ -1087,7 +1087,7 @@ document <
           Width=80
         >}>, object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=800
+      Width=240
       Height=203
       Container1=$CONTAINERS['pDonor']
       Container2=$CONTAINERS['pBatch']
