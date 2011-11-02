@@ -427,13 +427,8 @@ def GetDataTransaction(config,parameters,returns):
 
       recData.EkuivalenAmount = res.EkuivalenAmount
       recData.Inputer     = res.Inputer
-      recData.AuthStatus  = res.AuthStatus
-      
-      DonorName = res.DonorName or ''
-      if DonorName.strip() == '' :
-        DonorName = res.Full_Name
-      recData.SponsorName = DonorName
-      
+      recData.AuthStatus  = res.AuthStatus      
+      recData.SponsorName = res.DonorName      
       recData.Channel     = res.Channel
       recData.Fundentity  = res.FundEntity
       recData.BranchName  = res.BranchName
@@ -448,14 +443,17 @@ def GetDataTransaction(config,parameters,returns):
       recData.VolunteerName = VName
       
       
-      # Get SponsorName
+      # Get SponsorName / DonorName
       SName = res.DonorName or ''
 #       oST = helper.GetObject('SponsorTransaction',res.TransactionItemId)
 #       if not oST.isnull :
 #          oDonor = helper.CreateObject('ExtDonor')
 #          oDonor.GetData(oST.SponsorId)
 #          SName = oDonor.full_name
-#          #SName = oST.LSponsor.Name         
+#          #SName = oST.LSponsor.Name 
+      if SName.strip() == '' :
+        SName = res.Full_Name
+              
       recData.SponsorName = SName
       # Get MarketerName
       recData.Marketer = ''
