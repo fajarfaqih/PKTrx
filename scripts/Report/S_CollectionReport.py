@@ -429,8 +429,8 @@ def GetDataTransaction(config,parameters,returns):
       recData.Inputer     = res.Inputer
       recData.AuthStatus  = res.AuthStatus
       
-      DonorName = res.DonorName
-      if DonorName == '' :
+      DonorName = res.DonorName or ''
+      if DonorName.strip() == '' :
         DonorName = res.Full_Name
       recData.SponsorName = DonorName
       
