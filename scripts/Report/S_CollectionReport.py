@@ -37,11 +37,13 @@ def PrintExcel(config,parameters,returns):
   
 def GetReportData(config,param):
     global addFilter
+    
     aBeginDate = param.BeginDate
     aEndDate = param.EndDate
     aBranchCode = param.GetFieldByName('LBranch.BranchCode')
     aHeadOfficeCode = config.SysVarIntf.GetStringSysVar('OPTION','HeadOfficeCode')
     IsHeadOffice = (aBranchCode == aHeadOfficeCode)
+    helper = phelper.PObjectHelper(config)
          
     addFilter = ""
     addFilter2 = ""
@@ -80,7 +82,9 @@ def GetReportData(config,param):
       addFilter2 += " and t.ChannelCode='%s' " % param.ChannelCode
             
     if param.IsAllProgram == 'F' : 
-      addFilter += " and a.AccountNo='%s' " % param.AccountNo
+      oProductAccount = helper.GetObject('ProductAccount',param.AccountNo)      
+      addFilter += " and p.productid=%d " % oProductAccount.ProductId
+      #addFilter += " and a.AccountNo='%s' " % param.AccountNo
       addFilter2 += " and false"            
 
 #     if param.IsAllSponsor == 'F' :      
@@ -168,7 +172,7 @@ def GetReportData(config,param):
 #         %(ADDFILTER2)s  " % qParam
         
     sSQL += " order by ActualDate, BranchName,TransactionId"
-   
+    
     return config.CreateSQL(sSQL).rawresult
 
         
@@ -504,9 +508,10 @@ def FundEntityBalance(config,Branch=None,Date=None, FundEntity=1,addFilter=''):
   sSQL ="\
     select \
     	sum(i.ekuivalenamount) as BeginBalance \
-    from transactionitem i, accounttransactionitem a, transaction t , branch b\
+    from transactionitem i, accounttransactionitem a, transaction t , branch b , productaccount p \
     where i.transactionitemid = a.transactionitemid \
       and i.transactionid = t.transactionid \
+      and p.accountno = a.accountno \
       and a.FundEntity = %(FUNDENTITY)s \
       and t.actualdate < '%(DATE)s' \
       and i.mutationtype = 'C' \
