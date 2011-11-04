@@ -269,8 +269,8 @@ class AccountReceivable(FinancialAccount):
     if jenis == 'D':
       self.Balance += amount
     else: # jenis == 'C'       
-      if self.Balance < amount and not isBalanceIgnored:
-        raise 'Balance', 'Nilai transaksi melebihi outstanding!'
+      #if self.Balance < amount and not isBalanceIgnored:
+      #  raise 'Balance', 'Nilai transaksi melebihi outstanding!'
 
       self.Balance -= amount
     #self.UpdateDailyBalance(jenis,amount)
