@@ -51,8 +51,9 @@ class CashAccount(FinancialAccount):
     if jenis == 'D':
       self.Balance += amount
     else: # jenis == 'C'
-      if self.Balance < amount:
-        raise 'Balance', 'Saldo tidak cukup!'
+      # SEMENTARA PEMERIKSAAN SALDO DITUTUP DULU by Wisnu 04 Nov 2011
+      #if self.Balance < amount:
+      #  raise 'Balance', 'Saldo tidak cukup!'
       self.Balance -= amount
     #self.UpdateDailyBalance(jenis,amount)
 
