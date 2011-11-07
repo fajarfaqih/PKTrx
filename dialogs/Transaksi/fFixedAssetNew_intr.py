@@ -49,20 +49,25 @@ class fFixedAssetNew :
 
   # --- PRIVATE METHOD ------
   def Show(self , mode = 1):
-    self.InitValues()
+    self.uipTransaction.Edit()
     self.uipTransaction.ShowMode = mode
+    self.InitValues()
 
     return self.FormContainer.Show()
 
   def InitValues(self):
     uipTran = self.uipTransaction
     uipTran.Edit()
-    uipTran.CashAdvance = 0.0
-    uipTran.Amount = 0.0
-    uipTran.AssetType = 'T'
-    uipTran.PaymentType = 'T'
-    uipTran.Qty = 1
-    
+    if uipTran.ShowMode == 1 :
+      uipTran.CashAdvance = 0.0
+      uipTran.Amount = 0.0
+      uipTran.AssetType = 'T'
+      uipTran.PaymentType = 'T'
+      uipTran.Qty = 1
+    else:
+      self.AssetTypeOnChange(self.pTransaction_AssetType)
+    # end if.else
+      
   def SetCashAdvance(self):
     uipTran = self.uipTransaction
     uipTran.Edit()

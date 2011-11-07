@@ -6,12 +6,34 @@ import simplejson
 def FormSetDataEx(uideflist, params) :
   config = uideflist.config
   helper = phelper.PObjectHelper(config)
-
+  Now = config.Now()
+  
   if params.GetDatasetByName('trparam') != None :
     oForm = helper.CreateObject('FormTransaksi')
     st = oForm.SetDataEx(uideflist,params)
 
+
     rec = uideflist.uipTransaction.Dataset.GetRecord(0)
+
+    # Search Object Fixed Asset
+    TransactionId = params.FirstRecord.TransactionId
+    oqlCheck = "select from AccountTransactionItem \
+                 [ TransactionId=:TransactionId and \
+                   LFinancialAccount.FinancialAccountType='D' ] \
+                 (LFinancialAccount.AccountNo, self); "
+
+    oql = config.OQLEngine.CreateOQL(oqlCheck)
+    oql.SetParameterValueByName('TransactionId', TransactionId)
+    oql.ApplyParamValues()
+    oql.active = 1
+    recTrans  = oql.rawresult
+
+    if not recTrans.Eof:
+      rec.FixAssetAccountNo = recTrans.AccountNo
+      oFAAccount = helper.GetObject('FixedAsset',recTrans.AccountNo)
+      #rec.SetFieldByName('LAssetCategory.AssetCategoryCode',oFAAccount.LAssetCategory.AssetCategoryCode)
+      #rec.SetFieldByName('LAssetCategory.AssetCategoryName',oFAAccount.LAssetCategory.AssetCategoryName)
+
     # Get Period Id
     tahun = int(config.FormatDateTime('yyyy',Now))
     oBudgetPeriod = helper.GetObjectByNames('BudgetPeriod', {'PeriodValue': tahun})
@@ -19,7 +41,6 @@ def FormSetDataEx(uideflist, params) :
     
     return st
 
-  Now = config.Now()
   rec = uideflist.uipTransaction.Dataset.AddRecord()
   rec.Inputer = str(config.SecurityContext.UserId)
   rec.BranchCode = str(config.SecurityContext.GetUserInfo()[4])
@@ -66,6 +87,7 @@ def SimpanData(config, params, returns):
     request['BudgetCode'] = oTransaction.BudgetCode or ''
     request['BudgetId'] = oTransaction.BudgetId or 0
     request['Qty'] = oTransaction.Qty or 0
+    request['FixAssetAccountNo'] = oTransaction.FixAssetAccountNo or ''
     
     request['PaymentType'] = oTransaction.PaymentType
     request['CashAccountNo'] = oTransaction.GetFieldByName('LCashAccount.AccountNo')
@@ -107,4 +129,3 @@ def SimpanData(config, params, returns):
      ['TransactionNo',TransactionNo],
      ['StreamName',StreamName],
      )
-

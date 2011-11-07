@@ -44,93 +44,13 @@ def FixedAssetNew(config, srequest,params):
     oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
     oTran = oBatch.NewTransaction('FA')
     
-    
-    CashAdvance = request[u'CashAdvance']
-    PaymentType = request[u'PaymentType']
-
-    # 1. Set Data Transaksi    
-    oTran.ReferenceNo = request[u'ReferenceNo']
-    oTran.Description = request[u'Description']
-    oTran.Inputer     = request[u'Inputer']
-    oTran.BranchCode  = request[u'BranchCode']
-    oTran.Amount = request[u'Amount']
-    oTran.CurrencyCode = '000'
-    #oTran.ReceivedFrom = request[u'ReceivedFrom']
-    oTran.ActualDate = oBatch.GetAsTDateTime('BatchDate')
-
-    # 2. Create Data FixedAsset
-    oFAAccount = helper.CreatePObject('FixedAsset')        
-    oFAAccount.BranchCode = request[u'BranchCode']
-    oFAAccount.CurrencyCode = '000'
-    oFAAccount.AccountName  = request[u'AssetName']
-    oFAAccount.Qty = request[u'Qty']
-    oFAAccount.SetAssetCategory(request[u'AssetCategoryId'])
-    oFAAccount.SetInitialValue(request[u'Amount'])
-    oFAAccount.SetInitialProcessDate()
-    oFAAccount.UangMuka = CashAdvance
-    
-    # Set Product Account jika asset terikat
-    if oFAAccount.LAssetCategory.AssetType == 'T' :
-      oFAAccount.AccountNoProduct = request[u'ProductAccountNo']
-  
-    
-    # 3. Buat transaksi pembelian asset
-    # Set Journal Code berdasarkan PaymentType
-    if PaymentType == 'T' :
-      JournalCode = 'DA01B'
-    else :
-      if CashAdvance > 0.0 :
-        JournalCode = 'DA01A'
-      else:
-        JournalCode = 'DA01C'
-      # endif
-    # endif
-               
-    # Buat Transaksi pembelian
-    oItemFA = oTran.CreateAccountTransactionItem(oFAAccount)
-    oItemFA.SetMutation('D', request[u'Amount'], 1.0)
-    oItemFA.Description = request[u'Description']
-    oItemFA.SetJournalParameter(JournalCode)
-    oItemFA.AccountCode = oFAAccount.GetAssetAccount()
-    
-    # 4. Buat Transaksi BudgetTransaction
-    aBudgetId = request[u'BudgetId'] 
-
-    if aBudgetId != 0 :
-      oBudget = helper.GetObject('Budget',aBudgetId)
-      oItemFA.CreateBudgetTransaction(oBudget.BudgetId)
-    # endif 
-
-    
-    # 5. Buat Transaksi Pembayaran Uang muka / Tunai
-    if CashAdvance > 0.0 :
-      # Destination Transaction
-      oCashAccount = helper.GetObject('CashAccount',
-        str(request[u'CashAccountNo'])).CastToLowestDescendant()
-      if oCashAccount.isnull:
-        raise 'Cash/Bank', 'Rekening %s tidak ditemukan' % request[u'CashAccountNo']
-  
-      oItemCA = oTran.CreateAccountTransactionItem(oCashAccount)
-      oItemCA.SetMutation('C', CashAdvance, 1.0)    
-      oItemCA.Description = request[u'Description']
-      oItemCA.SetJournalParameter('10')
-      
-      oFAAccount.TotalDibayar = CashAdvance
-      
-      # Set Transaksi Produk Jika asset adalah asset terikat
-      CreateAssetPaymentTransaction(oTran, oFAAccount, CashAdvance, request[u'Description'])
-      
-    oTran.GenerateTransactionNumber('000')
-    oTran.SaveInbox(params)
-    FileKwitansi = oTran.GetKwitansi()
-    
+    FileKwitansi = FixAsset(helper,oTran,oBatch,request,params)    
         
     # Check for auto approval
     corporate = helper.CreateObject('Corporate')
     if corporate.CheckLimitOtorisasi(request[u'Amount']):
       oTran.AutoApproval()
       
-
     config.Commit()
   except:
     config.Rollback()
@@ -138,7 +58,126 @@ def FixedAssetNew(config, srequest,params):
   
   status,msg = oTran.CreateJournal()      
   return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
+
+def FixedAssetUpdate(config,srequest ,params):
+  request = simplejson.loads(srequest)
+  helper = phelper.PObjectHelper(config)
+  
+  oTran = helper.GetObjectByNames(
+      'Transaction',{'TransactionNo': request[u'TransactionNo'] }
+    )
+  
+  TranHelper = helper.LoadScript('Transaction.TransactionHelper')
+  TranHelper.DeleteTransactionJournal(oTran)
+
+  status = 0
+  msg = ''
+  
+  config.BeginTransaction()
+  try:
+    oTran.CancelTransaction()
+    oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
+    oTran.BatchId = oBatch.BatchId
+    
+    FileKwitansi = FixAsset(helper,oTran,oBatch,request,params)
+    
+    # Check for auto approval
+    oTran.AutoApprovalUpdate()
+    
+    config.Commit()
+  except:
+    config.Rollback()
+    raise
+
+  status,msg = oTran.CreateJournal()      
+  return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)  
  
+def FixAsset(helper,oTran,oBatch,request,params):
+  CashAdvance = request[u'CashAdvance']
+  PaymentType = request[u'PaymentType']
+
+  # 1. Set Data Transaksi    
+  oTran.ReferenceNo = request[u'ReferenceNo']
+  oTran.Description = request[u'Description']
+  oTran.Inputer     = request[u'Inputer']
+  oTran.BranchCode  = request[u'BranchCode']
+  oTran.Amount = request[u'Amount']
+  oTran.CurrencyCode = '000'
+  #oTran.ReceivedFrom = request[u'ReceivedFrom']
+  oTran.ActualDate = oBatch.GetAsTDateTime('BatchDate')
+
+  # 2. Create/Replace Data FixedAsset
+  AccountNoFA = str(request[u'FixAssetAccountNo'])
+  if AccountNoFA == '' :
+    oFAAccount = helper.CreatePObject('FixedAsset')
+  else :
+    oFAAccount = helper.GetObject('FixedAsset',AccountNoFA)
+    
+  oFAAccount.BranchCode = request[u'BranchCode']
+  oFAAccount.CurrencyCode = '000'
+  oFAAccount.AccountName  = request[u'AssetName']
+  oFAAccount.Qty = request[u'Qty']
+  oFAAccount.SetAssetCategory(request[u'AssetCategoryId'])
+  oFAAccount.SetInitialValue(request[u'Amount'])
+  oFAAccount.SetInitialProcessDate()
+  oFAAccount.UangMuka = CashAdvance
+  
+  # Set Product Account jika asset terikat
+  if oFAAccount.LAssetCategory.AssetType == 'T' :
+    oFAAccount.AccountNoProduct = request[u'ProductAccountNo']
+
+  
+  # 3. Buat transaksi pembelian asset
+  # Set Journal Code berdasarkan PaymentType
+  if PaymentType == 'T' :
+    JournalCode = 'DA01B'
+  else :
+    if CashAdvance > 0.0 :
+      JournalCode = 'DA01A'
+    else:
+      JournalCode = 'DA01C'
+    # endif
+  # endif
+             
+  # Buat Transaksi pembelian
+  oItemFA = oTran.CreateAccountTransactionItem(oFAAccount)
+  oItemFA.SetMutation('D', request[u'Amount'], 1.0)
+  oItemFA.Description = request[u'Description']
+  oItemFA.SetJournalParameter(JournalCode)
+  oItemFA.AccountCode = oFAAccount.GetAssetAccount()
+  
+  # 4. Buat Transaksi BudgetTransaction
+  aBudgetId = request[u'BudgetId'] 
+
+  if aBudgetId != 0 :
+    oBudget = helper.GetObject('Budget',aBudgetId)
+    oItemFA.CreateBudgetTransaction(oBudget.BudgetId)
+  # endif
+
+  # 5. Buat Transaksi Pembayaran Uang muka / Tunai
+  if CashAdvance > 0.0 :
+    # Destination Transaction
+    oCashAccount = helper.GetObject('CashAccount',
+      str(request[u'CashAccountNo'])).CastToLowestDescendant()
+    if oCashAccount.isnull:
+      raise 'Cash/Bank', 'Rekening %s tidak ditemukan' % request[u'CashAccountNo']
+
+    oItemCA = oTran.CreateAccountTransactionItem(oCashAccount)
+    oItemCA.SetMutation('C', CashAdvance, 1.0)    
+    oItemCA.Description = request[u'Description']
+    oItemCA.SetJournalParameter('10')
+    
+    oFAAccount.TotalDibayar = CashAdvance
+    
+    # Set Transaksi Produk Jika asset adalah asset terikat
+    CreateAssetPaymentTransaction(oTran, oFAAccount, CashAdvance, request[u'Description'])
+    
+  oTran.GenerateTransactionNumber('000')
+  oTran.SaveInbox(params)
+  FileKwitansi = oTran.GetKwitansi()
+  
+  return FileKwitansi
+
 def Invoice(config, srequest,params):
   request = simplejson.loads(srequest)
   helper = phelper.PObjectHelper(config)

@@ -52,13 +52,18 @@ document <
           Hidden=true
           DataTypeName='integer'
           DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='FixAssetAccountNo'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
         >}Name='uipTransaction'
       AlwaysPostToServer=true
       PostLinkValues=true
     >}Containers={object:rtf::DualSplit<
       Name='dsMain'
-      Width=240
-      Height=96
+      Width=617
+      Height=600
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dualsplit1']
       InversedAlign=true
@@ -498,12 +503,14 @@ document <
           Name='TransactionDate'
           Top=8
           Left=8
+          Enabled=false
           Color=-2147483624
           ControlCaption='Tanggal transaksi'
         >, *object:rtf::DBEdit<
           Name='TransactionNo'
           Top=36
           Left=8
+          Enabled=false
           Color=-2147483624
           ControlCaption='Nomor Transaksi'
         >, *object:rtf::DBLookupEdit<
@@ -521,8 +528,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=240
-      Height=96
+      Width=617
+      Height=564
       Container1=$CONTAINERS['pTransactionInfo']
       Container2=$CONTAINERS['pTransaction']
     >}FormClassName='fFixedAssetNew'

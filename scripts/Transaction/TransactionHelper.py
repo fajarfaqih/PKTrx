@@ -22,3 +22,17 @@ def GetTransactionNumber(config,transcode='DEFAULT',cashcode='') :
           branchCode,
           cashcode,
           str(rsSeq.GetFieldValueAt(0)).zfill(7))  
+
+
+def DeleteTransactionJournal(oTran,OperationType='U'):
+  # OperationType ==> D = Delete  , U = Update
+  
+  # Fungsi ini digunakan sebagai helper yang diakses oleh 
+  # fungsi penghapusan transaksi dan update transaksi
+  # untuk memudahkan maintenance proses delete journal
+  
+  # PERINGATAN : JANGAN GUNAKAN FUNGSI INI DI DALAM SCOOP SYNTAX DB TRANSACTIONAL 
+  # KARENA DI DALAM FUNGSI DeleteJournal() ADA INTERFACE DENGAN APLIKASI ACCOUNTING
+  # By : Wisnu
+  
+  oTran.DeleteJournal()
