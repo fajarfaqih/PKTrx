@@ -110,6 +110,7 @@ class fReportVolunteerPerEntity:
           workbook.SetCellValue(row, 8, rec.Description)
           workbook.SetCellValue(row, 9, rec.Inputer)
           workbook.SetCellValue(row, 10, rec.NoTransaksi)
+          workbook.SetCellValue(row, 11, rec.ReferenceNo)
           i += 1
         # end of while
 
