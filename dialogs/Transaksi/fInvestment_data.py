@@ -13,6 +13,23 @@ def FormSetDataEx(uideflist, params) :
     st = oForm.SetDataEx(uideflist,params)
 
     rec = uideflist.uipTransaction.Dataset.GetRecord(0)
+    
+    # Search Object Investment
+    TransactionId = params.FirstRecord.TransactionId
+    oqlCheck = "select from AccountTransactionItem \
+                 [ TransactionId=:TransactionId and \
+                   LFinancialAccount.FinancialAccountType='R' ] \
+                 (LFinancialAccount.AccountNo, self); "
+
+    oql = config.OQLEngine.CreateOQL(oqlCheck)
+    oql.SetParameterValueByName('TransactionId', TransactionId)
+    oql.ApplyParamValues()
+    oql.active = 1
+    recTrans  = oql.rawresult
+
+    if not recTrans.Eof:
+      rec.InvestmentAccountNo = recTrans.AccountNo
+
     # Get Period Id
     tahun = int(config.FormatDateTime('yyyy',Now))
     oBudgetPeriod = helper.GetObjectByNames('BudgetPeriod', {'PeriodValue': tahun})
@@ -57,6 +74,7 @@ def SimpanData(config, params, returns):
     request['InvestmentCatId'] = oTransaction.GetFieldByName('LInvestmentCategory.InvestmentCatId')
     request['StartDate'] = oTransaction.StartDate
     request['Nisbah'] = oTransaction.Nisbah
+    request['InvestmentAccountNo'] = oTransaction.InvestmentAccountNo or ''
     
     request['CashAccountNo'] = oTransaction.GetFieldByName('LCashAccount.AccountNo')
     request['Amount'] = oTransaction.Amount

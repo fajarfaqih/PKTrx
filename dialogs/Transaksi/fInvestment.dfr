@@ -51,6 +51,11 @@ document <
           Hidden=true
           DataTypeName='integer'
           DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='InvestmentAccountNo'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
         >}Name='uipTransaction'
       AlwaysPostToServer=true
       PostLinkValues=true
@@ -160,6 +165,7 @@ document <
           Left=8
           Width=225
           Height=21
+          Enabled=false
           Color=-2147483624
           ControlCaption='Nama Investee'
         >, *object:rtf::DBDateEdit<

@@ -1033,10 +1033,15 @@ def Investment(helper,oTran,oBatch,request,params):
   InvesteeId = request[u'InvesteeId']
   BranchCode = request[u'BranchCode']
 
-  if request[u'InvesteeCategory'] == 1 : # ==> Non Employee
-    oAccount = helper.CreatePObject('InvestmentNonEmployee', InvesteeId)
-  else : # InvesteeCategory == 2  ==> Employee
-    oAccount = helper.CreatePObject('InvestmentEmployee', InvesteeId)
+  AccountNo = str(request[u'InvestmentAccountNo'])
+  if AccountNo == '' :
+    if request[u'InvesteeCategory'] == 1 : # ==> Non Employee
+      oAccount = helper.CreatePObject('InvestmentNonEmployee', InvesteeId)
+    else : # InvesteeCategory == 2  ==> Employee
+      oAccount = helper.CreatePObject('InvestmentEmployee', InvesteeId)
+    # end if
+  else :
+    oAccount = helper.GetObject('Investment',AccountNo).CastToLowestDescendant()  
   # end if
   
   oAccount.BranchCode = request[u'BranchCode']
