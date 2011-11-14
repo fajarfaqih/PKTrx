@@ -1331,10 +1331,8 @@ document <
             '('#13#10,
             '  Account_Code,'#13#10,
             '  Account_Name,'#13#10,
-            '  Account_Type,'#13#10,
             '  self'#13#10,
             ');']
-          OQLSystemContext='accounting'
           LookupOption=loCustomOQL
           FieldBaseName='LLedger'
         >, object:rtf::LinkUIElmtSetting<
@@ -1347,43 +1345,29 @@ document <
               UsedAsKey=true
               KeyOrDisplayName='Currency_Code'
               FinalDisplayFieldName='Currency_Code'
-              CDSFieldName='ValutaGL.Currency_Code'
             >}DisplayedFields={object:rtf::FieldUIElmtSetting<
               Name='ValutaGL.Currency_Code'
               UsedAsDisplay=true
               KeyOrDisplayName='Currency_Code'
               FinalDisplayFieldName='Currency_Code'
-              CDSFieldName='ValutaGL.Currency_Code'
             >, object:rtf::FieldUIElmtSetting<
               Name='ValutaGL.Full_Name'
-              DataTypeName='varchar'
-              DataLength=60
               UsedAsDisplay=true
               KeyOrDisplayName='Full_Name'
               FinalDisplayFieldName='Full_Name'
-              CDSFieldName='ValutaGL.Full_Name'
             >, object:rtf::FieldUIElmtSetting<
               Name='ValutaGL.Kurs_Tengah_BI'
-              DataTypeName='double'
-              DataLength=20
               UsedAsDisplay=true
               KeyOrDisplayName='Kurs_Tengah_BI'
               FinalDisplayFieldName='Kurs_Tengah_BI'
-              CDSFieldName='ValutaGL.Kurs_Tengah_BI'
             >}Restrictions=''
           OQLText=['select from Currency ('#13#10,
             '  Currency_Code,'#13#10,
             '  Full_Name,'#13#10,
-            '  Kurs_Buku,'#13#10,
             '  Kurs_Tengah_BI, '#13#10,
-            '  Kurs_Beli_BankNote,'#13#10,
-            '  Kurs_Jual_BankNote,'#13#10,
-            '  Kurs_Beli_Transfer,'#13#10,
-            '  Kurs_Jual_Transfer,'#13#10,
             '  self'#13#10,
             ')'#13#10,
             'then order by Currency_Code;']
-          OQLSystemContext='accounting'
           LookupOption=loCustomOQL
           FieldBaseName='ValutaGL'
         >}Name='pGL'

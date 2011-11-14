@@ -342,10 +342,10 @@ document <
         >, object:rpclass::TCustomLoadedField<
           Name='ValutaGL.Full_Name'
           DataTypeName='varchar'
-          DataLength=60
+          DataLength=20
         >, object:rpclass::TCustomLoadedField<
           Name='ValutaGL.Kurs_Tengah_BI'
-          DataTypeName='double'
+          DataTypeName='varchar'
           DataLength=20
         >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
           Name='ProductCol'
