@@ -4690,6 +4690,78 @@ document <
             >}LinkedClass=$TYPEDECLS['GLInterfaceContainer']
         >}ClassID='{10323137-202A-4B36-8085-2ED4F2F476FE}'
       AutoPrimaryKey=$TYPEDECLS['CPIACategory'].MEMBERS['CPIACatId']
+    >, object:ClassTypeDecl<
+      TypeName='BPScenario'
+      PTableName='BPSCENARIO'
+      Members={object:FieldMember<
+          MemberName='BPScenarioCode'
+          PhysicalName='BPSCENARIOCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=10
+        >, object:FieldMember<
+          MemberName='BPScenarioName'
+          PhysicalName='BPSCENARIONAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >, object:FieldMember<
+          MemberName='BPScenarioId'
+          PhysicalName='BPSCENARIOID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >}ClassID='{E2BDCBE7-4CA2-4480-98F9-6C8A67A43D78}'
+    >, object:ClassTypeDecl<
+      TypeName='BPScenarioStep'
+      PTableName='BPSCENARIOSTEP'
+      Members={object:FieldMember<
+          MemberName='BPStepId'
+          PhysicalName='BPSTEPID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='BPStepSequence'
+          PhysicalName='BPSTEPSEQUENCE'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LBPScenario'
+          LinkedClass=$TYPEDECLS['BPScenario']
+          AutoForeignKey=true
+        >, object:LinkMember<
+          MemberName='LBPScript'
+          LinkedClass=$TYPEDECLS['BPScript']
+          AutoForeignKey=true
+        >, object:FieldMember<
+          MemberName='IsEnabled'
+          PhysicalName='ISENABLED'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['FTBoolean']
+        >}ClassID='{564DA7A6-C0DB-4212-B9ED-FC5583EA0543}'
+      AutoPrimaryKey=$TYPEDECLS['BPScenarioStep'].MEMBERS['BPStepId']
+    >, object:ClassTypeDecl<
+      TypeName='BPScript'
+      PTableName='BPSCRIPT'
+      Members={object:FieldMember<
+          MemberName='BPScriptId'
+          PhysicalName='BPSCRIPTID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='BPScriptName'
+          PhysicalName='BPSCRIPTNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=250
+        >, object:FieldMember<
+          MemberName='BPScriptDescription'
+          PhysicalName='BPSCRIPTDESCRIPTION'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=250
+        >, object:FieldMember<
+          MemberName='BPScriptPath'
+          PhysicalName='BPSCRIPTPATH'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=250
+        >}ClassID='{81446639-989B-4D27-A03B-E0A40E0FD1C5}'
+      AutoPrimaryKey=$TYPEDECLS['BPScript'].MEMBERS['BPScriptId']
     >}PhysicalDB=object:ODLDatabase<
   >LastMethodID=6
 >

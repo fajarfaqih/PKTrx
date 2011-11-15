@@ -230,14 +230,13 @@ def showRekening (menu, app) :
 
 def CloseDayClick(menu,app) :
   GetAccess(app, menu.Name)
-  param = app.CreateValues(['command',''])
-  retval = app.ExecuteScript('Transaction/S_CloseDay',param)
-
-  rec = retval.FirstRecord
+  fAuth = app.CreateForm('tools/fCloseDay', 'tools/fCloseDay', 0, None, None)
+  fAuth.Show()
   
-  if rec.Is_Err : raise 'PERINGATAN',rec.Err_Message
-  
-  app.ShowMessage('Proses Close Day Berhasil Dilakukan')
+def BackDateClick(menu,app) :
+  #GetAccess(app, menu.Name)
+  fBackDate = app.CreateForm('tools/fBackDate', 'tools/fBackDate', 0, None, None)
+  fBackDate.Show()
 
 def NewBudgetClick(menu, app):
   GetAccess(app, menu.Name)

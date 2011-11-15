@@ -584,28 +584,12 @@ document <
     >, object:rmn::MenuItem<
       Caption='Tools'
       MenuItems={object:rmn::MenuItem<
-          Name='TR0037'
-          Caption='Proses Tutup Hari'
-          OnClick='CloseDayClick'
-          AllowedGroups='ADM;SPV'
-        >, object:rmn::MenuItem<
-          Name='TR0037A'
-          Caption='Kontrol Transaksi Belum Otorisasi'
-          OnClick='OnBatchCabang'
-          AllowedGroups='ADM;SPV'
-        >, object:rmn::MenuItem<
-          Name='TR0037B'
-          Caption='Proses Generate Ulang Jurnal Accounting'
-          OnClick='GenerateJournalClick'
-          AllowedGroups='ADM;SPV'
-        >, object:rmn::MenuItem<
           Name='TR0037B'
           Caption='Saldo Awal'
           OnClick='SaldoAwalClick'
           AllowedGroups='ADM;SPV'
         >, object:rmn::MenuItem<
           Caption='-'
-          AllowedGroups='HIDDEN'
         >, object:rmn::MenuItem<
           Name='TR0037B'
           Caption='Koreksi Redundansi Uang Muka Karyawan'
@@ -617,13 +601,31 @@ document <
           OnClick='MergeAccountReceivableClick'
           AllowedGroups='ADM;SPV'
         >, object:rmn::MenuItem<
-          Caption='Tes'
-          OnClick='TesClick'
-          MenuItems={object:rmn::MenuItem<
-              Caption='Script Test'
-              OnClick='ScriptTestClick'
-            >}AllowedUsers='SYSTEM'
-          StringTag='test/fBranch'
+          Caption='-'
+        >, object:rmn::MenuItem<
+          Name='TR0037A'
+          Caption='Kontrol Transaksi Belum Otorisasi'
+          OnClick='OnBatchCabang'
+          AllowedGroups='ADM;SPV'
+        >, object:rmn::MenuItem<
+          Name='TR0037B'
+          Caption='Proses Generate Ulang Jurnal Accounting'
+          OnClick='GenerateJournalClick'
+          AllowedGroups='op001'
+        >, object:rmn::MenuItem<
+          Name='TR0037'
+          Caption='Proses Tutup Buku'
+          OnClick='CloseDayClick'
+          AllowedGroups='ADM;SPV'
+        >, object:rmn::MenuItem<
+          Name='TR0037'
+          Caption='Proses BackDate'
+          OnClick='BackDateClick'
+          AllowedGroups='ADM;SPV'
+        >, object:rmn::MenuItem<
+          Caption='Script Test'
+          OnClick='ScriptTestClick'
+          AllowedUsers='OP001;SYSTEM'
         >}AllowedGroups='ADM;SPV'
     >, object:rmn::MenuItem<
       Caption='Batch Process'
@@ -632,5 +634,5 @@ document <
           Caption='Penyusutan Aktiva'
           OnClick='OnDepreciationClick'
           AllowedGroups='ADM;SPV'
-        >}AllowedGroups='ADM;SPV'
+        >}AllowedGroups='HIDDEN'
     >}>

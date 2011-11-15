@@ -1,0 +1,137 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Form Tutup Buku'
+  Left=50
+  Top=50
+  Width=473
+  Height=377
+  UIParts={object:rtf::PClassUI<
+      Name='uipData'
+      AlwaysPostToServer=true
+    >}Containers={object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=473
+      Height=377
+      Container1=$CONTAINERS['dualsplit2']
+      Container2=$CONTAINERS['pcConsole']
+    >, object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='LastCloseDate'
+          ReadOnlyControl=true
+          ControlCaption='Tgl Tutup Buku Terakhir'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ProcessDate'
+          ControlCaption='Tgl Proses Tutup Buku'
+          DataTypeName='timestamp'
+          DataLength=20
+        >}Name='pClosePeriod'
+      Width=417
+      Height=121
+      UIPart=$UIPARTS['uipData']
+      Controls={*object:rtf::DBDateEdit<
+          Name='LastCloseDate'
+          Top=36
+          Left=8
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Tgl Tutup Buku Terakhir'
+          LayoutOrder=2
+        >, *object:rtf::DBDateEdit<
+          Name='ProcessDate'
+          Top=92
+          Left=8
+          Color=0
+          ControlCaption='Tgl Proses Tutup Buku'
+          LayoutOrder=4
+        >, object:rtf::Label<
+          Name='label1'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Width=26
+          Height=17
+          Color=0
+          ControlCaption=''
+          LayoutOrder=1
+          Caption='Informasi Tanggal Tutup Buku Terakhir'
+          AutoSize=true
+          FontName='Tahoma'
+          FontColor=-2147483640
+          FontSize=8
+          FontStyleBold=true
+        >, object:rtf::Label<
+          Name='label2'
+          Layout=clNewLine
+          Top=64
+          Left=8
+          Width=26
+          Height=17
+          Color=0
+          ControlCaption=''
+          LayoutOrder=3
+          Caption='Masukkan Tanggal Tutup Buku Yang Akan Di Proses'
+          AutoSize=true
+          FontName='Tahoma'
+          FontColor=-2147483640
+          FontSize=8
+          FontStyleBold=true
+        >}EqualCaptionWidth=120
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit2'
+      Width=473
+      Height=185
+      Container1=$CONTAINERS['pClosePeriod']
+      Container2=$CONTAINERS['pAction']
+    >, object:rtf::PushConsole<
+      Name='pcConsole'
+      Width=473
+      Height=191
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      ShowStatusBar=true
+      RemoveClosedConsoleDelay=-1
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=321
+      Height=49
+      Controls={object:rtf::Button<
+          Name='bProcess'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Proses'
+          OnClick='ProcessClick'
+        >, object:rtf::Button<
+          Name='button1'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Color=0
+          ControlCaption=''
+          Caption='&Batal'
+          ExitAction=eaQuitCancel
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >}FormClassName='fCloseDay'
+>
