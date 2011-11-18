@@ -7,33 +7,44 @@ class fTransactionHistory:
     self.oPrint = self.app.GetClientClass('PrintLib','PrintLib')()
 
   def Show(self,SPVMode=0):
-    self.uipData.Edit()
-    self.uipData.BeginItemNo = 1
-    self.uipData.DateCategory = 1
-    self.uipData.SortCategory = 1
-    self.uipData.IsAllCabang = 'F'
-    self.uipData.SearchCategory = 0
-    self.uipData.IsSPV = SPVMode
-    self.uipData.RangeAmountFrom = 0.0
-    self.uipData.RangeAmountTo = 10000000
-    self.uipData.LimitData = 50
+    uipData = self.uipData
+    uipData.Edit()
+    uipData.BeginItemNo = 1
+    uipData.DateCategory = 1
+    uipData.SortCategory = 1
+    uipData.IsAllCabang = 'F'
+    uipData.SearchCategory = 0
+    uipData.IsSPV = SPVMode
+    uipData.RangeAmountFrom = 0.0
+    uipData.RangeAmountTo = 10000000
+    uipData.LimitData = 50
     self.pBatch_SearchText.enabled = 0
     self.pBatch_SearchText.Color=-2147483624
 
     if SPVMode :
       self.form.Caption += ' (Supervisor)'
-
-    if self.uipData.BranchCode != '001' or not SPVMode:
+    else:
       self.pBatch_IsAllCabang.visible = 0
       self.pBatch_LBranch.enabled = 0
+    # end if.else
+    
+    IsHeadOffice = (uipData.BranchCode == uipData.HeadOfficeCode)
+    self.MasterBranchCode = ''
+
+    if not IsHeadOffice :
+      uipData.MasterBranchCode = uipData.BranchCode
+      
+    #if not IsHeadOffice or not SPVMode:
+    uipData.SetFieldValue('LBranch.BranchCode',uipData.BranchCode)
+    uipData.SetFieldValue('LBranch.BranchName',uipData.BranchName)
 
     return self.FormContainer.Show()
 
   def AllCabangClick(self,sender):
     self.pBatch_LBranch.enabled = sender.Checked == 0
     if sender.Checked == 1 :
-      self.uipData.SetFieldValue('LBranch.Kode_Cabang','')
-      self.uipData.SetFieldValue('LBranch.Nama_Cabang','')
+      self.uipData.SetFieldValue('LBranch.BranchCode','')
+      self.uipData.SetFieldValue('LBranch.BranchName','')
       
   def CategoryOnChange(self,sender):
     self.pBatch_SearchText.enabled = sender.ItemIndex != 0
@@ -55,7 +66,7 @@ class fTransactionHistory:
     SearchCategory = uipData.SearchCategory
     SearchText = uipData.SearchText or ''
     IsSPV = uipData.IsSPV
-    BranchCode = uipData.GetFieldValue('LBranch.Kode_Cabang') or ''
+    BranchCode = uipData.GetFieldValue('LBranch.BranchCode') or ''
     DateCategory = uipData.DateCategory
     SortCategory = uipData.SortCategory
     LimitData = uipData.LimitData or 0

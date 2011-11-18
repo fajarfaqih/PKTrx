@@ -34,6 +34,21 @@ document <
           Hidden=true
           DataTypeName='varchar'
           DataLength=3
+        >, object:rtf::FieldUIElmtSetting<
+          Name='HeadOfficeCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rtf::FieldUIElmtSetting<
+          Name='MasterBranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=5
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BranchName'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
         >}Name='uipData'
     >, object:rtf::PClassUI<
       Name='uipTransaction'
@@ -69,24 +84,16 @@ document <
           DataLength=30
         >, object:rtf::LinkUIElmtSetting<
           Name='LBranch'
-          ControlCaption='Cabang'
-          ClassTypeName=''
-          ExternalClassTypeName='Cabang'
-          KeyFields={object:rtf::FieldUIElmtSetting<
-              Name='LBranch.Kode_Cabang'
-              UsedAsKey=true
-              KeyOrDisplayName='Kode_Cabang'
-              FinalDisplayFieldName='Kode_Cabang'
-            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
-              Name='LBranch.Nama_Cabang'
-              UsedAsDisplay=true
-              KeyOrDisplayName='Nama_Cabang'
-              FinalDisplayFieldName='Nama_Cabang'
-            >}Restrictions=''
-          OQLText=['select from cabang'#13#10,
-            '[Status_Aktif=''T'']'#13#10,
-            '(Kode_Cabang,Nama_Cabang,self);']
-          OQLSystemContext='corporate'
+          ControlCaption='Cabang / Capem'
+          ClassTypeName='Branch'
+          DisplayFields='BranchCode;BranchName'
+          Restrictions='MasterBranchCode|BranchCodeParam'
+          OQLText=['select from Branch'#13#10,
+            '[ BranchCode LIKE :BranchCodeParam or '#13#10,
+            '  MasterBranchCode LIKE :BranchCodeParam'#13#10,
+            ']'#13#10,
+            '( BranchCode,BranchName,self'#13#10,
+            ') then order by BranchName;']
           LookupOption=loCustomOQL
           FieldBaseName='LBranch'
         >, object:rtf::FieldUIElmtSetting<
@@ -164,6 +171,8 @@ document <
           Name='UserId'
           Top=8
           Left=8
+          Width=225
+          Height=21
           Enabled=false
           Color=-2147483624
           ControlCaption='Id User'
@@ -172,15 +181,17 @@ document <
           Top=36
           Left=8
           ControlCaption='Cabang'
-          LookupField='LBranch.Nama_Cabang'
+          LookupField='LBranch.BranchName'
           DisplayLookupField=true
         >, *object:rtf::DBCheckBox<
           Name='IsAllCabang'
-          Layout=clNextSide
+          Layout=clAbsolute
           Top=36
-          Left=378
+          Left=386
+          Width=143
+          Height=17
           Color=0
-          ControlCaption='Seluruh Cabang'
+          ControlCaption='Seluruh Cabang / KCP'
           ValueChecked='T'
           ValueUnchecked='F'
           OnClick='AllCabangClick'

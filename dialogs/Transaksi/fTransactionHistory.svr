@@ -16,6 +16,18 @@ document <
           DataTypeName='varchar'
           DataLength=3
         >, object:rpclass::TCustomLoadedField<
+          Name='HeadOfficeCode'
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rpclass::TCustomLoadedField<
+          Name='MasterBranchCode'
+          DataTypeName='varchar'
+          DataLength=5
+        >, object:rpclass::TCustomLoadedField<
+          Name='BranchName'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
           Name='BeginItemNo'
           DataTypeName='integer'
           DataLength=20
@@ -24,13 +36,17 @@ document <
           DataTypeName='varchar'
           DataLength=30
         >, object:rpclass::TCustomLoadedField<
-          Name='LBranch.Kode_Cabang'
-          DataTypeName='varchar'
-          DataLength=20
+          Name='LBranch.BranchCode'
+          DataTypeName='VARCHAR'
+          DataLength=3
         >, object:rpclass::TCustomLoadedField<
-          Name='LBranch.Nama_Cabang'
-          DataTypeName='varchar'
-          DataLength=20
+          Name='LBranch.BranchCode'
+          DataTypeName='VARCHAR'
+          DataLength=3
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBranch.BranchName'
+          DataTypeName='VARCHAR'
+          DataLength=30
         >, object:rpclass::TCustomLoadedField<
           Name='IsAllCabang'
           DataTypeName='varchar'
@@ -71,6 +87,10 @@ document <
           Name='LimitData'
           DataTypeName='integer'
           DataLength=20
+        >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
+          Name='LBranch'
+          ClassTypeName='Branch'
+          FieldNames='BranchCode;BranchCode;BranchName'
         >}Mode=imSingleRow
     >, object:rpclass::TPClassUIDef<
       Name='uipTransaction'

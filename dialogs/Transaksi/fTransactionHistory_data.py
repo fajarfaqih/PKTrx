@@ -10,17 +10,21 @@ def FormSetDataEx(uideflist, parameter):
 
   if (parameter.DatasetCount == 0 or
     parameter.GetDataset(0).Structure.StructureName != 'data'):
+    #=== Routine Saat Form Ditampilkan
     rec = uideflist.uipData.Dataset.AddRecord()
     rec.UserId = config.securitycontext.InitUser
     Now = config.Now()
     rec.BeginDate = int(Now)
     rec.EndDate = int(Now)
-    rec.SetFieldByName('LBranch.Kode_Cabang',config.securitycontext.GetUserInfo()[4])
-    rec.SetFieldByName('LBranch.Nama_Cabang',config.securitycontext.GetUserInfo()[5])
+    #rec.SetFieldByName('LBranch.BranchCode',config.securitycontext.GetUserInfo()[4])
+    #rec.SetFieldByName('LBranch.BranchName',config.securitycontext.GetUserInfo()[5])
     rec.BranchCode = config.securitycontext.GetUserInfo()[4]
+    rec.BranchName = config.securitycontext.GetUserInfo()[5]
+    rec.HeadOfficeCode = config.SysVarIntf.GetStringSysVar('OPTION','HeadOfficeCode')
   else:
-    #-- routine untuk SetDataWithParameters
-    helper = phelper.PObjectHelper(config, 'default')
+    #-- Routine untuk SetDataWithParameters
+    
+    helper = phelper.PObjectHelper(config)
     data = parameter.FirstRecord
 
 #    batchId = int(data.BatchId)
@@ -131,6 +135,9 @@ def RunSQLTransactionList(config ,param):
   LimitData = param.LimitData
   RangeAmountFrom = param.RangeAmountFrom
   RangeAmountTo = param.RangeAmountTo
+  HeadOfficeCode = config.SysVarIntf.GetStringSysVar('OPTION','HeadOfficeCode')
+
+  IsHeadOffice = (BranchCode == HeadOfficeCode)
   
   sBeginDate = config.FormatDateTime('yyyy-mm-dd',BeginDate)
   sEndDate = config.FormatDateTime('yyyy-mm-dd',EndDate)
@@ -149,6 +156,11 @@ def RunSQLTransactionList(config ,param):
   
   if IsAllCabang == 'F' :
     addParam += " and a.BranchCode='%s' " % BranchCode
+  else:
+    if not IsHeadOffice :
+      aBranchCode = config.securitycontext.GetUserInfo()[4]
+      addParam += " and ( c.BranchCode='%(BranchCode)s'  or c.MasterBranchCode='%(BranchCode)s' ) " % {'BranchCode' : aBranchCode}
+
   # end if
 
   if not IsSPV :
@@ -181,6 +193,8 @@ def RunSQLTransactionList(config ,param):
     select a.*,b.accountname from Transaction a \
     left outer join financialaccount b \
     on (a.channelaccountno=b.accountno) \
+    left outer join branch c \
+    on (a.branchcode=c.branchcode) \
     where %s \
     order by %s asc \
     Limit %d " % (addParam,orderBy,LimitData)
