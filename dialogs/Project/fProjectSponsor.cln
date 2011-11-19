@@ -52,7 +52,7 @@ document <
           DataLength=50
         >}Name='pProject'
       Width=320
-      Height=105
+      Height=129
       UIPart=$UIPARTS['uipProject']
       Controls={*object:rtf::DBEdit<
           Name='AccountNo'
@@ -131,7 +131,7 @@ document <
           DataLength=0
         >}Name='gDisbursement'
       Width=529
-      Height=99
+      Height=75
       UIPart=$UIPARTS['LsDisbursement']
       ControlLeftMargin=8
       ControlTopMargin=8
@@ -181,7 +181,7 @@ document <
           DataTypeName='varchar'
           DataLength=20
         >}Name='gSponsor'
-      Width=240
+      Width=529
       Height=209
       UIPart=$UIPARTS['LsProjectSponsor']
       ControlLeftMargin=8
@@ -202,7 +202,7 @@ document <
         >}>, object:rtf::DualSplit<
       Name='dualsplit3'
       Width=529
-      Height=309
+      Height=285
       Container1=$CONTAINERS['gSponsor']
       Container2=$CONTAINERS['gDisbursement']
     >}FormClassName='fProjectSponsor'

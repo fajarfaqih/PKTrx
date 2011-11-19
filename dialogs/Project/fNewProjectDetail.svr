@@ -7,9 +7,8 @@ document <
 >object:rpclass::TPClassUIDefList<
   UIDefs={object:rpclass::TPClassUIDef<
       Name='uipProject'
-      PClassName='Project'
-      LoadedFieldList='ProductId;ProductCode;ProductName;Description;AccountOfCollection;AccountOfDistribution;PercentageOfAmilFunds;ClosedDate;FundCategory;BudgetAmount;StartDate;FinsihDate;Status;IsDetail;ParentProductId;Level'
-      StoredFieldList='ProductId;ProductCode;ProductName;Description;AccountOfCollection;AccountOfDistribution;PercentageOfAmilFunds;ClosedDate;FundCategory;BudgetAmount;StartDate;FinsihDate;Status;IsDetail;ParentProductId;Level'
+      PClassName='ProjectAccount'
+      StoredFieldList='LProduct;AccountName;StartDate;FinishDate;BudgetAmount;Status;LCurrency;AccountNo'
       CustomLoadedFields={object:rpclass::TCustomLoadedField<
           Name='mode'
           DataTypeName='varchar'
@@ -31,80 +30,39 @@ document <
           DataTypeName='varchar'
           DataLength=30
         >, object:rpclass::TCustomLoadedField<
-          Name='ProductIdID'
-          DataTypeName='varchar'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='LProductParent.ProductId'
-          DataTypeName='INTEGER'
-        >, object:rpclass::TCustomLoadedField<
-          Name='LProductParent.ProductCode'
-          DataTypeName='VARCHAR'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='LProductParent.ProductName'
-          DataTypeName='VARCHAR'
-          DataLength=30
-        >, object:rpclass::TCustomLoadedField<
-          Name='LProductParent.Level'
-          DataTypeName='INTEGER'
-        >, object:rpclass::TCustomLoadedField<
-          Name='LProductParent.ProductId'
-          DataTypeName='INTEGER'
-        >, object:rpclass::TCustomLoadedField<
-          Name='IsAllCabang'
-          DataTypeName='integer'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='LCabang.Kode_Cabang'
-          DataTypeName='varchar'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='LCabang.Nama_Cabang'
-          DataTypeName='varchar'
-          DataLength=30
-        >, object:rpclass::TCustomLoadedField<
-          Name='IsAllValuta'
-          DataTypeName='integer'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='LValuta.currency_code'
-          DataTypeName='varchar'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='LValuta.short_name'
-          DataTypeName='varchar'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='LValuta.full_name'
-          DataTypeName='varchar'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
           Name='BranchCode'
           DataTypeName='varchar'
           DataLength=10
         >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
-          Name='LProductParent'
+          Name='LProduct'
           ClassTypeName='Project'
           FieldNames='ProductId;ProductCode;ProductName;Level;ProductId'
+        >, object:rpclass::TCustomLoadedLink<
+          Name='LCurrency'
+          ClassTypeName='Currency'
+          FieldNames='Currency_Code;Currency_Code;Short_Name;Full_Name'
         >}Mode=imSingleRow
-      OnSetData='ProductOnSetData'
-    >, object:rpclass::TPClassUIDef<
-      Name='uipLsAccount'
-      MasterUIName='uipProject'
-      ListName='Ls_ProductAccount'
-    >, object:rpclass::TPClassUIDef<
-      Name='uipInput'
-      Mode=imSingleRow
+      CreateInstanceOnNew=true
+      AfterApplyRow='ProjectAfterApplyRow'
     >, object:rpclass::TPClassUIDef<
       Name='uipLsSponsor'
       MasterUIName='uipProject'
       ListName='Ls_ProjectSponsor'
-      LoadedFieldList='ProjectSponsorCode;ProjectSponsorId;ProductId;SponsorId'
       StoredFieldList='ProjectSponsorCode;ProjectSponsorId;ProductId;SponsorId'
       CustomLoadedFields={object:rpclass::TCustomLoadedField<
           Name='ExtSponsor'
           DataTypeName='varchar'
           DataLength=50
-        >}>}OnSetDataEx='FormSetDataEx'
+        >}CreateInstanceOnNew=true
+      SetMasterDetailRelationship=true
+      AfterApplyRow='SponsorAfterApplyRow'
+    >, object:rpclass::TPClassUIDef<
+      Name='uipLsDisbursement'
+      MasterUIName='uipLsSponsor'
+      ListName='Ls_Disbursement'
+      StoredFieldList='DisbNumber;DisbDatePlan;DisbAmountPlan'
+      CreateInstanceOnNew=true
+      SetMasterDetailRelationship=true
+      AfterApplyRow='DisbursementAfterApplyRow'
+    >}OnSetDataEx='FormSetDataEx'
 >

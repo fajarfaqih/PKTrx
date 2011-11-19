@@ -10,14 +10,9 @@ document <
       OnClick='NewClick'
       NumberTag=1
     >, object:rmn::MenuItem<
-      Caption='&Edit Project...'
-      OnClick='ShowClick'
-      AllowedGroups='HIDDEN'
-      NumberTag=2
-    >, object:rmn::MenuItem<
-      Caption='Edit Sponsor Project...'
+      Caption='Edit Project...'
       OnClick='ShowFormWithdataClick'
-      StringTag='project/fProjectSponsor'
+      StringTag='project/fEditProjectDetail'
     >, object:rmn::MenuItem<
       Caption='&Peragaan Project...'
       OnClick='ViewProjectClick'

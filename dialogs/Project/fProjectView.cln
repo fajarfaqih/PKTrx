@@ -1,0 +1,354 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Peragaan project'
+  Left=50
+  Top=50
+  Width=700
+  Height=505
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AccountNo'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >}Name='uipProductAccount'
+    >, object:rtf::PClassUI<
+      Name='uipTransaction'
+      MultiLine=true
+    >, object:rtf::PClassUI<
+      Name='uipProject'
+      ClassTypeName='ProductAccount'
+      DataBinding=bmMaster
+    >}Containers={object:rtf::DualSplit<
+      Name='dsTransaction'
+      Width=240
+      Height=96
+      Container1=$CONTAINERS['pFilterTransaction']
+      Container2=$CONTAINERS['gTransaction']
+    >, object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BeginDate'
+          ControlCaption='Pilih tanggal transaksi'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='EndDate'
+          ControlCaption='s.d'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BeginningBalance'
+          ReadOnlyControl=true
+          ControlCaption='Saldo Awal'
+          DataTypeName='double'
+          DataLength=20
+        >}Name='pFilterTransaction'
+      Width=665
+      Height=70
+      Bordered=true
+      UIPart=$UIPARTS['uipProject']
+      Controls={*object:rtf::DBDateEdit<
+          Name='BeginDate'
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption='Pilih tanggal transaksi'
+          CaptionWidth=120
+        >, *object:rtf::DBDateEdit<
+          Name='EndDate'
+          Layout=clNextSide
+          Top=8
+          Left=256
+          Color=0
+          ControlCaption='s.d'
+        >, *object:rtf::DBEdit<
+          Name='BeginningBalance'
+          Top=36
+          Left=8
+          Color=-2147483624
+          ControlCaption='Saldo Awal'
+          CaptionWidth=120
+          ReadOnly=true
+        >, object:rtf::Button<
+          Name='bShowHistori'
+          Layout=clAbsolute
+          Top=8
+          Left=408
+          Color=0
+          ControlCaption=''
+          Caption='&Lihat histori'
+          OnClick='bViewHistClick'
+        >, object:rtf::Button<
+          Name='bExportExcel'
+          Layout=clAbsolute
+          Top=8
+          Left=488
+          Color=0
+          ControlCaption=''
+          Caption='&Export Excel'
+          OnClick='bExportClick'
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Grid<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='TransactionDate'
+          ControlCaption='Tanggal'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionCode'
+          ControlCaption='Kode'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='MutationType'
+          ControlCaption='Mutasi'
+          DataTypeName='varchar'
+          DataLength=1
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount'
+          ControlCaption='Nilai'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ReferenceNo'
+          ControlCaption='No Referensi'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Description'
+          DataTypeName='varchar'
+          DataLength=100
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Inputer'
+          ControlCaption='Inputer'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionItemId'
+          Hidden=true
+          ReadOnlyControl=true
+          DataTypeName='integer'
+          DataLength=20
+        >}Name='gTransaction'
+      Width=700
+      Height=209
+      UIPart=$UIPARTS['uipTransaction']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Columns={*object:rtf::GridColumn<
+          Name='TransactionDate'
+          InputStyle=cisDate
+          EnumeratedValues=''
+          FieldName='TransactionDate'
+          DisplayFormat=''
+          TitleCaption='Tanggal'
+          Width=60
+        >, *object:rtf::GridColumn<
+          Name='TransactionCode'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='TransactionCode'
+          DisplayFormat=''
+          TitleCaption='Kode'
+          Width=40
+        >, *object:rtf::GridColumn<
+          Name='MutationType'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='MutationType'
+          DisplayFormat=''
+          TitleCaption='Mutasi'
+          Width=40
+        >, *object:rtf::GridColumn<
+          Name='Amount'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Amount'
+          DisplayFormat=',0.00'
+          TitleCaption='Nilai'
+          Width=120
+        >, *object:rtf::GridColumn<
+          Name='ReferenceNo'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='ReferenceNo'
+          DisplayFormat=''
+          TitleCaption='No Referensi'
+          Width=80
+        >, *object:rtf::GridColumn<
+          Name='Description'
+          Width=200
+        >, *object:rtf::GridColumn<
+          Name='Inputer'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Inputer'
+          DisplayFormat=''
+          TitleCaption='Inputer'
+          Width=60
+        >}ReadOnly=true
+      RowSelect=true
+      SuppressHelpLine=true
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=320
+      Height=54
+      Controls={object:rtf::Button<
+          Name='bClose'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Tutup'
+          Cancel=true
+          ExitAction=eaQuitOK
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=240
+      Height=96
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['dsMain']
+      InversedAlign=true
+    >, object:rtf::DualSplit<
+      Name='dsMain'
+      Width=240
+      Height=96
+      Container1=$CONTAINERS['pProductAccount']
+      Container2=$CONTAINERS['dsTransaction']
+    >, object:rtf::DualSplit<
+      Name='dsAccount'
+      Width=240
+      Height=145
+    >, object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='AccountNo'
+          AccessOption=aoReadOnly
+          ControlCaption='No Account Project'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AccountName'
+          AccessOption=aoReadOnly
+          ControlCaption='Nama Project'
+          DataTypeName='VARCHAR'
+          DataLength=50
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Balance'
+          AccessOption=aoReadOnly
+          ControlCaption='Saldo'
+          DataTypeName='DOUBLE'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          AccessOption=aoReadOnly
+          ControlCaption='Cabang'
+          DataTypeName='VARCHAR'
+          DataLength=5
+        >, object:rtf::FieldUIElmtSetting<
+          Name='CurrencyCode'
+          AccessOption=aoReadOnly
+          ControlCaption='Kode Valuta'
+          DataTypeName='VARCHAR'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BranchName'
+          ReadOnlyControl=true
+          ControlCaption='-'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='CurrencyName'
+          ReadOnlyControl=true
+          ControlCaption='-'
+          DataTypeName='varchar'
+          DataLength=20
+        >}Name='pProductAccount'
+      Width=649
+      Height=169
+      UIPart=$UIPARTS['uipProject']
+      Controls={*object:rtf::DBEdit<
+          Name='AccountNo'
+          Top=8
+          Left=8
+          Color=-2147483624
+          ControlCaption='No Account Project'
+        >, *object:rtf::DBEdit<
+          Name='AccountName'
+          Top=36
+          Left=8
+          Color=-2147483624
+          ControlCaption='Nama Project'
+        >, *object:rtf::DBEdit<
+          Name='Balance'
+          Top=64
+          Left=8
+          Color=-2147483624
+          ControlCaption='Saldo'
+          FieldName='Balance'
+          DisplayFormat=',0.00'
+        >, *object:rtf::DBEdit<
+          Name='BranchCode'
+          Top=92
+          Left=8
+          Color=-2147483624
+          ControlCaption='Cabang'
+        >, *object:rtf::DBEdit<
+          Name='CurrencyCode'
+          Top=120
+          Left=8
+          Width=45
+          Height=21
+          Color=-2147483624
+          ControlCaption='Kode Valuta'
+        >, *object:rtf::DBEdit<
+          Name='BranchName'
+          Layout=clAbsolute
+          Top=92
+          Left=160
+          Width=133
+          Height=21
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='-'
+        >, *object:rtf::DBEdit<
+          Name='CurrencyName'
+          Layout=clNextSide
+          Top=120
+          Left=161
+          Width=132
+          Height=21
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='-'
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >}FormClassName='fProjectView'
+>

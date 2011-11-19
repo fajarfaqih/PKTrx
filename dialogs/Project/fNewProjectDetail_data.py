@@ -21,103 +21,55 @@ def FormSetDataEx(uideflist, parameter) :
     #  rec.key = parameter.FirstRecord.key
     #rec.SetFieldByName(ID+'ID',rec.GetFieldByName(ID))
 
-      
-      
 
-def ProductOnSetData(sender):
-  rec = sender.ActiveRecord
-  helper = phelper.PObjectHelper(sender.uideflist.config)
+ProjectAccountNo = None
+LsProjectSponsorId = {}
 
-  oProduct = helper.GetObjectByInstance('Program', sender.ActiveInstance)
-  if (rec.ParentProductId or 0) != 0:
-    oParent = oProduct.LProductParent
+def ProjectAfterApplyRow(sender,instance):
+  global ProjectAccountNo
+  uideflist = sender.uideflist
+  config = uideflist.config
 
-    rec.SetFieldByName('LProductParent.ProductId',oParent.ProductId)
-    rec.SetFieldByName('LProductParent.ProductName',oParent.ProductName)
+  recData = sender.ActiveRecord
 
-def SaveProjectDetail(config,parameters,returns):
-  status = returns.CreateValues(
-         ['Is_Err',0],['Err_Message','']
-         )
+  BranchCode = str(config.SecurityContext.GetUserInfo()[4])
+  ProductCode = recData.GetFieldByName('LProduct.ProductCode')
+  CurrencyCode = recData.GetFieldByName('LCurrency.Currency_Code')
 
   helper = phelper.PObjectHelper(config)
-  config.BeginTransaction()
-  try:
-    recProject = parameters.uipProject.GetRecord(0)
-    
-    # Create Project
-    parentProductCode = recProject.GetFieldByName('LProductParent.ProductCode')
-    ProductCode = parentProductCode #+ GetProjectCode(config,parentProductCode)
-    
+  #oProjectAccount = helper.GetObjectByInstance('ProjectAccount', instance)
 
-#    oProject = helper.CreatePObject('Project')
-#    oProject.ProductCode = ProductCode #recProject.ProductCode
-#    oProject.ProductName = recProject.ProductName
-#    oProject.Description = recProject.Description
-#    oProject.IsDetail = 'T'
-#    oProject.Status = 'A'
-#    oProject.PercentageOfAmilFunds = recProject.PercentageOfAmilFunds
-#    oProject.ParentProductId =  recProject.GetFieldByName('LProductParent.ProductId')
-#    oProject.BudgetAmount = recProject.BudgetAmount
-#    oProject.Level = recProject.Level
-#    oProject.StartDate = recProject.StartDate
-#    oProject.FinsihDate = recProject.FinsihDate
-#    oProject.SetHierarchy()
+  oProjectAccount = helper.CreatePObject('ProjectAccount', [ProductCode, BranchCode, CurrencyCode])
+  oProjectAccount.AccountName = recData.AccountName
 
+  oProjectAccount.Status = 'A'
+  oProjectAccount.BranchCode = BranchCode
+  oProjectAccount.Openingdate = config.Now()
+  oProjectAccount.Balance = 0.0
 
-    # Create ProjectAccount
-    BranchCode = recProject.BranchCode
-    CurrencyCode = recProject.GetFieldByName('LValuta.Currency_Code')
-    
-    param = [ProductCode,BranchCode,CurrencyCode]
-    
-    oProjectAccount = helper.CreatePObject('ProjectAccount',param)
-    oProjectAccount.AccountName = recProject.ProductName
-    oProjectAccount.ProductId = recProject.ProductId
-    oProjectAccount.StartDate = recProject.StartDate
-    oProjectAccount.FinishDate = recProject.FinsihDate
-    
-    oProjectAccount.BranchCode = BranchCode
-    oProjectAccount.CurrencyCode = CurrencyCode
-    oProjectAccount.Status = 'A'
-    oProjectAccount.Openingdate = config.Now()
-    oProjectAccount.Balance = 0.0
-    
-#    oProjectAccount = helper.CreatePObject('ProductAccount',param)
-#    oProjectAccount.AccountName = recProject.ProductName
-#    oProjectAccount.ProductId = oProject.ProductId
-#    oProjectAccount.BranchCode = BranchCode
-#    oProjectAccount.CurrencyCode = CurrencyCode
-#    oProjectAccount.Status = 'A'
-#    oProjectAccount.Openingdate = config.Now()
-#    oProjectAccount.Balance = 0.0
-    
+  oProjectAccount.ProductId = recData.GetFieldByName('LProduct.ProductId')
+  oProjectAccount.StartDate = recData.StartDate
+  oProjectAccount.FinishDate = recData.FinishDate
+  oProjectAccount.CurrencyCode = CurrencyCode
 
-    for i in range(parameters.uipLsSponsor.RecordCount):
-      recProjSponsor = parameters.uipLsSponsor.GetRecord(i)
-      oProjectSponsor = helper.CreatePObject('ProjectSponsor')
-      oProjectSponsor.ProjectSponsorCode =  recProjSponsor.ProjectSponsorCode
-      oProjectSponsor.SponsorId =  recProjSponsor.SponsorId
-      
-      #oProjectSponsor.ProductId =  oProject.ProductId
-      oProjectSponsor.AccountNo =  oProjectAccount.AccountNo
+  ProjectAccountNo = oProjectAccount.AccountNo
+  #oProjectAccount.AccountNo = ProjectAccountNo
+  
+def SponsorAfterApplyRow(sender,instance):
+  #global LsProjectSponsorId
+  global ProjectAccountNo
+  
+  uideflist = sender.uideflist
+  helper = phelper.PObjectHelper(uideflist.config)
+  oProjectSponsor = helper.GetObjectByInstance('ProjectSponsor', instance)
+  oProjectSponsor.AccountNo = ProjectAccountNo
 
-    config.Commit()
-  except:
-    config.Rollback()
-    status.Is_Err = 1
-    status.Err_Message = str(sys.exc_info()[1])
+  #LsProjectSponsorId[sender.ActiveRecord.__SYSID] = oProjectSponsor.ProjectSponsorId
     
-def GetProjectCode(config,idCode):
-  # diubah dengan menggunakan sequence oracle
-  customid = customidgenAPI.custom_idgen(config)
-  customid.PrepareGetID('PROJECT', idCode)
-  try:
-    id = customid.GetLastID()
-    strID = str(id).zfill(3)
-    customid.Commit()
-  except:
-    customid.Cancel()
-    raise '', str(sys.exc_info()[1])
+def DisbursementAfterApplyRow(sender, instance):
+  global LsProjectSponsorId
+  uideflist = sender.uideflist
 
-  return strID
+  helper = phelper.PObjectHelper(uideflist.config)
+  oProjectSponsorDisb = helper.GetObjectByInstance('ProjectSponsorDisbursement', instance)
+

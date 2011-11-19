@@ -1,0 +1,42 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{03AB2DCD-D5DA-4DD5-B07D-CD15AE22527E}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rpclass::TPClassUIDefList<
+  UIDefs={object:rpclass::TPClassUIDef<
+      Name='uipProject'
+      PClassName='ProjectAccount'
+      LoadedFieldList='AccountNo;AccountName;StartDate;FinishDate;BudgetAmount;LCurrency.Currency_Code;LCurrency.Currency_Code;LCurrency.Short_Name;LCurrency.Full_Name'
+      StoredFieldList='AccountName;StartDate;FinishDate;BudgetAmount;LCurrency'
+      CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
+          Name='LCurrency'
+          ClassTypeName='Currency'
+          FieldNames='Currency_Code;Currency_Code;Short_Name;Full_Name'
+        >}Mode=imSingleRow
+    >, object:rpclass::TPClassUIDef<
+      Name='LsProjectSponsor'
+      MasterUIName='uipProject'
+      ListName='Ls_ProjectSponsor'
+      LoadedFieldList='ProjectSponsorCode;SponsorId'
+      StoredFieldList='ProjectSponsorCode;SponsorId'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='ExtSponsor'
+          DataTypeName='varchar'
+          DataLength=20
+        >}CreateInstanceOnNew=true
+      DeleteOnDel=true
+      SetMasterDetailRelationship=true
+      OnSetData='ProjectSponsorOnSetData'
+    >, object:rpclass::TPClassUIDef<
+      Name='LsDisbursement'
+      MasterUIName='LsProjectSponsor'
+      ListName='Ls_Disbursement'
+      LoadedFieldList='DisbNumber;DisbDatePlan;DisbAmountPlan'
+      StoredFieldList='DisbNumber;DisbDatePlan;DisbAmountPlan'
+      CreateInstanceOnNew=true
+      DeleteOnDel=true
+      SetMasterDetailRelationship=true
+    >}OnSetDataEx='FormSetDataEx'
+>

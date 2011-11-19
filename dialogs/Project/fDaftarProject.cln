@@ -56,11 +56,11 @@ document <
       WindowSize=20
       Columns={object:rtf::QueryColumn<
           FieldName='ProjectAccount.Kode_Proyek'
-          Width=80
+          Width=130
           Caption='Kode Proyek'
         >, object:rtf::QueryColumn<
           FieldName='ProjectAccount.Nama_Produk'
-          Width=120
+          Width=200
           Caption='Nama Proyek'
         >, object:rtf::QueryColumn<
           FieldName='ProjectAccount.Tgl_Mulai'

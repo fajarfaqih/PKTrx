@@ -76,13 +76,13 @@ class CashAccount(FinancialAccount):
 
   def CheckForDelete(self):
     sqlCheck = "select count(TransactionItemId) from accounttransactionitem where AccountNo='%s' "% (self.AccountNo)
-    
+
     resSQL = self.Config.CreateSQL(sqlCheck).rawresult
     if resSQL.GetFieldValueAt(0) > 0:
       raise '','Data tidak dapat dihapus karena menjadi referensi oleh data lain'
-      
+
     return 1
-    
+
 class BankCash(CashAccount):
   # static variable
   pobject_classname = 'BankCash'
@@ -209,10 +209,14 @@ class ProjectAccount(ProductAccount):
 
   def OnCreate(self, param):
     ProductCode, Cabang, Valuta = param
-    prefix = 'P' + ProductCode + '.' + Cabang
-    sequence = self.CreateProjectAccSequence(prefix)
-    self.AccountNo = prefix + '.' + sequence 
+    
+    self.AccountNo = self.GenerateAccountNo(ProductCode, Cabang, Valuta) 
   
+  def GenerateAccountNo(self, aProductCode, aCabang, aValuta):
+    prefix = 'P' + aProductCode + '.' + aCabang
+    sequence = self.CreateProjectAccSequence(prefix)
+    return prefix + '.' + sequence
+    
   def CreateProjectAccSequence(self,prefix):
     sequence = '' 
     
@@ -228,24 +232,34 @@ class ProjectAccount(ProductAccount):
 
     return sequence
   
+  def GetListDataTransaction(self):
+    config = self.Config
+    
+    oqlCheck = "select from AccountTransactionItem \
+                 [ AccountNo = :AccountNo ] \
+                 (TransactionId,TransactionItemId,self); "
+                  
+    oql = config.OQLEngine.CreateOQL(oqlCheck)
+    oql.SetParameterValueByName('AccountNo', self.AccountNo)
+    oql.ApplyParamValues()
+    oql.active = 1
+    return oql.rawresult
+    
+    
   def CheckForDelete(self):
-    # Override Parent (FinancialAccount) CheckForDelete Function 
+    # Override Parent (FinancialAccount) CheckForDelete Function
+    
+    #recTrans = self.GetListDataTransaction()    
+    #if not recTrans.Eof :
+    #  raise '','Proyek tidak dapat dihapus karena telah memiliki transaksi'
+
     return 1
     
   def OnDelete(self):
     helper = self.Helper
     config = self.Config
     
-    oqlCheck = "select from AccountTransactionItem \
-                 [ AccountNo = :AccountNo ] \
-                 (TransactionId,TransactionItemId,self); " 
-                  
-    
-    oql = config.OQLEngine.CreateOQL(oqlCheck)
-    oql.SetParameterValueByName('AccountNo', self.AccountNo)
-    oql.ApplyParamValues()
-    oql.active = 1
-    recTrans  = oql.rawresult
+    recTrans = self.GetListDataTransaction()
 
     while not recTrans.Eof:      
       oTran = helper.GetObject('Transaction',recTrans.TransactionId)
@@ -526,8 +540,8 @@ class Invoice(pobject.PObject):
     Total = self.InvoiceAmount or 0.0
     
     Terbilang = ToolsConvert.Terbilang(config,Total,
-              KodeMataUang = '000',
-              NamaMataUang = 'Rupiah')
+              KodeMataUang = self.CurrencyCode,
+              NamaMataUang = self.LCurrency.Symbol_Says)
   
     Terbilang = ToolsConvert.Divider(Terbilang,45)
     if len(Terbilang) == 1 : Terbilang.append('')
@@ -545,7 +559,7 @@ class Invoice(pobject.PObject):
     dataInvoice['INVOICEDATE'] = config.FormatDateTime('dd mmm yyyy',self.GetAsTDateTime('InvoiceDate'))
     dataInvoice['TERMDATE'] = config.FormatDateTime('dd mmm yyyy',self.GetAsTDateTime('InvoiceTermDate'))
     dataInvoice['SAYS'] = Terbilang[0] + ' ' + Terbilang[1]
-    dataInvoice['AMOUNT'] = 'Rp ' + config.FormatFloat('#,##0.00',Total)
+    dataInvoice['AMOUNT'] = '%(SYMBOL)s %(AMOUNT)s' % { 'SYMBOL' : self.LCurrency.Symbol , 'AMOUNT' : config.FormatFloat('#,##0.00',Total)} 
     dataInvoice['QTY'] = '1'
     dataInvoice['DESCRIPTION'] = self.Description
     dataInvoice['BANKNAME'] = self.InvoiceBankName

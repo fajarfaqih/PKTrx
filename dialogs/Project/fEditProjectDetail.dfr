@@ -6,7 +6,7 @@ document <
   MinorVersion='0'
 >object:rtf::Form<
   MainContainer=$CONTAINERS['dualsplit1']
-  Caption='Sponsor Project'
+  Caption='Edit Proyek'
   State=rsMaximized
   Left=50
   Top=50
@@ -55,16 +55,43 @@ document <
           DataMembers='AccountNo'#13#10
         >, object:rtf::MultiControlDef<
           Action=caEdit
-          DataMembers='AccountName'#13#10
+          DataMembers=['AccountName'#13#10,
+            'StartDate'#13#10,
+            'FinishDate'#13#10,
+            'BudgetAmount'#13#10,
+            'LCurrency'#13#10]
         >}Elements={*object:rtf::FieldUIElmtSetting<
           Name='AccountNo'
           ControlCaption='Kode Proyek'
         >, *object:rtf::FieldUIElmtSetting<
           Name='AccountName'
           ControlCaption='Nama Proyek'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='StartDate'
+          ControlCaption='Tanggal Mulai'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='FinishDate'
+          ControlCaption='Tanggal Berakhir'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='BudgetAmount'
+          ControlCaption='Nilai Budget'
+        >, *object:rtf::LinkUIElmtSetting<
+          Name='LCurrency'
+          ControlCaption='Valuta'
+          DisplayFields='Currency_Code;Short_Name;Full_Name'
+          Restrictions=''
+          OQLText=['select from currency'#13#10,
+            '('#13#10,
+            '  currency_code,'#13#10,
+            '  short_name,'#13#10,
+            '  full_name,'#13#10,
+            '  self'#13#10,
+            ')then order by currency_code;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LCurrency'
         >}Name='pProject'
-      Width=320
-      Height=129
+      Width=409
+      Height=193
       UIPart=$UIPARTS['uipProject']
       Controls={*object:rtf::DBEdit<
           Name='AccountNo'
@@ -78,6 +105,35 @@ document <
           Left=8
           Color=0
           ControlCaption='Nama Proyek'
+        >, *object:rtf::DBDateEdit<
+          Name='StartDate'
+          Top=64
+          Left=8
+          Color=0
+          ControlCaption='Tanggal Mulai'
+        >, *object:rtf::DBDateEdit<
+          Name='FinishDate'
+          Top=92
+          Left=8
+          Color=0
+          ControlCaption='Tanggal Berakhir'
+        >, *object:rtf::DBEdit<
+          Name='BudgetAmount'
+          Top=120
+          Left=8
+          Color=0
+          ControlCaption='Nilai Budget'
+          FieldName='BudgetAmount'
+          DisplayFormat=',0.00'
+        >, *object:rtf::DBLookupEdit<
+          Name='LCurrency'
+          Top=148
+          Left=8
+          Enabled=false
+          Color=0
+          ControlCaption='Valuta'
+          LookupField='LCurrency.Short_Name'
+          DisplayLookupField=true
         >}EqualCaptionWidth=100
       ControlLeftMargin=8
       ControlTopMargin=8
@@ -114,15 +170,15 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=529
-      Height=465
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dualsplit2']
       InversedAlign=true
     >, object:rtf::DualSplit<
       Name='dualsplit2'
-      Width=529
-      Height=415
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pProject']
       Container2=$CONTAINERS['dualsplit3']
     >, object:rtf::Grid<
@@ -142,7 +198,7 @@ document <
           ControlCaption='Jumlah'
         >}Name='gDisbursement'
       Width=529
-      Height=75
+      Height=11
       UIPart=$UIPARTS['LsDisbursement']
       ControlLeftMargin=8
       ControlTopMargin=8
@@ -192,7 +248,7 @@ document <
           Name='ExtSponsor'
           ControlCaption='Nama Sponsor'
         >}Name='gSponsor'
-      Width=529
+      Width=240
       Height=209
       UIPart=$UIPARTS['LsProjectSponsor']
       ControlLeftMargin=8
@@ -213,8 +269,8 @@ document <
         >}>, object:rtf::DualSplit<
       Name='dualsplit3'
       Width=529
-      Height=285
+      Height=221
       Container1=$CONTAINERS['gSponsor']
       Container2=$CONTAINERS['gDisbursement']
-    >}FormClassName='fProjectSponsor'
+    >}FormClassName='fEditProjectSponsor'
 >
