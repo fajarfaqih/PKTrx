@@ -30,15 +30,38 @@ def GetHistTransaction(config, params, returns):
     utils = config.ModLibUtils
     return utils.EncodeDate(tdate[0], tdate[1], tdate[2])
 
+  recStatus = returns.CreateValues(
+          ['BeginningBalance', 0.0],
+          ['PeriodStr',''],
+          ['TotalDebet',0.0],
+          ['TotalCredit',0.0],
+        )
+
   helper = phelper.PObjectHelper(config)
 
   rec = params.FirstRecord
   AccountNo = rec.AccountNo
   BeginDate = rec.BeginDate
   EndDate   = rec.EndDate
+  
+  # -- Get BeginningBalance
+  oProjectAccount = helper.GetObject('ProjectAccount',AccountNo)
+  recStatus.BeginningBalance = oProjectAccount.GetBalanceByDate(int(BeginDate))
+
+  # -- Set Period
+  PeriodStr = ''
+  if BeginDate == EndDate :
+    PeriodStr = config.FormatDateTime('dd-mm-yyyy',BeginDate)
+  else:
+    PeriodStr = "%s s/d %s" % (
+                   config.FormatDateTime('dd-mm-yyyy',BeginDate),
+                   config.FormatDateTime('dd-mm-yyyy',EndDate)
+                 )
+  
+  recStatus.PeriodStr = PeriodStr
 
   # Preparing returns
-  recSaldo = returns.CreateValues(['BeginningBalance', 0.0])
+
   dsHist = returns.AddNewDatasetEx(
     'histori',
     ';'.join([
@@ -51,20 +74,22 @@ def GetHistTransaction(config, params, returns):
       'ReferenceNo: string',
       'Description: string',
       'Inputer: string',
-      'NoTransaksi:string'
+      'TransactionNo:string'
     ])
   )
+
 
   s = ' \
     SELECT FROM AccountTransactionItem \
     [ \
       AccountNo = :AccountNo and \
-      LTransaction.TransactionDate >= :BeginDate and \
-      LTransaction.TransactionDate < :EndDate \
+      LTransaction.ActualDate >= :BeginDate and \
+      LTransaction.ActualDate < :EndDate \
     ] \
     ( \
       TransactionItemId, \
       LTransaction.TransactionDate, \
+      LTransaction.ActualDate, \
       LTransaction.TransactionCode, \
       MutationType, \
       Amount, \
@@ -74,7 +99,7 @@ def GetHistTransaction(config, params, returns):
       LTransaction.TransactionNo,\
       Self \
     ) \
-    THEN ORDER BY ASC TransactionDate, ASC TransactionItemId;'
+    THEN ORDER BY ASC ActualDate, ASC TransactionItemId;'
 
   oql = config.OQLEngine.CreateOQL(s)
   oql.SetParameterValueByName('AccountNo', AccountNo)
@@ -85,22 +110,31 @@ def GetHistTransaction(config, params, returns):
   oql.active = 1
   ds  = oql.rawresult
 
+  TotalDebet = 0.0
+  TotalCredit = 0.0
   while not ds.Eof:
     recHist = dsHist.AddRecord()
     recHist.TransactionItemId = ds.TransactionItemId
-    recHist.TransactionDate = AsDateTime(ds.TransactionDate)
+    recHist.TransactionDate = AsDateTime(ds.ActualDate)
     recHist.TransactionDateStr = config.FormatDateTime('dd-mmm-yyyy',recHist.TransactionDate)
     recHist.TransactionCode = ds.TransactionCode
     recHist.MutationType = ds.MutationType
     recHist.Amount = ds.Amount
+    if ds.MutationType == 'D' :
+      TotalDebet += ds.Amount
+    else:
+      TotalCredit += ds.Amount
+
     recHist.ReferenceNo = ds.ReferenceNo
     recHist.Description = ds.Description
     recHist.Inputer = ds.Inputer
-    recHist.NoTransaksi = ds.TransactionNo
+    recHist.TransactionNo = ds.TransactionNo
 
     ds.Next()
   #-- while
-
+  recStatus.TotalDebet = TotalDebet
+  recStatus.TotalCredit = TotalCredit
+  
 def GetProductData(config, params, returns):
   status = returns.CreateValues(
     ['Is_Err',0],['Err_Message',''],

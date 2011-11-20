@@ -35,8 +35,8 @@ document <
       MultiLine=true
     >}Containers={object:rtf::DualSplit<
       Name='dsMain'
-      Width=240
-      Height=96
+      Width=700
+      Height=505
       Container1=$CONTAINERS['pSelect']
       Container2=$CONTAINERS['dsAccount']
       InversedAlign=true
@@ -172,6 +172,10 @@ document <
           Width=60
         >, *object:rtf::GridColumn<
           Name='TransactionNo'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='TransactionNo'
+          DisplayFormat=''
           TitleCaption='No Transaksi'
           Width=160
         >, *object:rtf::GridColumn<
@@ -242,8 +246,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dsAccount'
-      Width=240
-      Height=96
+      Width=700
+      Height=463
       Container1=$CONTAINERS['pProductAccount']
       Container2=$CONTAINERS['dsTransaction']
     >, object:rtf::Panel<
@@ -314,8 +318,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dsTransaction'
-      Width=240
-      Height=96
+      Width=700
+      Height=362
       Container1=$CONTAINERS['pSelectTransaction']
       Container2=$CONTAINERS['gTransaction']
     >}FormClassName='fEmployeeAR'

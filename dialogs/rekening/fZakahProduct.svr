@@ -77,6 +77,10 @@ document <
           Name='TotalCredit'
           DataTypeName='double'
           DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='EndBalance'
+          DataTypeName='double'
+          DataLength=20
         >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
           Name='LZakatProduct'
           ClassTypeName='ZakahProduct'

@@ -7,6 +7,7 @@ document <
 >object:rtf::Form<
   MainContainer=$CONTAINERS['dualsplit1']
   Caption='Peragaan rekening zakat'
+  State=rsMaximized
   Left=50
   Top=50
   Width=700
@@ -257,6 +258,12 @@ document <
           ControlCaption='Total Credit'
           DataTypeName='double'
           DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='EndBalance'
+          ReadOnlyControl=true
+          ControlCaption='Saldo Akhir'
+          DataTypeName='double'
+          DataLength=20
         >}Name='pSummary'
       Width=537
       Height=44
@@ -282,6 +289,14 @@ document <
           CaptionWidth=80
           FieldName='TotalCredit'
           DisplayFormat=',0.00'
+        >, *object:rtf::DBEdit<
+          Name='EndBalance'
+          Layout=clAbsolute
+          Top=8
+          Left=464
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Saldo Akhir'
         >}EqualCaptionWidth=80
       ControlLeftMargin=8
       ControlTopMargin=8

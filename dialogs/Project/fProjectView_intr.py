@@ -13,7 +13,7 @@ class fProjectView:
     app = self.app
 
     filename = self.oPrint.ConfirmDestinationPath(app,'xls')
-    if filename == '' : return
+    if filename in ['',None] : return
 
     self.ViewHistTransaction(2,filename)
 
@@ -35,9 +35,14 @@ class fProjectView:
     )
 
     ds = ph.packet.histori
+    recStatus = ph.FirstRecord
+    
     if mode == 1 :
       uipProject.Edit()
-      uipProject.BeginningBalance = ph.FirstRecord.BeginningBalance
+      uipProject.BeginningBalance = recStatus.BeginningBalance
+      uipProject.TotalDebet = recStatus.TotalDebet
+      uipProject.TotalCredit = recStatus.TotalCredit
+      uipProject.EndBalance = recStatus.BeginningBalance - recStatus.TotalDebet + recStatus.TotalCredit
       
       uipTran = self.uipTransaction
       uipTran.ClearData()
@@ -50,6 +55,7 @@ class fProjectView:
         uipTran.TransactionItemId = rec.TransactionItemId
         uipTran.TransactionDate   = rec.TransactionDate
         uipTran.TransactionCode   = rec.TransactionCode
+        uipTran.TransactionNo     = rec.TransactionNo
         uipTran.MutationType      = rec.MutationType
         uipTran.Amount            = rec.Amount
         uipTran.ReferenceNo       = rec.ReferenceNo
@@ -62,21 +68,30 @@ class fProjectView:
       uipTran.First()
 
     else:
-      workbook = self.oPrint.OpenExcelTemplate(app,'tplHistTransProduct.xls')
+      workbook = self.oPrint.OpenExcelTemplate(app,'tplHistTransProject.xls')
       workbook.ActivateWorksheet('data')
       try:
+      
+        # SET HEADER
+        workbook.SetCellValue(2, 2, "%s - %s" % (uipProject.AccountNo,uipProject.AccountName))
+        workbook.SetCellValue(3, 2, recStatus.PeriodStr)
+        workbook.SetCellValue(4, 2, recStatus.BeginningBalance)
+        workbook.SetCellValue(5, 2, recStatus.TotalDebet)
+        workbook.SetCellValue(5, 2, recStatus.TotalCredit)
+        workbook.SetCellValue(7, 2, recStatus.BeginningBalance - recStatus.TotalDebet + recStatus.TotalCredit)
+        
         i = 0
         while i < ds.RecordCount:
           rec = ds.GetRecord(i)
-          row = i + 2
+          row = i + 10
           #workbook.SetCellValue(row, 1, rec.TransactionItemId)
           workbook.SetCellValue(row, 1, rec.TransactionDateStr)
-          workbook.SetCellValue(row, 2, rec.TransactionCode)
+          workbook.SetCellValue(row, 2, rec.TransactionNo)
           workbook.SetCellValue(row, 3, rec.MutationType)
           workbook.SetCellValue(row, 4, rec.Amount)
           workbook.SetCellValue(row, 5, rec.Description)
           workbook.SetCellValue(row, 6, rec.Inputer)
-          workbook.SetCellValue(row, 7, rec.NoTransaksi)
+          workbook.SetCellValue(row, 7, rec.ReferenceNo)
 
           i += 1
         # end of while
@@ -87,5 +102,6 @@ class fProjectView:
       finally:
         # close
         workbook = None
+
 
 

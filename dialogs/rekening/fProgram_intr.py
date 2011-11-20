@@ -85,7 +85,8 @@ class fProgram:
       return
     
     if mode == 1 : # MODE GRID -- SET LIST TRANSACTION TO GRID
-      uipData.BeginningBalance = ph.FirstRecord.BeginningBalance
+      recStatus = ph.FirstRecord
+      uipData.BeginningBalance = recStatus.BeginningBalance
       
       uipTran = self.uipTransaction
       uipTran.ClearData()
@@ -109,6 +110,11 @@ class fProgram:
       # end of while
 
       uipTran.First()
+      
+
+      uipData.TotalDebet =  recStatus.TotalDebet
+      uipData.TotalCredit =  recStatus.TotalCredit
+      uipData.EndBalance =  recStatus.BeginningBalance - recStatus.TotalDebet + recStatus.TotalCredit
 
     else: # MODE EXPORT EXCEL -- SET LIST TRANSACTION TO EXCEL
       workbook = self.oPrint.OpenExcelTemplate(app,'tplHistTransProgram.xls')

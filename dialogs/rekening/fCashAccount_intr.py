@@ -96,7 +96,7 @@ class fCashAccount:
       uipCashAccount.Edit()
       uipCashAccount.TotalCredit = recStatus.TotalCredit
       uipCashAccount.TotalDebet = recStatus.TotalDebet
-      uipCashAccount.TotalAmount = recStatus.TotalDebet - recStatus.TotalCredit
+      uipCashAccount.EndBalance = recStatus.EndBalance
 
     else:
       rec = ph.FirstRecord
@@ -106,17 +106,18 @@ class fCashAccount:
       workbook.SetCellValue(2, 2, rec.CashAccountNo)
       workbook.SetCellValue(3, 2, rec.CashAccountName)
       workbook.SetCellValue(4, 2, rec.CashAccountBranch)
-      workbook.SetCellValue(5, 2, rec.CashAccountCurrency)
-      workbook.SetCellValue(6, 2, rec.BeginningBalance)
-      workbook.SetCellValue(7, 2, rec.TotalCredit)
-      workbook.SetCellValue(8, 2, rec.TotalDebet)
-      workbook.SetCellValue(9, 2, rec.EndBalance)
+      workbook.SetCellValue(5, 2, rec.Periode)
+      workbook.SetCellValue(6, 2, rec.CashAccountCurrency)
+      workbook.SetCellValue(7, 2, rec.BeginningBalance)
+      workbook.SetCellValue(8, 2, rec.TotalCredit)
+      workbook.SetCellValue(9, 2, rec.TotalDebet)
+      workbook.SetCellValue(10, 2, rec.EndBalance)
 
       try:
         i = 0
         while i < ds.RecordCount:
           recDetail = ds.GetRecord(i)
-          row = i + 12
+          row = i + 13
           workbook.SetCellValue(row, 1, str(i+1))
           workbook.SetCellValue(row, 2, recDetail.TransactionDateStr)
           workbook.SetCellValue(row, 3, recDetail.TransactionNo)

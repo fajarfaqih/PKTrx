@@ -47,6 +47,7 @@ def GetHistTransaction(config, params, returns):
      ['CashAccountName',''],
      ['CashAccountBranch',''],
      ['CashAccountCurrency',''],
+     ['Periode',''],
      ['BeginningBalance', 0.0],
      ['TotalCredit',0.0],
      ['TotalDebet',0.0],
@@ -60,6 +61,19 @@ def GetHistTransaction(config, params, returns):
   recSaldo.CashAccountName = oCashAccount.AccountName
   recSaldo.CashAccountBranch = oCashAccount.LBranch.BranchName
   recSaldo.CashAccountCurrency = oCashAccount.LCurrency.Short_Name
+
+  # Set Periode
+  Periode = ''
+
+  if BeginDate == EndDate:
+     Periode = '%s' % config.FormatDateTime('dd mmm yyyy', BeginDate)
+  else:
+     Periode = '%s s.d. %s' % (
+                 config.FormatDateTime('dd mmm yyyy', BeginDate),
+                 config.FormatDateTime('dd mmm yyyy', EndDate)
+               )
+  recSaldo.Periode = Periode
+               
 
   # Get Detail Transaction
   dsHist = returns.AddNewDatasetEx(
@@ -85,7 +99,7 @@ def GetHistTransaction(config, params, returns):
     [ \
       AccountNo = :AccountNo and \
       LTransaction.ActualDate >= :BeginDate and \
-      LTransaction.ActualDate <= :EndDate \
+      LTransaction.ActualDate < :EndDate \
     ] \
     ( \
       TransactionItemId, \
@@ -176,14 +190,13 @@ def PrintHistTransaction(config, params, returns):
   Cabang = '%s - %s' % (oAccount.BranchCode,CabangInfo.Nama_Cabang)
 
   # Get Info Valuta
-
   res = app.rexecscript('accounting','appinterface/Currency.GetCurrencyInfo',
         app.CreateValues(['kode_valuta',oAccount.CurrencyCode]))
 
   rec = res.FirstRecord
   if rec.Is_Error : raise '',rec.Err_Message
   Valuta = '%s - %s' % (oAccount.CurrencyCode,rec.short_name)
-
+  
   s = ' \
     SELECT FROM AccountTransactionItem \
     [ \

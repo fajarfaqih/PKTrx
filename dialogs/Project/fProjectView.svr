@@ -6,17 +6,6 @@ document <
   MinorVersion='0'
 >object:rpclass::TPClassUIDefList<
   UIDefs={object:rpclass::TPClassUIDef<
-      Name='uipProductAccount'
-      CustomLoadedFields={object:rpclass::TCustomLoadedField<
-          Name='BranchCode'
-          DataTypeName='varchar'
-          DataLength=10
-        >, object:rpclass::TCustomLoadedField<
-          Name='AccountNo'
-          DataTypeName='varchar'
-          DataLength=30
-        >}Mode=imSingleRow
-    >, object:rpclass::TPClassUIDef<
       Name='uipTransaction'
       CustomLoadedFields={object:rpclass::TCustomLoadedField<
           Name='TransactionDate'
@@ -26,6 +15,10 @@ document <
           Name='TransactionCode'
           DataTypeName='varchar'
           DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='TransactionNo'
+          DataTypeName='varchar'
+          DataLength=30
         >, object:rpclass::TCustomLoadedField<
           Name='MutationType'
           DataTypeName='varchar'
@@ -74,6 +67,18 @@ document <
         >, object:rpclass::TCustomLoadedField<
           Name='CurrencyName'
           DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='TotalDebet'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='TotalCredit'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='EndBalance'
+          DataTypeName='double'
           DataLength=20
         >}Mode=imSingleRow
     >}OnSetDataEx='FormSetDataEx'

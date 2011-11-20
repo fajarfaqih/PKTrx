@@ -16,22 +16,6 @@ document <
           DataTypeName='varchar'
           DataLength=30
         >, object:rpclass::TCustomLoadedField<
-          Name='BeginDate'
-          DataTypeName='timestamp'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='EndDate'
-          DataTypeName='timestamp'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='FundEntity'
-          DataTypeName='integer'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='BeginningBalance'
-          DataTypeName='double'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
           Name='ZakatBalance'
           DataTypeName='double'
           DataLength=20
@@ -121,6 +105,34 @@ document <
           Name='BranchName'
           DataTypeName='varchar'
           DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='TotalDebet'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='TotalCredit'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='EndBalance'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='BeginDate'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='EndDate'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='FundEntity'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='BeginningBalance'
+          DataTypeName='double'
+          DataLength=20
         >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
           Name='LProductAccount'
           ClassTypeName='ProductAccount'

@@ -7,23 +7,12 @@ document <
 >object:rtf::Form<
   MainContainer=$CONTAINERS['dualsplit1']
   Caption='Peragaan project'
+  State=rsMaximized
   Left=50
   Top=50
   Width=700
   Height=505
   UIParts={object:rtf::PClassUI<
-      Elements={object:rtf::FieldUIElmtSetting<
-          Name='BranchCode'
-          Hidden=true
-          DataTypeName='varchar'
-          DataLength=10
-        >, object:rtf::FieldUIElmtSetting<
-          Name='AccountNo'
-          Hidden=true
-          DataTypeName='varchar'
-          DataLength=30
-        >}Name='uipProductAccount'
-    >, object:rtf::PClassUI<
       Name='uipTransaction'
       MultiLine=true
     >, object:rtf::PClassUI<
@@ -32,10 +21,10 @@ document <
       DataBinding=bmMaster
     >}Containers={object:rtf::DualSplit<
       Name='dsTransaction'
-      Width=240
-      Height=96
+      Width=700
+      Height=286
       Container1=$CONTAINERS['pFilterTransaction']
-      Container2=$CONTAINERS['gTransaction']
+      Container2=$CONTAINERS['dsAccount']
     >, object:rtf::Panel<
       Elements={object:rtf::FieldUIElmtSetting<
           Name='BeginDate'
@@ -103,114 +92,11 @@ document <
       DefaultControlHeight=21
       HorizontalControlGap=4
       RowControlGap=7
-    >, object:rtf::Grid<
-      Elements={object:rtf::FieldUIElmtSetting<
-          Name='TransactionDate'
-          ControlCaption='Tanggal'
-          DataTypeName='timestamp'
-          DataLength=20
-        >, object:rtf::FieldUIElmtSetting<
-          Name='TransactionCode'
-          ControlCaption='Kode'
-          DataTypeName='varchar'
-          DataLength=20
-        >, object:rtf::FieldUIElmtSetting<
-          Name='MutationType'
-          ControlCaption='Mutasi'
-          DataTypeName='varchar'
-          DataLength=1
-        >, object:rtf::FieldUIElmtSetting<
-          Name='Amount'
-          ControlCaption='Nilai'
-          DataTypeName='double'
-          DataLength=20
-        >, object:rtf::FieldUIElmtSetting<
-          Name='ReferenceNo'
-          ControlCaption='No Referensi'
-          DataTypeName='varchar'
-          DataLength=30
-        >, object:rtf::FieldUIElmtSetting<
-          Name='Description'
-          DataTypeName='varchar'
-          DataLength=100
-        >, object:rtf::FieldUIElmtSetting<
-          Name='Inputer'
-          ControlCaption='Inputer'
-          DataTypeName='varchar'
-          DataLength=20
-        >, object:rtf::FieldUIElmtSetting<
-          Name='TransactionItemId'
-          Hidden=true
-          ReadOnlyControl=true
-          DataTypeName='integer'
-          DataLength=20
-        >}Name='gTransaction'
-      Width=700
-      Height=209
-      UIPart=$UIPARTS['uipTransaction']
-      ControlLeftMargin=8
-      ControlTopMargin=8
-      DefaultControlHeight=21
-      HorizontalControlGap=4
-      RowControlGap=7
-      Columns={*object:rtf::GridColumn<
-          Name='TransactionDate'
-          InputStyle=cisDate
-          EnumeratedValues=''
-          FieldName='TransactionDate'
-          DisplayFormat=''
-          TitleCaption='Tanggal'
-          Width=60
-        >, *object:rtf::GridColumn<
-          Name='TransactionCode'
-          InputStyle=cisNormal
-          EnumeratedValues=''
-          FieldName='TransactionCode'
-          DisplayFormat=''
-          TitleCaption='Kode'
-          Width=40
-        >, *object:rtf::GridColumn<
-          Name='MutationType'
-          InputStyle=cisNormal
-          EnumeratedValues=''
-          FieldName='MutationType'
-          DisplayFormat=''
-          TitleCaption='Mutasi'
-          Width=40
-        >, *object:rtf::GridColumn<
-          Name='Amount'
-          InputStyle=cisNormal
-          EnumeratedValues=''
-          FieldName='Amount'
-          DisplayFormat=',0.00'
-          TitleCaption='Nilai'
-          Width=120
-        >, *object:rtf::GridColumn<
-          Name='ReferenceNo'
-          InputStyle=cisNormal
-          EnumeratedValues=''
-          FieldName='ReferenceNo'
-          DisplayFormat=''
-          TitleCaption='No Referensi'
-          Width=80
-        >, *object:rtf::GridColumn<
-          Name='Description'
-          Width=200
-        >, *object:rtf::GridColumn<
-          Name='Inputer'
-          InputStyle=cisNormal
-          EnumeratedValues=''
-          FieldName='Inputer'
-          DisplayFormat=''
-          TitleCaption='Inputer'
-          Width=60
-        >}ReadOnly=true
-      RowSelect=true
-      SuppressHelpLine=true
     >, object:rtf::Panel<
       Name='pAction'
       Width=320
-      Height=54
+      Height=48
+      Bordered=true
       Controls={object:rtf::Button<
           Name='bClose'
           Layout=clNewLine
@@ -228,21 +114,24 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=240
-      Height=96
+      Width=700
+      Height=505
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dsMain']
       InversedAlign=true
     >, object:rtf::DualSplit<
       Name='dsMain'
-      Width=240
-      Height=96
+      Width=700
+      Height=456
       Container1=$CONTAINERS['pProductAccount']
       Container2=$CONTAINERS['dsTransaction']
     >, object:rtf::DualSplit<
       Name='dsAccount'
-      Width=240
-      Height=145
+      Width=700
+      Height=215
+      Container1=$CONTAINERS['pSummary']
+      Container2=$CONTAINERS['gTransaction']
+      InversedAlign=true
     >, object:rtf::Panel<
       Elements={object:rtf::FieldUIElmtSetting<
           Name='AccountNo'
@@ -289,6 +178,7 @@ document <
         >}Name='pProductAccount'
       Width=649
       Height=169
+      Bordered=true
       UIPart=$UIPARTS['uipProject']
       Controls={*object:rtf::DBEdit<
           Name='AccountNo'
@@ -350,5 +240,172 @@ document <
       DefaultControlHeight=21
       HorizontalControlGap=4
       RowControlGap=7
+    >, object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='TotalDebet'
+          ReadOnlyControl=true
+          ControlCaption='Total Debet'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TotalCredit'
+          ReadOnlyControl=true
+          ControlCaption='Total Kredit'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='EndBalance'
+          ReadOnlyControl=true
+          ControlCaption='Saldo Akhir'
+          DataTypeName='double'
+          DataLength=20
+        >}Name='pSummary'
+      Width=681
+      Height=49
+      Bordered=true
+      UIPart=$UIPARTS['uipProject']
+      Controls={*object:rtf::DBEdit<
+          Name='TotalDebet'
+          Top=8
+          Left=8
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Total Debet'
+          FieldName='TotalDebet'
+          DisplayFormat=',0.00'
+        >, *object:rtf::DBEdit<
+          Name='TotalCredit'
+          Layout=clAbsolute
+          Top=8
+          Left=256
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Total Kredit'
+          FieldName='TotalCredit'
+          DisplayFormat=',0.00'
+        >, *object:rtf::DBEdit<
+          Name='EndBalance'
+          Layout=clAbsolute
+          Top=8
+          Left=464
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Saldo Akhir'
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Grid<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='TransactionDate'
+          ControlCaption='Tanggal'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionCode'
+          Hidden=true
+          ControlCaption='Kode'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionNo'
+          ControlCaption='No Transaksi'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='MutationType'
+          ControlCaption='Mutasi'
+          DataTypeName='varchar'
+          DataLength=1
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount'
+          ControlCaption='Nilai'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ReferenceNo'
+          ControlCaption='No Referensi'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Description'
+          DataTypeName='varchar'
+          DataLength=100
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Inputer'
+          ControlCaption='Inputer'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionItemId'
+          Hidden=true
+          ReadOnlyControl=true
+          DataTypeName='integer'
+          DataLength=20
+        >}Name='gTransaction'
+      Width=700
+      Height=165
+      UIPart=$UIPARTS['uipTransaction']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Columns={*object:rtf::GridColumn<
+          Name='TransactionDate'
+          InputStyle=cisDate
+          EnumeratedValues=''
+          FieldName='TransactionDate'
+          DisplayFormat=''
+          TitleCaption='Tanggal'
+          Width=60
+        >, *object:rtf::GridColumn<
+          Name='TransactionNo'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='TransactionNo'
+          DisplayFormat=''
+          TitleCaption='No Transaksi'
+          Width=160
+        >, *object:rtf::GridColumn<
+          Name='MutationType'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='MutationType'
+          DisplayFormat=''
+          TitleCaption='Mutasi'
+          Width=40
+        >, *object:rtf::GridColumn<
+          Name='Amount'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Amount'
+          DisplayFormat=',0.00'
+          TitleCaption='Nilai'
+          Width=120
+        >, *object:rtf::GridColumn<
+          Name='ReferenceNo'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='ReferenceNo'
+          DisplayFormat=''
+          TitleCaption='No Referensi'
+          Width=80
+        >, *object:rtf::GridColumn<
+          Name='Description'
+          Width=200
+        >, *object:rtf::GridColumn<
+          Name='Inputer'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Inputer'
+          DisplayFormat=''
+          TitleCaption='Inputer'
+          Width=60
+        >}ReadOnly=true
+      RowSelect=true
+      SuppressHelpLine=true
     >}FormClassName='fProjectView'
 >

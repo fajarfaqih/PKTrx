@@ -211,7 +211,7 @@ document <
           DataLength=20
         >}Name='pFilter'
       Width=529
-      Height=145
+      Height=161
       UIPart=$UIPARTS['uipData']
       Controls={*object:rtf::DBCheckBox<
           Name='IsAllCPIA'
@@ -255,7 +255,7 @@ document <
         >, object:rtf::Button<
           Name='button1'
           Layout=clAbsolute
-          Top=112
+          Top=128
           Left=16
           Color=0
           ControlCaption=''
@@ -356,7 +356,7 @@ document <
           DataLength=100
         >}Name='gCPIA'
       Width=585
-      Height=86
+      Height=70
       UIPart=$UIPARTS['uipCPIA']
       ControlLeftMargin=8
       ControlTopMargin=8
@@ -457,7 +457,7 @@ document <
     >, object:rtf::DualSplit<
       Name='dualsplit3'
       Width=585
-      Height=131
+      Height=115
       Container1=$CONTAINERS['pGrid']
       Container2=$CONTAINERS['gCPIA']
       InversedAlign=true

@@ -80,6 +80,7 @@ class fZakahProduct:
       uipData.BeginningBalance = ph.FirstRecord.BeginningBalance
       uipData.TotalDebet = ph.FirstRecord.TotalDebet
       uipData.TotalCredit = ph.FirstRecord.TotalCredit
+      uipData.EndBalance = uipData.BeginningBalance - uipData.TotalDebet + uipData.TotalCredit
       
       uipTran = self.uipTransaction
       uipTran.ClearData()
