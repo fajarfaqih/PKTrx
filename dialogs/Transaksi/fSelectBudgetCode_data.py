@@ -1,57 +1,72 @@
 import com.ihsan.foundation.pobjecthelper as phelper
 
 def FormSetDataEx(uideflist, parameter):
-    config = uideflist.config
-    helper = phelper.PObjectHelper(config)
+  config = uideflist.config
+  helper = phelper.PObjectHelper(config)
 
-    if parameter.DatasetCount != 0 :
-      rec = parameter.FirstRecord
-      PeriodId = rec.PeriodId
-      BranchCode = config.SecurityContext.GetUserInfo()[4]
+  if parameter.DatasetCount != 0 :
+    rec = parameter.FirstRecord
+    PeriodId = rec.PeriodId
+    FilterCategory = rec.FilterCategory
+    FilterText = rec.FilterText
 
-      s = ' \
-        SELECT FROM BudgetYear \
-        [ \
-          BranchCode = :BranchCode and \
-          PeriodId = :PeriodId \
-        ] \
-        ( \
-          BudgetId, \
-          ItemCode, \
-          ItemName, \
-          BudgetCode, \
-          Amount, \
-          Realization, \
-          CurrencyCode, \
-          RevisionID, \
-          PeriodId, \
-          LOwner.OwnerName, \
-          LBudgetItem.LParent.ItemId, \
-          LBudgetItem.LParent.BudgetItemDescription as ItemGroup, \
-          LBudgetItem.BudgetItemDescription as ItemDetail, \
-          Self \
-        ) \
-        THEN ORDER BY ASC BudgetCode,ASC ItemId;'
+    AddFilter = ''
+    if FilterCategory != '0' :
+      LsCategory = {
+        '1' : 'BudgetCode',
+        '2' : 'LBudgetItem.LParent.BudgetItemDescription',
+        '3' : 'LBudgetItem.BudgetItemDescription',
+      }
+
+      AddFilter = " and %s LIKE '%s' " % ( LsCategory[FilterCategory], FilterText.upper() )
+
+    BranchCode = config.SecurityContext.GetUserInfo()[4]
 
 
-      oql = config.OQLEngine.CreateOQL(s)
-      oql.SetParameterValueByName('BranchCode', BranchCode)
-      oql.SetParameterValueByName('PeriodId', PeriodId)
 
-      oql.ApplyParamValues()
+    s = ' \
+      SELECT FROM BudgetYear \
+      [ \
+        BranchCode = :BranchCode \
+        and PeriodId = :PeriodId \
+        %s \
+      ] \
+      ( \
+        BudgetId, \
+        ItemCode, \
+        ItemName, \
+        BudgetCode, \
+        Amount, \
+        Realization, \
+        CurrencyCode, \
+        RevisionID, \
+        PeriodId, \
+        LOwner.OwnerName, \
+        LBudgetItem.LParent.ItemId, \
+        LBudgetItem.LParent.BudgetItemDescription as ItemGroup, \
+        LBudgetItem.BudgetItemDescription as ItemDetail, \
+        Self \
+      ) \
+      THEN ORDER BY ASC BudgetCode,ASC ItemId;' % AddFilter
 
-      oql.active = 1
-      res  = oql.rawresult
+    oql = config.OQLEngine.CreateOQL(s)
+    oql.SetParameterValueByName('BranchCode', BranchCode)
+    oql.SetParameterValueByName('PeriodId', PeriodId)
 
-      uipData = uideflist.uipBudget.Dataset
-      while not res.Eof:
-        oTran = uipData.AddRecord()
-        oTran.BudgetId = res.BudgetId
-        oTran.BudgetCode = res.BudgetCode
-        oTran.BudgetOwner = res.OwnerName
-        oTran.ItemGroup = res.BudgetItemDescription
-        oTran.Description = res.BudgetItemDescription_1
+    oql.ApplyParamValues()
 
-        res.Next()
+    oql.active = 1
+    res  = oql.rawresult
 
-      #-- while
+    uipData = uideflist.uipBudget.Dataset
+    while not res.Eof:
+      oTran = uipData.AddRecord()
+      oTran.BudgetId = res.BudgetId
+      oTran.BudgetCode = res.BudgetCode
+      oTran.BudgetOwner = res.OwnerName
+      oTran.ItemGroup = res.BudgetItemDescription
+      oTran.Description = res.BudgetItemDescription_1
+
+      res.Next()
+
+    #-- while

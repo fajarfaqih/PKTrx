@@ -24,12 +24,20 @@ document <
   OnEndProcessData=''
   UIParts={object:rtf::PClassUI<
       Name='uipBudget'
+    >, object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='PeriodId'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >}Name='uipFilter'
+      AlwaysPostToServer=true
     >}Containers={object:rtf::DualSplit<
       Name='dsMain'
       Width=600
       Height=550
       Container1=$CONTAINERS['pSelect']
-      Container2=$CONTAINERS['gBudget']
+      Container2=$CONTAINERS['dualsplit1']
       InversedAlign=true
     >, object:rtf::Panel<
       Name='pSelect'
@@ -42,9 +50,10 @@ document <
           Left=8
           Color=0
           ControlCaption=''
-          Caption='Pilih'
+          Caption='&Pilih'
           Default=true
           ExitAction=eaQuitOK
+          OnClick='SelectClick'
         >, object:rtf::Button<
           Name='bCancel'
           Layout=clAbsolute
@@ -52,10 +61,55 @@ document <
           Left=88
           Color=0
           ControlCaption=''
-          Caption='Batal'
+          Caption='&Batal'
           Cancel=true
           ExitAction=eaQuitCancel
         >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='FilterCategory'
+          ControlCaption='Filter'
+          DataTypeName='varchar'
+          DataLength=1
+          EnumeratedValues=['0=Tidak Ada Filter'#13#10,
+            '1=Kode Budget'#13#10]
+        >, object:rtf::FieldUIElmtSetting<
+          Name='FilterText'
+          DataTypeName='varchar'
+          DataLength=50
+        >}Name='pFilter'
+      Width=465
+      Height=57
+      UIPart=$UIPARTS['uipFilter']
+      Controls={*object:rtf::DBComboBox<
+          Name='FilterCategory'
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption='Filter'
+          OnChange='FilterCategoryChange'
+        >, *object:rtf::DBEdit<
+          Name='FilterText'
+          Layout=clNextSide
+          Top=8
+          Left=187
+          Color=0
+          ControlCaption=''
+        >, object:rtf::Button<
+          Name='bApplyFilter'
+          Layout=clAbsolute
+          Top=8
+          Left=400
+          Color=0
+          ControlCaption=''
+          Caption='Apply &Filter'
+          OnClick='ApplyFilterClick'
+        >}EqualCaptionWidth=50
+      ControlLeftMargin=8
       ControlTopMargin=8
       DefaultControlHeight=21
       HorizontalControlGap=4
@@ -87,7 +141,7 @@ document <
           DataLength=20
         >}Name='gBudget'
       Width=600
-      Height=508
+      Height=450
       UIPart=$UIPARTS['uipBudget']
       ControlLeftMargin=8
       ControlTopMargin=8
@@ -128,6 +182,13 @@ document <
           Width=200
         >}ReadOnly=true
       RowSelect=true
+      OnDoubleClick='GridDoubleClick'
       SuppressHelpLine=true
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=600
+      Height=508
+      Container1=$CONTAINERS['pFilter']
+      Container2=$CONTAINERS['gBudget']
     >}FormClassName='fSelectBudgetCode'
 >

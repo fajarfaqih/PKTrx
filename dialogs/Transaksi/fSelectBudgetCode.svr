@@ -28,5 +28,20 @@ document <
           DataTypeName='integer'
           DataLength=20
         >}Mode=imSingleRow
+    >, object:rpclass::TPClassUIDef<
+      Name='uipFilter'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='PeriodId'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='FilterCategory'
+          DataTypeName='varchar'
+          DataLength=1
+        >, object:rpclass::TCustomLoadedField<
+          Name='FilterText'
+          DataTypeName='varchar'
+          DataLength=50
+        >}Mode=imSingleRow
     >}OnSetDataEx='FormSetDataEx'
 >
