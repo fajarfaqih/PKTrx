@@ -83,6 +83,10 @@ document <
           DataTypeName='double'
           DataLength=20
         >, object:rpclass::TCustomLoadedField<
+          Name='TransactionNo'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
           Name='ReferenceNo'
           DataTypeName='varchar'
           DataLength=30

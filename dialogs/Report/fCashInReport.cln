@@ -39,8 +39,8 @@ document <
       MultiLine=true
     >}Containers={object:rtf::DualSplit<
       Name='dsMain'
-      Width=700
-      Height=505
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dsTransaction']
       InversedAlign=true
@@ -211,6 +211,11 @@ document <
           DataTypeName='double'
           DataLength=20
         >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionNo'
+          ControlCaption='No Transaksi'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
           Name='ReferenceNo'
           ControlCaption='No Referensi'
           DataTypeName='varchar'
@@ -280,6 +285,14 @@ document <
           TitleCaption='Nilai Transaksi'
           Width=120
         >, *object:rtf::GridColumn<
+          Name='TransactionNo'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='TransactionNo'
+          DisplayFormat=''
+          TitleCaption='No Transaksi'
+          Width=120
+        >, *object:rtf::GridColumn<
           Name='ReferenceNo'
           InputStyle=cisNormal
           EnumeratedValues=''
@@ -328,8 +341,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dsTransaction'
-      Width=700
-      Height=463
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pFilter']
       Container2=$CONTAINERS['gTransaction']
     >}FormClassName='fCashInReport'

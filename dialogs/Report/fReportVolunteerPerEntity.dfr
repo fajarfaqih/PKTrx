@@ -152,7 +152,7 @@ document <
             '  HomeAddress,'#13#10,
             '  HomePhone,'#13#10,
             '  self'#13#10,
-            ');']
+            ')then order by VolunteerName;']
           LookupOption=loCustomOQL
           FieldBaseName='LVolunteer'
         >, object:rtf::FieldUIElmtSetting<

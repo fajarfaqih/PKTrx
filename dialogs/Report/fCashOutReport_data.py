@@ -52,11 +52,12 @@ def GetHistTransaction(config, params, returns):
       'TransactionItemId: integer',
       'TransactionDate: datetime',
       'TransactionDateStr: string',
+      'TransactionNo: string',
       'ReferenceNo: string',
       'AccountNo: string',
       'AccountName: string',
       'Description: string',
-      'Amount: string',
+      'Amount: float',
       'AuthStatus: string',
       'Channel:string',
       'FundEntity: string',
@@ -84,7 +85,7 @@ def GetHistTransaction(config, params, returns):
 
   qParam['ADDFILTER'] = AddFilter
   
-  sSQL = " select t.ActualDate, t.ReferenceNo, a.account_code as AccountNo ,a.account_name as AccountName, \
+  sSQL = " select t.ActualDate, t.TransactionNo, t.ReferenceNo, a.account_code as AccountNo ,a.account_name as AccountName, \
         t.Description, i.Amount, t.Inputer,t.donorname, \
         t.AuthStatus, t.TransactionId, b.branchname, \
         (case when t.ChannelCode = 'R' then 'Kas Cabang' \
@@ -115,9 +116,10 @@ def GetHistTransaction(config, params, returns):
                                                str(aDate[0]))
     recData.ReferenceNo = data.ReferenceNo
     recData.AccountNo = data.AccountNo
+    recData.TransactionNo = data.TransactionNo
     recData.AccountName = data.AccountName
     recData.Description = data.Description
-    recData.Amount = config.FormatFloat(',0.00', data.Amount)
+    recData.Amount = data.Amount or 0.0
     recData.Inputer = data.Inputer
     recData.Authstatus  = data.AuthStatus
     recData.Channel  = data.Channel[:20]

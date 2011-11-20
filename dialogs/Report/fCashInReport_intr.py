@@ -74,6 +74,7 @@ class fCashInReport:
         uipTran.AccountName   = rec.AccountName
         #uipTran.TransactionCode   = rec.TransactionCode
         #uipTran.MutationType      = rec.MutationType
+        uipTran.TransactionNo     = rec.TransactionNo
         uipTran.Amount            = rec.Amount
         uipTran.ReferenceNo       = rec.ReferenceNo
         uipTran.Description       = rec.Description
@@ -113,6 +114,7 @@ class fCashInReport:
           workbook.SetCellValue(row, 7, rec.ReferenceNo)
           workbook.SetCellValue(row, 8, rec.Inputer)
           workbook.SetCellValue(row, 9, rec.BranchName)
+          workbook.SetCellValue(row, 10, rec.TransactionNo)
           
           i += 1
         # end of while
