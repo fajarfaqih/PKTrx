@@ -67,6 +67,9 @@ class fSelectProductInvoice:
     self.SponsorNo = uipFilter.No_Sponsor
 
   
+  def ListDoubleClick(self,sender):
+    self.FormObject.Close(1)
+    
   def bCariClick(self,sender):
      app = self.app
      

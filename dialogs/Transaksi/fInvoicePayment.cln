@@ -9,8 +9,8 @@ document <
   Caption='Pembayaran Invoice'
   Left=50
   Top=50
-  Width=793
-  Height=393
+  Width=825
+  Height=441
   UIParts={object:rtf::PClassUI<
       Elements={object:rtf::FieldUIElmtSetting<
           Name='BranchCode'
@@ -50,174 +50,10 @@ document <
         >}Name='uipTransaction'
       AlwaysPostToServer=true
       PostLinkValues=true
-    >, object:rtf::PClassUI<
-      Elements={object:rtf::LinkUIElmtSetting<
-          Name='LProduct'
-          Hidden=true
-          ControlCaption='Produk'
-          ClassTypeName='Product'
-          KeyFields={object:rtf::FieldUIElmtSetting<
-              Name='LProduct.ProductId'
-              DataTypeName='INTEGER'
-              DataLength=0
-              UsedAsKey=true
-              KeyOrDisplayName='ProductId'
-              FinalDisplayFieldName='ProductId'
-            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
-              Name='LProduct.ProductId'
-              DataTypeName='INTEGER'
-              DataLength=0
-              UsedAsDisplay=true
-              KeyOrDisplayName='ProductId'
-              FinalDisplayFieldName='ProductId'
-            >, object:rtf::FieldUIElmtSetting<
-              Name='LProduct.ProductName'
-              DataTypeName='VARCHAR'
-              DataLength=30
-              UsedAsDisplay=true
-              KeyOrDisplayName='ProductName'
-              FinalDisplayFieldName='ProductName'
-            >, object:rtf::FieldUIElmtSetting<
-              Name='LProduct.FundCategory'
-              DataTypeName='VARCHAR'
-              DataLength=1
-              UsedAsDisplay=true
-              KeyOrDisplayName='FundCategory'
-              FinalDisplayFieldName='FundCategory'
-            >}Restrictions=''
-          FieldBaseName='LProduct'
-        >, object:rtf::FieldUIElmtSetting<
-          Name='Unit'
-          Hidden=true
-          DataTypeName='integer'
-          DataLength=20
-        >, object:rtf::FieldUIElmtSetting<
-          Name='AmountPerUnit'
-          Hidden=true
-          DataTypeName='double'
-          DataLength=20
-        >, object:rtf::FieldUIElmtSetting<
-          Name='Amount'
-          Hidden=true
-          DataTypeName='double'
-          DataLength=20
-        >, object:rtf::FieldUIElmtSetting<
-          Name='Rate'
-          Hidden=true
-          DataTypeName='double'
-          DataLength=20
-        >, object:rtf::FieldUIElmtSetting<
-          Name='Ekuivalen'
-          Hidden=true
-          ReadOnlyControl=true
-          DataTypeName='double'
-          DataLength=20
-        >, object:rtf::FieldUIElmtSetting<
-          Name='Description'
-          Hidden=true
-          DataTypeName='varchar'
-          DataLength=100
-        >, object:rtf::FieldUIElmtSetting<
-          Name='ItemIdx'
-          Hidden=true
-          DataTypeName='integer'
-          DataLength=20
-        >, object:rtf::FieldUIElmtSetting<
-          Name='Ashnaf'
-          Hidden=true
-          DataTypeName='varchar'
-          DataLength=1
-          EnumeratedValues=['N= '#13#10,
-            'F=Fakir'#13#10,
-            'M=Miskin'#13#10,
-            'G=Gharimin'#13#10,
-            'H=Hamba Sahaya'#13#10,
-            'I=Ibnu Sabil'#13#10,
-            'U=Mualaf'#13#10,
-            'S=Fisabilillah'#13#10,
-            'L=Lainnya (Non-Zakat)'#13#10]
-        >, object:rtf::FieldUIElmtSetting<
-          Name='FundEntity'
-          Hidden=true
-          DataTypeName='integer'
-          DataLength=20
-          EnumeratedValues=['0= '#13#10,
-            '1=Zakat'#13#10,
-            '2=Infaq'#13#10,
-            '3=Wakaf'#13#10,
-            '4=Amil'#13#10,
-            '5=Non Halal'#13#10]
-        >, object:rtf::FieldUIElmtSetting<
-          Name='DistItemCode'
-          Hidden=true
-          DataTypeName='varchar'
-          DataLength=20
-        >, object:rtf::FieldUIElmtSetting<
-          Name='DistItemName'
-          Hidden=true
-          DataTypeName='varchar'
-          DataLength=60
-        >, object:rtf::FieldUIElmtSetting<
-          Name='OwnerId'
-          Hidden=true
-          DataTypeName='integer'
-          DataLength=20
-        >, object:rtf::FieldUIElmtSetting<
-          Name='OwnerName'
-          Hidden=true
-          DataTypeName='varchar'
-          DataLength=30
-        >, object:rtf::FieldUIElmtSetting<
-          Name='BudgetId'
-          Hidden=true
-          DataTypeName='integer'
-          DataLength=20
-        >, object:rtf::FieldUIElmtSetting<
-          Name='BudgetCode'
-          Hidden=true
-          DataTypeName='varchar'
-          DataLength=10
-        >, object:rtf::FieldUIElmtSetting<
-          Name='BudgetOwner'
-          Hidden=true
-          DataTypeName='varchar'
-          DataLength=30
-        >, object:rtf::FieldUIElmtSetting<
-          Name='AmountBefore'
-          Hidden=true
-          DataTypeName='double'
-          DataLength=20
-        >, object:rtf::FieldUIElmtSetting<
-          Name='ItemType'
-          Hidden=true
-          DataTypeName='varchar'
-          DataLength=1
-          EnumeratedValues=['D=Penyaluran'#13#10,
-            'G=Amil'#13#10]
-        >, object:rtf::FieldUIElmtSetting<
-          Name='AccountName'
-          Hidden=true
-          DataTypeName='varchar'
-          DataLength=50
-        >, object:rtf::FieldUIElmtSetting<
-          Name='AccountId'
-          Hidden=true
-          DataTypeName='varchar'
-          DataLength=30
-        >}Name='uipTransactionItem'
-      MultiLine=true
-      FillInDefaultValues=true
-      AlwaysPostToServer=true
-      PostLinkValues=true
-      InitWithDefaultValues=true
-      BeforePost='ItemBeforePost'
-      AfterPost='ItemAfterPost'
-      AfterNewRecord='ItemNewRecord'
-      BeforeDelete='ItemBeforeDelete'
     >}Containers={object:rtf::DualSplit<
       Name='dsMain'
-      Width=793
-      Height=393
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['pTransaction']
       InversedAlign=true
@@ -383,10 +219,33 @@ document <
           DataTypeName='double'
           DataLength=20
         >, object:rtf::FieldUIElmtSetting<
+          Name='RefAmountEkuivalen'
+          ReadOnlyControl=true
+          ControlCaption='Nilai Ekuivalen'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
           Name='RefTransactionDate'
           ReadOnlyControl=true
           ControlCaption='Tgl Transaksi'
           DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='RefCurrencyCode'
+          ReadOnlyControl=true
+          ControlCaption='Kode Valuta'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='RefCurrencyName'
+          ReadOnlyControl=true
+          ControlCaption='-'
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rtf::FieldUIElmtSetting<
+          Name='RefRate'
+          ControlCaption='Nilai Kurs'
+          DataTypeName='double'
           DataLength=20
         >, object:rtf::FieldUIElmtSetting<
           Name='RefDescription'
@@ -489,7 +348,7 @@ document <
           DataLength=20
         >}Name='pTransaction'
       Width=793
-      Height=337
+      Height=393
       UIPart=$UIPARTS['uipTransaction']
       Controls={*object:rtf::DBEdit<
           Name='TransactionNo'
@@ -523,17 +382,29 @@ document <
           ForceUseEqualCaptionWidth=true
           Color=0
           ControlCaption='No Invoice'
+          LayoutOrder=5
           CharCase=ecUpperCase
         >, *object:rtf::DBEdit<
           Name='RefAmount'
           Layout=clAbsolute
-          Top=214
+          Top=272
           Left=8
           ForceUseEqualCaptionWidth=true
           Color=0
           ControlCaption='Nilai Transaksi'
+          LayoutOrder=11
           FieldName='RefAmount'
           DisplayFormat=',0.00'
+        >, *object:rtf::DBEdit<
+          Name='RefAmountEkuivalen'
+          Layout=clAbsolute
+          Top=300
+          Left=8
+          Enabled=false
+          ForceUseEqualCaptionWidth=true
+          Color=-2147483624
+          ControlCaption='Nilai Ekuivalen'
+          LayoutOrder=12
         >, *object:rtf::DBDateEdit<
           Name='RefTransactionDate'
           Layout=clAbsolute
@@ -543,6 +414,42 @@ document <
           ForceUseEqualCaptionWidth=true
           Color=-2147483624
           ControlCaption='Tgl Transaksi'
+          LayoutOrder=7
+        >, *object:rtf::DBEdit<
+          Name='RefCurrencyCode'
+          Layout=clAbsolute
+          Top=216
+          Left=8
+          Width=41
+          Height=21
+          Enabled=false
+          ForceUseEqualCaptionWidth=true
+          Color=-2147483624
+          ControlCaption='Kode Valuta'
+          LayoutOrder=8
+          CharCase=ecUpperCase
+        >, *object:rtf::DBEdit<
+          Name='RefCurrencyName'
+          Layout=clAbsolute
+          Top=216
+          Left=160
+          Width=141
+          Height=21
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='-'
+          LayoutOrder=9
+          CharCase=ecUpperCase
+        >, *object:rtf::DBEdit<
+          Name='RefRate'
+          Layout=clAbsolute
+          Top=244
+          Left=8
+          ForceUseEqualCaptionWidth=true
+          Color=0
+          ControlCaption='Nilai Kurs'
+          LayoutOrder=10
+          OnExit='RateOnExit'
         >, *object:rtf::DBLookupEdit<
           Name='LCashAccount'
           Layout=clAbsolute
@@ -552,7 +459,7 @@ document <
           Height=21
           ForceUseEqualCaptionWidth=true
           ControlCaption='Kas/Bank'
-          LayoutOrder=7
+          LayoutOrder=15
           FieldName='LCashAccount.AccountNo'
           DisplayFormat=''
           LookupField='LCashAccount.AccountName'
@@ -569,7 +476,7 @@ document <
           ForceUseEqualCaptionWidth=true
           Color=0
           ControlCaption='Nomor referensi'
-          LayoutOrder=10
+          LayoutOrder=16
           CaptionWidth=100
           CharCase=ecUpperCase
         >, *object:rtf::DBEdit<
@@ -582,7 +489,7 @@ document <
           ForceUseEqualCaptionWidth=true
           Color=0
           ControlCaption='Keterangan'
-          LayoutOrder=11
+          LayoutOrder=17
           CaptionWidth=100
           CharCase=ecUpperCase
         >, *object:rtf::DBEdit<
@@ -596,20 +503,24 @@ document <
         >, *object:rtf::DBEdit<
           Name='RefProductName'
           Layout=clAbsolute
-          Top=240
+          Top=328
           Left=8
+          Enabled=false
           ForceUseEqualCaptionWidth=true
           Color=-2147483624
           ControlCaption='Nama Produk'
+          LayoutOrder=13
           CharCase=ecUpperCase
         >, *object:rtf::DBEdit<
           Name='RefSponsorName'
           Layout=clAbsolute
-          Top=268
+          Top=356
           Left=8
+          Enabled=false
           ForceUseEqualCaptionWidth=true
           Color=-2147483624
           ControlCaption='Nama Sponsor'
+          LayoutOrder=14
           CharCase=ecUpperCase
         >, object:rtf::Label<
           Name='label1'

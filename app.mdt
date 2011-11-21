@@ -4257,6 +4257,27 @@ document <
           PhysicalName='DESCRIPTION'
           DataType=$TYPEDECLS['VARCHAR']
           DataLength=200
+        >, object:FieldMember<
+          MemberName='CurrencyCode'
+          PhysicalName='CURRENCYCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:LinkMember<
+          MemberName='LCurrency'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['Invoice'].MEMBERS['CurrencyCode']
+              OriginPKey=$TYPEDECLS['Currency'].MEMBERS['Currency_Code']
+            >}LinkedClass=$TYPEDECLS['Currency']
+        >, object:FieldMember<
+          MemberName='PaymentTransactionItemId'
+          PhysicalName='PAYMENTTRANSACTIONITEMID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:LinkMember<
+          MemberName='LTransactionItem'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['Invoice'].MEMBERS['PaymentTransactionItemId']
+              OriginPKey=$TYPEDECLS['TransactionItem'].MEMBERS['TransactionItemId']
+            >}LinkedClass=$TYPEDECLS['TransactionItem']
         >}ClassID='{ED559D68-4D88-48B5-9CE0-E5C16D4965CA}'
     >, object:ClassTypeDecl<
       TypeName='VDonor'

@@ -96,8 +96,24 @@ document <
           DataTypeName='double'
           DataLength=20
         >, object:rpclass::TCustomLoadedField<
+          Name='RefAmountEkuivalen'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
           Name='RefTransactionDate'
           DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='RefCurrencyCode'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='RefCurrencyName'
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rpclass::TCustomLoadedField<
+          Name='RefRate'
+          DataTypeName='double'
           DataLength=20
         >, object:rpclass::TCustomLoadedField<
           Name='RefDescription'
@@ -168,106 +184,5 @@ document <
           ClassTypeName='CashAccount'
           FieldNames='AccountNo;AccountNo;AccountName'
         >}Mode=imSingleRow
-    >, object:rpclass::TPClassUIDef<
-      Name='uipTransactionItem'
-      CustomLoadedFields={object:rpclass::TCustomLoadedField<
-          Name='LProduct.ProductId'
-          DataTypeName='INTEGER'
-        >, object:rpclass::TCustomLoadedField<
-          Name='LProduct.ProductId'
-          DataTypeName='INTEGER'
-        >, object:rpclass::TCustomLoadedField<
-          Name='LProduct.ProductName'
-          DataTypeName='VARCHAR'
-          DataLength=30
-        >, object:rpclass::TCustomLoadedField<
-          Name='LProduct.FundCategory'
-          DataTypeName='VARCHAR'
-          DataLength=1
-        >, object:rpclass::TCustomLoadedField<
-          Name='Unit'
-          DataTypeName='integer'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='AmountPerUnit'
-          DataTypeName='double'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='Amount'
-          DataTypeName='double'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='Rate'
-          DataTypeName='double'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='Ekuivalen'
-          DataTypeName='double'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='Description'
-          DataTypeName='varchar'
-          DataLength=100
-        >, object:rpclass::TCustomLoadedField<
-          Name='ItemIdx'
-          DataTypeName='integer'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='Ashnaf'
-          DataTypeName='varchar'
-          DataLength=1
-        >, object:rpclass::TCustomLoadedField<
-          Name='FundEntity'
-          DataTypeName='integer'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='DistItemCode'
-          DataTypeName='varchar'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='DistItemName'
-          DataTypeName='varchar'
-          DataLength=60
-        >, object:rpclass::TCustomLoadedField<
-          Name='OwnerId'
-          DataTypeName='integer'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='OwnerName'
-          DataTypeName='varchar'
-          DataLength=30
-        >, object:rpclass::TCustomLoadedField<
-          Name='BudgetId'
-          DataTypeName='integer'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='BudgetCode'
-          DataTypeName='varchar'
-          DataLength=10
-        >, object:rpclass::TCustomLoadedField<
-          Name='BudgetOwner'
-          DataTypeName='varchar'
-          DataLength=30
-        >, object:rpclass::TCustomLoadedField<
-          Name='AmountBefore'
-          DataTypeName='double'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='ItemType'
-          DataTypeName='varchar'
-          DataLength=1
-        >, object:rpclass::TCustomLoadedField<
-          Name='AccountName'
-          DataTypeName='varchar'
-          DataLength=50
-        >, object:rpclass::TCustomLoadedField<
-          Name='AccountId'
-          DataTypeName='varchar'
-          DataLength=30
-        >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
-          Name='LProduct'
-          ClassTypeName='Product'
-          FieldNames='ProductId;ProductId;ProductName;FundCategory'
-        >}Mode=imMultiRow
     >}OnSetDataEx='FormSetDataEx'
 >

@@ -196,6 +196,7 @@ def ProsesVoucher(config, param, oBatch, oTran, oInvoice, returns):
   BranchCode = config.SecurityContext.GetUserInfo()[4]
 
   # Proses Data Invoice
+  # Simpan Data invoice
   oInvoice.InvoiceNo = param.InvoiceNo
   oInvoice.InvoiceDate = param.InvoiceDate
   oInvoice.InvoiceTermDate = param.TermDate
@@ -212,8 +213,10 @@ def ProsesVoucher(config, param, oBatch, oTran, oInvoice, returns):
   oInvoice.Description = param.Description
   oInvoice.InvoiceContactPerson  = param.ContactPerson
   oInvoice.InvoiceContactPhone = param.ContactPhone
+  oInvoice.CurrencyCode = param.GetFieldByName('LCurrency.Currency_Code')
   
-  # Set Invoice Defaut Data
+  # Save Invoice Defaut Info
+  # Menyimpan informasi Tujuan Transfer, Contact Person , Penanda Tangan
   oDefaultData = helper.GetObject('InvoiceProductDefaultData',BranchCode)
   if oDefaultData.isnull :
     oDefaultData = helper.CreatePObject('InvoiceProductDefaultData')
@@ -228,21 +231,19 @@ def ProsesVoucher(config, param, oBatch, oTran, oInvoice, returns):
   oDefaultData.InvoiceOfficername = param.SignName
   oDefaultData.InvoiceOfficerPosition = param.JobPosition
 
-
-
   # Proses Data Transaction
   oTran.Inputer     = config.SecurityContext.UserId
   oTran.BranchCode  = BranchCode
   oTran.ReferenceNo = param.InvoiceNo
   oTran.Description = 'INVOICE %s' % param.InvoiceNo
   oTran.Amount = aAmount
-  oTran.CurrencyCode = '000'
+  oTran.CurrencyCode = param.GetFieldByName('LCurrency.Currency_Code')
   oTran.ActualDate = oBatch.GetAsTDateTime('BatchDate')
 
   oProductAccount = helper.GetObject('ProductAccount',str(param.ProductAccountNo))
 
   #AccountCode = oProductAccount.GetAccountInterface('PIUTANG')
-  AccountCode = '1130301'
+  AccountCode = helper.GetObject('ParameterGlobal', 'GLIPROJAR').Get()
   aValuta = '000'
   oAccount = helper.GetObject('Account',AccountCode)
 
@@ -283,5 +284,5 @@ def ProsesVoucher(config, param, oBatch, oTran, oInvoice, returns):
   sw.MIMEType = 'application/msword'
 
   VoucherStream = sw.Name
-  
+
   return InvoiceStream , VoucherStream

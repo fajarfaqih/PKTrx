@@ -95,17 +95,18 @@ def SimpanData(config, params, returns):
     request['SponsorId'] = oTransaction.RefSponsorId
     request['ProductAccountNo'] = oTransaction.RefProductNo
     request['InvoiceId'] = oTransaction.InvoiceId
+    request['CurrencyCode'] = oTransaction.RefCurrencyCode
+    request['Rate'] = oTransaction.RefRate
+    
     
     sRequest = simplejson.dumps(request)
 
+    oService = helper.LoadScript('Transaction.GeneralTransaction')
+
     if oTransaction.ShowMode == 1:
-      Script = 'Transaction.GeneralTransaction'
+      response = oService.InvoicePaymentNew(config,sRequest,params)
     else: #ShowMode == 2
-      Script = 'Transaction.GeneralTransactionUpdate'
-
-    oService = helper.LoadScript(Script)
-
-    response = oService.InvoicePayment(config,sRequest,params)
+      response = oService.InvoicePaymentUpdate(config,sRequest,params)
 
     response = simplejson.loads(response)
     TransactionNo = response[u'TransactionNo']

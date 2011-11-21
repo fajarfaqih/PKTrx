@@ -19,6 +19,10 @@ document <
           Name='EndDate'
           DataTypeName='timestamp'
           DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='IsShowPaidInvoice'
+          DataTypeName='varchar'
+          DataLength=1
         >}Mode=imSingleRow
     >, object:rpclass::TPClassUIDef<
       Name='uipInvoice'
@@ -34,6 +38,10 @@ document <
           Name='InvoiceDate'
           DataTypeName='timestamp'
           DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='InvoiceCurrencyName'
+          DataTypeName='varchar'
+          DataLength=10
         >, object:rpclass::TCustomLoadedField<
           Name='InvoiceAmount'
           DataTypeName='double'

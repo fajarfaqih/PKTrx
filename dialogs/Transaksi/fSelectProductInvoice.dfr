@@ -75,13 +75,15 @@ document <
           Name='LProject'
           ControlCaption='Pilih Project'
           ClassTypeName='ProjectSponsor'
-          DisplayFields='LProjectAccount.AccountNo;LProjectAccount.AccountName'
+          DisplayFields='LProjectAccount.AccountNo;LProjectAccount.AccountName;LProjectAccount.CurrencyCode;LProjectAccount.LCurrency.Short_Name'
           Restrictions='SponsorId|SponsorId'
           OQLText=['select from ProjectSponsor'#13#10,
             '[SponsorId=:SponsorId]'#13#10,
             '('#13#10,
             ' LProjectAccount.AccountNo,'#13#10,
             ' LProjectAccount.AccountName,'#13#10,
+            ' LProjectAccount.CurrencyCode,'#13#10,
+            ' LProjectAccount.LCurrency.Short_Name,'#13#10,
             ' self'#13#10,
             ') then order by AccountName;']
           LookupOption=loCustomOQL
@@ -166,6 +168,7 @@ document <
           TitleCaption='Jumlah'
         >}ReadOnly=true
       RowSelect=true
+      OnDoubleClick='ListDoubleClick'
       SuppressHelpLine=true
     >, object:rtf::DualSplit<
       Name='dualsplit5'
@@ -182,10 +185,12 @@ document <
       DefaultControlHeight=21
       HorizontalControlGap=4
       RowControlGap=7
+      WindowSize=20
+      OnDoubleClick='ListDoubleClick'
     >, object:rtf::MultiPages<
       Name='mpProduct'
-      Width=320
-      Height=320
+      Width=657
+      Height=457
       Pages={object:rtf::Page<
           PageName='mpProject'
           PageTitle='Project'
@@ -210,6 +215,7 @@ document <
           Default=true
           Cancel=true
           ExitAction=eaQuitOK
+          OnClick='bOKClick'
         >, object:rtf::Button<
           Name='button1'
           Layout=clNextSide
@@ -218,6 +224,7 @@ document <
           Color=0
           ControlCaption=''
           Caption='Batal'
+          ExitAction=eaQuitCancel
         >}ControlLeftMargin=8
       ControlTopMargin=8
       DefaultControlHeight=21
@@ -225,8 +232,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit6'
-      Width=240
-      Height=96
+      Width=657
+      Height=497
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['mpProduct']
       InversedAlign=true

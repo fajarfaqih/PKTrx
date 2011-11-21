@@ -168,14 +168,15 @@ def GetKwitansiInvoice(oTran):
   ToolsConvert = oTran.Helper.LoadScript('Tools.S_Convert')
 
   # Set Terbilang
+  
   Currency = oTran.LCurrency
   Total = oTran.Amount or 0.0
   Terbilang = ToolsConvert.Terbilang(config,Total,
-            KodeMataUang = '000',
+            KodeMataUang = oTran.CurrencyCode,
             NamaMataUang = Currency.Symbol_Says)
   Terbilang = ToolsConvert.Divider(Terbilang,45)
   if len(Terbilang) == 1 : Terbilang.append('')
-
+  
   # Get Branch Info
   #corporate = oTran.Helper.CreateObject('Corporate')
   #CabangInfo = corporate.GetCabangInfo(oTran.BranchCode)
@@ -211,6 +212,96 @@ def GetKwitansiInvoice(oTran):
   dataKwitansi['TOTAL'] = config.FormatFloat('#,##0.00',Total)
   dataKwitansi['CURRSYMBOL'] = Currency.Symbol
   dataKwitansi['KETERANGAN'] = oTran.Description
+
+  DETAIL = ''
+  #oItems = oTran.Ls_TransactionItem
+  i = 1
+  #while not oItems.EndOfList:
+  #  itemElmt = oItems.CurrentElement
+  #aSQLText = " select transactionitemid from transactionitem \
+  #                 where transactionid=%d " % oTran.TransactionId        
+
+  aRate = oTran.Rate
+  #oRes = oTran.Config.CreateSQL(aSQLText).RawResult
+  
+  
+  oInvoice = oTran.Helper.GetObjectByNames('InvoiceProduct', 
+          {'TransactionId' : oTran.TransactionId}
+      ).CastToLowestDescendant()
+      
+  dataKwitansi['NAMAKAS'] = "%s %s " % (oInvoice.InvoiceBankName,oInvoice.InvoiceBankAccountNumber) 
+  dataKwitansi['KODEAKUN'] = ''    
+  
+  oItem = oTran.Helper.GetObjectByNames('TransactionItem', 
+          {'TransactionId' : oTran.TransactionId}
+      ).CastToLowestDescendant()
+  
+  DETAIL += '%(LINE)2s      %(NOACCOUNT)-10s   %(DESCRIPTION)-50s   %(CURRSYMBOL)-2s %(AMOUNT)25s \n\\par ' % {
+           'LINE' : str(i),
+           'NOACCOUNT' : oItem.AccountCode,
+           'DESCRIPTION' : oItem.Description,
+           'AMOUNT' :  config.FormatFloat('#,##0.00',oItem.Amount/aRate),
+           'CURRSYMBOL' : Currency.Symbol,
+        }
+
+  dataKwitansi['DETAIL'] = DETAIL
+
+  return oTran.CreateRTFForPrint(templateKwitansi,dataKwitansi)
+
+def GetKwitansiInvoiceNew(oTran):
+  config = oTran.Config
+  config.FlushUpdates()
+  
+  # Get Tools
+  ToolsConvert = oTran.Helper.LoadScript('Tools.S_Convert')
+
+  # Set Terbilang
+  
+  Currency = oTran.LCurrency
+  Total = oTran.Amount or 0.0
+  Terbilang = ToolsConvert.Terbilang(config,Total,
+            KodeMataUang = oTran.CurrencyCode,
+            NamaMataUang = Currency.Symbol_Says)
+  Terbilang = ToolsConvert.Divider(Terbilang,45)
+  if len(Terbilang) == 1 : Terbilang.append('')
+  
+  # Get Branch Info
+  #corporate = oTran.Helper.CreateObject('Corporate')
+  #CabangInfo = corporate.GetCabangInfo(oTran.BranchCode)
+  #Nama_Cabang = CabangInfo.Nama_Cabang
+
+  # Get Template
+  PrintHelper = oTran.Helper.CreateObject('PrintHelper')
+  #templateKwitansi = PrintHelper.LoadTemplate('KwitansiPenerimaan')
+  templateKwitansi = PrintHelper.LoadRtfTemplate('KwitansiPenerimaanNew')
+
+  NamaLembaga = oTran.Helper.GetObject('ParameterGlobal', 'COMPNAME').Get()
+  
+  #
+  Name,Address = oTran.GetDataDonor()
+  aAddress = ['','']
+  if len(Address) > 0 :  
+    aAddress = ToolsConvert.Divider(Address,50)      
+    if len(aAddress) == 1 : aAddress.append('')
+  
+  dataKwitansi = {}
+  dataKwitansi['NOTRANSAKSI'] = oTran.TransactionNo
+  dataKwitansi['RECEIVEDFROM'] = Name
+  dataKwitansi['ALAMAT1'] = aAddress[0]
+  dataKwitansi['ALAMAT2'] = aAddress[1]
+  dataKwitansi['NAMAKAS'] = ''
+  dataKwitansi['KODEAKUN'] = ''
+  dataKwitansi['TERBILANG1'] = Terbilang[0]
+  dataKwitansi['TERBILANG2'] = Terbilang[1]
+  dataKwitansi['NAMA_LEMBAGA'] = NamaLembaga
+  dataKwitansi['USER_CETAK'] = oTran.PaidTo
+  dataKwitansi['WAKTU_CETAK'] = config.FormatDateTime('dd-mm-yyyy hh:nn',config.Now())
+  dataKwitansi['TGL_BAYAR'] = config.FormatDateTime('dd mmmm yyyy',oTran.GetAsTDateTime('ActualDate'))
+  dataKwitansi['TOTAL'] = config.FormatFloat('#,##0.00',Total)
+  dataKwitansi['CURRSYMBOL'] = Currency.Symbol
+  dataKwitansi['KOTA'] = oTran.Config.SecurityContext.GetUserInfo()[5]
+  dataKwitansi['KETERANGAN'] = oTran.Description
+  dataKwitansi['TELP'] = ''
 
   DETAIL = ''
   #oItems = oTran.Ls_TransactionItem

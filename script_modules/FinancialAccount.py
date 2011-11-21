@@ -520,9 +520,11 @@ class Invoice(pobject.PObject):
     self.BranchCode = self.Config.SecurityContext.GetUserInfo()[4]
   
   def OnDelete(self):
-    if self.TransactionId not in ['',0,None] :
-      oTransaction = self.LTransaction
-      oTransaction.Delete()
+    #if self.TransactionId not in ['',0,None] :
+    #  oTransaction = self.LTransaction
+    #  oTransaction.Delete()
+    if self.PaymentTransactionItemId not in [0,None,''] :
+      raise '',"Data invoice tidak dapat dihapus karena telah memiliki transaksi pembayaran. \nSilahkan hapus dahulu transaksi pembayarannya"
     
   def GenerateInvoicePrintData(self):
     helper = self.Helper
@@ -538,11 +540,11 @@ class Invoice(pobject.PObject):
   
     # Set Terbilang
     Total = self.InvoiceAmount or 0.0
-    
+     
     Terbilang = ToolsConvert.Terbilang(config,Total,
               KodeMataUang = self.CurrencyCode,
               NamaMataUang = self.LCurrency.Symbol_Says)
-  
+    
     Terbilang = ToolsConvert.Divider(Terbilang,45)
     if len(Terbilang) == 1 : Terbilang.append('')
     

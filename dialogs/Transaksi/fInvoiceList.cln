@@ -57,28 +57,46 @@ document <
           ControlCaption='s.d.'
           DataTypeName='timestamp'
           DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='IsShowPaidInvoice'
+          ControlCaption='Tampilkan yang sudah dibayar'
+          DataTypeName='varchar'
+          DataLength=1
+          EnumeratedValues=['F=False'#13#10,
+            'T=True'#13#10]
+          GenerateCheckBoxForEnum=true
         >}Name='pFilter'
       Width=473
-      Height=97
+      Height=113
       Bordered=true
       UIPart=$UIPARTS['uipFilter']
       Controls={*object:rtf::DBDateEdit<
           Name='BeginDate'
-          Top=20
+          Top=25
           Left=8
           Color=0
           ControlCaption='Periode Tanggal'
         >, *object:rtf::DBDateEdit<
           Name='EndDate'
           Layout=clNextSide
-          Top=20
+          Top=25
           Left=213
           Color=0
           ControlCaption='s.d.'
+        >, *object:rtf::DBCheckBox<
+          Name='IsShowPaidInvoice'
+          Top=53
+          Left=8
+          Width=209
+          Height=17
+          Color=0
+          ControlCaption='Tampilkan yang sudah dibayar'
+          ValueChecked='T'
+          ValueUnchecked='F'
         >, object:rtf::Button<
           Name='bView'
           Layout=clAbsolute
-          Top=56
+          Top=80
           Left=8
           Width=97
           Height=25
@@ -89,7 +107,7 @@ document <
         >, object:rtf::Button<
           Name='button1'
           Layout=clAbsolute
-          Top=56
+          Top=80
           Left=112
           Width=97
           Height=25
@@ -98,7 +116,7 @@ document <
           Caption='Export Excel'
           OnClick='bExcelClick'
         >}ControlLeftMargin=8
-      ControlTopMargin=20
+      ControlTopMargin=25
       DefaultControlHeight=21
       HorizontalControlGap=4
       RowControlGap=7
@@ -139,8 +157,8 @@ document <
         >, object:rtf::Button<
           Name='button2'
           Layout=clNextSide
-          Top=40
-          Left=8
+          Top=8
+          Left=484
           Width=115
           Height=25
           Color=0
@@ -193,6 +211,11 @@ document <
           ControlCaption='Tgl Invoice'
           DataTypeName='timestamp'
           DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='InvoiceCurrencyName'
+          ControlCaption='Valuta'
+          DataTypeName='varchar'
+          DataLength=10
         >, object:rtf::FieldUIElmtSetting<
           Name='InvoiceAmount'
           ControlCaption='Nilai Invoice'
@@ -275,7 +298,7 @@ document <
           DataLength=20
         >}Name='gInvoice'
       Width=673
-      Height=130
+      Height=114
       UIPart=$UIPARTS['uipInvoice']
       ControlLeftMargin=8
       ControlTopMargin=8
@@ -299,6 +322,14 @@ document <
           DisplayFormat='dd-mm-yyyy'
           TitleCaption='Tgl Invoice'
           Width=80
+        >, *object:rtf::GridColumn<
+          Name='InvoiceCurrencyName'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='InvoiceCurrencyName'
+          DisplayFormat=''
+          TitleCaption='Valuta'
+          Width=60
         >, *object:rtf::GridColumn<
           Name='InvoiceAmount'
           InputStyle=cisNormal
@@ -356,7 +387,7 @@ document <
     >, object:rtf::DualSplit<
       Name='dualsplit3'
       Width=673
-      Height=180
+      Height=164
       Container1=$CONTAINERS['pButton']
       Container2=$CONTAINERS['gInvoice']
     >}FormClassName='fInvoiceList'

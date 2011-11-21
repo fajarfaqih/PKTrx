@@ -268,8 +268,7 @@ class Transaction(pobject.PObject):
     oItems.DeleteAllPObjs()
 
   def OnDelete(self):
-    helper = self.Helper    
-    """
+    helper = self.Helper
     # Sementara Dinonaktifkan karena belum bisa menangkap message raise dari database
     
     # Delete Inbox Transaction
@@ -278,7 +277,14 @@ class Transaction(pobject.PObject):
       oInbox.Delete()
     
     # Delete Detail Transaction
-    self.DeleteTransactionItem()"""
+    self.DeleteTransactionItem()
+    
+    # Cek Transaksi Invoice
+    oInvoice = helper.GetObjectByNames('InvoiceProduct',{ 'PaymentTransactionId' : self.TransactionId } )
+    
+    if not oInvoice.isnull :
+      oInvoice.PaymentTransactionId = None
+      oInvoice.InvoicePaymentStatus = 'F'
     
   def CancelTransaction(self):
     #self.AuthStatus = 'F'
@@ -724,42 +730,41 @@ class Transaction(pobject.PObject):
 
   def GetKwitansi(self):
     BranchCode = self.Config.SecurityContext.GetUserInfo()[4]
-    if BranchCode == '001' :
+    """if BranchCode == '001' :
       if self.TransactionCode in ['SD001'] :
         return Voucher.GetKwitansiDonor(self)
       elif self.TransactionCode in ['CI','PEAR','PXAR','INVP'] :
         return Voucher.GetKwitansiPenerimaan(self)
-      elif self.TransactionCode in ['DD001','CO','EAR','XAR','TI','PAD','FA','FAI','FAIP','CPIA','GT'] :
-        return Voucher.GetKwitansiPengeluaran(self)      
-      elif self.TransactionCode in ['CA','DT','INVS'] :
-        return Voucher.GetKwitansiPengeluaranUangMuka(self)  
+      elif self.TransactionCode in ['DD001','CO','EAR','XAR','TI','PAD','FA','FAI','FAIP','CPIA','GT','CA','DT','INVS'] :
+        return Voucher.GetKwitansiPengeluaranNew(self)      
+      #elif self.TransactionCode in ['CA','DT','INVS'] :
+      #  return Voucher.GetKwitansiPengeluaranUangMuka(self)  
       elif self.TransactionCode in ['CAR','DTR','CARR','INVSR'] :
         return Voucher.GetKwitansiPengembalianUangMuka(self)
       elif self.TransactionCode in ['INVC'] :
         return Voucher.GetKwitansiInvoice(self)
       else:
         raise '','Transaksi Tidak Memiliki Fungsi Cetak Kwitansi'
+    else:"""
+    
+    if self.TransactionCode in ['SD001'] :
+      return Voucher.GetKwitansiDonor(self)
+    elif self.TransactionCode in ['CI','INVP'] :
+      return Voucher.GetKwitansiPenerimaanNew(self)
+    elif self.TransactionCode in ['DD001','CO','PAD','FA','FAI','FAIP','CPIA','GT','CA','DT','INVS'] :
+      return Voucher.GetKwitansiPengeluaranNew(self)
+    elif self.TransactionCode in ['CAR','DTR','CARR','INVSR'] :
+      return Voucher.GetKwitansiPengembalianUangMukaNew(self)
+    elif self.TransactionCode in ['INVC'] :
+      return Voucher.GetKwitansiInvoiceNew(self)  
+    elif self.TransactionCode in ['EAR','PEAR','XAR','PXAR'] :
+      EMPMUTATIONTYPE = {'EAR' : 'D','PEAR' : 'C','XAR' : 'D','PXAR' : 'C'}
+      EmpMutationType = EMPMUTATIONTYPE[self.TransactionCode]        
+      return Voucher.GetKwitansiPiutang(self,EmpMutationType)
+    elif self.TransactionCode in ['TI'] :
+      return Voucher.GetKwitansiTransferInternal(self)  
     else:
-      if self.TransactionCode in ['SD001'] :
-        return Voucher.GetKwitansiDonor(self)
-      elif self.TransactionCode in ['CI','INVP'] :
-        return Voucher.GetKwitansiPenerimaanNew(self)
-      elif self.TransactionCode in ['DD001','CO','PAD','FA','FAI','FAIP','CPIA','GT'] :
-        return Voucher.GetKwitansiPengeluaranNew(self)      
-      elif self.TransactionCode in ['CA','DT','INVS'] :
-        return Voucher.GetKwitansiPengeluaranNew(self)  
-      elif self.TransactionCode in ['CAR','DTR','CARR','INVSR'] :
-        return Voucher.GetKwitansiPengembalianUangMukaNew(self)
-      elif self.TransactionCode in ['INVC'] :
-        return Voucher.GetKwitansiInvoice(self)  
-      elif self.TransactionCode in ['EAR','PEAR','XAR','PXAR'] :
-        EMPMUTATIONTYPE = {'EAR' : 'D','PEAR' : 'C','XAR' : 'D','PXAR' : 'C'}
-        EmpMutationType = EMPMUTATIONTYPE[self.TransactionCode]        
-        return Voucher.GetKwitansiPiutang(self,EmpMutationType)
-      elif self.TransactionCode in ['TI'] :
-        return Voucher.GetKwitansiTransferInternal(self)  
-      else:
-        raise '','Transaksi Tidak Memiliki Fungsi Cetak Kwitansi'          
+      raise '','Transaksi Tidak Memiliki Fungsi Cetak Kwitansi'          
 
       
   def CreateDataForPrint(self,templatePrint,dataPrint):
@@ -832,7 +837,7 @@ class TransactionItem(pobject.PObject):
         aRate = 1
       elif self.LTransaction.CurrencyCode == '000' and self.CurrencyCode != '000':
         aRate = self.LCurrency.Kurs_Tengah_BI
-        aAmount = aAmount / aRate        
+        aAmount = aAmount / aRate
       else:
         raise '','Transaksi Antar Valas Tidak Diperbolehkan'
       # end if else   
@@ -856,22 +861,25 @@ class TransactionItem(pobject.PObject):
     
     self.MutationType = REVERSE_MNEMONIC[self.MutationType]
 
+    # Cek Transaksi Sponsor
     oSTransaction = helper.GetObject('SponsorTransaction',self.TransactionItemId)
     if not oSTransaction.isnull:
       oSTransaction.Delete()
     # end if  
 
+    # Cek Transaksi Mitra
     oVTransaction = helper.GetObject('VolunteerTransaction',self.TransactionItemId)
     if not oVTransaction.isnull:
       oVTransaction.Delete()
     # end if
-         
+    
+    # Cek Transaksi Budget     
     oBTransaction = helper.GetObject('BudgetTransaction',self.TransactionItemId)    
     if not oBTransaction.isnull:      
       oBTransaction.Delete()
     # end if  
   
-    
+    # Cek Transaksi Pengembalian Uang Muka
     oReturnInfo = helper.GetObjectByNames('CashAdvanceReturnInfo',
        {'ReturnTransactionId' : self.TransactionId}
     )
@@ -883,12 +891,23 @@ class TransactionItem(pobject.PObject):
       oReturnInfo.Delete()
     # end if
     
+    # Cek Transaksi RAK Antar Cabang
     oDistributionInfo = helper.GetObjectByNames('DistributionTransferInfo',
       {'TransactionId' : self.TransactionId}
     )
     if not oDistributionInfo.isnull :
       oDistributionInfo.Delete()
 
+    # Cek Transaksi Invoice
+    oInvoice = helper.GetObjectByNames('InvoiceProduct',
+       { 'PaymentTransactionItemId' : self.TransactionItemId } 
+    )
+    
+    if not oInvoice.isnull :
+      oInvoice.PaymentTransactionId = None
+      oInvoice.PaymentTransactionItemId = None
+      oInvoice.InvoicePaymentStatus = 'F'
+      
   def AddAmount(self, Amount):
     self.Amount += Amount
     self.EkuivalenAmount += (Amount * self.Rate)
@@ -1099,8 +1118,7 @@ class BSZ(pobject.PObject):
        'Z6':'','Z7':'','Z8':'','Z9':'','Z10':'',
        'Z11':'','Z12':'','Z13':'','Z14':'','Z15':'',
         }
-  
-  
+
     ## PROCESS NPWP_NO
     # get digit no
     npwp = oDonor.NPWP_No or ''
@@ -1159,7 +1177,6 @@ class BSZ(pobject.PObject):
     # end while  
   
     return dataBSZ
-    
         
 class BSZDetail(pobject.PObject):
   # static variable

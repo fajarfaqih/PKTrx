@@ -48,8 +48,8 @@ document <
       OnSetData='OnSetData'
     >}Containers={object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=489
-      Height=329
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dualsplit2']
       InversedAlign=true
@@ -134,8 +134,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit2'
-      Width=489
-      Height=294
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pFilter']
       Container2=$CONTAINERS['gInvoice']
     >, object:rtf::Grid<
@@ -145,12 +145,28 @@ document <
             'InvoiceId'#13#10,
             'InvoiceNo'#13#10,
             'InvoiceDate'#13#10,
+            'LCurrency'#13#10,
             'InvoiceAmount'#13#10,
             'LSponsor'#13#10,
-            'LProductAccount'#13#10]
+            'LProductAccount'#13#10,
+            'Description'#13#10]
         >}Elements={*object:rtf::FieldUIElmtSetting<
           Name='InvoiceId'
           Hidden=true
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='InvoiceNo'
+          ControlCaption='No Invoice'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='InvoiceDate'
+          ControlCaption='Tanggal Invoice'
+        >, *object:rtf::LinkUIElmtSetting<
+          Name='LCurrency'
+          DisplayFields='Currency_Code;Short_Name;Kurs_Tengah_BI'
+          Restrictions=''
+          FieldBaseName='LCurrency'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='InvoiceAmount'
+          ControlCaption='Nilai Invoice'
         >, *object:rtf::LinkUIElmtSetting<
           Name='LSponsor'
           ControlCaption='Sponsor'
@@ -163,6 +179,9 @@ document <
           DisplayFields='AccountNo;AccountName'
           Restrictions=''
           FieldBaseName='LProductAccount'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='Description'
+          ControlCaption='Keterangan'
         >}Name='gInvoice'
       Width=489
       Height=244
@@ -186,6 +205,8 @@ document <
           EnumeratedValues=''
           FieldName='InvoiceNo'
           DisplayFormat=''
+          TitleCaption='No Invoice'
+          Width=100
           ReadOnly=true
         >, *object:rtf::GridColumn<
           Name='InvoiceDate'
@@ -193,6 +214,32 @@ document <
           EnumeratedValues=''
           FieldName='InvoiceDate'
           DisplayFormat=''
+          TitleCaption='Tanggal Invoice'
+          Width=80
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='LCurrency.Currency_Code'
+          InputStyle=cisLookup
+          EnumeratedValues=''
+          FieldName='LCurrency.Currency_Code'
+          DisplayFormat=''
+          Hidden=true
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='LCurrency.Short_Name'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='LCurrency.Short_Name'
+          DisplayFormat=''
+          TitleCaption='Kode Valuta'
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='LCurrency.Kurs_Tengah_BI'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='LCurrency.Kurs_Tengah_BI'
+          DisplayFormat=''
+          Hidden=true
           ReadOnly=true
         >, *object:rtf::GridColumn<
           Name='InvoiceAmount'
@@ -200,6 +247,8 @@ document <
           EnumeratedValues=''
           FieldName='InvoiceAmount'
           DisplayFormat=',0.00'
+          TitleCaption='Nilai Invoice'
+          Width=120
           ReadOnly=true
         >, *object:rtf::GridColumn<
           Name='LSponsor.ID'
@@ -236,6 +285,15 @@ document <
           DisplayFormat=''
           TitleCaption='Program / Proyek'
           Width=200
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='Description'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Description'
+          DisplayFormat=''
+          TitleCaption='Keterangan'
+          Width=150
           ReadOnly=true
         >}ReadOnly=true
       RowSelect=true

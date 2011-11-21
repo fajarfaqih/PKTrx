@@ -20,8 +20,9 @@ def FormSetDataEx(uideflist,params):
     aBeginDate = rec.BeginDate
     aEndDate = rec.EndDate
     aBranchCode = config.SecurityContext.GetUserInfo()[4]
+    aIsShowPaidInvoice = rec.IsShowPaidInvoice
     
-    res  = GetDataInvoice(config,aBeginDate,aEndDate,aBranchCode)
+    res  = GetDataInvoice(config,aBeginDate,aEndDate,aBranchCode,aIsShowPaidInvoice)
     
     uipInvoice = uideflist.uipInvoice.Dataset
 
@@ -34,6 +35,7 @@ def FormSetDataEx(uideflist,params):
       recInvoice.InvoiceNo = res.InvoiceNo
       recInvoice.InvoiceDate = timeutils.AsTDateTime(config, res.InvoiceDate)
       recInvoice.InvoicePaymentStatus = res.InvoicePaymentStatus
+      recInvoice.InvoiceCurrencyName = res.Short_Name
       recInvoice.InvoiceAmount = res.InvoiceAmount
       recInvoice.SponsorId = res.SponsorId
       recInvoice.SetFieldByName('LSponsor.Id',res.SponsorId)
@@ -46,13 +48,18 @@ def FormSetDataEx(uideflist,params):
       res.Next()
     # end if
 
-def GetDataInvoice(config,aBeginDate,aEndDate,aBranchCode):
+def GetDataInvoice(config,aBeginDate,aEndDate,aBranchCode,aIsShowPaidInvoice='F'):
+  AddFilter = ''
+  if aIsShowPaidInvoice == 'F' :
+    AddFilter += " and InvoicePaymentStatus = 'F' "
+    
   s = ' \
     SELECT FROM InvoiceProduct \
     [ \
-      InvoiceDate >= :BeginDate and \
-      InvoiceDate <= :EndDate and \
-      BranchCode = :BranchCode \
+      InvoiceDate >= :BeginDate \
+      and InvoiceDate <= :EndDate \
+      and BranchCode = :BranchCode \
+      %s \
     ] \
     ( \
       InvoiceId, \
@@ -66,9 +73,10 @@ def GetDataInvoice(config,aBeginDate,aEndDate,aBranchCode):
       LProductAccount.AccountName, \
       Description, \
       TransactionId, \
+      LCurrency.Short_Name, \
       Self \
     ) \
-    THEN ORDER BY ASC InvoiceId;'
+    THEN ORDER BY ASC InvoiceId;' % AddFilter
 
 
   oql = config.OQLEngine.CreateOQL(s)
@@ -101,8 +109,9 @@ def GetExcelInvoice(config,parameters,returns):
     aBeginDate = rec.BeginDate
     aEndDate = rec.EndDate
     aBranchCode = config.SecurityContext.GetUserInfo()[4]
+    aIsShowPaidInvoice = rec.IsShowPaidInvoice
 
-    res  = GetDataInvoice(config,aBeginDate,aEndDate,aBranchCode)
+    res  = GetDataInvoice(config,aBeginDate,aEndDate,aBranchCode,aIsShowPaidInvoice)
 
 
     workbook = pyFlexcel.Open(pathtemplates + 'tplInvoiceList.xls')

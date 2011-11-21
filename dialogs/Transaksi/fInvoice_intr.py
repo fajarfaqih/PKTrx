@@ -90,6 +90,8 @@ class fInvoice:
       if fData.mpProduct.ActivePageIndex == 0 :
         AccountNo = fData.uipFilter.GetFieldValue('LProject.LProjectAccount.AccountNo')
         ProductName = fData.uipFilter.GetFieldValue('LProject.LProjectAccount.AccountName')
+        CurrencyCode = fData.uipFilter.GetFieldValue('LProject.LProjectAccount.CurrencyCode')
+        CurrencyName = fData.uipFilter.GetFieldValue('LProject.LProjectAccount.LCurrency.Short_Name')
         ProductType = 'J'
         Amount = fData.uipProjectDisbursement.DisbAmountPlan
         DisbId = fData.uipProjectDisbursement.DisbId
@@ -101,6 +103,8 @@ class fInvoice:
       else:
         AccountNo = fData.qProgram.GetFieldValue('VProduct.AccountNo')
         ProductName = fData.qProgram.GetFieldValue('VProduct.AccountName')
+        CurrencyCode = '000'
+        CurrencyName = 'IDR'
         ProductType = 'G'
         Amount = 0.0
         DisbId = 0
@@ -115,6 +119,8 @@ class fInvoice:
       uipInvoice.ProductType = ProductType
       uipInvoice.Amount = Amount
       uipInvoice.DisbId = DisbId
+      uipInvoice.SetFieldValue('LCurrency.Currency_Code',CurrencyCode)
+      uipInvoice.SetFieldValue('LCurrency.Short_Name',CurrencyName)
 
   def PrintInvoiceClick(self,sender):
     app = self.app
@@ -135,7 +141,6 @@ class fInvoice:
 
     oPrint = app.GetClientClass('PrintLib','PrintLib')()
     oPrint.doProcessByStreamName(app,rph.packet,status.StreamName,1)
-    
     oPrint.doProcessByStreamName(app,rph.packet,status.VoucherName,1)
     
     self.uipInvoice.Edit()

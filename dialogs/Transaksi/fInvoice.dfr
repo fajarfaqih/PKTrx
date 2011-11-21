@@ -10,8 +10,8 @@ document <
   State=rsMaximized
   Left=50
   Top=50
-  Width=689
-  Height=489
+  Width=697
+  Height=537
   BeforeDeleteRow=''
   BeforeResultSent=''
   OnGeneralSetData=''
@@ -63,8 +63,8 @@ document <
       AlwaysPostToServer=true
     >}Containers={object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=689
-      Height=489
+      Width=697
+      Height=537
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dualsplit2']
       InversedAlign=true
@@ -164,6 +164,20 @@ document <
           ControlCaption='Nama Program'
           DataTypeName='varchar'
           DataLength=50
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LCurrency'
+          ControlCaption='Kode Valuta'
+          ClassTypeName='Currency'
+          DisplayFields='Currency_Code;Short_Name;Full_Name;Kurs_Tengah_BI'
+          Restrictions=''
+          OQLText=['select from Currency'#13#10,
+            '( Currency_Code,'#13#10,
+            '  Short_Name,'#13#10,
+            '  Full_Name,'#13#10,
+            '  Kurs_Tengah_BI,'#13#10,
+            ' self)then order by Currency_Code;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LCurrency'
         >, object:rtf::FieldUIElmtSetting<
           Name='Amount'
           ControlCaption='Jumlah Tagihan'
@@ -243,22 +257,29 @@ document <
           Enabled=false
           Color=-2147483624
           ControlCaption='Nama Program'
+        >, *object:rtf::DBLookupEdit<
+          Name='LCurrency'
+          Top=120
+          Left=8
+          ControlCaption='Kode Valuta'
+          LookupField='LCurrency.Short_Name'
+          DisplayLookupField=true
         >, *object:rtf::DBEdit<
           Name='Amount'
-          Top=120
+          Top=148
           Left=8
           Color=16777215
           ControlCaption='Jumlah Tagihan'
         >, *object:rtf::DBEdit<
           Name='Description'
-          Top=148
+          Top=176
           Left=8
           Color=0
           ControlCaption='Description'
         >, *object:rtf::DBEdit<
           Name='BankName'
           Layout=clAbsolute
-          Top=212
+          Top=236
           Left=8
           Color=0
           ControlCaption='Nama Bank'
@@ -266,7 +287,7 @@ document <
         >, *object:rtf::DBEdit<
           Name='BankAccount'
           Layout=clAbsolute
-          Top=236
+          Top=260
           Left=8
           Color=0
           ControlCaption='Nomor Rekening'
@@ -274,7 +295,7 @@ document <
         >, *object:rtf::DBEdit<
           Name='BankAccountName'
           Layout=clAbsolute
-          Top=260
+          Top=284
           Left=8
           Color=0
           ControlCaption='Pemilik Account'
@@ -282,7 +303,7 @@ document <
         >, *object:rtf::DBEdit<
           Name='SignName'
           Layout=clAbsolute
-          Top=212
+          Top=236
           Left=376
           Color=0
           ControlCaption='Nama'
@@ -290,7 +311,7 @@ document <
         >, *object:rtf::DBEdit<
           Name='JobPosition'
           Layout=clAbsolute
-          Top=236
+          Top=260
           Left=376
           Color=0
           ControlCaption='Jabatan'
@@ -298,7 +319,7 @@ document <
         >, *object:rtf::DBEdit<
           Name='ContactPerson'
           Layout=clAbsolute
-          Top=320
+          Top=344
           Left=8
           ForceUseEqualCaptionWidth=true
           Color=0
@@ -306,7 +327,7 @@ document <
         >, *object:rtf::DBEdit<
           Name='ContactPhone'
           Layout=clAbsolute
-          Top=344
+          Top=368
           Left=8
           ForceUseEqualCaptionWidth=true
           Color=0
@@ -314,7 +335,7 @@ document <
         >, object:rtf::Label<
           Name='label1'
           Layout=clAbsolute
-          Top=192
+          Top=216
           Left=8
           Width=26
           Height=17
@@ -329,7 +350,7 @@ document <
         >, object:rtf::Label<
           Name='label2'
           Layout=clAbsolute
-          Top=192
+          Top=216
           Left=376
           Width=26
           Height=17
@@ -356,7 +377,7 @@ document <
         >, object:rtf::Label<
           Name='label3'
           Layout=clAbsolute
-          Top=296
+          Top=320
           Left=8
           Width=153
           Height=17
@@ -405,8 +426,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit2'
-      Width=689
-      Height=431
+      Width=697
+      Height=479
       Container1=$CONTAINERS['pSponsor']
       Container2=$CONTAINERS['pInvoice']
     >}FormClassName='fInvoice'

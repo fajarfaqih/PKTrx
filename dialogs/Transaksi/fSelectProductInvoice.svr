@@ -54,10 +54,18 @@ document <
           Name='LProject.LProjectAccount.AccountName'
           DataTypeName='VARCHAR'
           DataLength=50
+        >, object:rpclass::TCustomLoadedField<
+          Name='LProject.LProjectAccount.CurrencyCode'
+          DataTypeName='VARCHAR'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LProject.LProjectAccount.LCurrency.Short_Name'
+          DataTypeName='VARCHAR'
+          DataLength=10
         >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
           Name='LProject'
           ClassTypeName='ProjectSponsor'
-          FieldNames='ProjectSponsorId;LProjectAccount.AccountNo;LProjectAccount.AccountName'
+          FieldNames='ProjectSponsorId;LProjectAccount.AccountNo;LProjectAccount.AccountName;LProjectAccount.CurrencyCode;LProjectAccount.LCurrency.Short_Name'
         >}Mode=imSingleRow
     >, object:rpclass::TPClassUIDef<
       Name='uipTransProgram'

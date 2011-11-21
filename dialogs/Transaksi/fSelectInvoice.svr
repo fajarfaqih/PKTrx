@@ -35,8 +35,12 @@ document <
     >, object:rpclass::TPClassUIDef<
       Name='uipInvoice'
       PClassName='InvoiceProduct'
-      LoadedFieldList='BranchCode;InvoiceId;InvoiceNo;InvoiceDate;InvoiceAmount;LSponsor.ID;LSponsor.ID;LSponsor.Full_Name;LProductAccount.AccountNo;LProductAccount.AccountNo;LProductAccount.AccountName'
+      LoadedFieldList='BranchCode;InvoiceId;InvoiceNo;InvoiceDate;LCurrency.Currency_Code;LCurrency.Currency_Code;LCurrency.Short_Name;LCurrency.Kurs_Tengah_BI;InvoiceAmount;LSponsor.ID;LSponsor.ID;LSponsor.Full_Name;LProductAccount.AccountNo;LProductAccount.AccountNo;LProductAccount.AccountName;Description'
       CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
+          Name='LCurrency'
+          ClassTypeName='Currency'
+          FieldNames='Currency_Code;Currency_Code;Short_Name;Kurs_Tengah_BI'
+        >, object:rpclass::TCustomLoadedLink<
           Name='LSponsor'
           ClassTypeName='VDonor'
           FieldNames='ID;ID;Full_Name'

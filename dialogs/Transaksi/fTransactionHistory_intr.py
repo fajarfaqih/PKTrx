@@ -230,6 +230,12 @@ class fTransactionHistory:
     dlg = app.CreateForm(formname,formname,0,ph,None)
     st = dlg.FormContainer.Show()
 
+  def CheckSpecialTransaction(self):
+    uipTran = self.uipTransaction
+
+    if uipTran.TransactionCode == 'INVS' :
+      raise 'PERINGATAN','Transaksi pembuatan invoice tidak dapat diubah / dihapus menggunakan form ini.\n Silahkan gunakan form daftar Invoice'
+
   def EditTransaction(self):
     app = self.app
     form = self.form
@@ -240,9 +246,14 @@ class fTransactionHistory:
     #if uipTran.AuthStatus == 'T' :
     #  raise 'PERINGATAN','Transaksi ini tidak dapat diubah karena telah di otorisasi'
       
+    self.CheckSpecialTransaction()
+      
     if uipTran.BranchCode != self.uipData.BranchCode :
       raise 'PERINGATAN','Anda tidak dapat mengubah transaksi milik cabang lain'
 
+    if uipTran.AuthStatus == 'T' and not self.uipData.IsSPV:
+      raise 'PERINGATAN','Transaksi ini tidak dapat diubah karena telah di otorisasi.\nSilahkan hubungi supervisor cabang anda'
+      
     TransactionId = uipTran.TransactionId or 0 #qTransaction.GetFieldValue('Transaction.TransactionId')
 
     if TransactionId == 0 : return
@@ -278,6 +289,8 @@ class fTransactionHistory:
     form = self.form
     uipTran = self.uipTransaction
 
+    self.CheckSpecialTransaction()
+    
     if uipTran.BranchCode != self.uipData.BranchCode :
       raise 'PERINGATAN','Anda tidak dapat menghapus transaksi milik cabang lain'
       

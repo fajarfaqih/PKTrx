@@ -61,6 +61,9 @@ class fInvoiceList:
 
     if InvoiceId == 0 : return
     
+    if self.uipInvoice.InvoicePaymentStatus == 'T' :
+      raise "PERINGATAN","Data invoice tidak dapat dihapus karena telah memiliki transaksi pembayaran. \nSilahkan hapus dahulu transaksi pembayarannya"
+    
     if self.fInvoice == None :
       form = self.app.CreateForm(
           'Transaksi/fInvoice',
@@ -149,6 +152,8 @@ class fInvoiceList:
   #---- OTHER METHOD ------
 
   def Show(self):
+    self.uipFilter.Edit()
+    self.uipFilter.IsShowPaidInvoice = 'F'
     self.__ViewList()
     self.FormContainer.Show()
 
@@ -178,13 +183,15 @@ class fInvoiceList:
     uipFilter = self.uipFilter
     BeginDate = uipFilter.BeginDate or 0
     EndDate = uipFilter.EndDate or 0
+    IsShowPaidInvoice = uipFilter.IsShowPaidInvoice or 'F'
 
     if BeginDate == 0 or EndDate == 0 :
       raise '','Masukkan periode transaksi terlebih dahulu'
 
     ph = self.app.CreateValues(
        ['BeginDate',BeginDate],
-       ['EndDate',EndDate]
+       ['EndDate',EndDate],
+       ['IsShowPaidInvoice',IsShowPaidInvoice]
        )
 
     self.FormObject.SetDataWithParameters(ph)

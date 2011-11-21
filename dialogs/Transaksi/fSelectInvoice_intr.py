@@ -45,6 +45,7 @@ class fSelectInvoice:
          BranchCode = '%s'  \
          and InvoiceDate >= '%s' \
          and InvoiceDate <= '%s' \
+         and InvoicePaymentStatus = 'F' \
          " % (uipFilter.BranchCode,sBegin,sEnd), '')
     return
 

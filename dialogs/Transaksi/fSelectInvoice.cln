@@ -37,8 +37,8 @@ document <
       OnSetData='OnSetData'
     >}Containers={object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=489
-      Height=329
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dualsplit2']
       InversedAlign=true
@@ -123,8 +123,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit2'
-      Width=489
-      Height=294
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pFilter']
       Container2=$CONTAINERS['gInvoice']
     >, object:rtf::Grid<
@@ -142,21 +142,58 @@ document <
         >, object:rtf::FieldUIElmtSetting<
           Name='InvoiceNo'
           AccessOption=aoReadOnly
+          ControlCaption='No Invoice'
           DataTypeName='VARCHAR'
           DataLength=30
         >, object:rtf::FieldUIElmtSetting<
           Name='InvoiceDate'
           AccessOption=aoReadOnly
+          ControlCaption='Tanggal Invoice'
           DataTypeName='TIMESTAMP'
           DataLength=0
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LCurrency'
+          RequiredOption=roAlwaysRequired
+          AccessOption=aoReadOnly
+          ClassTypeName='Currency'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LCurrency.Currency_Code'
+              DataTypeName='VARCHAR'
+              DataLength=20
+              UsedAsKey=true
+              KeyOrDisplayName='Currency_Code'
+              FinalDisplayFieldName='Currency_Code'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LCurrency.Currency_Code'
+              DataTypeName='VARCHAR'
+              DataLength=20
+              UsedAsDisplay=true
+              KeyOrDisplayName='Currency_Code'
+              FinalDisplayFieldName='Currency_Code'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LCurrency.Short_Name'
+              DataTypeName='VARCHAR'
+              DataLength=10
+              UsedAsDisplay=true
+              KeyOrDisplayName='Short_Name'
+              FinalDisplayFieldName='Short_Name'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LCurrency.Kurs_Tengah_BI'
+              DataTypeName='DOUBLE'
+              DataLength=0
+              UsedAsDisplay=true
+              KeyOrDisplayName='Kurs_Tengah_BI'
+              FinalDisplayFieldName='Kurs_Tengah_BI'
+            >}Restrictions=''
+          FieldBaseName='LCurrency'
         >, object:rtf::FieldUIElmtSetting<
           Name='InvoiceAmount'
           AccessOption=aoReadOnly
+          ControlCaption='Nilai Invoice'
           DataTypeName='DOUBLE'
           DataLength=0
         >, object:rtf::LinkUIElmtSetting<
           Name='LSponsor'
-          RequiredOption=roAlwaysRequired
           AccessOption=aoReadOnly
           ControlCaption='Sponsor'
           ClassTypeName='VDonor'
@@ -212,6 +249,12 @@ document <
               FinalDisplayFieldName='AccountName'
             >}Restrictions=''
           FieldBaseName='LProductAccount'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Description'
+          AccessOption=aoReadOnly
+          ControlCaption='Keterangan'
+          DataTypeName='VARCHAR'
+          DataLength=200
         >}Name='gInvoice'
       Width=489
       Height=244
@@ -235,6 +278,8 @@ document <
           EnumeratedValues=''
           FieldName='InvoiceNo'
           DisplayFormat=''
+          TitleCaption='No Invoice'
+          Width=100
           ReadOnly=true
         >, *object:rtf::GridColumn<
           Name='InvoiceDate'
@@ -242,6 +287,32 @@ document <
           EnumeratedValues=''
           FieldName='InvoiceDate'
           DisplayFormat=''
+          TitleCaption='Tanggal Invoice'
+          Width=80
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='LCurrency.Currency_Code'
+          InputStyle=cisLookup
+          EnumeratedValues=''
+          FieldName='LCurrency.Currency_Code'
+          DisplayFormat=''
+          Hidden=true
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='LCurrency.Short_Name'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='LCurrency.Short_Name'
+          DisplayFormat=''
+          TitleCaption='Kode Valuta'
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='LCurrency.Kurs_Tengah_BI'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='LCurrency.Kurs_Tengah_BI'
+          DisplayFormat=''
+          Hidden=true
           ReadOnly=true
         >, *object:rtf::GridColumn<
           Name='InvoiceAmount'
@@ -249,6 +320,8 @@ document <
           EnumeratedValues=''
           FieldName='InvoiceAmount'
           DisplayFormat=',0.00'
+          TitleCaption='Nilai Invoice'
+          Width=120
           ReadOnly=true
         >, *object:rtf::GridColumn<
           Name='LSponsor.ID'
@@ -285,6 +358,15 @@ document <
           DisplayFormat=''
           TitleCaption='Program / Proyek'
           Width=200
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='Description'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Description'
+          DisplayFormat=''
+          TitleCaption='Keterangan'
+          Width=150
           ReadOnly=true
         >}ReadOnly=true
       RowSelect=true

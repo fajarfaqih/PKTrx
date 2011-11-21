@@ -85,6 +85,25 @@ document <
           DataTypeName='varchar'
           DataLength=50
         >, object:rpclass::TCustomLoadedField<
+          Name='LCurrency.Currency_Code'
+          DataTypeName='VARCHAR'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LCurrency.Currency_Code'
+          DataTypeName='VARCHAR'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LCurrency.Short_Name'
+          DataTypeName='VARCHAR'
+          DataLength=10
+        >, object:rpclass::TCustomLoadedField<
+          Name='LCurrency.Full_Name'
+          DataTypeName='VARCHAR'
+          DataLength=50
+        >, object:rpclass::TCustomLoadedField<
+          Name='LCurrency.Kurs_Tengah_BI'
+          DataTypeName='DOUBLE'
+        >, object:rpclass::TCustomLoadedField<
           Name='Amount'
           DataTypeName='double'
           DataLength=20
@@ -128,6 +147,10 @@ document <
           Name='LBatch'
           ClassTypeName='TransactionBatch'
           FieldNames='BatchId;BatchId;BatchNo;Description;BatchDate'
+        >, object:rpclass::TCustomLoadedLink<
+          Name='LCurrency'
+          ClassTypeName='Currency'
+          FieldNames='Currency_Code;Currency_Code;Short_Name;Full_Name;Kurs_Tengah_BI'
         >}Mode=imSingleRow
     >}OnSetDataEx='FormOnSetDataEx'
 >

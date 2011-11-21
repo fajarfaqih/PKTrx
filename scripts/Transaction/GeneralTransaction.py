@@ -1432,7 +1432,7 @@ def CostPaidInAdvance(helper,oTran,oBatch,request,params):
   
   return FileKwitansi
 
-def InvoicePayment(config, srequest, params):
+def InvoicePaymentNew(config, srequest, params):
   request = simplejson.loads(srequest)
   helper = phelper.PObjectHelper(config)
 
@@ -1440,60 +1440,9 @@ def InvoicePayment(config, srequest, params):
   try:
     oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
     oTran = oBatch.NewTransaction('INVP')
-    
-    oTran.ReferenceNo = request[u'ReferenceNo']
-    oTran.Description = request[u'Description']
-    oTran.Inputer     = request[u'Inputer']
-    oTran.BranchCode  = request[u'BranchCode']
-    #oTran.TransactionNo = request[u'TransactionNo']
-    oTran.Amount = request[u'RefAmount']
-    oTran.CurrencyCode = '000'
-    oTran.ReceivedFrom = request[u'EmployeeName']
-    oTran.PaidTo = request[u'PaidTo']
-    oTran.ActualDate = oBatch.GetAsTDateTime('BatchDate')
-    aRate = 1.0
-    
-    # Get Object Invoice 
-    oInvoice = helper.GetObject('InvoiceProduct', request[u'InvoiceId'])
-    oInvoice.InvoicePaymentStatus = 'T'
 
-    oSponsor = helper.GetObject('Sponsor', oInvoice.SponsorId)
-    
-    # Product Account
-    oProductAccount = helper.GetObjectByNames('ProductAccount',
-      {'AccountNo': oInvoice.ProductAccountNo}
-    ).CastToLowestDescendant()
-    if oProductAccount.isnull:
-      raise '','Data Produk tidak ditemukan'    
-    
-    oItemPA = oTran.CreateDonorTransactionItem(oProductAccount, oInvoice.SponsorId)
-    oItemPA.SetMutation(request[u'Amount'], aRate)
-    oItemPA.Description = request[u'Description']
-    oItemPA.SetJournalParameter('INV02')
-    oItemPA.SetCollectionEntity(FundEntityMAP['I'])
-    
-    #oItemPA.PercentageOfAmil = item['PercentageOfAmil']
-
-    # Destination Transaction
-    oCashAccount = helper.GetObject('CashAccount',
-      str(request[u'CashAccountNo'])).CastToLowestDescendant()
-    if oCashAccount.isnull:
-      raise 'Cash/Bank', 'Rekening %s tidak ditemukan' % request[u'CashAccountNo']
-    
-    oItemCA = oTran.CreateAccountTransactionItem(oCashAccount)
-    oItemCA.SetMutation('D', request[u'Amount'], 1.0)
-    oItemCA.Description = oCashAccount.AccountName #request[u'Description']
-    oItemCA.SetJournalParameter('10')
-
-    aBranchCode = request[u'BranchCode']
-    aValuta = oCashAccount.CurrencyCode    
-
-    oTran.GenerateTransactionNumber(oCashAccount.CashCode)
-    
-    oTran.SaveInbox(params)
-    
-    FileKwitansi = oTran.GetKwitansi()
-    
+    FileKwitansi = InvoicePayment(helper,oTran,oBatch,request,params)
+     
     # Check for auto approval
     corporate = helper.CreateObject('Corporate')
     if corporate.CheckLimitOtorisasi(request[u'Amount']):
@@ -1504,5 +1453,98 @@ def InvoicePayment(config, srequest, params):
     config.Rollback()
     raise
 
-  status,msg = oTran.CreateJournal()
+  status,msg = oTran.CreateJournal()      
   return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
+  
+def InvoicePaymentUpdate(config, srequest, params):
+  request = simplejson.loads(srequest)
+  helper = phelper.PObjectHelper(config)
+
+  oTran = helper.GetObjectByNames(
+      'Transaction',{'TransactionNo': request[u'TransactionNo'] }
+    )
+  
+  TranHelper = helper.LoadScript('Transaction.TransactionHelper')
+  TranHelper.DeleteTransactionJournal(oTran)
+
+  status = 0
+  msg = ''
+  
+  config.BeginTransaction()
+  try:
+    oTran.CancelTransaction()
+    oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
+    oTran.BatchId = oBatch.BatchId
+
+    FileKwitansi = InvoicePayment(helper,oTran,oBatch,request,params)
+
+    # Check for auto approval
+    oTran.AutoApprovalUpdate()
+
+    config.Commit()
+  except:
+    config.Rollback()
+    raise
+
+  status,msg = oTran.CreateJournal()      
+  return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
+
+def InvoicePayment(helper,oTran,oBatch,request,params):
+  oTran.ReferenceNo = request[u'ReferenceNo']
+  oTran.Description = request[u'Description']
+  oTran.Inputer     = request[u'Inputer']
+  oTran.BranchCode  = request[u'BranchCode']
+  #oTran.TransactionNo = request[u'TransactionNo']
+  oTran.Amount = request[u'RefAmount']
+  oTran.CurrencyCode = request[u'CurrencyCode']
+  oTran.ReceivedFrom = request[u'EmployeeName']
+  oTran.PaidTo = request[u'PaidTo']
+  oTran.ActualDate = oBatch.GetAsTDateTime('BatchDate')
+  aRate = request[u'Rate']
+  
+  # Get Object Invoice 
+  oInvoice = helper.GetObject('InvoiceProduct', request[u'InvoiceId'])
+  
+  oSponsor = helper.GetObject('Sponsor', oInvoice.SponsorId)
+  
+  # Product Account
+  oProductAccount = helper.GetObjectByNames('ProductAccount',
+    {'AccountNo': oInvoice.ProductAccountNo}
+  ).CastToLowestDescendant()
+  if oProductAccount.isnull:
+    raise '','Data Produk tidak ditemukan'    
+  
+  oItemPA = oTran.CreateDonorTransactionItem(oProductAccount, oInvoice.SponsorId)
+  oItemPA.SetMutation(request[u'RefAmount'], aRate)
+  oItemPA.Description = request[u'Description']
+  oItemPA.SetJournalParameter('INV02')
+  oItemPA.SetCollectionEntity(FundEntityMAP['I'])
+  
+  #oItemPA.PercentageOfAmil = item['PercentageOfAmil']
+  
+  # Update PaymentTransaction Invoice
+  oInvoice.InvoicePaymentStatus = 'T'
+  oInvoice.PaymentTransactionId = oTran.TransactionId
+  oInvoice.PaymentTransactionItemId = oItemPA.TransactionItemId
+
+  # Destination Transaction
+  oCashAccount = helper.GetObject('CashAccount',
+    str(request[u'CashAccountNo'])).CastToLowestDescendant()
+  if oCashAccount.isnull:
+    raise 'Cash/Bank', 'Rekening %s tidak ditemukan' % request[u'CashAccountNo']
+  
+  oItemCA = oTran.CreateAccountTransactionItem(oCashAccount)
+  oItemCA.SetMutation('D', request[u'RefAmount'], aRate)
+  oItemCA.Description = oCashAccount.AccountName #request[u'Description']
+  oItemCA.SetJournalParameter('10')
+
+  aBranchCode = request[u'BranchCode']
+  aValuta = oCashAccount.CurrencyCode    
+
+  oTran.GenerateTransactionNumber(oCashAccount.CashCode)
+  
+  oTran.SaveInbox(params)
+  
+  FileKwitansi = oTran.GetKwitansi()
+    
+  return FileKwitansi
