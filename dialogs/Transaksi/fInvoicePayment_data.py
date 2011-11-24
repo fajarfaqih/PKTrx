@@ -9,7 +9,18 @@ def FormSetDataEx(uideflist, params) :
 
   if params.GetDatasetByName('trparam') != None :
     oForm = helper.CreateObject('FormTransaksi')
-    return oForm.SetDataEx(uideflist,params)
+    oForm.SetDataEx(uideflist,params)
+
+    uipTran = uideflist.uipTransaction.Dataset.GetRecord(0)
+    oTran = helper.GetObjectByNames('Transaction',{'TransactionNo' : uipTran.TransactionNo})
+
+    if uipTran.RefCurrencyCode in ['',None]:
+      uipTran.RefCurrencyCode = oTran.CurrencyCode
+      uipTran.RefRate = 1.0
+      uipTran.RefAmountEkuivalen = uipTran.RefRate * uipTran.RefAmount
+    # end if
+    
+    return
 
 
   rec = uideflist.uipTransaction.Dataset.AddRecord()
