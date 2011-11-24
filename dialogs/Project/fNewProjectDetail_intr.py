@@ -43,7 +43,7 @@ class fNewProjectDetail:
     form = sender.OwnerForm
     uipProject = sender.OwnerForm.GetUIPartByName('uipProject')
 
-    if (uipProject.GetFieldValue('LValuta.Currency_Code') in [None,'']):
+    if (uipProject.GetFieldValue('LCurrency.Currency_Code') in [None,'']):
       form.ShowMessage('Isian Valuta masih kosong, mohon untuk diisi.')
       return
       

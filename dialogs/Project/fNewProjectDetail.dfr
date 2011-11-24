@@ -113,15 +113,15 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=240
-      Height=96
+      Width=585
+      Height=609
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dualsplit2']
       InversedAlign=true
     >, object:rtf::DualSplit<
       Name='dualsplit2'
-      Width=240
-      Height=96
+      Width=585
+      Height=567
       Container1=$CONTAINERS['pProject']
       Container2=$CONTAINERS['dualsplit3']
     >, object:rtf::Panel<
@@ -321,7 +321,7 @@ document <
           DataTypeName='varchar'
           DataLength=50
         >}Name='gSponsor'
-      Width=240
+      Width=585
       Height=201
       UIPart=$UIPARTS['uipLsSponsor']
       ControlLeftMargin=8
