@@ -6,7 +6,7 @@ document <
   MinorVersion='0'
 >object:rtf::Form<
   MainContainer=$CONTAINERS['dualsplit1']
-  Caption='Pilih Produk'
+  Caption='Pilih Budget'
   Left=50
   Top=50
   Width=600

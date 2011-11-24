@@ -14,6 +14,7 @@ DefaultItems = [ 'Inputer',
                  'Amount',
                  'ReceivedFrom',
                  'FundEntity',
+                 'PeriodId'
                  ]
 
 
