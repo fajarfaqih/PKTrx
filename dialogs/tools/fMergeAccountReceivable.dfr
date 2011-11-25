@@ -9,7 +9,7 @@ document <
   Caption='Form Koreksi Redundansi Piutang Karyawan'
   Left=50
   Top=50
-  Width=873
+  Width=817
   Height=193
   BeforeDeleteRow=''
   BeforeResultSent=''
@@ -34,7 +34,7 @@ document <
         >}Name='uipData2'
     >}Containers={object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=873
+      Width=817
       Height=193
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dualsplit2']
@@ -71,6 +71,7 @@ document <
             '  AccountNo,'#13#10,
             '  Balance,'#13#10,
             '  self) then order by AccountName;']
+          LookupOption=loCustomOQL
           FieldBaseName='LEmployeeAccountReceivable'
         >, object:rtf::FieldUIElmtSetting<
           Name='EmployeeName'
@@ -81,7 +82,7 @@ document <
           DataLength=30
         >}Name='pData1'
       Width=410
-      Height=240
+      Height=136
       Bordered=true
       UIPart=$UIPARTS['uipData1']
       Controls={*object:rtf::DBLookupEdit<
@@ -137,6 +138,7 @@ document <
             '  AccountNo,'#13#10,
             '  Balance,'#13#10,
             '  self) then order by AccountName;']
+          LookupOption=loCustomOQL
           FieldBaseName='LEmployeeAccountReceivable'
         >, object:rtf::FieldUIElmtSetting<
           Name='EmployeeName'
@@ -154,7 +156,7 @@ document <
           DataLength=20
         >}Name='pData2'
       Width=377
-      Height=240
+      Height=137
       Bordered=true
       UIPart=$UIPARTS['uipData2']
       Controls={*object:rtf::DBLookupEdit<
@@ -199,7 +201,7 @@ document <
       Caption='Data 2'
     >, object:rtf::DualSplit<
       Name='dualsplit2'
-      Width=873
+      Width=817
       Height=149
       Container1=$CONTAINERS['pData1']
       Container2=$CONTAINERS['pData2']

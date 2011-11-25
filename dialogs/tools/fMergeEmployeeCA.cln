@@ -91,6 +91,7 @@ document <
             '  AccountNo,'#13#10,
             '  Balance,'#13#10,
             '  self) then order by AccountName;']
+          LookupOption=loCustomOQL
           FieldBaseName='LEmployeeCashAdvance'
         >, object:rtf::FieldUIElmtSetting<
           Name='EmployeeName'
@@ -184,6 +185,7 @@ document <
             '  AccountNo,'#13#10,
             '  Balance,'#13#10,
             '  self) then order by AccountName;']
+          LookupOption=loCustomOQL
           FieldBaseName='LEmployeeCashAdvance'
         >, object:rtf::FieldUIElmtSetting<
           Name='EmployeeName'

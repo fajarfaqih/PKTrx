@@ -30,19 +30,27 @@ def MergeEmployeeAccountReceivable(config,params,returns):
     SourceAccountNo = param.SourceAccountNo
     ToAccountNo = param.ToAccountNo
 
-    oSourceEmployeeCA = helper.GetObject("EmployeeAccountReceivable",param.SourceAccountNo)
-    oEmployee = helper.GetObject("VEmployee",oSourceEmployeeCA.EmployeeIdNumber)
-
-
+    oSourceEmployeeCA = helper.GetObject("EmployeeAccountReceivable", param.SourceAccountNo)
+    oToEmployeeCA = helper.GetObject("EmployeeAccountReceivable",param.ToAccountNo)
+    
+    oEmployee = helper.GetObject("VEmployee", oSourceEmployeeCA.EmployeeIdNumber)
 
     if not oEmployee.isnull:
-      message = "Proses tidak dapat dilanjutkan karena data karyawan yang akan digabungkan masih ada pada database php."
+      message = "Proses tidak dapat dilanjutkan karena data karyawan yang akan digabungkan masih ada pada database intranet."
       message += "\nSilahkan hubungi administrator database untuk menghapus atau menggabungkan data karyawan dengan data berikut :"
       message += "\n- ID\t: %d" % oSourceEmployeeCA.EmployeeIdNumber
       message += "\n- Nama\t: %s" % oEmployee.EmployeeName
       raise 'PERINGATAN', message
-    
-    oToEmployeeCA = helper.GetObject("EmployeeAccountReceivable",param.ToAccountNo)
+
+    oEmployeeDest = helper.GetObject("VEmployee", oToEmployeeCA.EmployeeIdNumber)
+    if oEmployeeDest.isnull:
+      message = "Proses tidak dapat dilanjutkan karena data karyawan yang menjadi tujuan tidak ditemukan dalam data intranet."
+      message += "\nSilahkan hubungi administrator database untuk melakukan pengecekan apakah data karyawan berikut ada :"
+      message += "\n- ID\t: %d" % oToEmployeeCA.EmployeeIdNumber
+      message += "\n- Nama\t: %s" % oEmployeeDest.EmployeeName
+      raise 'PERINGATAN', message
+      
+
     
     sBackup = "\
          insert into logmergeaccount (transactionitemid,oldaccount,newaccount,mergedate) \
