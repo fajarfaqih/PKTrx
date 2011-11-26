@@ -39,6 +39,21 @@ document <
           Hidden=true
           DataTypeName='integer'
           DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BranchName'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rtf::FieldUIElmtSetting<
+          Name='HeadOfficeCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rtf::FieldUIElmtSetting<
+          Name='MasterBranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=10
         >}Name='uipFilter'
     >, object:rtf::PClassUI<
       Name='uipCATransactItem'
@@ -107,8 +122,10 @@ document <
           ControlCaption='Cabang Pengirim'
           ClassTypeName='Branch'
           DisplayFields='BranchCode;BranchName'
-          Restrictions=''
+          Restrictions='MasterBranchCode|BranchCodeParam'
           OQLText=['select from Branch'#13#10,
+            '[BranchCode LIKE :BranchCodeParam or '#13#10,
+            '  MasterBranchCode LIKE :BranchCodeParam]'#13#10,
             '( BranchCode,'#13#10,
             '  BranchName,'#13#10,
             ' self'#13#10,
@@ -128,9 +145,17 @@ document <
             ');']
           LookupOption=loCustomOQL
           FieldBaseName='LDestBranch'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='IsReportedShow'
+          ControlCaption='Tampilkan yang sudah dilaporkan/dikembalikan'
+          DataTypeName='varchar'
+          DataLength=1
+          EnumeratedValues=['F=False'#13#10,
+            'T=True'#13#10]
+          GenerateCheckBoxForEnum=true
         >}Name='pFilter'
       Width=473
-      Height=137
+      Height=161
       Bordered=true
       UIPart=$UIPARTS['uipFilter']
       Controls={*object:rtf::DBDateEdit<
@@ -160,10 +185,20 @@ document <
           ControlCaption='Cabang Penerima'
           LookupField='LDestBranch.BranchName'
           DisplayLookupField=true
+        >, *object:rtf::DBCheckBox<
+          Name='IsReportedShow'
+          Top=94
+          Left=10
+          Width=279
+          Height=17
+          Color=0
+          ControlCaption='Tampilkan yang sudah dilaporkan/dikembalikan'
+          ValueChecked='T'
+          ValueUnchecked='F'
         >, object:rtf::Button<
           Name='bApply'
-          Layout=clNewLine
-          Top=94
+          Layout=clAbsolute
+          Top=126
           Left=10
           Width=143
           Height=25
@@ -267,7 +302,7 @@ document <
           DataLength=20
         >}Name='gDistributionList'
       Width=545
-      Height=154
+      Height=130
       UIPart=$UIPARTS['uipDistributionList']
       ControlLeftMargin=8
       ControlTopMargin=8
@@ -330,14 +365,14 @@ document <
           FieldName='ReportStatus'
           DisplayFormat=''
           TitleCaption='Status Laporan'
-          Hidden=true
+          Width=100
         >}ReadOnly=true
       RowSelect=true
       SuppressHelpLine=true
     >, object:rtf::DualSplit<
       Name='dualsplit3'
       Width=545
-      Height=196
+      Height=172
       Container1=$CONTAINERS['pButton']
       Container2=$CONTAINERS['gDistributionList']
     >}FormClassName='fBranchDistributionList'

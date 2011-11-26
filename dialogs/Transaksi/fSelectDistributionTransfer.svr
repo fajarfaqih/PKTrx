@@ -20,6 +20,10 @@ document <
           DataTypeName='integer'
           DataLength=30
         >, object:rpclass::TCustomLoadedField<
+          Name='DistType'
+          DataTypeName='varchar'
+          DataLength=5
+        >, object:rpclass::TCustomLoadedField<
           Name='UserId'
           DataTypeName='varchar'
           DataLength=50
@@ -43,16 +47,27 @@ document <
           Name='LSourceBranch.BranchName'
           DataTypeName='VARCHAR'
           DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='LDestBranch.BranchCode'
+          DataTypeName='VARCHAR'
+          DataLength=3
+        >, object:rpclass::TCustomLoadedField<
+          Name='LDestBranch.BranchCode'
+          DataTypeName='VARCHAR'
+          DataLength=3
+        >, object:rpclass::TCustomLoadedField<
+          Name='LDestBranch.BranchName'
+          DataTypeName='VARCHAR'
+          DataLength=30
         >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
           Name='LSourceBranch'
           ClassTypeName='Branch'
           FieldNames='BranchCode;BranchCode;BranchName'
+        >, object:rpclass::TCustomLoadedLink<
+          Name='LDestBranch'
+          ClassTypeName='Branch'
+          FieldNames='BranchCode;BranchCode;BranchName'
         >}Mode=imSingleRow
-    >, object:rpclass::TPClassUIDef<
-      Name='uipCATransactItem'
-      PClassName='AccountTransactionItem'
-      Mode=imMultiRow
-      OnSetData='OnSetData'
     >, object:rpclass::TPClassUIDef<
       Name='uipDistributionList'
       CustomLoadedFields={object:rpclass::TCustomLoadedField<
@@ -61,6 +76,10 @@ document <
           DataLength=20
         >, object:rpclass::TCustomLoadedField<
           Name='BranchNameSource'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='BranchNameDest'
           DataTypeName='varchar'
           DataLength=30
         >, object:rpclass::TCustomLoadedField<
@@ -88,9 +107,33 @@ document <
           DataTypeName='varchar'
           DataLength=3
         >, object:rpclass::TCustomLoadedField<
+          Name='BranchCodeDest'
+          DataTypeName='varchar'
+          DataLength=3
+        >, object:rpclass::TCustomLoadedField<
           Name='DistributionId'
           DataTypeName='integer'
           DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='TransactionItemId'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='SourceCashAccountNo'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='SourceCashAccountName'
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rpclass::TCustomLoadedField<
+          Name='DestCashAccountNo'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='DestCashAccountName'
+          DataTypeName='varchar'
+          DataLength=50
         >}Mode=imSingleRow
     >}OnSetDataEx='FormSetDataEx'
 >

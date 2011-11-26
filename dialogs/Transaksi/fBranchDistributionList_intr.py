@@ -25,6 +25,15 @@ class fBranchDistributionList:
     return 0
 
   def Show(self):
+    uipFilter = self.uipFilter
+    uipFilter.Edit()
+    uipFilter.IsReportedShow = 'F'
+
+    IsHeadOffice = (uipFilter.BranchCode == uipFilter.HeadOfficeCode)
+    self.MasterBranchCode = ''
+    if not IsHeadOffice :
+      uipFilter.MasterBranchCode = uipFilter.BranchCode
+
     self.DisplayTransaction()
     self.FormContainer.Show()
     
@@ -76,11 +85,13 @@ class fBranchDistributionList:
     
     SourceBranchCode = self.uipFilter.GetFieldValue('LSourceBranch.BranchCode') or ''
     DestBranchCode = self.uipFilter.GetFieldValue('LDestBranch.BranchCode') or ''
+    IsReportedShow = self.uipFilter.IsReportedShow
     ph = app.CreateValues(
       ['BeginDate',uipFilter.BeginDate],
       ['EndDate',uipFilter.EndDate],
       ['SourceBranchCode',SourceBranchCode],
       ['DestBranchCode',DestBranchCode],
+      ['IsReportedShow',IsReportedShow]
     )
     
     self.form.SetDataWithParameters(ph)

@@ -51,28 +51,6 @@ class fCashAdvanceReturn :
     uip.Edit()
     uip.TransactionNo = KodeTransaksi[sender.ItemIndex] + uip.TransactionNo[2:]
     
-  def EmployeeAfterLookup (self, sender, linkui):
-    #self.uipTransaction.EmployeeName = self.uipTransaction.GetFieldValue('LEmployee.Nama_Lengkap')
-    #self.uipTransaction.EmployeeId = self.uipTransaction.GetFieldValue('LEmployee.Nomor_Karyawan')
-    self.uipTransaction.EmployeeName = self.uipTransaction.GetFieldValue('LEmployee.AccountName')
-    self.uipTransaction.EmployeeId = self.uipTransaction.GetFieldValue('LEmployee.EmployeeIdNumber')
-    #self.uipTransaction.EmployeeId = self.uipTransaction.GetFieldValue('LEmployee.Nomor_Karyawan')
-
-  def bSearchEmployeeClick(self,sender):
-    if self.fSearchEmployee == None:
-      formname = 'Transaksi/fSearchEmployee'
-      form = self.app.CreateForm(formname,formname,0,None,None)
-      self.fSearchEmployee = form
-    else:
-      form = self.fSearchEmployee
-    # end if
-
-    if form.ShowData():
-      uipTran = self.uipTransaction
-      uipTran.EmployeeName = form.uipEmployee.EmployeeName
-      uipTran.EmployeeId = form.uipEmployee.EmployeeId
-    # end if
-
   def BudgetBeforeLookUp(self,sender,linkui):
     if self.fSelectBudget == None :
       formname = 'Transaksi/fSelectBudgetCode'
@@ -116,13 +94,31 @@ class fCashAdvanceReturn :
 
   def GetRefTransactionByNo(self,TransactionNo):
     app = self.app
+    uipTran = self.uipTransaction
     
     ph = app.CreateValues(['TransactionNo',TransactionNo])
     rph = self.form.CallServerMethod('GetInfoRefTransaction',ph)
     
     status = rph.FirstRecord
-    
-    if status.Is_Err : raise 'PERINGATAN',status.Err_Message
+
+    if status.Is_Err :
+      uipTran.RefTransactionNo = TransactionNo
+      uipTran.RefAmount = 0.0
+      uipTran.Amount = 0.0
+      uipTran.TotalAmount = 0.0
+      uipTran.RefTransactionDate = 0
+      uipTran.RefDescription = ''
+      uipTran.RefTransactionId = 0
+
+      uipTran.BranchCodeDestination = ''
+      
+      uipTran.SetFieldValue('LCashAccountDestination.AccountNo','')
+      uipTran.SetFieldValue('LCashAccountDestination.AccountName','')
+      uipTran.SetFieldValue('LCashAccountSource.AccountNo','')
+      uipTran.SetFieldValue('LCashAccountSource.AccountName','')
+      self.RefTransactionNo = ''
+
+      raise 'PERINGATAN',status.Err_Message
     
     uipTran = self.uipTransaction
     uipTran.Edit()
@@ -132,58 +128,37 @@ class fCashAdvanceReturn :
     uipTran.TotalAmount = 0.0
     uipTran.RefTransactionDate = status.TransactionDate
     uipTran.RefDescription = status.Description
-    uipTran.RefTransactionItemId = status.TransactionItemId
-    uipTran.BranchCodeDestination = status.BranchCode
-    uipTran.SetFieldValue('LCashAccountDestination.AccountNo',status.AccountNo)
-    uipTran.SetFieldValue('LCashAccountDestination.AccountName',status.AccountName)
+    uipTran.RefTransactionId = status.TransactionId
+    
+    uipTran.BranchCodeDestination = status.BranchCodeDestination
+    uipTran.BranchCodeSource = status.BranchCodeSource
+    uipTran.SetFieldValue('LCashAccountDestination.AccountNo',status.DestAccountNo)
+    uipTran.SetFieldValue('LCashAccountDestination.AccountName',status.DestAccountName)
+    uipTran.SetFieldValue('LCashAccountSource.AccountNo',status.SourceAccountNo)
+    uipTran.SetFieldValue('LCashAccountSource.AccountName',status.SourceAccountName)
+
     self.RefTransactionNo = uipTran.RefTransactionNo
-    raise '',status.AccountName
-      
+
   def RefTransactionNoOnExit(self,sender):
     app = self.app
-    uipTran = self.uipTransaction
-    
-    RefTransactionNo = uipTran.RefTransactionNo or ''
-    if ( RefTransactionNo ==  '' or
-         ( RefTransactionNo != ''
-           and self.RefTransactionNo == RefTransactionNo)
-       ) : return
 
-    ph = app.CreateValues(
-            ['TransactionNo',RefTransactionNo],
-            ['EmployeeId',EmployeeId],
-        )
-
-    rph = self.form.CallServerMethod('GetInfoRefTransaction',ph)
-    
-    rec = rph.FirstRecord
-    if rec.Is_Err :
-      uipTran.RefAmount = 0.0
-      uipTran.Amount = 0.0
-      uipTran.RefTransactionDate = None
-      uipTran.RefDescription = ''
-      uipTran.RefTransactionItemId = 0
-      self.RefTransactionNo = None
-      raise 'PERINGATAN',rec.Err_Message
-      
-    uipTran.Edit()
-    uipTran.RefAmount = rec.Amount
-    uipTran.Amount = rec.Amount
-    uipTran.RefTransactionDate = rec.TransactionDate
-    uipTran.RefDescription = rec.Description
-    uipTran.RefTransactionItemId = rec.TransactionItemId
-    self.RefTransactionNo = RefTransactionNo
+    TransactionNo = self.uipTransaction.RefTransactionNo or ''
+    if TransactionNo == '' : return
+    self.GetRefTransactionByNo(TransactionNo)
 
   def bCariClick(self, sender):
     if self.fSearchCATrans == None :
-      formname ='Transaksi/fSelectTransactionBranchDist'
+      #formname ='Transaksi/fSelectTransactionBranchDist'
+      formname = 'Transaksi/fSelectDistributionTransfer'
+      
       fTrans = self.app.CreateForm(formname,formname,0,None,None)
       self.fSelectTransaction = fTrans
     else :
       fTrans = self.fSelectTransaction
       
-    if fTrans.GetTransaction(self.uipTransaction.BranchCode):
-      uipCA = fTrans.uipCATransactItem
+    if fTrans.GetTransaction('OUT'):
+      #uipCA = fTrans.uipCATransactItem
+      uipCA = fTrans.uipDistributionList
       
       uipTran = self.uipTransaction
       uipTran.Edit()
@@ -193,15 +168,20 @@ class fCashAdvanceReturn :
       uipTran.TotalAmount = 0.0
       uipTran.RefTransactionDate = uipCA.TransactionDate
       uipTran.RefDescription = uipCA.Description
-      uipTran.RefTransactionItemId = uipCA.TransactionItemId
-      uipTran.BranchCodeDestination = uipCA.BranchCode
-      uipTran.SetFieldValue('LCashAccountDestination.AccountNo',uipCA.GetFieldValue('LFinancialAccount.AccountNo'))
-      uipTran.SetFieldValue('LCashAccountDestination.AccountName',uipCA.GetFieldValue('LFinancialAccount.AccountName'))
+      uipTran.RefTransactionId = uipCA.TransactionId
+      uipTran.BranchCodeDestination = uipCA.BranchCodeDest
+      uipTran.BranchCodeSource = uipCA.BranchCodeSource
+      uipTran.SetFieldValue('LCashAccountDestination.AccountNo',uipCA.DestCashAccountNo)
+      uipTran.SetFieldValue('LCashAccountDestination.AccountName',uipCA.DestCashAccountName)
+      uipTran.SetFieldValue('LCashAccountSource.AccountNo',uipCA.SourceCashAccountNo)
+      uipTran.SetFieldValue('LCashAccountSource.AccountName',uipCA.SourceCashAccountName)
       self.RefTransactionNo = uipTran.RefTransactionNo
 
-    
   def bSimpanClick(self, sender):
     app = self.app
+
+    self.ValidationBeforeSave()
+    
     if app.ConfirmDialog('Yakin simpan transaksi ?'):
       self.FormObject.CommitBuffer()
       ph = self.FormObject.GetDataPacket()
@@ -226,7 +206,7 @@ class fCashAdvanceReturn :
     #-- if
 
   def CheckRefTransaction(self):
-    if (self.uipTransaction.RefTransactionItemId or 0) == 0 :
+    if (self.uipTransaction.RefTransactionId or 0) == 0 :
       raise 'PERINGATAN','Pilih / Isi Dahulu Ref. Transaksi Penyerahan'
 
 
@@ -397,4 +377,23 @@ class fCashAdvanceReturn :
     self.uipTransaction.Amount += sender.Ekuivalen
     self.uipTransaction.TotalAmount -= sender.Ekuivalen
     self.uipTransaction.Post()
+
+  def ValidationBeforeSave(self):
+    uipTran = self.uipTransaction
+    
+    self.FormObject.CommitBuffer()
+    
+    self.CheckRefTransaction()
+    
+    BatchId = uipTran.GetFieldValue('LBatch.BatchId') or 0
+
+    if BatchId == 0 :
+      raise 'PERINGATAN','Anda Belum Memilih Batch'
+
+    CashAccountNo = uipTran.GetFieldValue('LCashAccount.AccountNo') or ''
+    
+    if CashAccountNo == '':
+      raise 'PERINGATAN','Anda Belum Memilih Kas/Bank pengembalian dana'
+    
+
 

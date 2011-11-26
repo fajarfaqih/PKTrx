@@ -11,7 +11,7 @@ document <
   Left=50
   Top=50
   Width=793
-  Height=393
+  Height=449
   UIParts={object:rtf::PClassUI<
       Elements={object:rtf::FieldUIElmtSetting<
           Name='BranchCode'
@@ -48,6 +48,16 @@ document <
           Hidden=true
           DataTypeName='varchar'
           DataLength=10
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BranchCodeSource'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rtf::FieldUIElmtSetting<
+          Name='RefTransactionId'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
         >}Name='uipTransaction'
       AlwaysPostToServer=true
       PostLinkValues=true
@@ -373,8 +383,43 @@ document <
           DataTypeName='varchar'
           DataLength=30
         >, object:rtf::LinkUIElmtSetting<
+          Name='LCashAccountSource'
+          ControlCaption='Kas/Bank Pengirim'
+          ClassTypeName='CashAccount'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LCashAccountSource.AccountNo'
+              DataTypeName='VARCHAR'
+              DataLength=30
+              UsedAsKey=true
+              KeyOrDisplayName='AccountNo'
+              FinalDisplayFieldName='AccountNo'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LCashAccountSource.AccountNo'
+              DataTypeName='VARCHAR'
+              DataLength=30
+              UsedAsDisplay=true
+              KeyOrDisplayName='AccountNo'
+              FinalDisplayFieldName='AccountNo'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LCashAccountSource.AccountName'
+              DataTypeName='VARCHAR'
+              DataLength=50
+              UsedAsDisplay=true
+              KeyOrDisplayName='AccountName'
+              FinalDisplayFieldName='AccountName'
+            >}Restrictions='BranchCodeSource|BranchCodeSource'
+          OQLText=['select from CashAccount'#13#10,
+            '[status = ''A'' and CurrencyCode = ''000'' '#13#10,
+            ' and BranchCode = :BranchCodeSource]'#13#10,
+            '('#13#10,
+            ' AccountNo, AccountName, CashAccountType, Balance, self'#13#10,
+            ')'#13#10,
+            'then order by desc CashAccountType;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LCashAccountSource'
+        >, object:rtf::LinkUIElmtSetting<
           Name='LCashAccountDestination'
-          ControlCaption='Kas/Bank'
+          ControlCaption='Kas/Bank Penerima'
           ClassTypeName='CashAccount'
           KeyFields={object:rtf::FieldUIElmtSetting<
               Name='LCashAccountDestination.AccountNo'
@@ -489,7 +534,7 @@ document <
           DataLength=30
         >}Name='pTransaction'
       Width=793
-      Height=321
+      Height=353
       UIPart=$UIPARTS['uipTransaction']
       Controls={*object:rtf::DBEdit<
           Name='TransactionNo'
@@ -527,20 +572,35 @@ document <
           OnExit='RefTransactionNoOnExit'
           CharCase=ecUpperCase
         >, *object:rtf::DBLookupEdit<
-          Name='LCashAccountDestination'
+          Name='LCashAccountSource'
           Layout=clAbsolute
           Top=212
           Left=8
+          Width=90
+          Height=21
           Enabled=false
           ForceUseEqualCaptionWidth=true
           Color=0
-          ControlCaption='Kas/Bank'
+          ControlCaption='Kas/Bank Pengirim'
+          LookupField='LCashAccountSource.AccountName'
+          DisplayLookupField=true
+        >, *object:rtf::DBLookupEdit<
+          Name='LCashAccountDestination'
+          Layout=clAbsolute
+          Top=240
+          Left=8
+          Width=90
+          Height=21
+          Enabled=false
+          ForceUseEqualCaptionWidth=true
+          Color=0
+          ControlCaption='Kas/Bank Penerima'
           LookupField='LCashAccountDestination.AccountName'
           DisplayLookupField=true
         >, *object:rtf::DBEdit<
           Name='RefAmount'
           Layout=clAbsolute
-          Top=268
+          Top=296
           Left=8
           Enabled=false
           ForceUseEqualCaptionWidth=true
@@ -551,7 +611,7 @@ document <
         >, *object:rtf::DBDateEdit<
           Name='RefTransactionDate'
           Layout=clAbsolute
-          Top=240
+          Top=268
           Left=8
           Enabled=false
           ForceUseEqualCaptionWidth=true
@@ -560,7 +620,7 @@ document <
         >, *object:rtf::DBEdit<
           Name='RefDescription'
           Layout=clAbsolute
-          Top=296
+          Top=322
           Left=8
           Enabled=false
           ForceUseEqualCaptionWidth=true
@@ -649,7 +709,7 @@ document <
           Height=17
           Color=0
           ControlCaption=''
-          Caption='Ref. Transaksi Penyerahan'
+          Caption='Ref. Transaksi Pengiriman Dana'
           AutoSize=true
           FontName='Tahoma'
           FontColor=-2147483640
@@ -698,7 +758,7 @@ document <
     >, object:rtf::Grid<
       Name='gItem'
       Width=617
-      Height=29
+      Height=53
       UIPart=$UIPARTS['uipTransactionItem']
       ControlLeftMargin=8
       ControlTopMargin=8
@@ -807,7 +867,7 @@ document <
     >, object:rtf::DualSplit<
       Name='dualsplit2'
       Width=793
-      Height=29
+      Height=53
       Container1=$CONTAINERS['pButton']
       Container2=$CONTAINERS['gItem']
       SplitDirection=sdrSplitLeftRight

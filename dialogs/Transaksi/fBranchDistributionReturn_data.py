@@ -40,31 +40,44 @@ def GetInfoRefTransaction(config, params, returns):
     ['Amount',0.0],
     ['TransactionDate',0],
     ['Description',''],
-    ['TransactionItemId',0],
-    ['BranchCode',''],
-    ['AccountNo',''],
-    ['AccountName',''],
-    
+    ['TransactionId',0],
+    ['BranchCodeDestination',''],
+    ['BranchCodeSource',''],
+    ['DestAccountNo',''],
+    ['DestAccountName',''],
+    ['SourceAccountNo',''],
+    ['SourceAccountName',''],
   )
 
   rec = params.FirstRecord
   
   try:
     helper = phelper.PObjectHelper(config)
-    oTran = helper.GetObjectByNames('CATransactItem',{'LTransaction.TransactionNo':str(rec.TransactionNo)})
+
+    oTran = helper.GetObjectByNames('AccountTransactionItem',{'LTransaction.TransactionNo' : rec.TransactionNo })
+    #oTran = helper.GetObjectByNames('Transaction',{'TransactionNo' : rec.TransactionNo })
 
     if oTran.isnull :
-      raise 'PERINGATAN','Data Transaksi Uang Muka Tidak Ditemukan'
+      raise 'PERINGATAN','Data Transaksi Pengiriman Dana RAK Tidak Ditemukan'
 
+    oDistInfo = helper.GetObjectByNames('DistributionTransferInfo',{'TransactionId' : oTran.TransactionId})
+    if oDistInfo.ReportStatus == 'T' :
+      raise 'PERINGATAN','Data transaksi referensi yang diinputkan telah memiliki LPJ.\nSilahkan ubah nomor transaksi referensi'
+    
     status.Amount = oTran.Amount
     status.TransactionDate = oTran.LTransaction.GetAsTDateTime('TransactionDate')
     status.Description = oTran.LTransaction.Description
-    status.TransactionItemId = oTran.TransactionItemId
+    #status.TransactionItemId = oTran.TransactionItemId
+    status.TransactionId = oTran.TransactionId
+
+
     
-    oDistInfo = helper.GetObject('DistributionTransferInfo',oTran.TransactionId)
-    status.BranchCode = oDistInfo.BranchCodeDestination
-    status.AccountNo = oTran.AccountNo
-    status.AccountName = oTran.LFinancialAccount.AccountName
+    status.BranchCodeDestination = oDistInfo.BranchDestination
+    status.BranchCodeSource = oDistInfo.BranchSource
+    status.DestAccountNo = oDistInfo.CashAccountNoDest
+    status.DestAccountName = oDistInfo.LCashAccountDest.AccountName
+    status.SourceAccountNo = oDistInfo.CashAccountNoSource
+    status.SourceAccountName = oDistInfo.LCashAccountSource.AccountName
   except:
     status.Is_Err = 1
     status.Err_Message = str(sys.exc_info()[1])
@@ -92,8 +105,9 @@ def SimpanData(config, params, returns):
     request['BranchCode'] = config.SecurityContext.GetUserInfo()[4]
     request['BranchCodeDestination'] = oTransaction.BranchCodeDestination
     request['RefAmount'] = oTransaction.RefAmount
-    request['RefTransactionItemId'] = oTransaction.RefTransactionItemId
+    request['RefTransactionId'] = oTransaction.RefTransactionId
     request['RefAmount'] = oTransaction.RefAmount
+    request['SourceAccountNo'] = oTransaction.GetFieldByName('LCashAccountSource.AccountNo')
     request['DestAccountNo'] = oTransaction.GetFieldByName('LCashAccountDestination.AccountNo')
     request['TransactionNo'] = oTransaction.TransactionNo
     request['PaidTo'] = oTransaction.PaidTo
@@ -124,14 +138,12 @@ def SimpanData(config, params, returns):
 
     sRequest = simplejson.dumps(request)
 
+    oService = helper.LoadScript('Transaction.BranchDistribution')
+
     if oTransaction.ShowMode == 1:
-      Script = 'Transaction.BranchDistribution'
-    else: #ShowMode == 2
-      Script = 'Transaction.BranchDistributionUpdate'
-
-    oService = helper.LoadScript(Script)
-
-    response = oService.BranchDistributionReturn(config,sRequest,params)
+      response = oService.BranchDistributionReturnNew(config,sRequest,params)
+    else:
+      response = oService.BranchDistributionReturnUpdate(config,sRequest,params)
 
     response = simplejson.loads(response)
     TransactionNo = response[u'TransactionNo']

@@ -1351,6 +1351,19 @@ document <
               ThisField=$TYPEDECLS['Transaction'].MEMBERS['CurrencyCode']
               OriginPKey=$TYPEDECLS['Currency'].MEMBERS['Currency_Code']
             >}LinkedClass=$TYPEDECLS['Currency']
+        >, object:FieldMember<
+          MemberName='SubSystemCode'
+          PhysicalName='SUBSYSTEMCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:LinkMember<
+          MemberName='LSubSystemInteraction'
+          Optional=true
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['Transaction'].MEMBERS['SubSystemCode']
+              OriginPKey=$TYPEDECLS['SubSystemInteraction'].MEMBERS['SubSystemCode']
+            >}IsWeak=true
+          LinkedClass=$TYPEDECLS['SubSystemInteraction']
         >}ClassID='{9E0C9A6E-AAB9-4950-8D93-3AAE12F4660B}'
       AutoPrimaryKey=$TYPEDECLS['Transaction'].MEMBERS['TransactionId']
     >, object:EnumTypeDecl<
@@ -3706,6 +3719,28 @@ document <
         >, object:ListMember<
           MemberName='LsCashAdvance'
           UsedLink=$TYPEDECLS['CATransactItem'].MEMBERS['LDistributionTransfer']
+        >, object:FieldMember<
+          MemberName='CashAccountNoSource'
+          PhysicalName='CASHACCOUNTNOSOURCE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='CashAccountNoDest'
+          PhysicalName='CASHACCOUNTNODEST'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:LinkMember<
+          MemberName='LCashAccountSource'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['DistributionTransferInfo'].MEMBERS['CashAccountNoSource']
+              OriginPKey=$TYPEDECLS['CashAccount'].MEMBERS['AccountNo']
+            >}LinkedClass=$TYPEDECLS['CashAccount']
+        >, object:LinkMember<
+          MemberName='LCashAccountDest'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['DistributionTransferInfo'].MEMBERS['CashAccountNoDest']
+              OriginPKey=$TYPEDECLS['CashAccount'].MEMBERS['AccountNo']
+            >}LinkedClass=$TYPEDECLS['CashAccount']
         >}ClassID='{31EBA381-7CFF-49F2-B5F7-D41B80260C28}'
       AutoPrimaryKey=$TYPEDECLS['DistributionTransferInfo'].MEMBERS['DistributionId']
     >, object:ClassTypeDecl<
@@ -4330,6 +4365,10 @@ document <
           MemberName='Donor_Type_Id'
           PhysicalName='DONOR_TYPE_ID'
           DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='Marketer_Id'
+          PhysicalName='MARKETER_ID'
+          DataType=$TYPEDECLS['INTEGER']
         >}ClassID='{48864397-BDFA-4F35-95DF-58E633714B56}'
     >, object:ClassTypeDecl<
       TypeName='FixedAssetTransactInfo'
@@ -4783,6 +4822,47 @@ document <
           DataLength=250
         >}ClassID='{81446639-989B-4D27-A03B-E0A40E0FD1C5}'
       AutoPrimaryKey=$TYPEDECLS['BPScript'].MEMBERS['BPScriptId']
+    >, object:ClassTypeDecl<
+      TypeName='UserApp'
+      PTableName='USERAPP'
+      Members={object:FieldMember<
+          MemberName='Id_User'
+          PhysicalName='ID_USER'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='Nama_User'
+          PhysicalName='NAMA_USER'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='Branch_Code'
+          PhysicalName='BRANCH_CODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=5
+        >}ClassID='{79222AAD-195B-4FE3-80C4-0E079B7D7D4A}'
+    >, object:ClassTypeDecl<
+      TypeName='SubSystemInteraction'
+      PTableName='SUBSYSTEMINTERACTION'
+      Members={object:FieldMember<
+          MemberName='TitleInteraction'
+          PhysicalName='TITLEINTERACTION'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=50
+        >, object:FieldMember<
+          MemberName='IsActive'
+          PhysicalName='ISACTIVE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['FTBoolean']
+        >, object:FieldMember<
+          MemberName='SubSystemCode'
+          PhysicalName='SUBSYSTEMCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+          IsPrimaryKey=true
+        >}ClassID='{B49CAD2D-B376-45E9-9C61-995E4632D27D}'
     >}PhysicalDB=object:ODLDatabase<
   >LastMethodID=6
 >

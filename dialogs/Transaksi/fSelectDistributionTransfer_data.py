@@ -16,10 +16,19 @@ def FormSetDataEx(uideflist,params):
     recParams = params.FirstRecord
     aBeginDate = recParams.BeginDate
     aEndDate = recParams.EndDate
-    aSourceBranchCode = recParams.SourceBranchCode
-    aDestBranchCode = config.SecurityContext.GetUserInfo()[4]
+    if recParams.DistType == 'IN' :
+      aSourceBranchCode = recParams.SourceBranchCode
+      aDestBranchCode = config.SecurityContext.GetUserInfo()[4]
+    else:
+      aSourceBranchCode = config.SecurityContext.GetUserInfo()[4]
+      aDestBranchCode = recParams.DestBranchCode
+      
+    aDistType = recParams.DistType
     
-    res = GetDataDistribution(config,aSourceBranchCode,aDestBranchCode,aBeginDate,aEndDate)
+    if aDistType == 'IN' :
+      res = GetDataDistributionIN(config,aSourceBranchCode,aDestBranchCode,aBeginDate,aEndDate)
+    else : # aDistType == 'OUT'
+      res = GetDataDistributionOUT(config,aSourceBranchCode,aDestBranchCode,aBeginDate,aEndDate)
 
     uipDistList = uideflist.uipDistributionList.Dataset
     while not res.Eof :
@@ -27,17 +36,64 @@ def FormSetDataEx(uideflist,params):
       recDisb.TransactionDate = timeutils.AsTDateTime(config, res.ActualDate)
       recDisb.BranchCodeSource = res.BranchSource
       recDisb.BranchNameSource = res.BranchName
+      recDisb.BranchCodeDest = res.BranchDestination
+      recDisb.BranchNameDest = res.BranchName_1
       recDisb.Amount = res.Amount
       recDisb.TransactionNo = res.TransactionNo
       recDisb.Description = res.Description
       recDisb.ReportStatus = res.ReportStatus
       recDisb.TransactionId = res.TransactionId
       recDisb.DistributionId = res.DistributionId
+      recDisb.SourceCashAccountNo = res.CashAccountNoSource
+      recDisb.SourceCashAccountName = res.AccountName
+      recDisb.DestCashAccountNo = res.CashAccountNoDest
+      recDisb.DestCashAccountName = res.AccountName_1
       res.Next()
     # end while
   # end if
   
-def GetDataDistribution(config,SourceBranchCode,DestBranchCode,BeginDate,EndDate):
+def GetDataDistributionOUT(config,SourceBranchCode,DestBranchCode,BeginDate,EndDate):
+  AddParam = ''
+  if DestBranchCode != '' :
+    AddParam = " and BranchDestination = '%s' " % DestBranchCode
+
+  sOQL = " \
+    select from DistributionTransferInfo \
+    [ BranchSource = :SourceBranchCode and \
+     LTransaction.ActualDate >= :BeginDate and \
+     LTransaction.ActualDate <= :EndDate and \
+     ReportStatus = 'F' \
+     %s ]\
+    (LTransaction.ActualDate, \
+     BranchSource, \
+     LBranchSource.BranchName , \
+     BranchDestination, \
+     LBranchDestination.BranchName as BranchNameDest, \
+     LTransaction.Amount , \
+     LTransaction.TransactionNo, \
+     LTransaction.Description, \
+     ReportStatus, \
+     TransactionId , \
+     DistributionId, \
+     CashAccountNoSource , \
+     LCashAccountSource.AccountName as AccountNameSource, \
+     CashAccountNoDest, \
+     LCashAccountDest.AccountName as AccountNameDest, \
+     self) then order by ActualDate,TransactionId ; \
+  " % AddParam
+
+  oql = config.OQLEngine.CreateOQL(sOQL)
+  oql.SetParameterValueByName('BeginDate', BeginDate)
+  oql.SetParameterValueByName('EndDate', EndDate)
+  oql.SetParameterValueByName('SourceBranchCode', SourceBranchCode)
+
+  oql.ApplyParamValues()
+
+  oql.active = 1
+
+  return oql.rawresult
+  
+def GetDataDistributionIN(config,SourceBranchCode,DestBranchCode,BeginDate,EndDate):
   AddParam = ''
   if SourceBranchCode != '' :
     AddParam = " and BranchSource = '%s' " % SourceBranchCode
@@ -51,12 +107,18 @@ def GetDataDistribution(config,SourceBranchCode,DestBranchCode,BeginDate,EndDate
     (LTransaction.ActualDate, \
      BranchSource, \
      LBranchSource.BranchName , \
+     BranchDestination, \
+     LBranchDestination.BranchName as BranchNameDest, \
      LTransaction.Amount , \
      LTransaction.TransactionNo, \
      LTransaction.Description, \
      ReportStatus, \
      TransactionId , \
      DistributionId, \
+     CashAccountNoSource , \
+     LCashAccountSource.AccountName as AccountNameSource, \
+     CashAccountNoDest, \
+     LCashAccountDest.AccountName as AccountNameDest, \
      self) then order by ActualDate,TransactionId ; \
   " % AddParam
 
@@ -70,20 +132,4 @@ def GetDataDistribution(config,SourceBranchCode,DestBranchCode,BeginDate,EndDate
   oql.active = 1
 
   return oql.rawresult
-  
-def OnSetData(sender):
-  rec = sender.ActiveRecord
-  helper = phelper.PObjectHelper(sender.uideflist.config)
 
-  oDonorTrans = helper.GetObjectByInstance('CATransactItem', sender.ActiveInstance)
-
-  rec.TransactionNo = oDonorTrans.LTransaction.TransactionNo
-  rec.TransactionDate = oDonorTrans.LTransaction.GetAsTDateTime('TransactionDate')
-  rec.Description = oDonorTrans.LTransaction.Description
-  
-  
-
-  
-  
-  
-  

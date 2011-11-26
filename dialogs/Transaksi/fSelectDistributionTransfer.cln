@@ -28,19 +28,18 @@ document <
           Hidden=true
           DataTypeName='integer'
           DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='DistType'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=5
         >}Name='uipFilter'
-    >, object:rtf::PClassUI<
-      Name='uipCATransactItem'
-      ClassTypeName='AccountTransactionItem'
-      DataBinding=bmMaster
-      MultiLine=true
-      OnSetData='OnSetData'
     >, object:rtf::PClassUI<
       Name='uipDistributionList'
     >}Containers={object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=489
-      Height=329
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dualsplit2']
       InversedAlign=true
@@ -124,6 +123,39 @@ document <
             ');']
           LookupOption=loCustomOQL
           FieldBaseName='LSourceBranch'
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LDestBranch'
+          ControlCaption='Cabang Penerima'
+          ClassTypeName='Branch'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LDestBranch.BranchCode'
+              DataTypeName='VARCHAR'
+              DataLength=3
+              UsedAsKey=true
+              KeyOrDisplayName='BranchCode'
+              FinalDisplayFieldName='BranchCode'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LDestBranch.BranchCode'
+              DataTypeName='VARCHAR'
+              DataLength=3
+              UsedAsDisplay=true
+              KeyOrDisplayName='BranchCode'
+              FinalDisplayFieldName='BranchCode'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LDestBranch.BranchName'
+              DataTypeName='VARCHAR'
+              DataLength=30
+              UsedAsDisplay=true
+              KeyOrDisplayName='BranchName'
+              FinalDisplayFieldName='BranchName'
+            >}Restrictions=''
+          OQLText=['select from Branch'#13#10,
+            '( BranchCode,'#13#10,
+            '  BranchName,'#13#10,
+            ' self'#13#10,
+            ');']
+          LookupOption=loCustomOQL
+          FieldBaseName='LDestBranch'
         >}Name='pFilter'
       Width=489
       Height=81
@@ -147,6 +179,7 @@ document <
           Left=10
           Width=80
           Height=21
+          ForceUseEqualCaptionWidth=true
           ControlCaption='Cabang Pengirim'
           FieldName='LSourceBranch.BranchCode'
           DisplayFormat=''
@@ -154,9 +187,24 @@ document <
           DisplayLookupField=true
           DisplayLookupColor=-2147483624
           DisplayLookupWidth=180
+        >, *object:rtf::DBLookupEdit<
+          Name='LDestBranch'
+          Layout=clAbsolute
+          Top=62
+          Left=10
+          Width=80
+          Height=21
+          ForceUseEqualCaptionWidth=true
+          ControlCaption='Cabang Penerima'
+          FieldName='LDestBranch.BranchCode'
+          DisplayFormat=''
+          LookupField='LDestBranch.BranchName'
+          DisplayLookupField=true
+          DisplayLookupColor=-2147483624
+          DisplayLookupWidth=180
         >, object:rtf::Button<
           Name='bApply'
-          Layout=clNextSide
+          Layout=clAbsolute
           Top=38
           Left=398
           Color=0
@@ -171,8 +219,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit2'
-      Width=489
-      Height=294
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pFilter']
       Container2=$CONTAINERS['dualsplit3']
     >, object:rtf::Panel<
@@ -193,6 +241,11 @@ document <
         >, object:rtf::FieldUIElmtSetting<
           Name='BranchNameSource'
           ControlCaption='Cabang Sumber'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BranchNameDest'
+          ControlCaption='Cabang Tujuan'
           DataTypeName='varchar'
           DataLength=30
         >, object:rtf::FieldUIElmtSetting<
@@ -229,10 +282,40 @@ document <
           DataTypeName='varchar'
           DataLength=3
         >, object:rtf::FieldUIElmtSetting<
+          Name='BranchCodeDest'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=3
+        >, object:rtf::FieldUIElmtSetting<
           Name='DistributionId'
           Hidden=true
           DataTypeName='integer'
           DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionItemId'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='SourceCashAccountNo'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='SourceCashAccountName'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rtf::FieldUIElmtSetting<
+          Name='DestCashAccountNo'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='DestCashAccountName'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=50
         >}Name='gDistributionList'
       Width=489
       Height=194
@@ -257,6 +340,14 @@ document <
           FieldName='BranchNameSource'
           DisplayFormat=''
           TitleCaption='Cabang Sumber'
+          Width=100
+        >, *object:rtf::GridColumn<
+          Name='BranchNameDest'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='BranchNameDest'
+          DisplayFormat=''
+          TitleCaption='Cabang Tujuan'
           Width=100
         >, *object:rtf::GridColumn<
           Name='Amount'
@@ -284,6 +375,7 @@ document <
           Width=200
         >}ReadOnly=true
       RowSelect=true
+      OnDoubleClick='GridDoubleClick'
       SuppressHelpLine=true
     >, object:rtf::DualSplit<
       Name='dualsplit3'

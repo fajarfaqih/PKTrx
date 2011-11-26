@@ -1,5 +1,6 @@
 # Transaction.py
 
+import com.ihsan.foundation.mobject as mobject
 import com.ihsan.foundation.pobject as pobject
 import simplejson
 import sys
@@ -17,6 +18,101 @@ MNEMONICS = {
     ('C', 'N'): 'D'
 }
 REVERSE_MNEMONIC = {'D':'C','C':'D'}
+
+class BatchHelper(mobject.MObject):
+
+  def GetBatchExternal(self,aDate,aUserId,aBranchCode):
+    helper = self.Helper
+    config = self.Config
+    
+    config.BeginTransaction()
+    try:
+         
+      aDescription = 'EXT_%s_%s' % (aUserId,config.FormatDateTime('dd/mm/yyyy',aDate)) 
+            
+      oBatch = helper.GetObjectByNames(
+        'TransactionBatch',
+        {  'Inputer' : aUserId,
+           'BatchDate' : aDate,
+           'BatchTag' : 'OPR',
+           'IsPosted' : 'T',
+           'IsClosed' : 'F' 
+        }
+      )
+      
+      if oBatch.isnull :
+        oBatch = helper.CreatePObject('TransactionBatch')
+        oBatch.BatchDate  = aDate
+        oBatch.BranchCode   = aBranchCode
+        oBatch.Inputer      = aUserId
+        oBatch.Description  = aDescription 
+        oBatch.BatchTag = 'OPR'
+      # end if
+        
+      config.Commit()   
+    except:
+      config.Rollback()    
+      raise 
+         
+    config.BeginTransaction()
+    try :
+      oBatch.PostToAccounting()    
+      config.Commit()
+    except:
+      config.Rollback()
+      raise
+      
+    return oBatch
+    
+  def GetBatchUser(self,aDate):  
+    helper = self.Helper
+    config = self.Config
+    
+    # WARNING : Jangan gunakan/panggil fungsi ini  
+    # di dalam lingkup config.BeginTransaction() - config.Commit() 
+    # Karena dalam fungsi ini sudah terdapat baris kode pemanggilan 
+    # database transaction (config.BeginTransaction())
+    
+    config.BeginTransaction()
+    try:
+      SecContext = config.SecurityContext
+      
+      aUserId = SecContext.UserID
+      aBranchCode = SecContext.GetUserInfo()[4]     
+      aDescription = '%s_%s' % (aUserId,config.FormatDateTime('dd/mm/yyyy',aDate)) 
+            
+      oBatch = helper.GetObjectByNames(
+        'TransactionBatch',
+        {  'Inputer' : aUserId,
+           'BatchDate' : aDate,
+           'BatchTag' : 'OPR',
+           'IsPosted' : 'T',
+           'IsClosed' : 'F' 
+        }
+      )
+      
+      if oBatch.isnull :
+        oBatch = helper.CreatePObject('TransactionBatch')
+        oBatch.BatchDate  = aDate
+        oBatch.BranchCode   = aBranchCode
+        oBatch.Inputer      = aUserId
+        oBatch.Description  = aDescription 
+        oBatch.BatchTag = 'OPR'
+      config.Commit()   
+    except:
+      config.Rollback()    
+      raise 
+    
+   
+    config.BeginTransaction()
+    try :
+      oBatch.PostToAccounting()    
+      config.Commit()
+    except:
+      config.Rollback()
+      raise
+      
+    return oBatch
 
 class TransactionBatch(pobject.PObject):
   # static variable
@@ -67,12 +163,25 @@ class TransactionBatch(pobject.PObject):
     else:
       raise
 
-  def NewTransaction(self, aTranCode):
-    param = {'Owner': self, 'TranCode': aTranCode}
+  def NewTransaction(self, aTranCode, aUserId = ''):
+    # Validasi Batch
+    if self.IsPosted == 'T' and self.IsClosed == 'T' :
+      raise '','Anda tidak dapat melakukan transaksi karena tanggal telah ditutup.'
+
+    param = {'Owner': self, 'TranCode': aTranCode, 'UserId' : aUserId}
     oTran = self.Helper.CreatePObject('Transaction', param)
+    oTran.ActualDate = self.GetAsTDateTime('BatchDate') 
 
     return oTran
-
+  
+  def NewExtTransaction(self, aTranCode, aExtAppCode, aUserId = ''):
+    # Validasi Batch
+    
+    oTran = self.NewTransaction(aTranCode,aUserId)
+    oTran.SubSystemCode = aExtAppCode
+    
+    return oTran
+    
 class Transaction(pobject.PObject):
   # static variable
   pobject_classname = 'Transaction'
@@ -87,12 +196,19 @@ class Transaction(pobject.PObject):
     self.CheckGlobalPermition()
     self.BatchId = param['Owner'].BatchId
     self.TransactionCode = param['TranCode']
+    
+    if param['UserId'] == '' :
+      aUserId = self.Config.SecurityContext.InitUser
+    else :  
+      aUserId = param['UserId'] 
+    # end if
+    self.Inputer = aUserId
+    
     self.TransactionDate = int(self.Config.Now())
     self.ActualDate = int(self.Config.Now())
     self.TransactionTime = self.Config.Now()
     self.AuthStatus = 'F'
-    self.IsPosted = 'F'
-    self.Inputer = self.Config.SecurityContext.InitUser
+    self.IsPosted = 'F'    
     self.CurrencyCode = '000'
     self.Rate = 1
 
@@ -144,11 +260,13 @@ class Transaction(pobject.PObject):
       raise 'GenerateTransactionNumber','CashCode tidak ditemukan.'
 
     y = config.ModLibUtils.DecodeDate(config.Now())[0]
-    branchCode = config.SecurityContext.GetUserInfo()[4]
+    #branchCode = config.SecurityContext.GetUserInfo()[4]
+    branchCode = self.BranchCode
+    
     #raise '',"TES %s " %self.LTransactionType.VoucherCode
 
     prefixNumber = "%s-%s-%s-%s" % (
-              MapCode[TransactionCode],
+              self.LTransactionType.VoucherCode , #MapCode[TransactionCode],
               str(y),
               branchCode,
               CashCode)
@@ -167,11 +285,7 @@ class Transaction(pobject.PObject):
       customid.Cancel()
       raise '', str(sys.exc_info()[1])
 
-    y = config.ModLibUtils.DecodeDate(config.Now())[0]
-    branchCode = config.SecurityContext.GetUserInfo()[4]
-
     self.TransactionNo = prefixNumber + '-' + strID
-
 
   def CreateAccountTransactionItem(self, oAccount,IsUpdateBalance='T'):
     param = {'Owner': self, 'Account': oAccount}
@@ -272,9 +386,10 @@ class Transaction(pobject.PObject):
     # Sementara Dinonaktifkan karena belum bisa menangkap message raise dari database
     
     # Delete Inbox Transaction
-    oInbox = helper.GetObjectByNames('InboxTransaction',{'TransactionId':self.TransactionId})
-    if not oInbox.isnull :      
-      oInbox.Delete()
+    if self.SubSystemCode in ['',None] :
+      oInbox = helper.GetObjectByNames('InboxTransaction',{'TransactionId':self.TransactionId})    
+      if not oInbox.isnull :      
+        oInbox.Delete()
     
     # Delete Detail Transaction
     self.DeleteTransactionItem()

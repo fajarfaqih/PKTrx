@@ -20,6 +20,18 @@ document <
           DataTypeName='integer'
           DataLength=30
         >, object:rpclass::TCustomLoadedField<
+          Name='BranchName'
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rpclass::TCustomLoadedField<
+          Name='HeadOfficeCode'
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rpclass::TCustomLoadedField<
+          Name='MasterBranchCode'
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rpclass::TCustomLoadedField<
           Name='UserId'
           DataTypeName='varchar'
           DataLength=50
@@ -55,6 +67,10 @@ document <
           Name='LDestBranch.BranchName'
           DataTypeName='VARCHAR'
           DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='IsReportedShow'
+          DataTypeName='varchar'
+          DataLength=1
         >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
           Name='LSourceBranch'
           ClassTypeName='Branch'

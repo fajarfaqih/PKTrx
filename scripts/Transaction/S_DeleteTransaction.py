@@ -21,16 +21,16 @@ def DAFScriptMain(config, parameter, returnpacket):
 
     if oTran.isnull : raise '','Data Transaksi Tidak Ditemukan'
     
-    oInbox = helper.GetObjectByNames('InboxTransaction',{'TransactionId':oTran.TransactionId})
-    if not oInbox.isnull :      
-      oInbox.Delete()
-    oTran.DeleteTransactionItem()
+    # oInbox = helper.GetObjectByNames('InboxTransaction',{'TransactionId':oTran.TransactionId})
+    # if not oInbox.isnull :      
+    #   oInbox.Delete()
+    # oTran.DeleteTransactionItem()
     
-    sSQL = "delete from transaction.transaction where transactionid=%d" % oTran.TransactionId
-    sqlRes = config.ExecSQL(sSQL)
-    if sqlRes == -9999:
-      raise "SQL Error", config.GetDBConnErrorInfo()
-    #oTran.Delete()
+    # sSQL = "delete from transaction.transaction where transactionid=%d" % oTran.TransactionId
+    # sqlRes = config.ExecSQL(sSQL)
+    # if sqlRes == -9999:
+    #   raise "SQL Error", config.GetDBConnErrorInfo()
+    oTran.Delete()
     
     config.Commit()
   except :
@@ -40,4 +40,3 @@ def DAFScriptMain(config, parameter, returnpacket):
   #--end try
 
   return 1
-

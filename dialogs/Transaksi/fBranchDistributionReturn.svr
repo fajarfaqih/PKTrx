@@ -36,6 +36,14 @@ document <
           DataTypeName='varchar'
           DataLength=10
         >, object:rpclass::TCustomLoadedField<
+          Name='BranchCodeSource'
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rpclass::TCustomLoadedField<
+          Name='RefTransactionId'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
           Name='TransactionNo'
           DataTypeName='varchar'
           DataLength=30
@@ -87,6 +95,18 @@ document <
           Name='RefTransactionNo'
           DataTypeName='varchar'
           DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='LCashAccountSource.AccountNo'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='LCashAccountSource.AccountNo'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='LCashAccountSource.AccountName'
+          DataTypeName='VARCHAR'
+          DataLength=50
         >, object:rpclass::TCustomLoadedField<
           Name='LCashAccountDestination.AccountNo'
           DataTypeName='VARCHAR'
@@ -151,6 +171,10 @@ document <
           Name='LEmployee'
           ClassTypeName='EmployeeCashAdvance'
           FieldNames='AccountNo;AccountNo;AccountName;EmployeeIdNumber'
+        >, object:rpclass::TCustomLoadedLink<
+          Name='LCashAccountSource'
+          ClassTypeName='CashAccount'
+          FieldNames='AccountNo;AccountNo;AccountName'
         >, object:rpclass::TCustomLoadedLink<
           Name='LCashAccountDestination'
           ClassTypeName='CashAccount'

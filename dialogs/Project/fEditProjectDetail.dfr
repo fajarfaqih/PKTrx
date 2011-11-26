@@ -170,15 +170,15 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=240
-      Height=96
+      Width=529
+      Height=465
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dualsplit2']
       InversedAlign=true
     >, object:rtf::DualSplit<
       Name='dualsplit2'
-      Width=240
-      Height=96
+      Width=529
+      Height=415
       Container1=$CONTAINERS['pProject']
       Container2=$CONTAINERS['dualsplit3']
     >, object:rtf::Grid<
@@ -248,7 +248,7 @@ document <
           Name='ExtSponsor'
           ControlCaption='Nama Sponsor'
         >}Name='gSponsor'
-      Width=240
+      Width=529
       Height=209
       UIPart=$UIPARTS['LsProjectSponsor']
       ControlLeftMargin=8

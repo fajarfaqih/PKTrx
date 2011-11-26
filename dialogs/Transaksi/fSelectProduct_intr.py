@@ -17,7 +17,7 @@ class fSelectProduct :
       (ProductId, AccountName,ProductName as ProductName, \
        FundCategory $ as FundType, FundCategory as FundCategory, \
        PercentageOfAmilFunds,ProductCode,Idx, \
-       AccountNo, self) then order by Idx;"
+       AccountNo, self) then order by ProductName;"
     self.qProduct.SetParameter('BranchCode', branchCode)
     self.qProduct.DisplayData()
     

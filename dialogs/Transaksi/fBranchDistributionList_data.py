@@ -11,6 +11,8 @@ def FormSetDataEx(uideflist,params):
     rec.BeginDate = int(Now) - 30
     rec.EndDate = int(Now)
     rec.BranchCode = config.SecurityContext.GetUserInfo()[4]
+    rec.BranchName = config.SecurityContext.GetUserInfo()[5]
+    rec.HeadOfficeCode = config.SysVarIntf.GetStringSysVar('OPTION','HeadOfficeCode')
     rec.UserId = config.SecurityContext.UserId
   else:
     recParams = params.FirstRecord
@@ -19,8 +21,9 @@ def FormSetDataEx(uideflist,params):
     aBranchCode = config.SecurityContext.GetUserInfo()[4]
     aFilterSourceBranch = recParams.SourceBranchCode
     aFilterDestBranchCode = recParams.DestBranchCode
+    aIsReportedShow = recParams.IsReportedShow
     
-    res = GetDataDistribution(config,aBranchCode,aBeginDate,aEndDate,aFilterSourceBranch,aFilterDestBranchCode)
+    res = GetDataDistribution(config,aBranchCode,aBeginDate,aEndDate,aFilterSourceBranch,aFilterDestBranchCode,aIsReportedShow)
 
     uipDistList = uideflist.uipDistributionList.Dataset
     while not res.Eof :
@@ -38,7 +41,7 @@ def FormSetDataEx(uideflist,params):
     # end while
   # end if
   
-def GetDataDistribution(config,BranchCode,BeginDate,EndDate,FilterSource,FilterDestination):
+def GetDataDistribution(config,BranchCode,BeginDate,EndDate,FilterSource,FilterDestination,aIsReportedShow):
 
   AddParams = ''
 
@@ -48,6 +51,9 @@ def GetDataDistribution(config,BranchCode,BeginDate,EndDate,FilterSource,FilterD
   if FilterDestination != '' :
     AddParams += " and BranchDestination = '%s' " % FilterDestination
   
+  if aIsReportedShow == 'F' :
+    AddParams += " and ReportStatus = 'F' "
+    
   sOQL = " \
     select from DistributionTransferInfo \
     [ ( BranchSource = :BranchSource or BranchDestination = :BranchDestination) and \

@@ -153,13 +153,11 @@ def BranchCashCollection(helper,oTran,oBatch,request,params):
     # Create Item for ProductAccount
     aAccountNo = item[u'AccountNo']
     oProductAccount = helper.GetObjectByNames('ProductAccount',{'AccountNo':aAccountNo})
-    #oProductAccount = helper.GetObject('ProductAccount',aAccountNo)      
+    #oProductAccount = helper.GetObject('ProductAccount',aAccountNo)
     if oProductAccount.isnull:
       raise 'Collection', 'Rekening produk %s tidak ditemukan' % (aAccountNo)
-      
 
     oItemPA = oTran.CreateDonorTransactionItem(oProductAccount, request[u'DonorId'])
-
     oItemPA.SetMutation(item[u'Amount'], aRate)
     oItemPA.Description = item[u'Description']
 
@@ -182,6 +180,7 @@ def BranchCashCollection(helper,oTran,oBatch,request,params):
   
   # Generate TransactionNo
   oTran.GenerateTransactionNumber(oBranchCash.CashCode)
+  
   oTran.SaveInbox(params)
   
   FileKwitansi = oTran.GetKwitansi()

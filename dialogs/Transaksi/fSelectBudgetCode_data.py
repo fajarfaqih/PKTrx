@@ -22,8 +22,6 @@ def FormSetDataEx(uideflist, parameter):
 
     BranchCode = config.SecurityContext.GetUserInfo()[4]
 
-
-
     s = ' \
       SELECT FROM BudgetYear \
       [ \

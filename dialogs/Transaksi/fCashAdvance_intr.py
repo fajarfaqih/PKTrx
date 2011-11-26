@@ -80,7 +80,8 @@ class fCashAdvance :
   def bSearchBudgetClick(self, sender):
     uipTran = self.uipTransaction
     if self.fSearchBudget == None:
-      formname = 'Transaksi/fSelectBudgetYear'
+      #formname = 'Transaksi/fSelectBudgetYear'
+      formname = 'Transaksi/fSelectBudgetCode'
       form = self.app.CreateForm(formname,formname,0,None,None)
       self.fSearchBudget = form
     else:
@@ -89,10 +90,10 @@ class fCashAdvance :
 
     BranchCode = uipTran.BranchCode
     PeriodId = uipTran.PeriodId
-    if form.GetBudgetCode(BranchCode,PeriodId):
+    if form.GetBudget(PeriodId) == 1:
       uipTran.Edit()
       uipTran.BudgetCode = form.BudgetCode
-      uipTran.BudgetOwner = form.OwnerName
+      uipTran.BudgetOwner = form.BudgetOwner
       uipTran.BudgetId = form.BudgetId
     # end if
 
@@ -106,7 +107,7 @@ class fCashAdvance :
       form = self.fSearchRAK
     # end if
 
-    if form.GetTransaction():
+    if form.GetTransaction('IN'):
       uipTran.Edit()
       uipDist = form.uipDistributionList
       uipTran.DistTransactionNo = uipDist.TransactionNo

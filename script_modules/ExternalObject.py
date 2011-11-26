@@ -139,4 +139,32 @@ class VEmployee(pobject.PObject):
   pobject_classname = 'VEmployee'
   pobject_keys = ['EmployeeId']
   
+class UserApp(pobject.PObject):
+  # static variable
+  pobject_classname = 'UserApp'
+  pobject_keys = ['Id_User']
+
+class Currency(pobject.PObject):
+  # static variable
+  pobject_classname = 'Currency'
+  pobject_keys = ['Currency_Code']
+  
+class VDonor(pobject.PObject):
+  # static variable
+  pobject_classname = 'VDonor'
+  pobject_keys = ['Id']
+  
+  def IsSponsor(self):
+    if self.isnull : return 0 
+    return self.Donor_Type_Id in [2,3]
     
+  def AddTransaction(self,oItem):
+    #param = [DonorId, oItem]
+    param = [self.Id, oItem]
+    oProductAccount = oItem.LFinancialAccount.CastToLowestDescendant()
+    oProduct = oProductAccount.LProduct.CastToLowestDescendant()
+    if oProduct.IsA('Program') : 
+      oTran = self.Helper.CreatePObject('SponsorTransactionProgram', param)
+      oTran.InvoiceStatus = 'F'
+    else:
+      oTran = self.Helper.CreatePObject('SponsorTransaction', param)

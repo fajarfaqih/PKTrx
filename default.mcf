@@ -57,6 +57,7 @@ Donor=mdonor
 CorporateDonor=mdonor
 IndividualDonor=mdonor
 
+BatchHelper=mtran
 TransactionBatch=mtran
 Transaction=mtran
 TransactionItem=mtran
@@ -121,6 +122,9 @@ ExtDonor=mextern
 Account=mextern
 Branch=mextern
 VEmployee=mextern
+UserApp=mextern
+Currency=mextern
+VDonor=mextern
 
 ExternalDebtor=mextdebtor
 PrintHelper=mclass
