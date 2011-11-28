@@ -4057,7 +4057,7 @@ document <
           MemberName='ContractNo'
           PhysicalName='CONTRACTNO'
           DataType=$TYPEDECLS['VARCHAR']
-          DataLength=50
+          DataLength=100
         >, object:FieldMember<
           MemberName='ContractDuration'
           PhysicalName='CONTRACTDURATION'
