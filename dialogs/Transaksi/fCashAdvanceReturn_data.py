@@ -9,7 +9,9 @@ def FormSetDataEx(uideflist, params) :
 
   if params.GetDatasetByName('trparam') != None :
     oForm = helper.CreateObject('FormTransaksi')
-    return oForm.SetDataEx(uideflist,params)
+    oForm.SetDataEx(uideflist,params)
+    
+    return
 
 
   rec = uideflist.uipTransaction.Dataset.AddRecord()
@@ -96,6 +98,7 @@ def SimpanData(config, params, returns):
     request['RefAmount'] = oTransaction.RefAmount
     request['RefTransactionItemId'] = oTransaction.RefTransactionItemId
     request['RefAmount'] = oTransaction.RefAmount
+    request['ReimburseAmount'] = oTransaction.ReimburseAmount
     request['TransactionNo'] = oTransaction.TransactionNo
     request['PaidTo'] = oTransaction.PaidTo
     request['RefTransactionNo'] = oTransaction.RefTransactionNo
@@ -118,6 +121,22 @@ def SimpanData(config, params, returns):
       item['DistItemAccount'] = oItem.DistItemCode
       item['BudgetId'] = oItem.BudgetId or 0
       item['ItemType'] = oItem.ItemType or 0
+      item['AssetName'] = oItem.AssetName or ''
+      item['AssetQty'] = oItem.AssetQty or 0
+      item['AssetCatId'] = oItem.AssetCatId or 0
+      item['AssetAmount'] = oItem.AssetAmount or 0.0
+      item['AssetPaymentType'] = oItem.AssetPaymentType or ''
+      item['AssetAccountNo'] = oItem.AssetAccountNo or ''
+      item['CPIAAccountNo'] = oItem.CPIAAccountNo or ''
+      item['CPIACatId'] = oItem.CPIACatId or ''
+      item['CPIACatCode'] = oItem.CPIACatCode or ''
+      item['CPIACatName'] = oItem.CPIACatName or ''
+      item['CPIAHasContract'] = oItem.CPIAHasContract or 'F'
+      item['CPIAContractNo'] = oItem.CPIAContractNo or ''
+      item['CPIAContractEndDate'] = oItem.CPIAContractEndDate or 0.0
+
+
+      item['RecordIdx'] = i
 
       items.append(item)
     #-- for

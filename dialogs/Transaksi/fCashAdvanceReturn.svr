@@ -127,6 +127,10 @@ document <
           Name='PaidTo'
           DataTypeName='varchar'
           DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='ReimburseAmount'
+          DataTypeName='double'
+          DataLength=20
         >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
           Name='LBatch'
           ClassTypeName='TransactionBatch'
@@ -236,6 +240,70 @@ document <
           Name='AccountId'
           DataTypeName='varchar'
           DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='AssetPaymentType'
+          DataTypeName='varchar'
+          DataLength=1
+        >, object:rpclass::TCustomLoadedField<
+          Name='AssetType'
+          DataTypeName='varchar'
+          DataLength=1
+        >, object:rpclass::TCustomLoadedField<
+          Name='AssetName'
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rpclass::TCustomLoadedField<
+          Name='AssetAccountNo'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='AssetQty'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='AssetCatCode'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='AssetCatName'
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rpclass::TCustomLoadedField<
+          Name='AssetCatId'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='AssetAmount'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='CPIACatCode'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='CPIACatName'
+          DataTypeName='varchar'
+          DataLength=100
+        >, object:rpclass::TCustomLoadedField<
+          Name='CPIAHasContract'
+          DataTypeName='varchar'
+          DataLength=1
+        >, object:rpclass::TCustomLoadedField<
+          Name='CPIAContractNo'
+          DataTypeName='varchar'
+          DataLength=100
+        >, object:rpclass::TCustomLoadedField<
+          Name='CPIAContractEndDate'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='CPIAAccountNo'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='CPIACatId'
+          DataTypeName='integer'
+          DataLength=20
         >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
           Name='LProduct'
           ClassTypeName='Product'
