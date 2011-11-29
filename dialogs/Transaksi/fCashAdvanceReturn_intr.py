@@ -254,6 +254,9 @@ class fCashAdvanceReturn :
   
   def SimpanData(self):
     app = self.app
+
+    self.ValidationBeforeSave()
+    
     if app.ConfirmDialog('Yakin simpan transaksi ?'):
       self.FormObject.CommitBuffer()
       ph = self.FormObject.GetDataPacket()
@@ -276,6 +279,24 @@ class fCashAdvanceReturn :
           
         return 1
     #-- if
+
+  def ValidationBeforeSave(self):
+    uipTran = self.uipTransaction
+
+    self.FormObject.CommitBuffer()
+
+    self.CheckRefTransaction()
+
+    BatchId = uipTran.GetFieldValue('LBatch.BatchId') or 0
+
+    if BatchId == 0 :
+      raise 'PERINGATAN','Anda Belum Memilih Batch'
+
+    CashAccountNo = uipTran.GetFieldValue('LCashAccount.AccountNo') or ''
+
+    if CashAccountNo == '':
+      raise 'PERINGATAN','Anda Belum Memilih Kas/Bank pengembalian dana'
+
 
   def CheckRefTransaction(self):
     if (self.uipTransaction.RefTransactionItemId or 0) == 0 :

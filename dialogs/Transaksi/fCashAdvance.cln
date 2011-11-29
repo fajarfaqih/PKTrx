@@ -388,7 +388,7 @@ document <
           DataTypeName='varchar'
           DataLength=100
         >}Name='pTransaction'
-      Width=545
+      Width=585
       Height=329
       UIPart=$UIPARTS['uipTransaction']
       Controls={*object:rtf::DBDateEdit<
