@@ -179,7 +179,7 @@ def GetTextReport(helper, config, param):
   aBeginBalance, aEndBalance = 0.0, 0.0
   oService = helper.LoadScript('Account.Balance')
   if param.IsAllCash == 'F':
-    aBeginBalance, aEndBalance = oService.GetDayBalance(config, 
+    aBeginBalance, aEndBalance = oService.GetDayBalance(config,
       {'AccountNo': accountNo, 'Date': aBeginDate})
       
   oReport.SetVars('BEGINBALANCE', config.FormatFloat(',0.00', aBeginBalance))
@@ -204,18 +204,28 @@ def GetTextReport(helper, config, param):
       sSQL = BuildSQLSelectedCash(accountNo, aBeginDateParam, aEndDateParam)
     # end if      
     
+    Balance = aBeginBalance
     res = config.CreateSQL(sSQL).rawresult
     while not res.Eof:
       aContent = {}
-      aTime = res.ActualDate
-      aContent['TIME']        = '%2s:%2s:%2s' % (str(aTime[3]).zfill(2), str(aTime[4]).zfill(2), str(aTime[5]).zfill(2))
-      aContent['BATCHNO']     = res.BatchNo
+      
+      aDate = res.ActualDate[:3]
+      aContent['DATE']        = '%2s-%2s-%4s' % (str(aDate[2]).zfill(2), str(aDate[1]).zfill(2), str(aDate[0]))
+
+      aContent['TRANSNO']     = res.TransactionNo
       aContent['MUTASI']      = res.MutationType
       aContent['AMOUNT']      = config.FormatFloat(',0.00', res.Amount)
+
+      if res.MutationType == 'D':
+        Balance += res.Amount
+      else:
+        Balance -= res.Amount
+      
+      aContent['SALDO']      = config.FormatFloat(',0.00', Balance)
       aContent['REFERENCE']   = res.ReferenceNo
       aContent['INPUTER']     = res.Inputer
       aContent['DESCRIPTION'] = res.Description
-      aContent['AUTHSTATUS']  = res.AuthStatus
+      #aContent['AUTHSTATUS']  = res.AuthStatus
       
       oReport.PrintRow('detail', aContent)
        
@@ -231,7 +241,7 @@ def BuildSQLAllCash(aDateParam, aBranchCode, aCurrencyCode):
   return "\
         select t.ActualDate, b.BatchNo, a.AccountNo, \
           i.MutationType, i.Amount, t.ReferenceNo, t.Inputer, \
-          t.Description, t.AuthStatus,i.TransactionItemId \
+          t.Description, t.AuthStatus,i.TransactionItemId, t.TransactionNo \
         from accounttransactionitem a, transactionitem i, \
           transaction t, transactionbatch b, cashaccount c \
         where a.TransactionItemId = i.TransactionItemId \

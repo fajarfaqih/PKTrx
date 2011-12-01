@@ -58,6 +58,8 @@ def GetTemplate(config,params,returns):
     status.Err_Message = str(sys.exc_info()[1])
     
 def GetTemplateCashAccount(config,returns):
+  helper = phelper.PObjectHelper(config)
+  
   BranchCode = config.SecurityContext.GetUserInfo()[4]
   dsListAccount = returns.AddNewDatasetEx(
       'ListAccount',
@@ -86,12 +88,24 @@ def GetTemplateCashAccount(config,returns):
   oql.active = 1
   ds  = oql.rawresult
 
+  TransactionNo = 'BB-CB-%s' % BranchCode
   while not ds.Eof:
     recAccount = dsListAccount.AddRecord()
     recAccount.AccountNo = ds.AccountNo
     recAccount.AccountName = ds.AccountName
     recAccount.Currency = '%s - %s' % (ds.CurrencyCode,ds.Short_Name)
-    recAccount.Balance = 0.0
+    #TransactionNo = 'BB-CB-%s-%s' % (ds.CurrencyCode,BranchCode)
+    oTranItem = helper.GetObjectByNames('AccountTransactionItem',
+        {'AccountNo' : ds.AccountNo ,
+         'LTransaction.TransactionNo' : TransactionNo ,
+         'LTransaction.TransactionCode' : 'TB' }
+     )
+    if oTranItem.isnull :
+      recAccount.Balance = 0.0
+    else :
+      recAccount.Balance = oTranItem.Amount
+    # end if
+    
     ds.Next()
   # end while
   

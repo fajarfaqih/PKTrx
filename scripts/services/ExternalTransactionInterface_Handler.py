@@ -2,24 +2,18 @@ import sys
 import simplejson
 
 import com.ihsan.foundation.pobjecthelper as phelper
+import re
 
 # constant
 GALAT = 0.001
 
 dictErrorMap = {
   'Successful':'000',
-  'InternalError':'999',
-  
-  'PrepaidNotAvailable':'997',
-
-  'InactiveAccount':'990',
-  'ClosedAccount':'991',
-  'AccountBalanceLow':'992',
-  'AccountNotFound':'899',
-  'AccountBlocked':'998',
-  
+  'InternalError':'999',  
   'Sentinel':'xxx'
 }
+
+MAPEntity = {'Z': 1, 'I': 2, 'W': 3}
 
 def DAFScriptMain(config, params, returns):
   rawMessage = params.FirstRecord.data
@@ -93,24 +87,35 @@ def CreateFundCollection(config, request, response):
   UserId = request['user_id'].upper()
   #BranchId = request['branch_id']  
   ProductId = request['product_id']
+  ProductAccountNo = request['product_accountno']
   DonorId = request['donor_id']
   CashAccountNo = request['cash_accountno']
-  CurrencyCode = request['currency_code']
   MarketerId = request['marketer_id']
   Description = request['description']
-  Rate = 1.0
   Amount = request['amount']
-  FundEntity = request['fund_entity']
-  strTransactionDate = request['transaction_date']
   
-  y, m, d = strTransactionDate.split('-')
-  TransactionDate = config.ModLibUtils.EncodeDate(int(y),int(m),int(d))
-  
-  
-  # Set Currency Default jika request tidak diinputkan
+  #-- Set Currency Default jika request tidak memiliki nilai
+  CurrencyCode = request['currency_code']
   if CurrencyCode == '' :
     CurrencyCode = '000'
 
+  #-- Set Default Rate jika request tidak memiliki nilai
+  if request['rate'] in [0,None,''] :
+    Rate = 1.0
+  else :    
+    Rate = request['rate']
+  #end if
+
+  strTransactionDate = request['transaction_date']
+  
+  #-- Cek format tanggal yyyy-mm-dd
+  pat = re.compile(r'^(\d{4})-([01]?\d{1})-([0123]?\d{1})$')
+  if not pat.match(strTransactionDate) :
+    raise '',"Format tanggal transaksi tidak valid. (Seharusnya yyyy-mm-dd, contoh : 2011-01-21)"
+
+  y, m, d = strTransactionDate.split('-')
+  TransactionDate = config.ModLibUtils.EncodeDate(int(y),int(m),int(d))
+  
   helper = phelper.PObjectHelper(config)
 
   # Cek Amount
@@ -137,20 +142,37 @@ def CreateFundCollection(config, request, response):
     raise 'PERINGATAN','Kode Valuta tidak dikenali'
     
   # Cek Produk
-  oProductAccount = helper.GetObjectByNames( 'ProductAccount',
-      { 'ProductId' : ProductId, 
-        'CurrencyCode' : CurrencyCode, 
-        'BranchCode' : BranchCode }
-    )
+  oProduct = helper.GetObject( 'Product', ProductId )
+  if oProduct.isnull :
+    raise '','Data produk tidak ditemukan'
+
+  oProduct = oProduct.CastToLowestDescendant()
+  if oProduct.IsA('Project') and ProductAccountNo == '' :
+    raise '','Untuk data proyek harus menyertakan nomor akun produk'
+
+  if ProductAccountNo != '' :
+    oProductAccount = helper.GetObject( 'ProductAccount',ProductAccountNo )
+  else :
+    oProductAccount = helper.GetObjectByNames( 'ProductAccount',
+        { 'ProductId' : ProductId, 
+          'CurrencyCode' : CurrencyCode, 
+          'BranchCode' : BranchCode }
+      )
 
   if oProductAccount.isnull :
-    raise 'PERINGATAN','Kode produk tidak ditemukan'
-    
+    raise 'PERINGATAN','Data produk tidak ditemukan'
+
+  # -- Set Default FundEntity
+  FundEntity = request['fund_entity']
+  if FundEntity in [0,'',None] :
+    FundEntity = MAPEntity[oProductAccount.LProduct.FundCategory]
+
   # Cek Donatur
   oDonatur = helper.GetObject('VDonor',DonorId)
   if oDonatur.isnull :
     raise 'PERINGATAN','Id donatur tidak ditemukan'
       
+  #-- Set Default Marketer jika request tidak memiliki nilai
   if MarketerId in [0,'',None] :
     MarketerId = oDonatur.Marketer_Id 
   
@@ -169,6 +191,8 @@ def CreateFundCollection(config, request, response):
       ChannelCode = 'P'
     # end if.elif  
   else:
+    #raise '','Kode Kas tidak valid / tidak ditemukan'
+    # kode di bawah akan digunakan jika kode kas menjadi optional
     oCashAccount = helper.GetObjectByNames('BranchCash',
         {'BranchCode': BranchCode, 'CurrencyCode': CurrencyCode})
     if oCashAccount.isnull:
@@ -250,7 +274,7 @@ def DeleteFundCollection(config, request, response):
   except :
     config.Rollback()
     raise   
-
+  
 ################################################################################
 
 def convert(data):
@@ -263,19 +287,4 @@ def convert(data):
     return type(data)(map(convert, data))
   else:
     return data
-#--
-
-def GetLiabilityAccount(helper, accountCode, ignoreBlocked=0):
-  try:
-    oRekening = helper.GetObject('RekeningLiabilitas',accountCode).CastToLowestDescendant()
-  except:
-    raise 'AccountNotFound','Unknown account'
-    
-  if oRekening.Status_Rekening == 3:
-    raise 'ClosedAccount','Closed account'
-
-  if (not ignoreBlocked) and oRekening.Is_Blokir == 'T':
-    raise 'AccountBlocked','Account has blocked status'
-    
-  return oRekening
 #--

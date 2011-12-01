@@ -92,5 +92,3 @@ class fDailyCash:
       workbook = None
 
     app.ShellExecuteFile(filename)
-
-

@@ -31,10 +31,10 @@ def GetBatch(helper):
     
   return oBatch
 
-def GetTransaction(helper,oBatch,AccountCode,Description):   
+def GetTransaction(helper, oBatch, PrefTransactionNo, Description, CurrencyCode = '000', Rate = 1.0):
   config = helper.Config     
   BranchCode = config.SecurityContext.GetUserInfo()[4]
-  TransactionNo = '%s-%s' % (AccountCode,BranchCode)
+  TransactionNo = '%s-%s' % (PrefTransactionNo,BranchCode)
   
   oTran = helper.GetObjectByNames(
        'Transaction', 
@@ -48,12 +48,14 @@ def GetTransaction(helper,oBatch,AccountCode,Description):
     oTran = oBatch.NewTransaction('TB')
     oTran.Inputer     = config.SecurityContext.InitUser
     oTran.BranchCode  = BranchCode
-    oTran.ReferenceNo = AccountCode
+    oTran.ReferenceNo = PrefTransactionNo
     oTran.Description = Description
     oTran.TransactionDate  = config.ModLibUtils.EncodeDate(2010,12,31)
     oTran.ActualDate  = config.ModLibUtils.EncodeDate(2010,12,31)
     oTran.IsPosted = 'T'
-    oTran.TransactionNo = TransactionNo 
+    oTran.TransactionNo = TransactionNo
+    oTran.CurrencyCode = CurrencyCode
+    oTran.Rate = Rate
   # end if  
   
   return oTran  
@@ -71,11 +73,14 @@ def CashAccount(config,params):
     app.ConWriteln('Get Batch','TB')
     oBatch = GetBatch(helper)
     app.ConWriteln('Get Transaction','TB')
-    oTran = GetTransaction(helper,oBatch,'BB-CB','Saldo Awal Kas')
+    
+    #oTran = GetTransaction(helper,oBatch,PrefTransactionNo,'Saldo Awal Kas')
     
     BalanceData = params.BalanceData
     TotalAmount = 0.0
     TotalData = BalanceData.RecordCount
+    LsTran = {}
+    LsRate = {}
     for i in range(TotalData):
       recBalance = BalanceData.GetRecord(i)
       app.ConWriteln('Proses data ke-%s , %s' %(str(i+1),recBalance.AccountName),'TB')     
@@ -84,7 +89,25 @@ def CashAccount(config,params):
       oAccount = helper.GetObjectByNames('CashAccount',{'AccountNo':AccountNo})
       if oAccount.isnull:
         raise 'PERINGATAN','Rekening produk %s tidak dapat ditemukan' % (AccountNo)
-        
+      
+      # Get Rate  
+      aCurrencyCode = oAccount.CurrencyCode
+      if LsRate.has_key(aCurrencyCode):
+        aRate = LsRate[aCurrencyCode]
+      else:
+        aRate = oAccount.LCurrency.Kurs_Tengah_BI
+        LsRate[aCurrencyCode] = aRate
+      # end if  
+
+      # Get Transaction  
+      PrefTransactionNo = 'BB-CB-%s' % aCurrencyCode
+      if LsTran.has_key(PrefTransactionNo):
+        oTran = LsTran[PrefTransactionNo]
+      else:
+        oTran = GetTransaction(helper, oBatch, PrefTransactionNo, 'Saldo Awal Kas', aCurrencyCode, aRate)
+        LsTran[PrefTransactionNo] = oTran
+
+      
       oItem = helper.GetObjectByNames('AccountTransactionItem',
           {'TransactionId' : oTran.TransactionId,
            'AccountNo' : recBalance.AccountNo
@@ -93,10 +116,10 @@ def CashAccount(config,params):
       if oItem.isnull :
         oItem = oTran.CreateAccountTransactionItem(oAccount)
       else:
-        oItem.CancelTransaction()      
+        oItem.CancelTransaction()
       BeginningBalance = recBalance.Balance or 0.0
       
-      oItem.SetMutation('D', BeginningBalance, 1.0)
+      oItem.SetMutation('D', BeginningBalance, aRate)
       oItem.Description = 'Saldo Awal'
       oItem.SetJournalParameter('10')
             

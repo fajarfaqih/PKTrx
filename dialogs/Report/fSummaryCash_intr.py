@@ -79,23 +79,23 @@ class fSummaryCash:
           if LastCurrency != '' :
             workbook.SetCellValue(row, 1, 'TOTAL VALUTA KAS/BANK ' + LastCurrency )
             workbook.SetCellValue(row, 2, '')
-            workbook.SetCellValue(row, 3, '')
-            workbook.SetCellValue(row, 4, Currencies[LastCurrency]['TotalBegin'])
-            workbook.SetCellValue(row, 5, Currencies[LastCurrency]['TotalDebet'])
-            workbook.SetCellValue(row, 6, Currencies[LastCurrency]['TotalCredit'])
-            workbook.SetCellValue(row, 7, Currencies[LastCurrency]['TotalDebet'] - Currencies[LastCurrency]['TotalCredit'])
-            workbook.SetCellValue(row, 8, Currencies[LastCurrency]['TotalEnd'])
+            #workbook.SetCellValue(row, 3, '')
+            workbook.SetCellValue(row, 3, Currencies[LastCurrency]['TotalBegin'])
+            workbook.SetCellValue(row, 4, Currencies[LastCurrency]['TotalDebet'])
+            workbook.SetCellValue(row, 5, Currencies[LastCurrency]['TotalCredit'])
+            workbook.SetCellValue(row, 6, Currencies[LastCurrency]['TotalDebet'] - Currencies[LastCurrency]['TotalCredit'])
+            workbook.SetCellValue(row, 7, Currencies[LastCurrency]['TotalEnd'])
 
             row += 2
           
         workbook.SetCellValue(row, 1, rec.AccountName)
         workbook.SetCellValue(row, 2, rec.CurrencyName)
-        workbook.SetCellValue(row, 3, rec.Rate)
-        workbook.SetCellValue(row, 4, rec.BeginBalance)
-        workbook.SetCellValue(row, 5, rec.Debet)
-        workbook.SetCellValue(row, 6, rec.Credit)
-        workbook.SetCellValue(row, 7, rec.Total)
-        workbook.SetCellValue(row, 8, rec.EndBalance)
+        #workbook.SetCellValue(row, 3, rec.Rate)
+        workbook.SetCellValue(row, 3, rec.BeginBalance)
+        workbook.SetCellValue(row, 4, rec.Debet)
+        workbook.SetCellValue(row, 5, rec.Credit)
+        workbook.SetCellValue(row, 6, rec.Total)
+        workbook.SetCellValue(row, 7, rec.EndBalance)
         LastCurrency = rec.CurrencyName
 
         Currencies[rec.CurrencyName]['TotalBegin'] += rec.BeginBalance
@@ -110,12 +110,12 @@ class fSummaryCash:
       if LastCurrency != '' :
         workbook.SetCellValue(row, 1, 'TOTAL VALUTA KAS/BANK ' + LastCurrency )
         workbook.SetCellValue(row, 2, '')
-        workbook.SetCellValue(row, 3, '')
-        workbook.SetCellValue(row, 4, Currencies[LastCurrency]['TotalBegin'])
-        workbook.SetCellValue(row, 5, Currencies[LastCurrency]['TotalDebet'])
-        workbook.SetCellValue(row, 6, Currencies[LastCurrency]['TotalCredit'])
-        workbook.SetCellValue(row, 7, Currencies[LastCurrency]['TotalDebet'] - Currencies[LastCurrency]['TotalCredit'])
-        workbook.SetCellValue(row, 8, Currencies[LastCurrency]['TotalEnd'])
+        #workbook.SetCellValue(row, 3, '')
+        workbook.SetCellValue(row, 3, Currencies[LastCurrency]['TotalBegin'])
+        workbook.SetCellValue(row, 4, Currencies[LastCurrency]['TotalDebet'])
+        workbook.SetCellValue(row, 5, Currencies[LastCurrency]['TotalCredit'])
+        workbook.SetCellValue(row, 6, Currencies[LastCurrency]['TotalDebet'] - Currencies[LastCurrency]['TotalCredit'])
+        workbook.SetCellValue(row, 7, Currencies[LastCurrency]['TotalEnd'])
       # endif
       
       workbook.SaveAs(filename)

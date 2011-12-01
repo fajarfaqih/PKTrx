@@ -73,28 +73,31 @@ def PrintExcel(config, params, returns):
     res = config.CreateSQL(sSQL).rawresult
     while not res.Eof:      
       aDebit   = res.Debit or 0.0
+      aDebitEkuiv = res.DebitEkuiv or 0.0
       aCredit  = res.Credit or 0.0
+      aCreditEkuiv = res.CreditEkuiv or 0.0
       aBegin   = res.BeginBalance or 0.0
+      aBeginEkuiv = res.BeginBalanceEkuiv or 0.0
       
       oCashAccount = helper.GetObject('CashAccount',res.AccountNo)
       Rate = oCashAccount.LCurrency.Kurs_Tengah_BI
             
-      status.TotalBeginBalance += aBegin * Rate
-      status.TotalDebet += aDebit * Rate
-      status.TotalCredit += aCredit * Rate      
+      status.TotalBeginBalance += aBeginEkuiv
+      status.TotalDebet += aDebitEkuiv
+      status.TotalCredit += aCreditEkuiv
             
       recData = dsData.AddRecord()      
       recData.AccountName     = '%s - %s' % ( res.AccountNo,oCashAccount.AccountName )
       recData.CurrencyName = oCashAccount.LCurrency.Short_Name
-      recData.Rate = Rate      
+      #recData.Rate = Rate      
       recData.Debet       = aDebit 
       recData.Credit      = aCredit
-      recData.Total       = aDebit-aCredit  
+      recData.Total       = aDebit - aCredit  
       recData.BeginBalance = aBegin
-      recData.EndBalance  = aBegin+aDebit-aCredit
+      recData.EndBalance  = aBegin + aDebit - aCredit
       
-      status.TotalEndBalance += (recData.EndBalance * Rate )
-            
+      status.TotalEndBalance += (aBeginEkuiv + aDebitEkuiv - aCreditEkuiv )
+
       res.Next()
     # end while
     
@@ -109,15 +112,49 @@ def PrintReport(helper, config, param):
   reportdef = config.HomeDir + 'reports/summarycash.mtr'
   oReport = textreport.TextReport(reportdef)  
   
-  # Set Title
-  oReport.SetVars('BRANCH', param.BranchCode)
+  # Set HEADER
+
+  # Set BRANCH
+  aBranchCode = param.BranchCode
+  CabangInfo = corporate.GetCabangInfo(param.BranchCode)
+  Cabang = '%s - %s' % (param.BranchCode,CabangInfo.Nama_Cabang)
+  oReport.SetVars('BRANCH', Cabang)
   
+  # Set DATE PERIOD
   aBeginDate = param.BeginDate
   aEndDate = param.EndDate
-  oReport.SetVars('BDATE', config.FormatDateTime('dd-mm-yyyy', aBeginDate))
-  oReport.SetVars('EDATE', config.FormatDateTime('dd-mm-yyyy', aEndDate))
+  aBeginDateParam = config.FormatDateTime('yyyy-mm-dd', aBeginDate)
+  aEndDateParam = config.FormatDateTime('yyyy-mm-dd', aEndDate)
+
+  if aBeginDate == aEndDate:
+   TransactionDateStr = config.FormatDateTime('dd-mm-yyyy', aBeginDate)
+  else:    
+   TransactionDateStr = '%s - %s' % (
+               config.FormatDateTime('dd/mm/yyyy', aBeginDate),
+               config.FormatDateTime('dd/mm/yyyy', aEndDate) 
+             )
+  oReport.SetVars('DATE', TransactionDateStr)
   
+  # Set Begin Balance
+  resBeginBalance = config.CreateSQL(BuildSQLSummaryCashBalance( aBranchCode, aBeginDateParam)).rawresult
+  aBeginBalance = resBeginBalance.Total or 0.0
+  oReport.SetVars('BEGINBALANCE', config.FormatFloat(',0.00', aBeginBalance))
+  
+  # Set Total Debet
+  resDebet = config.CreateSQL( BuildSQLSummaryCashTotal( aBranchCode, aBeginDateParam, aEndDateParam, 'D')).rawresult
+  TotalDebet = resDebet.Total or 0.0
+  oReport.SetVars('TOTALDEBET', config.FormatFloat(',0.00', TotalDebet))
+  
+  # Set Total Credit
+  resCredit = config.CreateSQL( BuildSQLSummaryCashTotal( aBranchCode, aBeginDateParam, aEndDateParam, 'C')).rawresult
+  TotalCredit = resCredit.Total or 0.0
+  oReport.SetVars('TOTALCREDIT', config.FormatFloat(',0.00',  TotalCredit))
+  
+  # Set End Balance
+  oReport.SetVars('ENDBALANCE', config.FormatFloat(',0.00', aBeginBalance + TotalDebet - TotalCredit ))
+
   # Set nama file output.txt
+  
   reportFile = corporate.GetUserHomeDir() + '\\Rep_SummaryCash.txt'
   oReport.OpenReport(reportFile)
   
@@ -126,6 +163,7 @@ def PrintReport(helper, config, param):
     sSQL = BuildSQLSummaryCash(config,aBeginDate,aEndDate,param.BranchCode)
     
     res = config.CreateSQL(sSQL).rawresult
+
     while not res.Eof:
       aContent = {}
 
@@ -137,11 +175,12 @@ def PrintReport(helper, config, param):
         
         
       aContent['ACCOUNT']     = ('%s - %s' % ( res.AccountNo,oCashAccount.AccountName ))[:39]
+      aContent['CURRENCYNAME'] = oCashAccount.LCurrency.Short_Name
       aContent['DEBIT']       = config.FormatFloat(',0.00', aDebit) 
       aContent['CREDIT']      = config.FormatFloat(',0.00', aCredit)
-      aContent['TOTAL']       = config.FormatFloat(',0.00', aDebit-aCredit)  
+      aContent['TOTAL']       = config.FormatFloat(',0.00', aDebit - aCredit)
       aContent['BEGINBALANCE'] = config.FormatFloat(',0.00', aBegin)
-      aContent['ENDBALANCE']  = config.FormatFloat(',0.00', aBegin+aDebit-aCredit)
+      aContent['ENDBALANCE']  = config.FormatFloat(',0.00', aBegin + aDebit - aCredit)
       
       oReport.PrintRow('detail', aContent)
        
@@ -163,22 +202,66 @@ def BuildSQLSummaryCash(config,aBeginDate,aEndDate,aBranchCode):
       select a.AccountNo,f.CurrencyCode,  \
       	sum(case when MutationType = 'D' and \
           ActualDate >= '%(BEGIN)s' then i.Amount else 0.0 end) as Debit,\
+        sum(case when MutationType = 'D' and \
+          ActualDate >= '%(BEGIN)s' then i.EkuivalenAmount else 0.0 end) as DebitEkuiv,\
       	sum(case when MutationType = 'C' and \
           ActualDate >= '%(BEGIN)s' then i.Amount else 0.0 end) as Credit,\
+        sum(case when MutationType = 'C' and \
+          ActualDate >= '%(BEGIN)s' then i.EkuivalenAmount else 0.0 end) as CreditEkuiv,\
       	sum(case when MutationType = 'D' and \
             ActualDate < '%(BEGIN)s' then i.Amount\
           when MutationType = 'C' and \
             ActualDate < '%(BEGIN)s' then -i.Amount\
-      			else 0.0 end) as BeginBalance\
+      			else 0.0 end) as BeginBalance , \
+        sum(case when MutationType = 'D' and \
+            ActualDate < '%(BEGIN)s' then i.EkuivalenAmount\
+          when MutationType = 'C' and \
+            ActualDate < '%(BEGIN)s' then -i.EkuivalenAmount\
+            else 0.0 end) as BeginBalanceEkuiv \
       from \
       	accounttransactionitem a, transactionitem i, cashaccount c, \
-      	financialaccount f, transaction t, transactionbatch b	\
+      	financialaccount f, transaction t	\
       where a.TransactionItemId = i.TransactionItemId \
       	and a.AccountNo = c.AccountNo and c.AccountNo = f.AccountNo \
       	and i.TransactionId = t.TransactionId \
-      	and t.BatchId = b.BatchId \
       	and t.ActualDate <= '%(END)s' \
       	and i.BranchCode = '%(BRANCH)s' \
       group by a.AccountNo,f.CurrencyCode \
       order by CurrencyCode,AccountNo \
-    " % qParam  
+    " % qParam 
+
+def BuildSQLSummaryCashBalance(aBranchCode, aBeginDateParam):
+     
+  return "\
+        select sum(case when i.mutationtype='D' then i.EkuivalenAmount \
+                           else -i.EkuivalenAmount \
+                      end) as Total \
+        from accounttransactionitem a,  cashaccount c, financialaccount f, \
+          transaction t , transactionitem i \
+        where a.TransactionItemId = i.TransactionItemId \
+          and i.TransactionId = t.TransactionId \
+          and f.accountno = c.accountno \
+          and a.accountno = c.accountno \
+          and t.ActualDate < '%s' \
+          and f.BranchCode = '%s' \
+      " % ( aBeginDateParam, aBranchCode)
+          
+def BuildSQLSummaryCashTotal(aBranchCode, aBeginDateParam, aEndDateParam,aMutationType ):
+  AddParam = ""
+
+  if aMutationType != None :
+    AddParam += " and i.MutationType='%s' " % aMutationType
+     
+  return "\
+        select sum(i.EkuivalenAmount) as Total \
+        from accounttransactionitem a,  cashaccount c, financialaccount f, \
+          transaction t , transactionitem i \
+        where a.TransactionItemId = i.TransactionItemId \
+          and i.TransactionId = t.TransactionId \
+          and f.accountno = c.accountno \
+          and a.accountno = c.accountno \
+          and t.ActualDate >= '%s' \
+          and t.ActualDate <= '%s' \
+          and f.BranchCode = '%s' \
+          %s \
+      " % ( aBeginDateParam, aEndDateParam, aBranchCode, AddParam)
