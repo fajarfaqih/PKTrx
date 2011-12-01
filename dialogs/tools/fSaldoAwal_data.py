@@ -88,13 +88,12 @@ def GetTemplateCashAccount(config,returns):
   oql.active = 1
   ds  = oql.rawresult
 
-  TransactionNo = 'BB-CB-%s' % BranchCode
   while not ds.Eof:
     recAccount = dsListAccount.AddRecord()
     recAccount.AccountNo = ds.AccountNo
     recAccount.AccountName = ds.AccountName
     recAccount.Currency = '%s - %s' % (ds.CurrencyCode,ds.Short_Name)
-    #TransactionNo = 'BB-CB-%s-%s' % (ds.CurrencyCode,BranchCode)
+    TransactionNo = 'BB-CB-%s-%s' % (ds.CurrencyCode,BranchCode)
     oTranItem = helper.GetObjectByNames('AccountTransactionItem',
         {'AccountNo' : ds.AccountNo ,
          'LTransaction.TransactionNo' : TransactionNo ,
