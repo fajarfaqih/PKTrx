@@ -29,6 +29,11 @@ document <
           Hidden=true
           DataTypeName='varchar'
           DataLength=10
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BranchId'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=10
         >}Name='uipEmployeeAR'
     >, object:rtf::PClassUI<
       Name='uipTransaction'
@@ -133,6 +138,16 @@ document <
           DataTypeName='double'
           DataLength=20
         >, object:rtf::FieldUIElmtSetting<
+          Name='CurrencyName'
+          ControlCaption='Kd Valuta'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AmountEkuivalen'
+          ControlCaption='Nilai Ekuivalen'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
           Name='ReferenceNo'
           ControlCaption='No Referensi'
           DataTypeName='varchar'
@@ -150,9 +165,15 @@ document <
           ReadOnlyControl=true
           DataTypeName='integer'
           DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Rate'
+          Hidden=true
+          ControlCaption='Rate'
+          DataTypeName='double'
+          DataLength=20
         >}Name='gTransaction'
       Width=700
-      Height=291
+      Height=318
       UIPart=$UIPARTS['uipTransaction']
       ControlLeftMargin=8
       ControlTopMargin=8
@@ -190,6 +211,22 @@ document <
           FieldName='Amount'
           DisplayFormat=',0.00'
           TitleCaption='Nilai'
+          Width=120
+        >, *object:rtf::GridColumn<
+          Name='CurrencyName'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='CurrencyName'
+          DisplayFormat=''
+          TitleCaption='Kd Valuta'
+          Width=80
+        >, *object:rtf::GridColumn<
+          Name='AmountEkuivalen'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='AmountEkuivalen'
+          DisplayFormat=',0.00'
+          TitleCaption='Nilai Ekuivalen'
           Width=120
         >, *object:rtf::GridColumn<
           Name='ReferenceNo'
@@ -238,63 +275,53 @@ document <
       Name='dsAccount'
       Width=240
       Height=96
-      Container1=$CONTAINERS['pProductAccount']
+      Container1=$CONTAINERS['pEmployee']
       Container2=$CONTAINERS['dsTransaction']
     >, object:rtf::Panel<
       Elements={object:rtf::LinkUIElmtSetting<
           Name='LEmployeeAR'
-          ControlCaption='Pilih rekening karyawan'
-          ClassTypeName='EmployeeCashAdvance'
-          DisplayFields='AccountNo;AccountName;Balance;CurrencyCode;EmployeeId'
-          Restrictions='BranchCode|BranchCode'
-          OQLText=['select from EmployeeCashAdvance'#13#10,
-            '[status = ''A'' and BranchCode = :BranchCode]'#13#10,
+          ControlCaption='Pilih Nama Karyawan'
+          ClassTypeName='VEmployeeCashAdvance'
+          DisplayFields='EmployeeId;EmployeeName'
+          Restrictions='BranchId|BranchId'
+          OQLText=['select from VEmployeeCashAdvance'#13#10,
+            '[Branch_Id=:BranchId]'#13#10,
             '('#13#10,
-            '  AccountNo, AccountName,'#13#10,
-            '  CurrencyCode, Balance, EmployeeId, self'#13#10,
-            ')'#13#10,
-            'then order by AccountNo;']
+            '   EmployeeId,'#13#10,
+            '   EmployeeName,'#13#10,
+            '   self'#13#10,
+            ')then order by EmployeeName;']
           LookupOption=loCustomOQL
           FieldBaseName='LEmployeeAR'
-        >}Name='pProductAccount'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Balance'
+          ReadOnlyControl=true
+          ControlCaption='Saldo'
+          DataTypeName='double'
+          DataLength=20
+        >}Name='pEmployee'
       Width=649
-      Height=100
+      Height=73
       Bordered=true
       UIPart=$UIPARTS['uipEmployeeAR']
       Controls={*object:rtf::DBLookupEdit<
           Name='LEmployeeAR'
           Top=8
           Left=8
-          ControlCaption='Pilih rekening karyawan'
-          LookupField='LEmployeeAR.AccountName'
+          ControlCaption='Pilih Nama Karyawan'
+          LookupField='LEmployeeAR.EmployeeName'
           DisplayLookupField=true
-        >, object:rtf::DBEdit<
-          Name='edValuta'
-          Layout=clNewLine
+          OnAfterLookup='EmployeeAfterLookup'
+        >, *object:rtf::DBEdit<
+          Name='Balance'
           Top=36
           Left=8
-          Width=97
-          Height=21
-          Color=-2147483624
-          ControlCaption='Kode valuta'
-          CaptionWidth=100
-          FieldName='LEmployeeAR.CurrencyCode'
-          DisplayFormat=''
-          ReadOnly=true
-        >, object:rtf::DBEdit<
-          Name='edBalance'
-          Layout=clNewLine
-          Top=64
-          Left=8
-          Width=153
-          Height=21
+          Enabled=false
           Color=-2147483624
           ControlCaption='Saldo'
-          CaptionWidth=100
-          FieldName='LEmployeeAR.Balance'
+          FieldName='Balance'
           DisplayFormat=',0.00'
-          ReadOnly=true
-        >}EqualCaptionWidth=100
+        >}EqualCaptionWidth=120
       ControlLeftMargin=8
       ControlTopMargin=8
       DefaultControlHeight=21

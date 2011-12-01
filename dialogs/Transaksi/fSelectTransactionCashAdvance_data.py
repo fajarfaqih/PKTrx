@@ -32,6 +32,7 @@ def OnSetData(sender):
     rec.ReturnStatus = 'T'
 
   rec.AuthStatus = oCATrans.LTransaction.AuthStatus
+  rec.AmountEkuivalen = rec.Amount * rec.Rate
 
   
   

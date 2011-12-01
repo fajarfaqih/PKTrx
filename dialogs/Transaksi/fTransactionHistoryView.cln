@@ -92,7 +92,7 @@ document <
           Name='Description'
           AccessOption=aoReadOnly
           DataTypeName='VARCHAR'
-          DataLength=100
+          DataLength=500
         >, object:rtf::FieldUIElmtSetting<
           Name='AuthStatus'
           AccessOption=aoReadOnly
@@ -240,7 +240,7 @@ document <
           AccessOption=aoReadOnly
           ControlCaption='Keterangan'
           DataTypeName='VARCHAR'
-          DataLength=100
+          DataLength=500
         >, object:rtf::FieldUIElmtSetting<
           Name='ParameterJournalId'
           AccessOption=aoReadOnly

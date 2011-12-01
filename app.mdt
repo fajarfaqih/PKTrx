@@ -4863,6 +4863,82 @@ document <
           DataLength=20
           IsPrimaryKey=true
         >}ClassID='{B49CAD2D-B376-45E9-9C61-995E4632D27D}'
+    >, object:ClassTypeDecl<
+      TypeName='VEmployeeCashAdvance'
+      PTableName='VEMPLOYEECASHADVANCE'
+      Members={object:FieldMember<
+          MemberName='EmployeeId'
+          PhysicalName='EMPLOYEEID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='EmployeeName'
+          PhysicalName='EMPLOYEENAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=150
+        >, object:FieldMember<
+          MemberName='Email'
+          PhysicalName='EMAIL'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=100
+        >, object:FieldMember<
+          MemberName='Permanent_Address'
+          PhysicalName='PERMANENT_ADDRESS'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=250
+        >, object:FieldMember<
+          MemberName='Permanent_Phone_No'
+          PhysicalName='PERMANENT_PHONE_NO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=15
+        >, object:FieldMember<
+          MemberName='Current_Phone_No'
+          PhysicalName='CURRENT_PHONE_NO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=15
+        >, object:FieldMember<
+          MemberName='Branch_Id'
+          PhysicalName='BRANCH_ID'
+          DataType=$TYPEDECLS['INTEGER']
+        >}ClassID='{158E69C5-2683-41A0-A2B7-56B8A05E1CF3}'
+    >, object:ClassTypeDecl<
+      TypeName='VEmployeeAccountReceivable'
+      PTableName='VEMPLOYEEACCOUNTRECEIVABLE'
+      Members={object:FieldMember<
+          MemberName='EmployeeId'
+          PhysicalName='EMPLOYEEID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='EmployeeName'
+          PhysicalName='EMPLOYEENAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=150
+        >, object:FieldMember<
+          MemberName='Email'
+          PhysicalName='EMAIL'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=100
+        >, object:FieldMember<
+          MemberName='Permanent_Address'
+          PhysicalName='PERMANENT_ADDRESS'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=250
+        >, object:FieldMember<
+          MemberName='Permanent_Phone_No'
+          PhysicalName='PERMANENT_PHONE_NO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=15
+        >, object:FieldMember<
+          MemberName='Current_Phone_No'
+          PhysicalName='CURRENT_PHONE_NO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=15
+        >, object:FieldMember<
+          MemberName='Branch_Id'
+          PhysicalName='BRANCH_ID'
+          DataType=$TYPEDECLS['INTEGER']
+        >}ClassID='{6FCDCBD9-4941-4EED-A246-EFBDFAA9F73A}'
     >}PhysicalDB=object:ODLDatabase<
   >LastMethodID=6
 >

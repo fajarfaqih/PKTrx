@@ -827,7 +827,7 @@ def GetKwitansiPengembalianUangMukaNew(oTran):
   Total = oTran.Amount or 0.0
   
   Terbilang = ToolsConvert.Terbilang(config,Total,
-            KodeMataUang = '000',
+            KodeMataUang = oTran.CurrencyCode,
             NamaMataUang = Currency.Symbol_Says)
   
   Terbilang = ToolsConvert.Divider(Terbilang,45)

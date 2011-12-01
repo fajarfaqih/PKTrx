@@ -7,13 +7,12 @@ class fSummaryCashAdvance:
   def Show(self):
     return self.FormContainer.Show()
 
-
   def PrintExcelClick(self,sender) :
     if self.uipData.BeginDate > self.uipData.EndDate :
        raise 'PERINGATAN','Tanggal Awal tidak boleh lebih besar dari tanggal akhir'
 
     filename = self.oPrint.ConfirmDestinationPath(self.app,'xls')
-    if filename == '' : return
+    if filename in ['',None] : return
 
     self.FormObject.CommitBuffer()
     ph = self.FormObject.GetDataPacket()
@@ -41,20 +40,25 @@ class fSummaryCashAdvance:
       workbook.SetCellValue(6, 2, status.TotalCredit)
       workbook.SetCellValue(7, 2, status.EndBalance)
       
-      workbook.SetCellValue(9, 3, 'Saldo Awal \n' + status.BeginDateStr)
-      workbook.SetCellValue(9, 7, 'Saldo Akhir \n' + status.EndDateStr)
+      workbook.SetCellValue(9, 4, 'Saldo Awal \n' + status.BeginDateStr)
+      workbook.SetCellValue(9, 8, 'Saldo Akhir \n' + status.EndDateStr)
       i = 0
+      oldIdNumber = 0
       while i < ds.RecordCount:
         rec = ds.GetRecord(i)
         row = i + 10
 
-        workbook.SetCellValue(row, 1, rec.NomorKaryawan)
-        workbook.SetCellValue(row, 2, rec.NamaKaryawan)
-        workbook.SetCellValue(row, 3, rec.SaldoAwal)
-        workbook.SetCellValue(row, 4, rec.Debet)
-        workbook.SetCellValue(row, 5, rec.Kredit)
-        workbook.SetCellValue(row, 6, rec.TotalMutasi)
-        workbook.SetCellValue(row, 7, rec.SaldoAkhir)
+        if oldIdNumber != rec.NomorKaryawan :
+          workbook.SetCellValue(row, 1, rec.NomorKaryawan)
+          workbook.SetCellValue(row, 2, rec.NamaKaryawan)
+          oldIdNumber = rec.NomorKaryawan
+
+        workbook.SetCellValue(row, 3, rec.CurrencyName)
+        workbook.SetCellValue(row, 4, rec.SaldoAwal)
+        workbook.SetCellValue(row, 5, rec.Debet)
+        workbook.SetCellValue(row, 6, rec.Kredit)
+        workbook.SetCellValue(row, 7, rec.TotalMutasi)
+        workbook.SetCellValue(row, 8, rec.SaldoAkhir)
         i += 1
       # end of while
 

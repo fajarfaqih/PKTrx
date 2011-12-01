@@ -868,7 +868,7 @@ class Transaction(pobject.PObject):
       return Voucher.GetKwitansiPenerimaanNew(self)
     elif self.TransactionCode in ['DD001','CO','PAD','FA','FAI','FAIP','CPIA','GT','CA','DT','INVS'] :
       return Voucher.GetKwitansiPengeluaranNew(self)
-    elif self.TransactionCode in ['CAR','DTR','CARR','INVSR'] :
+    elif self.TransactionCode in ['CAR','DTR','CARR','INVSR','CARB'] :
       return Voucher.GetKwitansiPengembalianUangMukaNew(self)
     elif self.TransactionCode in ['INVC'] :
       return Voucher.GetKwitansiInvoiceNew(self)  
@@ -1031,14 +1031,14 @@ class TransactionItem(pobject.PObject):
     oBudgetTrans = self.Helper.CreatePObject('BudgetTransaction')
     oBudgetTrans.BudgetId = BudgetId
     oBudgetTrans.TransactionItemId = self.TransactionItemId
-    oBudgetTrans.LBudget.UpdateRealization(self.Amount)
+    oBudgetTrans.LBudget.UpdateRealization(self.Amount * self.Rate)
     oBudgetTrans.BudgetTransType = 'A'
     
   def CreateBudgetTransactionReturn(self,BudgetId):
     oBudgetTrans = self.Helper.CreatePObject('BudgetTransaction')
     oBudgetTrans.BudgetId = BudgetId
     oBudgetTrans.TransactionItemId = self.TransactionItemId
-    oBudgetTrans.LBudget.UpdateRealization(-(self.Amount))
+    oBudgetTrans.LBudget.UpdateRealization(-(self.Amount * self.Rate))
     oBudgetTrans.BudgetTransType = 'R'
       
   def CreateBSZTransaction(self,BSZId):

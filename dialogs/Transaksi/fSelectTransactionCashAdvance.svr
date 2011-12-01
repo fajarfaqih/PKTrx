@@ -35,8 +35,12 @@ document <
     >, object:rpclass::TPClassUIDef<
       Name='uipCATransactItem'
       PClassName='CATransactItem'
-      LoadedFieldList='LFinancialAccount.AccountNo;LFinancialAccount.AccountNo;LFinancialAccount.AccountName;TransactionItemId;Amount'
+      LoadedFieldList='LFinancialAccount.AccountNo;LFinancialAccount.AccountNo;LFinancialAccount.AccountName;TransactionItemId;Amount;LCurrency.Currency_Code;LCurrency.Short_Name;Rate;CurrencyCode'
       CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='AmountEkuivalen'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
           Name='TransactionNo'
           DataTypeName='varchar'
           DataLength=30
@@ -60,6 +64,10 @@ document <
           Name='LFinancialAccount'
           ClassTypeName='FinancialAccount'
           FieldNames='AccountNo;AccountNo;AccountName'
+        >, object:rpclass::TCustomLoadedLink<
+          Name='LCurrency'
+          ClassTypeName='Currency'
+          FieldNames='Currency_Code;Short_Name'
         >}Mode=imMultiRow
       OnSetData='OnSetData'
     >}OnSetDataEx='FormSetDataEx'

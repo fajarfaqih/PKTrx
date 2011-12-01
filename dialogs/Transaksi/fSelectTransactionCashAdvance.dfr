@@ -143,7 +143,10 @@ document <
           Action=caView
           DataMembers=['LFinancialAccount'#13#10,
             'TransactionItemId'#13#10,
-            'Amount'#13#10]
+            'Amount'#13#10,
+            'LCurrency'#13#10,
+            'Rate'#13#10,
+            'CurrencyCode'#13#10]
         >}Elements={*object:rtf::LinkUIElmtSetting<
           Name='LFinancialAccount'
           DisplayFields='AccountNo;AccountName'
@@ -152,6 +155,22 @@ document <
         >, *object:rtf::FieldUIElmtSetting<
           Name='Amount'
           ReadOnlyControl=true
+        >, *object:rtf::LinkUIElmtSetting<
+          Name='LCurrency'
+          DisplayFields='Short_Name'
+          Restrictions=''
+          FieldBaseName='LCurrency'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='Rate'
+          Hidden=true
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='CurrencyCode'
+          Hidden=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AmountEkuivalen'
+          ControlCaption='Nilai Ekuivalen(Rp)'
+          DataTypeName='double'
+          DataLength=20
         >, object:rtf::FieldUIElmtSetting<
           Name='TransactionNo'
           ReadOnlyControl=true
@@ -224,6 +243,23 @@ document <
           DisplayFormat=',0.00'
           Width=120
           ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='LCurrency.Short_Name'
+          InputStyle=cisLookup
+          EnumeratedValues=''
+          FieldName='LCurrency.Short_Name'
+          DisplayFormat=''
+          TitleCaption='Kode Valuta'
+          Width=80
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='AmountEkuivalen'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='AmountEkuivalen'
+          DisplayFormat=''
+          TitleCaption='Nilai Ekuivalen(Rp)'
+          Hidden=true
         >, *object:rtf::GridColumn<
           Name='TransactionNo'
           InputStyle=cisNormal

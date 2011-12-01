@@ -306,6 +306,8 @@ class AccountReceivable(FinancialAccount):
 
     return resSQL.GetFieldValueAt(0) or 0.0
 
+    
+
 class EmployeeAccountReceivable(AccountReceivable):
   # static variable
   pobject_classname = 'EmployeeAccountReceivable'
@@ -336,9 +338,12 @@ class EmployeeCashAdvance(AccountReceivable):
   # static variable
   pobject_classname = 'EmployeeCashAdvance'
 
-  def OnCreate(self, aEmployeeId):
+  def OnCreate(self, params ):
+    aEmployeeId , aCurrencyCode = params
     FinancialAccount.OnCreate(self)
-    self.AccountNo = 'CA.' + str(aEmployeeId).zfill(7)
+
+    self.AccountNo = 'CA.%s.%s' % (aCurrencyCode, str(aEmployeeId).zfill(7))
+    self.CurrencyCode = aCurrencyCode
     #self.EmployeeId = str(aEmployeeId)
     self.EmployeeIdNumber = aEmployeeId
   

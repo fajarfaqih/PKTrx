@@ -56,13 +56,14 @@ def SummaryEmpCA(config,params,returns):
        'Kredit: float',
        'TotalMutasi: float',
        'SaldoAwal: float',
-       'SaldoAkhir: float'
+       'SaldoAkhir: float',
+       'CurrencyName: string'
      ])
     )
 
     
     strSQL = " \
-              select a.accountno,a.accountname, \
+              select b.employeeidnumber, a.accountno, a.accountname, a.currencycode, c.short_name, \
                  (select sum(d.Amount) \
                      from transaction.transaction c, \
                           transaction.transactionitem d, \
@@ -77,10 +78,11 @@ def SummaryEmpCA(config,params,returns):
                      where c.transactionid = d.transactionid and d.transactionitemid = e.transactionitemid \
                          and c.actualdate between '%(BEGINDATE)s' and '%(ENDDATE)s'  and e.accountno=a.accountno \
                          and d.mutationtype='C') as Kredit \
-              from transaction.financialaccount a, transaction.accountreceivable b \
-              where a.accountno=b.accountno \
+              from transaction.financialaccount a, transaction.accountreceivable b, transaction.currency c \
+              where a.accountno = b.accountno \
+                  and a.currencycode = c.currency_code \
                   and b.AccountReceivableType = 'C' \
-                  and a.branchcode='%(BRANCHCODE)s' \
+                  and a.branchcode = '%(BRANCHCODE)s' \
                  order by  a.accountname \
                 " % {
                   'BRANCHCODE' : BranchCode ,
@@ -92,8 +94,10 @@ def SummaryEmpCA(config,params,returns):
 
     while not res.Eof:
       recSum = dsSummary.AddRecord()
-      recSum.NomorKaryawan = res.AccountNo
+      #recSum.NomorKaryawan = res.AccountNo
+      recSum.NomorKaryawan = str(res.EmployeeIdNumber)
       recSum.NamaKaryawan = res.AccountName
+      recSum.CurrencyName = res.Short_Name
       recSum.Debet = res.Debet or 0.0
       recSum.Kredit = res.Kredit or 0.0
       recSum.TotalMutasi = (res.Debet or 0.0 ) - ( res.Kredit or 0.0)

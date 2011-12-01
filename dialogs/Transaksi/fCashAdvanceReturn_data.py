@@ -11,13 +11,21 @@ def FormSetDataEx(uideflist, params) :
     oForm = helper.CreateObject('FormTransaksi')
     oForm.SetDataEx(uideflist,params)
     
-    return
+    rec = uideflist.uipTransaction.Dataset.GetRecord(0)
 
+    if rec.CurrencyCode in ['',None]:
+      rec.CurrencyCode = '000'
+      rec.CurrencyName = 'IDR'
+      rec.Rate = 1.0
+      rec.AmountEkuivalen = rec.Amount
+    
+    return
 
   rec = uideflist.uipTransaction.Dataset.AddRecord()
   rec.Inputer = str(config.SecurityContext.UserId)
   rec.PaidTo = rec.Inputer
   rec.BranchCode = str(config.SecurityContext.GetUserInfo()[4])
+  rec.BranchId = int(config.SecurityContext.GetUserInfo()[2])
   rec.TransactionDate = int(config.Now())
   rec.FloatTransactionDate = int(config.Now())
   rec.Amount = 0.0
@@ -92,13 +100,14 @@ def SimpanData(config, params, returns):
     request['Amount'] = oTransaction.Amount
     request['ReferenceNo'] = oTransaction.ReferenceNo
     request['Description'] = oTransaction.Description
-    request['Rate'] = 1.0
+    request['Rate'] = oTransaction.Rate
+    request['CurrencyCode'] = oTransaction.CurrencyCode
     request['Inputer'] = config.SecurityContext.InitUser
     request['BranchCode'] = config.SecurityContext.GetUserInfo()[4]
     request['RefAmount'] = oTransaction.RefAmount
     request['RefTransactionItemId'] = oTransaction.RefTransactionItemId
     request['RefAmount'] = oTransaction.RefAmount
-    request['ReimburseAmount'] = oTransaction.ReimburseAmount
+    request['ReimburseAmount'] = oTransaction.ReimburseAmount or 0.0
     request['TransactionNo'] = oTransaction.TransactionNo
     request['PaidTo'] = oTransaction.PaidTo
     request['RefTransactionNo'] = oTransaction.RefTransactionNo

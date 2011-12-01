@@ -56,6 +56,85 @@ document <
           DataTypeName='double'
           DataLength=20
         >, object:rpclass::TCustomLoadedField<
+          Name='LCashAccount.AccountNo'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='LCashAccount.AccountNo'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='LCashAccount.AccountName'
+          DataTypeName='VARCHAR'
+          DataLength=50
+        >, object:rpclass::TCustomLoadedField<
+          Name='LCashAccount.CurrencyCode'
+          DataTypeName='VARCHAR'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LCashAccount.LCurrency.Short_Name'
+          DataTypeName='VARCHAR'
+          DataLength=10
+        >, object:rpclass::TCustomLoadedField<
+          Name='LCashAccount.LCurrency.Kurs_Tengah_BI'
+          DataTypeName='DOUBLE'
+        >, object:rpclass::TCustomLoadedField<
+          Name='CurrencyCode'
+          DataTypeName='varchar'
+          DataLength=5
+        >, object:rpclass::TCustomLoadedField<
+          Name='CurrencyName'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LEmployee.Nomor_Karyawan'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LEmployee.Nomor_Karyawan'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LEmployee.Nama_Lengkap'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='TransactionType'
+          DataTypeName='varchar'
+          DataLength=1
+        >, object:rpclass::TCustomLoadedField<
+          Name='Rate'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='Amount'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='AmountEkuivalen'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='FundEntity'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='ReferenceNo'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='Description'
+          DataTypeName='varchar'
+          DataLength=100
+        >, object:rpclass::TCustomLoadedField<
+          Name='BudgetCode'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='BudgetOwner'
+          DataTypeName='varchar'
+          DataLength=100
+        >, object:rpclass::TCustomLoadedField<
           Name='TransactionDate'
           DataTypeName='timestamp'
           DataLength=20
@@ -85,18 +164,6 @@ document <
           DataTypeName='varchar'
           DataLength=30
         >, object:rpclass::TCustomLoadedField<
-          Name='LCashAccount.AccountNo'
-          DataTypeName='VARCHAR'
-          DataLength=30
-        >, object:rpclass::TCustomLoadedField<
-          Name='LCashAccount.AccountNo'
-          DataTypeName='VARCHAR'
-          DataLength=30
-        >, object:rpclass::TCustomLoadedField<
-          Name='LCashAccount.AccountName'
-          DataTypeName='VARCHAR'
-          DataLength=50
-        >, object:rpclass::TCustomLoadedField<
           Name='EmployeeId'
           DataTypeName='integer'
           DataLength=20
@@ -104,54 +171,14 @@ document <
           Name='EmployeeName'
           DataTypeName='varchar'
           DataLength=50
-        >, object:rpclass::TCustomLoadedField<
-          Name='LEmployee.Nomor_Karyawan'
-          DataTypeName='varchar'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='LEmployee.Nomor_Karyawan'
-          DataTypeName='varchar'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='LEmployee.Nama_Lengkap'
-          DataTypeName='varchar'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='TransactionType'
-          DataTypeName='varchar'
-          DataLength=1
-        >, object:rpclass::TCustomLoadedField<
-          Name='FundEntity'
-          DataTypeName='integer'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='Amount'
-          DataTypeName='double'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='ReferenceNo'
-          DataTypeName='varchar'
-          DataLength=30
-        >, object:rpclass::TCustomLoadedField<
-          Name='Description'
-          DataTypeName='varchar'
-          DataLength=100
-        >, object:rpclass::TCustomLoadedField<
-          Name='BudgetCode'
-          DataTypeName='varchar'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='BudgetOwner'
-          DataTypeName='varchar'
-          DataLength=100
         >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
+          Name='LCashAccount'
+          ClassTypeName='CashAccount'
+          FieldNames='AccountNo;AccountNo;AccountName;CurrencyCode;LCurrency.Short_Name;LCurrency.Kurs_Tengah_BI'
+        >, object:rpclass::TCustomLoadedLink<
           Name='LBatch'
           ClassTypeName='TransactionBatch'
           FieldNames='BatchId;BatchId;BatchNo;BatchDate;Description'
-        >, object:rpclass::TCustomLoadedLink<
-          Name='LCashAccount'
-          ClassTypeName='CashAccount'
-          FieldNames='AccountNo;AccountNo;AccountName'
         >}Mode=imSingleRow
     >}OnSetDataEx='FormSetDataEx'
 >

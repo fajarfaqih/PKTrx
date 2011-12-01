@@ -12,6 +12,10 @@ document <
           DataTypeName='varchar'
           DataLength=10
         >, object:rpclass::TCustomLoadedField<
+          Name='BranchId'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
           Name='Inputer'
           DataTypeName='varchar'
           DataLength=20
@@ -57,20 +61,15 @@ document <
           DataTypeName='VARCHAR'
           DataLength=100
         >, object:rpclass::TCustomLoadedField<
-          Name='LEmployee.AccountNo'
-          DataTypeName='VARCHAR'
-          DataLength=30
-        >, object:rpclass::TCustomLoadedField<
-          Name='LEmployee.AccountNo'
-          DataTypeName='VARCHAR'
-          DataLength=30
-        >, object:rpclass::TCustomLoadedField<
-          Name='LEmployee.AccountName'
-          DataTypeName='VARCHAR'
-          DataLength=50
-        >, object:rpclass::TCustomLoadedField<
-          Name='LEmployee.EmployeeIdNumber'
+          Name='LEmployee.EmployeeId'
           DataTypeName='INTEGER'
+        >, object:rpclass::TCustomLoadedField<
+          Name='LEmployee.EmployeeId'
+          DataTypeName='INTEGER'
+        >, object:rpclass::TCustomLoadedField<
+          Name='LEmployee.EmployeeName'
+          DataTypeName='VARCHAR'
+          DataLength=150
         >, object:rpclass::TCustomLoadedField<
           Name='EmployeeId'
           DataTypeName='integer'
@@ -131,14 +130,26 @@ document <
           Name='ReimburseAmount'
           DataTypeName='double'
           DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='Rate'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='CurrencyCode'
+          DataTypeName='varchar'
+          DataLength=5
+        >, object:rpclass::TCustomLoadedField<
+          Name='CurrencyName'
+          DataTypeName='varchar'
+          DataLength=20
         >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
           Name='LBatch'
           ClassTypeName='TransactionBatch'
           FieldNames='BatchId;BatchId;BatchNo;BatchDate;Description'
         >, object:rpclass::TCustomLoadedLink<
           Name='LEmployee'
-          ClassTypeName='EmployeeCashAdvance'
-          FieldNames='AccountNo;AccountNo;AccountName;EmployeeIdNumber'
+          ClassTypeName='VEmployeeCashAdvance'
+          FieldNames='EmployeeId;EmployeeId;EmployeeName'
         >, object:rpclass::TCustomLoadedLink<
           Name='LCashAccount'
           ClassTypeName='CashAccount'

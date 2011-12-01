@@ -12,7 +12,7 @@ def FormSetDataEx(uideflist, parameter):
   oTransaction = helper.GetObject('Transaction',TransactionId)
   
   if oTransaction.IsPosted == 'F' :
-    raise 'PERINGATAN','Transaksi Memiliki Jurnal Accounting'
+    raise 'PERINGATAN','Transaksi Belum Memiliki Jurnal Accounting. Silahkan otorisasi atau posting ulang jurnal'
   
   BatchNo = oTransaction.LBatch.BatchNo
   JournalBlockId = oTransaction.JournalBlockId
@@ -31,7 +31,7 @@ def FormSetDataEx(uideflist, parameter):
   uipJournalItem = uideflist.uipJournalItem
   
   request = {}
-  request['trx_code']     = 'GetInfoJournal'
+  request['trx_code'] = 'GetInfoJournal'
   request['journal_no'] = BatchNo
   request['Id_Transaksi'] = TransactionId
   request['Id_Journal_Block']  = JournalBlockId

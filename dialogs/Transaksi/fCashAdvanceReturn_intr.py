@@ -71,6 +71,7 @@ class fCashAdvanceReturn :
       uipTran.Edit()
       uipTran.TotalAmount = TotalAmount
       uipTran.Amount = uipTran.RefAmount - TotalAmount
+      self.pTransaction_Rate.enabled = (uipTran.CurrencyCode != '000')
 
   def Show(self,mode = 1):
     self.uipTransaction.Edit()
@@ -113,8 +114,8 @@ class fCashAdvanceReturn :
   def EmployeeAfterLookup (self, sender, linkui):
     #self.uipTransaction.EmployeeName = self.uipTransaction.GetFieldValue('LEmployee.Nama_Lengkap')
     #self.uipTransaction.EmployeeId = self.uipTransaction.GetFieldValue('LEmployee.Nomor_Karyawan')
-    self.uipTransaction.EmployeeName = self.uipTransaction.GetFieldValue('LEmployee.AccountName')
-    self.uipTransaction.EmployeeId = self.uipTransaction.GetFieldValue('LEmployee.EmployeeIdNumber')
+    self.uipTransaction.EmployeeName = self.uipTransaction.GetFieldValue('LEmployee.EmployeeName')
+    self.uipTransaction.EmployeeId = self.uipTransaction.GetFieldValue('LEmployee.EmployeeId')
     #self.uipTransaction.EmployeeId = self.uipTransaction.GetFieldValue('LEmployee.Nomor_Karyawan')
 
   def bSearchEmployeeClick(self,sender):
@@ -238,7 +239,11 @@ class fCashAdvanceReturn :
       uipTran.RefTransactionDate = uipCA.TransactionDate
       uipTran.RefDescription = uipCA.Description
       uipTran.RefTransactionItemId = uipCA.TransactionItemId
+      uipTran.CurrencyCode = uipCA.CurrencyCode
+      uipTran.Rate = uipCA.Rate
+      uipTran.CurrencyName = uipCA.GetFieldValue('LCurrency.Short_Name')
       self.RefTransactionNo = uipTran.RefTransactionNo
+      self.pTransaction_Rate.enabled = (uipTran.CurrencyCode != '000')
 
     
   def bSimpanClick(self, sender):

@@ -18,6 +18,12 @@ def FormSetDataEx(uideflist, params) :
     oBudgetPeriod = helper.GetObjectByNames('BudgetPeriod', {'PeriodValue': tahun})
     rec.PeriodId = oBudgetPeriod.PeriodId
     
+    if rec.CurrencyCode in ['',None]:
+      rec.CurrencyCode = '000'
+      rec.CurrencyName = 'IDR'
+      rec.Rate = 1.0
+      rec.AmountEkuivalen = rec.Amount
+
     return st
 
   rec = uideflist.uipTransaction.Dataset.AddRecord()
@@ -53,10 +59,11 @@ def SimpanData(config, params, returns):
     request['EmployeeId'] = oTransaction.EmployeeId #oTransaction.GetFieldByName('LEmployee.Nomor_Karyawan')
     request['EmployeeName'] = oTransaction.EmployeeName
     request['CashAccountNo'] = oTransaction.GetFieldByName('LCashAccount.AccountNo')
+    request['CurrencyCode'] = oTransaction.GetFieldByName('LCashAccount.CurrencyCode')
     request['Amount'] = oTransaction.Amount
     request['ReferenceNo'] = oTransaction.ReferenceNo
     request['Description'] = oTransaction.Description
-    request['Rate'] = 1.0
+    request['Rate'] = oTransaction.Rate
     request['Inputer'] = config.SecurityContext.InitUser
     request['BranchCode'] = config.SecurityContext.GetUserInfo()[4]
     request['TransactionNo'] = oTransaction.TransactionNo

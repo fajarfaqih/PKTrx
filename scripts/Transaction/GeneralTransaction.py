@@ -730,32 +730,36 @@ def CashAdvance(helper,oTran,oBatch,request,params):
   oTran.ReferenceNo = request[u'ReferenceNo']
   oTran.Description = request[u'Description']
   oTran.Inputer     = request[u'Inputer']
-  oTran.BranchCode  = request[u'BranchCode']
+  oTran.BranchCode  = request[u'BranchCode']  
   oTran.Amount = request[u'Amount']
-  oTran.CurrencyCode = '000'
+  oTran.Rate = request[u'Rate']
+  oTran.CurrencyCode = request[u'CurrencyCode']
   oTran.ReceivedFrom = request[u'ReceivedFrom']
   oTran.ActualDate = oBatch.GetAsTDateTime('BatchDate')
 
+  
+  aCurrencyCode = request[u'CurrencyCode']
+  aRate = request[u'Rate']
   # EmployeeAR Account
   employeeId = request[u'EmployeeId']
   
   oAccount = helper.GetObjectByNames('EmployeeCashAdvance',
     {
       'EmployeeIdNumber': employeeId,
-      'CurrencyCode': '000'
+      'CurrencyCode': aCurrencyCode #'000'
     }
   )
   
   if oAccount.isnull:
     #raise '','Karyawan Belum Memiliki Rekening Uang Muka' 
     # Create EmployeeCashAdvance Account
-    oAccount = helper.CreatePObject('EmployeeCashAdvance', employeeId)
+    oAccount = helper.CreatePObject('EmployeeCashAdvance', [employeeId,aCurrencyCode])
     oAccount.BranchCode = request[u'BranchCode']
-    oAccount.CurrencyCode = '000'
+    #oAccount.CurrencyCode = aCurrencyCode #'000'
     oAccount.AccountName  = request[u'EmployeeName']
 
   oItemCAD = oTran.CreateCATransactItem(oAccount)
-  oItemCAD.SetMutation('D', request[u'Amount'], 1.0)
+  oItemCAD.SetMutation('D', request[u'Amount'], aRate)
   oItemCAD.Description = request[u'Description']
   #oItemCA.Description = 'Uang Muka'
   oItemCAD.SetFundEntity(request[u'FundEntity'])
@@ -779,7 +783,7 @@ def CashAdvance(helper,oTran,oBatch,request,params):
     raise 'Cash/Bank', 'Rekening %s tidak ditemukan' % request[u'CashAccountNo']
 
   oItemCA = oTran.CreateAccountTransactionItem(oCashAccount)
-  oItemCA.SetMutation('C', request[u'Amount'], 1.0)    
+  oItemCA.SetMutation('C', request[u'Amount'], aRate)  
   oItemCA.Description = request[u'Description']
   oItemCA.SetJournalParameter('10')
   
@@ -792,7 +796,7 @@ def CashAdvance(helper,oTran,oBatch,request,params):
 
   return oTran.GetKwitansi()
 
-### ------- End CASH ADVANCE  -----------------------------------
+### ------- End CASH ADVANCE  -------------------------------------------
 
 ### ------- Begin CASH ADVANCE RETURN -----------------------------------
 def CashAdvanceReturnNew(config, srequest, params):
@@ -802,7 +806,12 @@ def CashAdvanceReturnNew(config, srequest, params):
   config.BeginTransaction()
   try:
     oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
-    oTran = oBatch.NewTransaction('CAR')
+    if request[u'ReimburseAmount'] > 0.0 :
+      TranCode = 'CARB'
+    else:
+      TranCode = 'CAR'
+    # end if    
+    oTran = oBatch.NewTransaction(TranCode)
 
     FileKwitansi = CashAdvanceReturn(helper,oTran,oBatch,request,params)
     
@@ -837,7 +846,12 @@ def CashAdvanceReturnUpdate(config, srequest, params):
     oTran.CancelTransaction()
     oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
     oTran.BatchId = oBatch.BatchId
-    oTran.TransactionCode = 'CAR'
+    if request[u'ReimburseAmount'] > 0.0 :
+      TranCode = 'CARB'
+    else:
+      TranCode = 'CAR'
+    # end if
+    oTran.TransactionCode = TranCode
 
     FileKwitansi = CashAdvanceReturn(helper,oTran,oBatch,request,params)
 
@@ -860,12 +874,15 @@ def CashAdvanceReturn(helper,oTran,oBatch,request,params):
   oTran.Inputer     = request[u'Inputer']
   oTran.BranchCode  = request[u'BranchCode']
   #oTran.TransactionNo = request[u'TransactionNo']
-  oTran.Amount = request[u'RefAmount']
-  oTran.CurrencyCode = '000'
+  oTran.Amount = request[u'RefAmount'] + request[u'ReimburseAmount']
+  oTran.CurrencyCode = request[u'CurrencyCode']
   oTran.ReceivedFrom = request[u'EmployeeName']
   oTran.PaidTo = request[u'PaidTo']
   oTran.ActualDate = oBatch.GetAsTDateTime('BatchDate')
+  oTran.Rate = request[u'Rate']
   
+  aRate = request[u'Rate']
+  aCurrencyCode = request[u'CurrencyCode']
   # Get Source Transaction Item Id Using TransactionNo
   oRefItemCA = helper.GetObjectByNames(
         'CATransactItem',
@@ -878,30 +895,36 @@ def CashAdvanceReturn(helper,oTran,oBatch,request,params):
   oAccount = helper.GetObjectByNames('EmployeeCashAdvance',
     {
       'EmployeeIdNumber': employeeId,
-      'CurrencyCode': '000'
+      'CurrencyCode': aCurrencyCode
     }
   )
   if oAccount.isnull:
     raise '','Karyawan Belum Memiliki Rekening Uang Muka'
   
   oItemCAR = oTran.CreateCAReturnTransactItem(oAccount)    
-  oItemCAR.SetMutation('C', request[u'RefAmount'], 1.0)    
+  oItemCAR.SetMutation('C', request[u'RefAmount'], aRate)
   oItemCAR.Description = request[u'Description']  
   oItemCAR.SetFundEntity(oRefItemCA.FundEntity)
   oItemCAR.SetJournalParameter(FundEntityMap[oRefItemCA.FundEntity or 4] )
   
   oItemCAR.SetReturnInfo(oRefItemCA)
   
-  # Destination Transaction
+  # CashAccount Transaction
   aJournalCode = 10
   oCashAccount = helper.GetObject('CashAccount',
     str(request[u'CashAccountNo'])).CastToLowestDescendant()
   if oCashAccount.isnull:
     raise 'Cash/Bank', 'Rekening %s tidak ditemukan' % request[u'CashAccountNo']
 
-  if request[u'Amount'] > 0.0 :
+  if request[u'Amount'] > 0.0 or request[u'ReimburseAmount'] > 0.0 :
     oItemCA = oTran.CreateAccountTransactionItem(oCashAccount)
-    oItemCA.SetMutation('D', request[u'Amount'], 1.0)
+
+    if request[u'Amount'] > 0.0 :
+      oItemCA.SetMutation('D', request[u'Amount'], aRate)
+    elif request[u'ReimburseAmount'] > 0.0:
+      oItemCA.SetMutation('C', request[u'ReimburseAmount'], aRate)
+    # end if
+
     oItemCA.Description = oCashAccount.AccountName #request[u'Description']
     oItemCA.SetJournalParameter('10')
     
@@ -929,7 +952,7 @@ def CashAdvanceReturn(helper,oTran,oBatch,request,params):
         raise 'Collection', 'Rekening produk %s tidak ditemukan' % (aAccountNo)
       
       oItemPA = oTran.CreateZakahDistTransactItem(oProductAccount, item[u'Ashnaf'])  
-      oItemPA.SetMutation('D', item[u'Amount'], item[u'Rate'])
+      oItemPA.SetMutation('D', item[u'Amount'], aRate)
       oItemPA.Description = item[u'Description']
       oItemPA.SetJournalParameter(aJournalCode)
       oItemPA.SetDistributionEntity(item[u'FundEntity'])
@@ -939,7 +962,7 @@ def CashAdvanceReturn(helper,oTran,oBatch,request,params):
     elif item[u'ItemType'] == 'G':      
       oItemGL = oTran.CreateGLTransactionItem(item[u'AccountId'], aValuta)
       oItemGL.RefAccountName = item[u'AccountName']
-      oItemGL.SetMutation('D', item[u'Amount'], item[u'Rate'])
+      oItemGL.SetMutation('D', item[u'Amount'], aRate)
       oItemGL.Description = item[u'Description']
       oItemGL.SetJournalParameter('10')
       oItemBudget = oItemGL
@@ -958,9 +981,9 @@ def CashAdvanceReturn(helper,oTran,oBatch,request,params):
       oFAAccount.AccountName  = item[u'AssetName']
       oFAAccount.Qty = item[u'AssetQty']
       oFAAccount.SetAssetCategory(item[u'AssetCatId'])
-      oFAAccount.SetInitialValue(item[u'AssetAmount'])
+      oFAAccount.SetInitialValue(item[u'AssetAmount'] * aRate)
       oFAAccount.SetInitialProcessDate()
-      oFAAccount.UangMuka = item[u'Amount']
+      oFAAccount.UangMuka = item[u'Amount'] * aRate
 
       if oFAAccount.LAssetCategory.AssetType == 'T' :
         oFAAccount.AccountNoProduct = item[u'AccountId']
@@ -979,7 +1002,7 @@ def CashAdvanceReturn(helper,oTran,oBatch,request,params):
                  
       # Buat Transaksi pembelian
       oItemFA = oTran.CreateAccountTransactionItem(oFAAccount)
-      oItemFA.SetMutation('D', item[u'Amount'], 1.0)
+      oItemFA.SetMutation('D', item[u'Amount'], aRate)
       oItemFA.Description = item[u'Description']
       oItemFA.SetJournalParameter(JournalCode)
       oItemFA.AccountCode = oFAAccount.GetAssetAccount()  
@@ -1008,7 +1031,7 @@ def CashAdvanceReturn(helper,oTran,oBatch,request,params):
       oCPIAAccount.CPIACatId = item[u'CPIACatId']
 
       oItem = oTran.CreateAccountTransactionItem(oCPIAAccount)
-      oItem.SetMutation('D', item[u'Amount'], 1.0)
+      oItem.SetMutation('D', item[u'Amount'], aRate)
       oItem.Description = item[u'Description']
       oItem.SetJournalParameter('BDD01')
 

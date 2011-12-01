@@ -6,15 +6,33 @@ document <
   MinorVersion='0'
 >object:rpclass::TPClassUIDefList<
   UIDefs={object:rpclass::TPClassUIDef<
-      Name='uipEmployeeAR'
+      Name='uipFilter'
       CustomLoadedFields={object:rpclass::TCustomLoadedField<
           Name='BranchCode'
           DataTypeName='varchar'
           DataLength=10
         >, object:rpclass::TCustomLoadedField<
-          Name='BranchId'
+          Name='BudgetId'
           DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBudgetOwner.OwnerID'
+          DataTypeName='INTEGER'
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBudgetOwner.OwnerCode'
+          DataTypeName='VARCHAR'
           DataLength=10
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBudgetOwner.OwnerID'
+          DataTypeName='INTEGER'
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBudgetOwner.OwnerName'
+          DataTypeName='VARCHAR'
+          DataLength=100
+        >, object:rpclass::TCustomLoadedField<
+          Name='IsAllOwner'
+          DataTypeName='varchar'
+          DataLength=20
         >, object:rpclass::TCustomLoadedField<
           Name='BeginDate'
           DataTypeName='timestamp'
@@ -23,47 +41,33 @@ document <
           Name='EndDate'
           DataTypeName='timestamp'
           DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='BeginningBalance'
-          DataTypeName='double'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='LEmployeeAR.EmployeeId'
-          DataTypeName='INTEGER'
-        >, object:rpclass::TCustomLoadedField<
-          Name='LEmployeeAR.EmployeeId'
-          DataTypeName='INTEGER'
-        >, object:rpclass::TCustomLoadedField<
-          Name='LEmployeeAR.EmployeeName'
-          DataTypeName='VARCHAR'
-          DataLength=150
-        >, object:rpclass::TCustomLoadedField<
-          Name='Balance'
-          DataTypeName='double'
-          DataLength=20
         >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
-          Name='LEmployeeAR'
-          ClassTypeName='VEmployeeCashAdvance'
-          FieldNames='EmployeeId;EmployeeId;EmployeeName'
+          Name='LBudgetOwner'
+          ClassTypeName='BudgetOwner'
+          FieldNames='OwnerID;OwnerCode;OwnerID;OwnerName'
         >}Mode=imSingleRow
     >, object:rpclass::TPClassUIDef<
       Name='uipTransaction'
       CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='OwnerName'
+          DataTypeName='varchar'
+          DataLength=200
+        >, object:rpclass::TCustomLoadedField<
+          Name='BudgetCode'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='GroupName'
+          DataTypeName='varchar'
+          DataLength=200
+        >, object:rpclass::TCustomLoadedField<
+          Name='ItemName'
+          DataTypeName='varchar'
+          DataLength=200
+        >, object:rpclass::TCustomLoadedField<
           Name='TransactionDate'
           DataTypeName='timestamp'
           DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='TransactionCode'
-          DataTypeName='varchar'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='TransactionNo'
-          DataTypeName='varchar'
-          DataLength=30
-        >, object:rpclass::TCustomLoadedField<
-          Name='MutationType'
-          DataTypeName='varchar'
-          DataLength=1
         >, object:rpclass::TCustomLoadedField<
           Name='Amount'
           DataTypeName='double'
@@ -77,13 +81,17 @@ document <
           DataTypeName='double'
           DataLength=20
         >, object:rpclass::TCustomLoadedField<
-          Name='ReferenceNo'
-          DataTypeName='varchar'
-          DataLength=30
-        >, object:rpclass::TCustomLoadedField<
           Name='Description'
           DataTypeName='varchar'
           DataLength=100
+        >, object:rpclass::TCustomLoadedField<
+          Name='TransactionCode'
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rpclass::TCustomLoadedField<
+          Name='ReferenceNo'
+          DataTypeName='varchar'
+          DataLength=30
         >, object:rpclass::TCustomLoadedField<
           Name='Inputer'
           DataTypeName='varchar'
@@ -96,6 +104,10 @@ document <
           Name='Rate'
           DataTypeName='double'
           DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='TransactionNo'
+          DataTypeName='varchar'
+          DataLength=30
         >}Mode=imMultiRow
     >}OnSetDataEx='FormSetDataEx'
 >

@@ -10,8 +10,8 @@ document <
   State=rsMaximized
   Left=50
   Top=50
-  Width=649
-  Height=480
+  Width=641
+  Height=600
   BeforeDeleteRow=''
   BeforeResultSent=''
   OnGeneralSetData=''
@@ -57,8 +57,8 @@ document <
       PostLinkValues=true
     >}Containers={object:rtf::DualSplit<
       Name='dsMain'
-      Width=649
-      Height=480
+      Width=641
+      Height=600
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dualsplit1']
       InversedAlign=true
@@ -66,6 +66,7 @@ document <
       Name='pAction'
       Width=425
       Height=30
+      Bordered=true
       Controls={object:rtf::Button<
           Name='bSave'
           Layout=clAbsolute
@@ -128,13 +129,14 @@ document <
           DataLength=20
         >}Name='pRAKInfo'
       Width=545
-      Height=121
+      Height=137
+      Bordered=true
       UIPart=$UIPARTS['uipTransaction']
       Controls={*object:rtf::DBEdit<
           Name='DistTransactionNo'
           Top=40
           Left=8
-          Width=313
+          Width=225
           Height=21
           Enabled=false
           Color=-2147483624
@@ -143,6 +145,8 @@ document <
           Name='DistSourceBranchCode'
           Top=68
           Left=8
+          Width=49
+          Height=21
           Enabled=false
           Color=-2147483624
           ControlCaption='Cabang Pengirim'
@@ -150,8 +154,8 @@ document <
           Name='DistSourceBranchName'
           Layout=clNextSide
           Top=68
-          Left=143
-          Width=270
+          Left=165
+          Width=165
           Height=21
           Enabled=false
           Color=-2147483624
@@ -186,7 +190,7 @@ document <
           Name='bSearchRAK'
           Layout=clAbsolute
           Top=40
-          Left=432
+          Left=344
           Width=97
           Height=25
           Color=0
@@ -200,63 +204,38 @@ document <
       DefaultControlHeight=21
       HorizontalControlGap=4
       RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=641
+      Height=569
+      Container1=$CONTAINERS['dualsplit2']
+      Container2=$CONTAINERS['pRAKInfo']
     >, object:rtf::Panel<
-      Elements={object:rtf::FieldUIElmtSetting<
-          Name='TransactionDate'
-          ReadOnlyControl=true
-          ControlCaption='Tanggal Input'
-          DataTypeName='timestamp'
-          DataLength=20
-        >, object:rtf::FieldUIElmtSetting<
-          Name='TransactionNo'
-          ReadOnlyControl=true
-          ControlCaption='No Transaksi'
-          DataTypeName='varchar'
-          DataLength=30
-        >, object:rtf::LinkUIElmtSetting<
-          Name='LBatch'
-          ControlCaption='Pilih batch transaksi'
-          ClassTypeName='TransactionBatch'
-          DisplayFields='BatchId;BatchNo;BatchDate;Description'
-          Restrictions='Inputer|Inputer'
-          OQLText=['Select from TransactionBatch '#13#10,
-            '[IsClosed = ''F'' and BatchTag = ''OPR'' and IsPosted = ''T'' and Inputer = :Inputer]'#13#10,
-            '(BatchDate, Description,BatchId, BatchNo, self )'#13#10,
-            'then order by Desc BatchDate;']
-          LookupOption=loCustomOQL
-          FieldBaseName='LBatch'
-        >, object:rtf::FieldUIElmtSetting<
-          Name='ReceivedFrom'
-          ControlCaption='Kasir'
-          DataTypeName='varchar'
-          DataLength=30
-        >, object:rtf::LinkUIElmtSetting<
+      Elements={object:rtf::LinkUIElmtSetting<
           Name='LCashAccount'
           ControlCaption='Kas/Bank'
           ClassTypeName='CashAccount'
-          DisplayFields='AccountNo;AccountName'
+          DisplayFields='AccountNo;AccountName;CurrencyCode;LCurrency.Short_Name;LCurrency.Kurs_Tengah_BI'
           Restrictions='BranchCode|BranchCode'
           OQLText=['select from CashAccount'#13#10,
-            '[status = ''A'' and CurrencyCode = ''000'' '#13#10,
+            '[status = ''A'' '#13#10,
             ' and BranchCode = :BranchCode]'#13#10,
             '('#13#10,
-            ' AccountNo, AccountName, CashAccountType, Balance, self'#13#10,
+            ' AccountNo, AccountName, CashAccountType, CurrencyCode, LCurrency.Short_Name, LCurrency.Kurs_Tengah_BI, Balance, self'#13#10,
             ')'#13#10,
             'then order by desc CashAccountType;']
           LookupOption=loCustomOQL
           FieldBaseName='LCashAccount'
         >, object:rtf::FieldUIElmtSetting<
-          Name='EmployeeId'
+          Name='CurrencyCode'
           ReadOnlyControl=true
-          ControlCaption='Nomor Karyawan'
-          DataTypeName='integer'
-          DataLength=20
+          ControlCaption='Kode Valuta'
+          DataTypeName='varchar'
+          DataLength=5
         >, object:rtf::FieldUIElmtSetting<
-          Name='EmployeeName'
+          Name='CurrencyName'
           ReadOnlyControl=true
           ControlCaption='-'
-          DataTypeName='varchar'
-          DataLength=50
         >, object:rtf::LinkUIElmtSetting<
           Name='LEmployee'
           Hidden=true
@@ -301,6 +280,22 @@ document <
           EnumeratedValues=['P=Pinjam'#13#10,
             'B=Bayar'#13#10]
         >, object:rtf::FieldUIElmtSetting<
+          Name='Rate'
+          ControlCaption='Rate Kurs'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount'
+          ControlCaption='Nilai'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AmountEkuivalen'
+          ReadOnlyControl=true
+          ControlCaption='Nilai Ekuivalen (Rp)'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
           Name='FundEntity'
           ControlCaption='Jenis Sumber Dana'
           DataTypeName='integer'
@@ -309,11 +304,6 @@ document <
             '2=Infaq'#13#10,
             '3=Wakaf'#13#10,
             '4=Amil'#13#10]
-        >, object:rtf::FieldUIElmtSetting<
-          Name='Amount'
-          ControlCaption='Nilai'
-          DataTypeName='double'
-          DataLength=20
         >, object:rtf::FieldUIElmtSetting<
           Name='ReferenceNo'
           ControlCaption='Nomor referensi'
@@ -334,9 +324,159 @@ document <
           ControlCaption='-'
           DataTypeName='varchar'
           DataLength=100
+        >}Name='pTransaction2'
+      Width=593
+      Height=337
+      Bordered=true
+      UIPart=$UIPARTS['uipTransaction']
+      Controls={*object:rtf::DBLookupEdit<
+          Name='LCashAccount'
+          Top=20
+          Left=8
+          ControlCaption='Kas/Bank'
+          LookupField='LCashAccount.AccountName'
+          DisplayLookupField=true
+          OnAfterLookup='CashAccountAfterLookup'
+        >, *object:rtf::DBEdit<
+          Name='CurrencyCode'
+          Top=48
+          Left=8
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Kode Valuta'
+        >, *object:rtf::DBEdit<
+          Name='CurrencyName'
+          Layout=clNextSide
+          Top=48
+          Left=161
+          Width=60
+          Height=21
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='-'
+        >, *object:rtf::DBEdit<
+          Name='Rate'
+          Top=76
+          Left=8
+          Color=0
+          ControlCaption='Rate Kurs'
+          OnExit='RateOnExit'
+        >, *object:rtf::DBEdit<
+          Name='Amount'
+          Top=104
+          Left=8
+          Color=0
+          ControlCaption='Nilai'
+          OnExit='AmountOnExit'
+        >, *object:rtf::DBEdit<
+          Name='AmountEkuivalen'
+          Top=132
+          Left=8
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Nilai Ekuivalen (Rp)'
+        >, *object:rtf::DBComboBox<
+          Name='FundEntity'
+          Top=160
+          Left=8
+          Color=0
+          ControlCaption='Jenis Sumber Dana'
+        >, *object:rtf::DBEdit<
+          Name='ReferenceNo'
+          Top=188
+          Left=8
+          Width=225
+          Height=21
+          Color=0
+          ControlCaption='Nomor referensi'
+        >, *object:rtf::DBEdit<
+          Name='Description'
+          Top=216
+          Left=8
+          Width=225
+          Height=21
+          Color=0
+          ControlCaption='Keterangan'
+        >, *object:rtf::DBEdit<
+          Name='BudgetCode'
+          Top=244
+          Left=8
+          Width=49
+          Height=21
+          Color=-2147483624
+          ControlCaption='Kode Budget'
+        >, *object:rtf::DBEdit<
+          Name='BudgetOwner'
+          Layout=clNextSide
+          Top=244
+          Left=165
+          Width=165
+          Height=21
+          Color=-2147483624
+          ControlCaption='-'
+        >, object:rtf::Button<
+          Name='bSearchBudget'
+          Layout=clAbsolute
+          Top=244
+          Left=345
+          Width=88
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='Cari Budget'
+          OnClick='bSearchBudgetClick'
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=20
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='TransactionDate'
+          ReadOnlyControl=true
+          ControlCaption='Tanggal Input'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionNo'
+          ReadOnlyControl=true
+          ControlCaption='No Transaksi'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LBatch'
+          ControlCaption='Pilih batch transaksi'
+          ClassTypeName='TransactionBatch'
+          DisplayFields='BatchId;BatchNo;BatchDate;Description'
+          Restrictions='Inputer|Inputer'
+          OQLText=['Select from TransactionBatch '#13#10,
+            '[IsClosed = ''F'' and BatchTag = ''OPR'' and IsPosted = ''T'' and Inputer = :Inputer]'#13#10,
+            '(BatchDate, Description,BatchId, BatchNo, self )'#13#10,
+            'then order by Desc BatchDate;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LBatch'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ReceivedFrom'
+          ControlCaption='Kasir'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='EmployeeId'
+          ReadOnlyControl=true
+          ControlCaption='Nomor Karyawan'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='EmployeeName'
+          ReadOnlyControl=true
+          ControlCaption='-'
+          DataTypeName='varchar'
+          DataLength=50
         >}Name='pTransaction'
       Width=585
-      Height=329
+      Height=169
+      Bordered=true
       UIPart=$UIPARTS['uipTransaction']
       Controls={*object:rtf::DBDateEdit<
           Name='TransactionDate'
@@ -349,6 +489,8 @@ document <
           Name='TransactionNo'
           Top=36
           Left=8
+          Width=225
+          Height=21
           Enabled=false
           Color=-2147483624
           ControlCaption='No Transaksi'
@@ -370,24 +512,11 @@ document <
           Color=0
           ControlCaption='Kasir'
           CharCase=ecUpperCase
-        >, *object:rtf::DBLookupEdit<
-          Name='LCashAccount'
-          Top=120
-          Left=8
-          Width=100
-          Height=21
-          ControlCaption='Kas/Bank'
-          FieldName='LCashAccount.AccountNo'
-          DisplayFormat=''
-          LookupField='LCashAccount.AccountName'
-          DisplayLookupField=true
-          DisplayLookupColor=-2147483624
-          DisplayLookupWidth=215
         >, *object:rtf::DBEdit<
           Name='EmployeeId'
-          Top=148
+          Top=120
           Left=8
-          Width=121
+          Width=65
           Height=21
           Color=-2147483624
           ControlCaption='Nomor Karyawan'
@@ -395,66 +524,9 @@ document <
         >, *object:rtf::DBEdit<
           Name='EmployeeName'
           Layout=clNextSide
-          Top=148
-          Left=237
-          Width=182
-          Height=21
-          Color=-2147483624
-          ControlCaption='-'
-          CaptionWidth=2
-          ReadOnly=true
-          CharCase=ecUpperCase
-        >, *object:rtf::DBComboBox<
-          Name='FundEntity'
-          Top=180
-          Left=8
-          Color=0
-          ControlCaption='Jenis Sumber Dana'
-        >, *object:rtf::DBEdit<
-          Name='Amount'
-          Top=208
-          Left=8
-          Color=0
-          ControlCaption='Nilai'
-          CaptionWidth=100
-          FieldName='Amount'
-          DisplayFormat=',0.00'
-        >, *object:rtf::DBEdit<
-          Name='ReferenceNo'
-          Top=236
-          Left=8
-          Width=201
-          Height=21
-          Color=0
-          ControlCaption='Nomor referensi'
-          CaptionWidth=100
-          CharCase=ecUpperCase
-        >, *object:rtf::DBEdit<
-          Name='Description'
-          Top=264
-          Left=8
-          Width=313
-          Height=21
-          Color=0
-          ControlCaption='Keterangan'
-          CaptionWidth=100
-          CharCase=ecUpperCase
-        >, *object:rtf::DBEdit<
-          Name='BudgetCode'
-          Top=292
-          Left=8
-          Width=97
-          Height=21
-          Color=-2147483624
-          ControlCaption='Kode Budget'
-          ReadOnly=true
-          CharCase=ecUpperCase
-        >, *object:rtf::DBEdit<
-          Name='BudgetOwner'
-          Layout=clNextSide
-          Top=292
-          Left=213
-          Width=206
+          Top=120
+          Left=181
+          Width=150
           Height=21
           Color=-2147483624
           ControlCaption='-'
@@ -463,27 +535,16 @@ document <
           CharCase=ecUpperCase
         >, object:rtf::Button<
           Name='bSearchEmployee'
-          Layout=clNextSide
-          Top=148
-          Left=429
+          Layout=clAbsolute
+          Top=124
+          Left=343
           Width=89
           Height=25
           Color=0
           ControlCaption=''
-          LayoutOrder=8
+          LayoutOrder=7
           Caption='&Cari Karyawan'
           OnClick='SearchEmployeeClick'
-        >, object:rtf::Button<
-          Name='bSearchBudget'
-          Layout=clNextSide
-          Top=292
-          Left=429
-          Width=88
-          Height=25
-          Color=0
-          ControlCaption=''
-          Caption='Cari Budget'
-          OnClick='bSearchBudgetClick'
         >}EqualCaptionWidth=100
       ControlLeftMargin=8
       ControlTopMargin=8
@@ -492,10 +553,10 @@ document <
       RowControlGap=7
       ControlCharCase=ecUpperCase
     >, object:rtf::DualSplit<
-      Name='dualsplit1'
-      Width=649
-      Height=449
+      Name='dualsplit2'
+      Width=641
+      Height=465
       Container1=$CONTAINERS['pTransaction']
-      Container2=$CONTAINERS['pRAKInfo']
+      Container2=$CONTAINERS['pTransaction2']
     >}FormClassName='fCashAdvance'
 >

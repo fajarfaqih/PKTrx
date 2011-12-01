@@ -30,6 +30,11 @@ document <
           DataTypeName='varchar'
           DataLength=10
         >, object:rtf::FieldUIElmtSetting<
+          Name='BranchId'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
           Name='Inputer'
           Hidden=true
         >, object:rtf::FieldUIElmtSetting<
@@ -171,7 +176,7 @@ document <
           EnumeratedValues=['D=Penyaluran'#13#10,
             'G=Amil'#13#10,
             'A=Asset'#13#10,
-            'B=Biaya Dibayara Dimuka'#13#10]
+            'B=Biaya Dibayar Dimuka'#13#10]
         >, object:rtf::FieldUIElmtSetting<
           Name='AccountName'
           Hidden=true
@@ -274,8 +279,8 @@ document <
       BeforeDelete='ItemBeforeDelete'
     >}Containers={object:rtf::DualSplit<
       Name='dsMain'
-      Width=793
-      Height=513
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dualsplit1']
       InversedAlign=true
@@ -336,17 +341,16 @@ document <
         >, object:rtf::LinkUIElmtSetting<
           Name='LEmployee'
           ControlCaption='Nomor Karyawan'
-          ClassTypeName='EmployeeCashAdvance'
-          DisplayFields='AccountNo;AccountName;EmployeeIdNumber'
-          Restrictions='BranchCode|BranchCode'
-          OQLText=['select from EmployeeCashAdvance'#13#10,
-            '[BranchCode=:BranchCode]'#13#10,
+          ClassTypeName='VEmployeeCashAdvance'
+          DisplayFields='EmployeeId;EmployeeName'
+          Restrictions='BranchId|BranchId'
+          OQLText=['select from VEmployeeCashAdvance'#13#10,
+            '[Branch_Id=:BranchId]'#13#10,
             '('#13#10,
-            '   AccountNo,'#13#10,
-            '   AccountName,'#13#10,
-            '   EmployeeIdNumber,'#13#10,
+            '   EmployeeId,'#13#10,
+            '   EmployeeName,'#13#10,
             '   self'#13#10,
-            ');']
+            ')then order by EmployeeName;']
           LookupOption=loCustomOQL
           FieldBaseName='LEmployee'
         >, object:rtf::FieldUIElmtSetting<
@@ -390,9 +394,10 @@ document <
           ControlCaption='Kas/Bank'
           ClassTypeName='CashAccount'
           DisplayFields='AccountNo;AccountName'
-          Restrictions='BranchCode|BranchCode'
+          Restrictions=['BranchCode|BranchCode'#13#10,
+            'CurrencyCode|CurrencyCode']
           OQLText=['select from CashAccount'#13#10,
-            '[status = ''A'' and CurrencyCode = ''000'' '#13#10,
+            '[status = ''A'' and CurrencyCode=:CurrencyCode '#13#10,
             ' and BranchCode = :BranchCode]'#13#10,
             '('#13#10,
             ' AccountNo, AccountName, CashAccountType, Balance, self'#13#10,
@@ -433,9 +438,24 @@ document <
           ControlCaption='Nilai Reimburse'
           DataTypeName='double'
           DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Rate'
+          ControlCaption='Rate Kurs'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='CurrencyCode'
+          ReadOnlyControl=true
+          ControlCaption='Kode Valuta'
+          DataTypeName='varchar'
+          DataLength=5
+        >, object:rtf::FieldUIElmtSetting<
+          Name='CurrencyName'
+          ReadOnlyControl=true
+          ControlCaption='-'
         >}Name='pTransaction'
       Width=793
-      Height=353
+      Height=385
       UIPart=$UIPARTS['uipTransaction']
       Controls={*object:rtf::DBDateEdit<
           Name='TransactionDate'
@@ -471,7 +491,7 @@ document <
           Width=100
           Height=21
           ControlCaption='Nomor Karyawan'
-          LookupField='LEmployee.AccountName'
+          LookupField='LEmployee.EmployeeName'
           DisplayLookupField=true
           OnAfterLookup='EmployeeAfterLookup'
         >, *object:rtf::DBEdit<
@@ -507,7 +527,7 @@ document <
         >, *object:rtf::DBEdit<
           Name='RefDescription'
           Layout=clAbsolute
-          Top=268
+          Top=296
           Left=8
           Enabled=false
           ForceUseEqualCaptionWidth=true
@@ -533,8 +553,9 @@ document <
         >, *object:rtf::DBEdit<
           Name='Amount'
           Layout=clAbsolute
-          Top=212
+          Top=240
           Left=408
+          Enabled=false
           ForceUseEqualCaptionWidth=true
           Color=-2147483624
           ControlCaption='Nilai yg dikembalikan'
@@ -546,7 +567,7 @@ document <
         >, *object:rtf::DBEdit<
           Name='ReferenceNo'
           Layout=clAbsolute
-          Top=296
+          Top=324
           Left=408
           Width=201
           Height=21
@@ -559,7 +580,7 @@ document <
         >, *object:rtf::DBEdit<
           Name='Description'
           Layout=clAbsolute
-          Top=324
+          Top=352
           Left=408
           Width=313
           Height=21
@@ -572,7 +593,7 @@ document <
         >, *object:rtf::DBEdit<
           Name='TotalAmount'
           Layout=clAbsolute
-          Top=240
+          Top=268
           Left=408
           ForceUseEqualCaptionWidth=true
           Color=-2147483624
@@ -590,12 +611,42 @@ document <
         >, *object:rtf::DBEdit<
           Name='ReimburseAmount'
           Layout=clAbsolute
-          Top=268
+          Top=296
           Left=408
           Color=-2147483624
           ControlCaption='Nilai Reimburse'
           CaptionWidth=100
           ReadOnly=true
+        >, *object:rtf::DBEdit<
+          Name='Rate'
+          Layout=clAbsolute
+          Top=212
+          Left=408
+          ForceUseEqualCaptionWidth=true
+          Color=0
+          ControlCaption='Rate Kurs'
+          LayoutOrder=8
+        >, *object:rtf::DBEdit<
+          Name='CurrencyCode'
+          Layout=clAbsolute
+          Top=268
+          Left=8
+          Enabled=false
+          ForceUseEqualCaptionWidth=true
+          Color=-2147483624
+          ControlCaption='Kode Valuta'
+          CharCase=ecUpperCase
+        >, *object:rtf::DBEdit<
+          Name='CurrencyName'
+          Layout=clAbsolute
+          Top=268
+          Left=160
+          Width=61
+          Height=21
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='-'
+          CharCase=ecUpperCase
         >, object:rtf::Label<
           Name='label1'
           Layout=clAbsolute
@@ -647,14 +698,14 @@ document <
       ControlCharCase=ecUpperCase
     >, object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=793
-      Height=471
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pTransaction']
       Container2=$CONTAINERS['dualsplit2']
     >, object:rtf::Grid<
       Name='gItem'
       Width=617
-      Height=117
+      Height=85
       UIPart=$UIPARTS['uipTransactionItem']
       ControlLeftMargin=8
       ControlTopMargin=8
@@ -765,7 +816,7 @@ document <
     >, object:rtf::DualSplit<
       Name='dualsplit2'
       Width=793
-      Height=117
+      Height=85
       Container1=$CONTAINERS['pButton']
       Container2=$CONTAINERS['gItem']
       SplitDirection=sdrSplitLeftRight

@@ -62,6 +62,21 @@ class fCashAdvance :
   def EmployeeAfterLookup (self, sender, linkui):
     self.uipTransaction.EmployeeName = self.uipTransaction.GetFieldValue('LEmployee.Nama_Lengkap')
 
+  def CashAccountAfterLookup(self, sender, linkui):
+    uipTran = self.uipTransaction
+    uipTran.Edit()
+    uipTran.CurrencyCode = uipTran.GetFieldValue('LCashAccount.CurrencyCode')
+    uipTran.CurrencyName = uipTran.GetFieldValue('LCashAccount.LCurrency.Short_Name')
+    uipTran.Rate = uipTran.GetFieldValue('LCashAccount.LCurrency.Kurs_Tengah_BI')
+
+    self.pTransaction_Rate.Enabled = (uipTran.CurrencyCode != '000')
+    
+  def RateOnExit(self,sender):
+    self.SetEkuivalenAmount()
+
+  def AmountOnExit(self,sender):
+    self.SetEkuivalenAmount()
+    
   def SearchEmployeeClick(self,sender):
     if self.fSearchEmployee == None:
       formname = 'Transaksi/fSearchEmployee'
@@ -127,6 +142,10 @@ class fCashAdvance :
         sender.ExitAction = 1
       # end if
 
+  def SetEkuivalenAmount(self):
+    uipTran = self.uipTransaction
+    uipTran.AmountEkuivalen = (uipTran.Amount or 0.0) * (uipTran.Rate or 1.0)
+    
   def SimpanData(self):
     app = self.app
     

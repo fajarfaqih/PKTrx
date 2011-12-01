@@ -167,6 +167,44 @@ document <
           ReadOnlyControl=true
           DataTypeName='DOUBLE'
           DataLength=0
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LCurrency'
+          RequiredOption=roAlwaysRequired
+          AccessOption=aoReadOnly
+          ClassTypeName='Currency'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LCurrency.Currency_Code'
+              DataTypeName='VARCHAR'
+              DataLength=20
+              UsedAsKey=true
+              KeyOrDisplayName='Currency_Code'
+              FinalDisplayFieldName='Currency_Code'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LCurrency.Short_Name'
+              DataTypeName='VARCHAR'
+              DataLength=10
+              UsedAsDisplay=true
+              KeyOrDisplayName='Short_Name'
+              FinalDisplayFieldName='Short_Name'
+            >}Restrictions=''
+          FieldBaseName='LCurrency'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Rate'
+          AccessOption=aoReadOnly
+          Hidden=true
+          DataTypeName='DOUBLE'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
+          Name='CurrencyCode'
+          AccessOption=aoReadOnly
+          Hidden=true
+          DataTypeName='VARCHAR'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AmountEkuivalen'
+          ControlCaption='Nilai Ekuivalen(Rp)'
+          DataTypeName='double'
+          DataLength=20
         >, object:rtf::FieldUIElmtSetting<
           Name='TransactionNo'
           ReadOnlyControl=true
@@ -239,6 +277,23 @@ document <
           DisplayFormat=',0.00'
           Width=120
           ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='LCurrency.Short_Name'
+          InputStyle=cisLookup
+          EnumeratedValues=''
+          FieldName='LCurrency.Short_Name'
+          DisplayFormat=''
+          TitleCaption='Kode Valuta'
+          Width=80
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='AmountEkuivalen'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='AmountEkuivalen'
+          DisplayFormat=''
+          TitleCaption='Nilai Ekuivalen(Rp)'
+          Hidden=true
         >, *object:rtf::GridColumn<
           Name='TransactionNo'
           InputStyle=cisNormal

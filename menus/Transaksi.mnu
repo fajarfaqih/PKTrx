@@ -303,12 +303,12 @@ document <
           AllowedGroups='ADM;SPV;KEU'
         >, object:rmn::MenuItem<
           Name='TR0022B'
-          Caption='Transaksi Pengembalian Uang Muka...'
+          Caption='Transaksi Pengembalian Uang Muka / LPJ...'
           OnClick='CashAdvanceReturnClick'
           AllowedGroups='ADM;SPV;KEU'
         >, object:rmn::MenuItem<
           Name='TR0022B'
-          Caption='Transaksi Pengembalian Uang Muka (Dana RAK)...'
+          Caption='Transaksi Pengembalian Uang Muka / LPJ (Dana RAK)...'
           OnClick='CashAdvanceReturnRAKClick'
         >, object:rmn::MenuItem<
           Caption='-'
@@ -516,19 +516,11 @@ document <
           StringTag='fCashOutReport'
         >, object:rmn::MenuItem<
           Caption='-'
-          AllowedGroups='HIDDEN'
-        >, object:rmn::MenuItem<
-          Name='TR0029'
-          Caption='Penerimaan Amil'
-          OnClick='ShowReportClick'
-          AllowedGroups='HIDDEN'
-          StringTag='fCashInReport'
         >, object:rmn::MenuItem<
           Name='TR0030'
-          Caption='Pengeluaran Amil'
+          Caption='Laporan Anggaran'
           OnClick='ShowReportClick'
-          AllowedGroups='HIDDEN'
-          StringTag='fCashOutReport'
+          StringTag='fBudgetReport'
         >, object:rmn::MenuItem<
           Name='TR0029'
           Caption='Penyaluran berdasarkan produk'
