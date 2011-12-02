@@ -26,7 +26,7 @@ def FormSetDataEx(uideflist, params) :
       )
       if not oTranItem.isnull :
         rec.SetFieldByName('LEmployee.EmployeeId', oTranItem.LCashAdvanceAccount.EmployeeIdNumber)
-        rec.SetFieldByName('LEmployee.EmployeeName', oTranItem.LCashAdvanceAccount.EmployeeName)
+        rec.SetFieldByName('LEmployee.EmployeeName', oTranItem.LCashAdvanceAccount.AccountName)
     
     return
 

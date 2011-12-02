@@ -303,8 +303,8 @@ document <
       BeforeDelete='ItemBeforeDelete'
     >}Containers={object:rtf::DualSplit<
       Name='dsMain'
-      Width=240
-      Height=96
+      Width=793
+      Height=513
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dualsplit1']
       InversedAlign=true
@@ -798,8 +798,8 @@ document <
       ControlCharCase=ecUpperCase
     >, object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=240
-      Height=96
+      Width=793
+      Height=471
       Container1=$CONTAINERS['pTransaction']
       Container2=$CONTAINERS['dualsplit2']
     >, object:rtf::Grid<
