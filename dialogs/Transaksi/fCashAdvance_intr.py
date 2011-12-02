@@ -30,9 +30,12 @@ class fCashAdvance :
   def Show(self , mode = 1):
     self.uipTransaction.Edit()
     self.uipTransaction.ShowMode = mode
-    if mode == 1 :
+    if mode == 1 : # Insert Mode
       self.uipTransaction.FundEntity = 4
       self.SaveDefaultValues()
+    else: # Edit Mode
+      self.pTransaction_Rate.Enabled = (uipTran.CurrencyCode != '000')
+      
     return self.FormContainer.Show()
 
 

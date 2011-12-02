@@ -17,7 +17,7 @@ def FormSetDataEx(uideflist, params) :
       rec.CurrencyCode = '000'
       rec.CurrencyName = 'IDR'
       rec.Rate = 1.0
-      rec.AmountEkuivalen = rec.Amount
+      #rec.AmountEkuivalen = rec.Amount
     
     return
 
