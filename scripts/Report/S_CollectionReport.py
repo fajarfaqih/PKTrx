@@ -133,7 +133,16 @@ def GetReportData(config,param):
                 when a.FundEntity = '5' then 'Lainnya' \
                 else '' end) as FundEntity, t.MarketerId ,\
            i.transactionitemid, b.branchname ,t.TransactionNo , \
-         t.currencycode as TransCurrencyCode , t.rate as TransRate \
+         t.currencycode as TransCurrencyCode , t.rate as TransRate , \
+           (select volunteername \
+              from transaction.volunteertransaction vt , \
+                   transaction.volunteer v \
+               where v.volunteerid = vt.volunteerid \
+                  and vt.transactionitemid = i.transactionitemid \
+            ) as VolunteerName , \
+            ( select full_name from public.sdm_employee s where s.id=t.MarketerId) as MarketerName , \
+            (select short_name from currency c where c.currency_code = i.currencycode) as CurrencyName , \
+            (select short_name from currency c where c.currency_code = t.currencycode) as TransCurrencyName \
         from accounttransactionitem a, transactionitem i, \
           transaction t, financialaccount f , productaccount p, \
           public.php_donor d, branch b \
@@ -149,7 +158,7 @@ def GetReportData(config,param):
           and i.MutationType='C' \
           %(ADDFILTER)s \
       " % qParam
-
+    
 #     sSQL += " union \
 #       select t.ActualDate, t.ReferenceNo, a.account_name as AccountName, \
 #         t.Description, i.Amount, i.Rate, i.Ekuivalenamount, i.CurrencyCode, t.Inputer, \
@@ -221,11 +230,12 @@ def GenerateExcel(helper, config, param):
             
       TotalTransaksi += ds.Amount      
       # Get VolunteerName
-      VName = ''        
-      oVT = helper.GetObject('VolunteerTransaction',ds.TransactionItemId)
-      if not oVT.isnull :
-         VName = oVT.LVolunteer.VolunteerName
+      VName = (res.VolunteerName or '')[:19]
+      #oVT = helper.GetObject('VolunteerTransaction',ds.TransactionItemId)
+      #if not oVT.isnull :
+      #   VName = oVT.LVolunteer.VolunteerName
       workbook.SetCellValue(row, 9, VName)
+
       
       # Get SponsorName
       SName = ''
@@ -260,27 +270,48 @@ def GenerateExcel(helper, config, param):
   #-- while
 
 def GenerateText(helper, config, param):
+  global addFilter
+   
   # Get Info Cabang     
   corporate = helper.CreateObject('Corporate')             
   reportdef = config.HomeDir + 'reports/collectionreport.mtr'
   oReport = textreport.TextReport(reportdef)  
+  helper = phelper.PObjectHelper(config)
+
+  res = GetReportData(config, param)
+
+  # Set Header
+
+  # Set Branch
+  BranchCode = param.BranchCode
+  oBranch = helper.GetObject('Branch', BranchCode)
+  Cabang = '%s - %s' % (BranchCode, oBranch.BranchName)
+  oReport.SetVars('BRANCH', Cabang)
   
-  # Set Title
-  oReport.SetVars('BRANCH', param.BranchCode)
-  
+  # Set Period
   aBeginDate = param.BeginDate
   aEndDate = param.EndDate
-  oReport.SetVars('BDATE', config.FormatDateTime('dd-mm-yyyy', aBeginDate))
-  oReport.SetVars('EDATE', config.FormatDateTime('dd-mm-yyyy', aEndDate))
+
+  if aBeginDate == aEndDate:
+    Tanggal = '%s' % config.FormatDateTime('dd mmm yyyy', aBeginDate)
+  else:    
+    Tanggal = '%s s.d. %s' % (
+                 config.FormatDateTime('dd mmm yyyy', aBeginDate),
+                 config.FormatDateTime('dd mmm yyyy', aEndDate) 
+               )
+  oReport.SetVars('DATE', Tanggal)
+
+  # Set Total Amount  
+  TotalAmount = CollectionSummary(config, aBeginDate, aEndDate,addFilter)
+  oReport.SetVars('TOTALAMOUNT', config.FormatFloat(',0.00', TotalAmount))
+  
   
   # Set nama file output.txt
   reportFile = corporate.GetUserHomeDir() + '\\CollectionReport.txt'
   oReport.OpenReport(reportFile)
   
   try:
-    
-    res = GetReportData(config, param)
-    
+        
     while not res.Eof:
       aContent = {}
       aDate = res.ActualDate
@@ -288,21 +319,30 @@ def GenerateText(helper, config, param):
                                                  str(aDate[1]).zfill(2), 
                                                  str(aDate[0]))
       aContent['REFNO']       = res.ReferenceNo
-      aContent['ACCOUNT']     = res.AccountName
-      aContent['DESCRIPTION'] = res.Description
-      aContent['AMOUNT']      = config.FormatFloat(',0.00', res.EkuivalenAmount)
+      aContent['ACCOUNT']     = res.AccountName[:24]
+      aContent['DESCRIPTION'] = res.Description[:29]
       aContent['INPUTER']     = res.Inputer
       aContent['AUTHSTATUS']  = res.AuthStatus
       aContent['NAMADONOR']  = res.DonorName[:20]
       aContent['CHANNEL']  = res.Channel[:20]
       aContent['FUNDENTITY'] = res.FundEntity
+
+      Amount , Rate, CurrencyName = GetAmount(res)
       
+      aContent['CURRENCYNAME'] = CurrencyName
+      aContent['AMOUNT']      = config.FormatFloat(',0.00', Amount)
+      aContent['RATE']       = config.FormatFloat(',0.00', Rate)
+      aContent['EKUIVAMOUNT'] = config.FormatFloat(',0.00', res.EkuivalenAmount)
+
+      aContent['MARKETERNAME'] = (res.MarketerName or '')[:19]
+      aContent['TRANSNO'] = res.TransactionNo
+
       # Get VolunteerName
-      VName = ''
-      oVT = helper.GetObject('VolunteerTransaction',res.TransactionItemId)
-      if not oVT.isnull :
-         VName = oVT.LVolunteer.VolunteerName
-      aContent['VOLUNTEERNAME'] = VName[:19]
+      #VName = ''
+      #oVT = helper.GetObject('VolunteerTransaction',res.TransactionItemId)
+      #if not oVT.isnull :
+      #   VName = oVT.LVolunteer.VolunteerName
+      aContent['VOLUNTEERNAME'] = (res.VolunteerName or '')[:19]
       
       # Get SponsorName
       SName = ''
@@ -314,8 +354,7 @@ def GenerateText(helper, config, param):
 #          #SName = oST.LSponsor.Name
          
       aContent['SPONSORNAME'] = SName[:19]
-      
-      
+
       oReport.PrintRow('detail', aContent)       
       res.Next()
     #-- while
@@ -337,6 +376,18 @@ def CreateCurrencyDict(config):
   
   return dictCurr
     
+def GetAmount(res):
+  if res.CurrencyCode != res.TransCurrencyCode and res.CurrencyCode == '000':
+    CurrencyName = res.TransCurrencyName #CURRSYMBOL[res.TransCurrencyCode]
+    Rate         = res.TransRate
+    Amount       = res.Amount / res.TransRate
+  else :
+    CurrencyName = res.CurrencyName #CURRSYMBOL[res.CurrencyCode]
+    Rate         = res.Rate
+    Amount       = res.Amount
+  # end if
+  return Amount , Rate, CurrencyName 
+
 def GetDataTransaction(config,parameters,returns):
   global addFilter
   
@@ -389,8 +440,9 @@ def GetDataTransaction(config,parameters,returns):
     Cabang = '' 
     if param.IsAllBranch == 'F' :
       BranchCode = param.GetFieldByName('LBranch.BranchCode') #config.SecurityContext.GetUserInfo()[4]
-      CabangInfo = corporate.GetCabangInfo(BranchCode)
-      Cabang = '%s - %s' % (BranchCode,CabangInfo.Nama_Cabang)
+      oBranch = helper.GetObject('Branch',BranchCode)
+      #CabangInfo = corporate.GetCabangInfo(BranchCode)
+      Cabang = '%s - %s' % (BranchCode,oBranch.BranchName)
       if param.IsIncludeChildBranch == 'T' :
         Cabang += " dan KCP"
       
@@ -419,16 +471,21 @@ def GetDataTransaction(config,parameters,returns):
       recData.AccountName = res.AccountName
       recData.Description = res.Description
 
-      if res.CurrencyCode != res.TransCurrencyCode and res.CurrencyCode == '000':
-        recData.CurrencyCode = CURRSYMBOL[res.TransCurrencyCode]
-        recData.Rate = res.TransRate
-        recData.Amount      = res.Amount / res.TransRate
-      else :
-        recData.CurrencyCode = CURRSYMBOL[res.CurrencyCode]
-        recData.Rate = res.Rate
-        recData.Amount      = res.Amount
-      # end if
-
+      # if res.CurrencyCode != res.TransCurrencyCode and res.CurrencyCode == '000':
+      #   recData.CurrencyCode = res.TransCurrencyName #CURRSYMBOL[res.TransCurrencyCode]
+      #   recData.Rate = res.TransRate
+      #   recData.Amount      = res.Amount / res.TransRate
+      # else :
+      #   recData.CurrencyCode = res.CurrencyName #CURRSYMBOL[res.CurrencyCode]
+      #   recData.Rate = res.Rate
+      #   recData.Amount      = res.Amount
+      # # end if
+      
+      Amount , Rate, CurrencyName = GetAmount(res)
+      recData.CurrencyCode = CurrencyName #CURRSYMBOL[res.CurrencyCode]
+      recData.Rate         = Rate
+      recData.Amount       = Amount
+      
       recData.EkuivalenAmount = res.EkuivalenAmount
       recData.Inputer     = res.Inputer
       recData.AuthStatus  = res.AuthStatus      
@@ -440,10 +497,10 @@ def GetDataTransaction(config,parameters,returns):
       
       TotalAmount += res.EkuivalenAmount
       # Get VolunteerName
-      VName = ''
-      oVT = helper.GetObject('VolunteerTransaction',res.TransactionItemId)
-      if not oVT.isnull :
-         VName = oVT.LVolunteer.VolunteerName
+      VName = (res.VolunteerName or '')[:19]
+      #oVT = helper.GetObject('VolunteerTransaction',res.TransactionItemId)
+      #if not oVT.isnull :
+      #   VName = oVT.LVolunteer.VolunteerName
       recData.VolunteerName = VName
       
       
@@ -460,15 +517,15 @@ def GetDataTransaction(config,parameters,returns):
               
       recData.SponsorName = SName
       # Get MarketerName
-      recData.Marketer = ''
-      if res.MarketerId not in [0,'',None]:
-        if MarketerList.has_key(res.MarketerId):
-          recData.Marketer = MarketerList[res.MarketerId]
-        else:
-          oMarketer = helper.GetObject('Marketer',res.MarketerId)
-          if not oMarketer.isnull :
-            recData.Marketer = oMarketer.Full_Name
-            MarketerList[oMarketer.MarketerId] = oMarketer.Full_Name        
+      recData.Marketer = res.MarketerName or ''
+      # if res.MarketerId not in [0,'',None]:
+      #   if MarketerList.has_key(res.MarketerId):
+      #     recData.Marketer = MarketerList[res.MarketerId]
+      #   else:
+      #     oMarketer = helper.GetObject('Marketer',res.MarketerId)
+      #     if not oMarketer.isnull :
+      #       recData.Marketer = oMarketer.Full_Name
+      #       MarketerList[oMarketer.MarketerId] = oMarketer.Full_Name        
         
       res.Next()
     #-- while
@@ -480,11 +537,12 @@ def GetDataTransaction(config,parameters,returns):
     status.WakafBalance = FundEntityBalance(config,BranchCode,aBeginDate,3,addFilter)
     status.AmilBalance = FundEntityBalance(config,BranchCode,aBeginDate,4,addFilter) #+ AmilBalance(config,BranchCode,aBeginDate,addFilter)   
     status.OtherBalance = FundEntityBalance(config,BranchCode,aBeginDate,5,addFilter)
+
       
     status.TotalAmount = TotalAmount
     status.Cabang = Cabang
     status.Tanggal = Tanggal
-    sY,sM,sD = config.ModLibUtils.DecodeDate(aBeginDate)[:3]    
+    sY,sM,sD = config.ModLibUtils.DecodeDate(aBeginDate)[:3]
     eY,eM,eD = config.ModLibUtils.DecodeDate(aEndDate)[:3]
     status.WorkDays = workdays.networkdays(
                  datetime.date(sY,sM,sD),
@@ -519,6 +577,34 @@ def FundEntityBalance(config,Branch=None,Date=None, FundEntity=1,addFilter=''):
       and a.Accounttitype = 'D' \
   " % param 
   
+  res = config.CreateSQL(sSQL + addFilter).rawresult
+  
+  return res.GetFieldValueAt(0) or 0.0
+
+
+def CollectionSummary(config, BeginDate=None, EndDate = None, addFilter=''):
+  param = {}
+  param['BEGINDATE'] = config.FormatDateTime('yyyy-mm-dd', BeginDate)
+  param['ENDDATE'] = config.FormatDateTime('yyyy-mm-dd', EndDate)
+  
+  sSQL ="\
+    select \
+      sum(i.ekuivalenamount) as BeginBalance \
+        from accounttransactionitem a, transactionitem i, \
+          transaction t, financialaccount f , productaccount p, \
+          public.php_donor d, branch b \
+        where a.TransactionItemId = i.TransactionItemId \
+          and i.TransactionId = t.TransactionId \
+          and p.AccountNo = f.AccountNo \
+          and a.AccountNo = f.AccountNo \
+          and a.DonorId = d.id \
+          and b.branchcode = i.branchcode \
+          and a.Accounttitype = 'D' \
+          and t.ActualDate >= '%(BEGINDATE)s' \
+          and t.ActualDate <= '%(ENDDATE)s' \
+          and i.MutationType='C' \
+  " % param 
+
   res = config.CreateSQL(sSQL + addFilter).rawresult
   
   return res.GetFieldValueAt(0) or 0.0

@@ -18,6 +18,15 @@ def FormSetDataEx(uideflist, params) :
       rec.CurrencyName = 'IDR'
       rec.Rate = 1.0
       #rec.AmountEkuivalen = rec.Amount
+
+    if rec.GetFieldByName('LEmployee.EmployeeName') in ['', None] :
+      oTranItem = helper.GetObjectByNames(
+         'CAReturnTransactItem',
+         {'LTransaction.TransactionNo' : rec.TransactionNo}
+      )
+      if not oTranItem.isnull :
+        rec.SetFieldByName('LEmployee.EmployeeId', oTranItem.LCashAdvanceAccount.EmployeeIdNumber)
+        rec.SetFieldByName('LEmployee.EmployeeName', oTranItem.LCashAdvanceAccount.EmployeeName)
     
     return
 
