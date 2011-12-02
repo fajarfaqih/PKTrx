@@ -2,6 +2,8 @@ import com.ihsan.foundation.pobjecthelper as phelper
 import com.ihsan.labs.m_textreport as textreport
 import sys  
 
+addFilter = ""
+
 def DAFScriptMain(config,parameters,returns):
   helper = phelper.PObjectHelper(config)
 
@@ -42,7 +44,8 @@ def GetDataTransaction(config,parameters,returns):
       'SponsorName: string',
       'Inputer: string',
       'BranchName: string',
-      'TransactionNo: string',      
+      'TransactionNo: string',
+      'CurrencyName: string',
     ])
   )
   
@@ -82,7 +85,13 @@ def GetDataTransaction(config,parameters,returns):
       recData.ReferenceNo = data.ReferenceNo
       recData.AccountName = data.AccountName
       recData.Description = data.Description
-      recData.Amount = data.Amount
+
+      Amount , Rate, CurrencyName = GetAmount(data)
+      recData.CurrencyName = CurrencyName #CURRSYMBOL[res.CurrencyCode]
+      recData.Rate         = Rate
+      recData.Amount       = Amount
+
+      #recData.Amount = data.Amount
       recData.EkuivalenAmount = data.EkuivalenAmount
       TotalAmount += data.EkuivalenAmount
       recData.Inputer = data.Inputer
@@ -109,7 +118,21 @@ def GetDataTransaction(config,parameters,returns):
     status.Is_Err = 1
     status.Err_Message = str(sys.exc_info()[1])
         
+def GetAmount(res):
+  if res.CurrencyCode != res.TransCurrencyCode and res.CurrencyCode == '000':
+    CurrencyName = res.TransCurrencyName #CURRSYMBOL[res.TransCurrencyCode]
+    Rate         = res.TransRate
+    Amount       = res.Amount / res.TransRate
+  else :
+    CurrencyName = res.CurrencyName #CURRSYMBOL[res.CurrencyCode]
+    Rate         = res.Rate
+    Amount       = res.Amount
+  # end if
+  return Amount , Rate, CurrencyName 
+
 def GetData(config,param):
+  global addFilter
+
   aBeginDate = param.BeginDate
   aEndDate = param.EndDate
   aBranchCode = param.GetFieldByName('LBranch.BranchCode')  
@@ -179,7 +202,7 @@ def GetData(config,param):
      
   sSQL = "\
       select t.TransactionDate,t.ActualDate, t.ReferenceNo, f.AccountName, \
-        t.Description, i.Amount,i.Rate,i.Ekuivalenamount, t.Inputer,t.donorname, \
+        t.Description, i.Amount,i.Rate,i.Ekuivalenamount, i.CurrencyCode, t.Inputer,t.donorname, \
         t.AuthStatus, t.TransactionId,  \
         (case when t.ChannelCode = 'R' then 'Kas Cabang' \
               when t.ChannelCode = 'P' then 'Kas Kecil' \
@@ -190,7 +213,10 @@ def GetData(config,param):
               when a.FundEntity = '4' then 'Amil' \
               when a.FundEntity = '5' then 'Lainnya' \
               else '' end) as FundEntity, \
-         i.transactionitemid , b.branchname, t.TransactionNo \
+         i.transactionitemid , b.branchname, t.TransactionNo ,\
+         t.currencycode as TransCurrencyCode , t.rate as TransRate , \
+         (select short_name from currency c where c.currency_code = i.currencycode) as CurrencyName , \
+            (select short_name from currency c where c.currency_code = t.currencycode) as TransCurrencyName \
       from accounttransactionitem a, transactionitem i, \
         transaction t, financialaccount f , productaccount p ,branch b\
       where a.TransactionItemId = i.TransactionItemId \
@@ -208,7 +234,7 @@ def GetData(config,param):
   
   sSQL += " union \
       select t.TransactionDate,t.ActualDate, t.ReferenceNo, f.AccountName, \
-        t.Description, i.Amount,i.Rate,i.Ekuivalenamount, t.Inputer,t.donorname, \
+        t.Description, i.Amount,i.Rate,i.Ekuivalenamount, i.CurrencyCode, t.Inputer,t.donorname, \
         t.AuthStatus, t.TransactionId,  \
         (case when t.ChannelCode = 'R' then 'Kas Cabang' \
               when t.ChannelCode = 'P' then 'Kas Kecil' \
@@ -219,7 +245,10 @@ def GetData(config,param):
               when a.FundEntity = '4' then 'Amil' \
               when a.FundEntity = '5' then 'Lainnya' \
               else '' end) as FundEntity, \
-         i.transactionitemid , b.branchname, t.TransactionNo \
+         i.transactionitemid , b.branchname, t.TransactionNo , \
+         t.currencycode as TransCurrencyCode , t.rate as TransRate , \
+         (select short_name from currency c where c.currency_code = i.currencycode) as CurrencyName , \
+         (select short_name from currency c where c.currency_code = t.currencycode) as TransCurrencyName \
       from accounttransactionitem a, transactionitem i, \
         transaction t, financialaccount f , productaccount p ,branch b\
       where a.TransactionItemId = i.TransactionItemId \
@@ -260,13 +289,20 @@ def GetData(config,param):
   return config.CreateSQL(sSQL).rawresult
     
 def PrintReport(helper, config, param):
+  global addFilter
+
   corporate = helper.CreateObject('Corporate')
     
   reportdef = config.HomeDir + 'reports/distributionreport.mtr'
   oReport = textreport.TextReport(reportdef)  
   
+  res = GetData(config,param)
+
   # Set Title
-  oReport.SetVars('BRANCH', param.BranchCode)
+  BranchCode = param.BranchCode
+  oBranch = helper.GetObject('Branch', BranchCode)
+  Cabang = '%s - %s' % (BranchCode, oBranch.BranchName)
+  oReport.SetVars('BRANCH', Cabang)
   
   #IsAll
 
@@ -281,18 +317,28 @@ def PrintReport(helper, config, param):
   #  oReport.SetVars('ACCOUNT', '%s-%s' % (accountNo, accountName))
   #  oReport.SetVars('CURRENCY', param.GetFieldByName('LProductAccount.CurrencyCode'))
   
+  # Set Date
   aBeginDate = param.BeginDate
   aEndDate = param.EndDate
-  oReport.SetVars('BDATE', config.FormatDateTime('dd-mm-yyyy', aBeginDate))
-  oReport.SetVars('EDATE', config.FormatDateTime('dd-mm-yyyy', aEndDate))
   
+  if aBeginDate == aEndDate:
+    Tanggal = '%s' % config.FormatDateTime('dd mmm yyyy', aBeginDate)
+  else:    
+    Tanggal = '%s s.d. %s' % (
+                 config.FormatDateTime('dd mmm yyyy', aBeginDate),
+                 config.FormatDateTime('dd mmm yyyy', aEndDate) 
+               )
+  oReport.SetVars('DATE', Tanggal)
+
+  # Set Total
+  TotalAmount = DistributionSummary(config, aBeginDate, aEndDate,addFilter)
+  oReport.SetVars('TOTALAMOUNT', config.FormatFloat(',0.00', TotalAmount))
+
   # Set nama file output.txt
   reportFile = corporate.GetUserHomeDir() + '\\DistributionReport.txt'
   oReport.OpenReport(reportFile)
   
   try:
-    
-    res = GetData(config,param)
     
     while not res.Eof:
       aContent = {}
@@ -301,13 +347,20 @@ def PrintReport(helper, config, param):
                                                  str(aDate[1]).zfill(2), 
                                                  str(aDate[0]))
       aContent['REFNO']       = res.ReferenceNo
-      aContent['ACCOUNT']     = res.AccountName
-      aContent['DESCRIPTION'] = res.Description
-      aContent['AMOUNT']      = config.FormatFloat(',0.00', res.Amount)
-      aContent['INPUTER']     = res.Inputer
-      aContent['AUTHSTATUS']  = res.AuthStatus
-      aContent['CHANNEL']  = res.Channel[:20]
-      aContent['FUNDENTITY'] = res.FundEntity
+      aContent['ACCOUNT']     = res.AccountName[:24]
+      aContent['DESCRIPTION'] = res.Description[:29]
+
+      Amount , Rate, CurrencyName = GetAmount(res)
+      
+      aContent['CURRENCYNAME'] = CurrencyName
+      aContent['RATE']         = config.FormatFloat(',0.00', Rate)
+      aContent['AMOUNT']       = config.FormatFloat(',0.00', Amount)
+      aContent['EKUIVAMOUNT']  = config.FormatFloat(',0.00', res.EkuivalenAmount)
+      aContent['INPUTER']      = res.Inputer
+      aContent['AUTHSTATUS']   = res.AuthStatus
+      aContent['CHANNEL']      = res.Channel[:20]
+      aContent['FUNDENTITY']   = res.FundEntity
+      aContent['TRANSNO'] = res.TransactionNo
       
       # Get SponsorName
       SName = res.DonorName or ''
@@ -326,3 +379,51 @@ def PrintReport(helper, config, param):
   return reportFile
   
   
+def DistributionSummary(config, BeginDate=None, EndDate = None, addFilter=''):
+  qParam = {}
+  qParam['BDATE'] = config.FormatDateTime('yyyy-mm-dd', BeginDate) 
+  qParam['EDATE'] = config.FormatDateTime('yyyy-mm-dd', EndDate) 
+  qParam['ADDFILTER'] = addFilter
+
+  sSQL = "\
+      select sum(i.Ekuivalenamount) as TotalBalance \
+      from accounttransactionitem a, transactionitem i, \
+        transaction t, financialaccount f , productaccount p ,branch b\
+      where a.TransactionItemId = i.TransactionItemId \
+        and i.TransactionId = t.TransactionId \
+        and p.AccountNo=f.AccountNo \
+        and a.AccountNo = f.AccountNo \
+        and f.AccountNo = p.AccountNo \
+        and b.branchcode = i.branchcode \
+        and t.TransactionCode in ('DD001','CAR','EAR','FA','GT') \
+        and t.ActualDate >= '%(BDATE)s' \
+        and t.ActualDate <= '%(EDATE)s' \
+        and i.MutationType = 'D' \
+        %(ADDFILTER)s \
+    " % qParam
+  
+  res = config.CreateSQL(sSQL).rawresult
+  Total1 = res.GetFieldValueAt(0) or 0.0  
+
+  sSQL2 = " \
+      select sum(i.Ekuivalenamount) \
+      from accounttransactionitem a, transactionitem i, \
+        transaction t, financialaccount f , productaccount p ,branch b\
+      where a.TransactionItemId = i.TransactionItemId \
+        and i.TransactionId = t.TransactionId \
+        and p.AccountNo=f.AccountNo \
+        and a.AccountNo = f.AccountNo \
+        and f.AccountNo = p.AccountNo \
+        and b.branchcode = i.branchcode \
+        and t.TransactionCode in ('CA') \
+        and t.ActualDate >= '%(BDATE)s' \
+        and t.ActualDate <= '%(EDATE)s' \
+        and i.MutationType = 'D' \
+        and not exists(select 1 from cashadvancereturninfo c where c.SourceTransactionId=t.TransactionId) \
+        %(ADDFILTER)s \
+    " % qParam
+  
+  res = config.CreateSQL(sSQL2).rawresult
+  Total2 = res.GetFieldValueAt(0) or 0.0  
+
+  return Total1 + Total2

@@ -121,7 +121,7 @@ def GetReportData(config,param):
        
     sSQL = "\
         select t.ActualDate, t.ReferenceNo, f.AccountName, \
-          t.Description, i.Amount, i.Rate, i.Ekuivalenamount,i.CurrencyCode, t.Inputer, \
+          t.Description, i.Amount, i.Rate, i.Ekuivalenamount, i.CurrencyCode, t.Inputer, \
           t.AuthStatus, t.TransactionId, t.donorname, d.full_name, \
           (case when t.ChannelCode = 'R' then 'Kas Cabang' \
                 when t.ChannelCode = 'P' then 'Kas Kecil' \
@@ -140,7 +140,7 @@ def GetReportData(config,param):
                where v.volunteerid = vt.volunteerid \
                   and vt.transactionitemid = i.transactionitemid \
             ) as VolunteerName , \
-            ( select full_name from public.sdm_employee s where s.id=t.MarketerId) as MarketerName , \
+            (select full_name from public.sdm_employee s where s.id=t.MarketerId) as MarketerName , \
             (select short_name from currency c where c.currency_code = i.currencycode) as CurrencyName , \
             (select short_name from currency c where c.currency_code = t.currencycode) as TransCurrencyName \
         from accounttransactionitem a, transactionitem i, \

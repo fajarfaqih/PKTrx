@@ -218,14 +218,14 @@ document <
           KeyFields={object:rtf::FieldUIElmtSetting<
               Name='LVolunteer.VolunteerId'
               DataTypeName='VARCHAR'
-              DataLength=10
+              DataLength=20
               UsedAsKey=true
               KeyOrDisplayName='VolunteerId'
               FinalDisplayFieldName='VolunteerId'
             >}DisplayedFields={object:rtf::FieldUIElmtSetting<
               Name='LVolunteer.VolunteerId'
               DataTypeName='VARCHAR'
-              DataLength=10
+              DataLength=20
               UsedAsDisplay=true
               KeyOrDisplayName='VolunteerId'
               FinalDisplayFieldName='VolunteerId'

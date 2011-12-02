@@ -72,11 +72,11 @@ document <
         >, object:rpclass::TCustomLoadedField<
           Name='LVolunteer.VolunteerId'
           DataTypeName='VARCHAR'
-          DataLength=10
+          DataLength=20
         >, object:rpclass::TCustomLoadedField<
           Name='LVolunteer.VolunteerId'
           DataTypeName='VARCHAR'
-          DataLength=10
+          DataLength=20
         >, object:rpclass::TCustomLoadedField<
           Name='LVolunteer.VolunteerName'
           DataTypeName='VARCHAR'
