@@ -72,46 +72,46 @@ class BatchHelper(mobject.MObject):
     # di dalam lingkup config.BeginTransaction() - config.Commit() 
     # Karena dalam fungsi ini sudah terdapat baris kode pemanggilan 
     # database transaction (config.BeginTransaction())
+    SecContext = config.SecurityContext
+    aUserId = SecContext.UserID
+    aBranchCode = SecContext.GetUserInfo()[4]     
+    aDescription = '%s_%s' % (aUserId,config.FormatDateTime('dd/mm/yyyy',aDate)) 
     
-    config.BeginTransaction()
-    try:
-      SecContext = config.SecurityContext
-      
-      aUserId = SecContext.UserID
-      aBranchCode = SecContext.GetUserInfo()[4]     
-      aDescription = '%s_%s' % (aUserId,config.FormatDateTime('dd/mm/yyyy',aDate)) 
-            
-      oBatch = helper.GetObjectByNames(
+    oBatch = helper.GetObjectByNames(
         'TransactionBatch',
         {  'Inputer' : aUserId,
            'BatchDate' : aDate,
            'BatchTag' : 'OPR',
            'IsPosted' : 'T',
-           'IsClosed' : 'F' 
+           'IsClosed' : 'F' ,
+           'BranchCode' : aBranchCode
         }
       )
       
-      if oBatch.isnull :
+    if oBatch.isnull :
+      config.BeginTransaction()
+      try:    
         oBatch = helper.CreatePObject('TransactionBatch')
         oBatch.BatchDate  = aDate
         oBatch.BranchCode   = aBranchCode
         oBatch.Inputer      = aUserId
         oBatch.Description  = aDescription 
         oBatch.BatchTag = 'OPR'
-      config.Commit()   
-    except:
-      config.Rollback()    
-      raise 
-    
-   
-    config.BeginTransaction()
-    try :
-      oBatch.PostToAccounting()    
-      config.Commit()
-    except:
-      config.Rollback()
-      raise
+        config.Commit()   
+      except:
+        config.Rollback()    
+        raise 
       
+     
+      config.BeginTransaction()
+      try :
+        oBatch.PostToAccounting()    
+        config.Commit()
+      except:
+        config.Rollback()
+        raise
+    # end if oBatch.isnull
+
     return oBatch
 
 class TransactionBatch(pobject.PObject):
@@ -946,6 +946,7 @@ class TransactionItem(pobject.PObject):
   def SetMutation(self, MutationType, Amount, Rate):
     aAmount = Amount
     aRate = Rate 
+    
     if self.LTransaction.CurrencyCode != self.CurrencyCode: 
       if self.LTransaction.CurrencyCode != '000' and self.CurrencyCode == '000':
         aAmount = aAmount * aRate
@@ -1178,7 +1179,26 @@ class BSZ(pobject.PObject):
     res = self.Config.CreateSQL(sSQL).rawresult
     
     return res.GetFieldValueAt(0) or 0.0
-      
+  
+  def GetTransactionDate(self) :
+    config = self.Config
+    sOQL = "select from BSZTransaction \
+              [BSZId = :BSZID] \
+              (LTransaction.LTransaction.ActualDate, self); \
+    "
+
+    oql = config.OQLEngine.CreateOQL(sOQL)
+    oql.SetParameterValueByName('BSZID', self.BSZId)
+    oql.ApplyParamValues()
+    oql.active = 1
+    resBSZTran = oql.rawresult
+
+    if not resBSZTran.Eof :
+      y, m, d = resBSZTran.ActualDate[:3]
+      return config.ModLibUtils.EncodeDate(y, m, d)
+    else :
+      return self.GetAsTDateTime('BSZDate')
+
   def GenerateBSZData(self):
     helper = self.Helper
     config = self.Config
@@ -1204,13 +1224,6 @@ class BSZ(pobject.PObject):
     # Get Nama Lembaga
     NamaLembaga = helper.GetObject('ParameterGlobal', 'COMPNAME').Get()
   
-  #  Transaction = parameters.uipTransaction
-  #  sSQL = 'select * from transaction where bszid=%d' % self.BSZId
-  #  for i in range(Transaction.RecordCount):
-  #     rec = Transaction.GetRecord(i)
-  #     oTran = helper.GetObject('TransactionItem',rec.TransactionItemId)
-  #     oTran.CreateBSZTransaction(self.BSZId)
-  
     # Prepare Data
     Now = config.Now()
     dataBSZ = {
@@ -1222,7 +1235,7 @@ class BSZ(pobject.PObject):
        'NAMA_LEMBAGA' : NamaLembaga,
        'USER_CETAK' : config.SecurityContext.InitUser,
        'WAKTU_CETAK' : config.FormatDateTime('dd-mm-yyyy hh:nn',Now),
-       'TGL_BAYAR' : config.FormatDateTime('dd-mm-yyyy',Now),
+       'TGL_BAYAR' : config.FormatDateTime('dd-mm-yyyy',self.GetTransactionDate()),
        'TOTAL' : config.FormatFloat('#,##0.00',Total),
        'TERBILANG' : Terbilang,
        'CABANG' : NamaLembaga,

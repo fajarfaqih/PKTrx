@@ -13,6 +13,10 @@ def FormSetDataEx(uideflist, params) :
     
     rec = uideflist.uipTransaction.Dataset.GetRecord(0)
 
+    # Set Field For Old Transaction Compatible
+    oTran = helper.GetObjectByNames('Transaction',{'TransactionNo' : rec.TransactionNo})
+    rec.ActualDate = oTran.GetAsTDateTime('ActualDate')
+    
     if rec.CurrencyCode in ['',None]:
       rec.CurrencyCode = '000'
       rec.CurrencyName = 'IDR'
@@ -30,13 +34,15 @@ def FormSetDataEx(uideflist, params) :
     
     return
 
+  Now = int(config.Now())
   rec = uideflist.uipTransaction.Dataset.AddRecord()
   rec.Inputer = str(config.SecurityContext.UserId)
   rec.PaidTo = rec.Inputer
   rec.BranchCode = str(config.SecurityContext.GetUserInfo()[4])
   rec.BranchId = int(config.SecurityContext.GetUserInfo()[2])
-  rec.TransactionDate = int(config.Now())
-  rec.FloatTransactionDate = int(config.Now())
+  rec.TransactionDate = Now
+  rec.FloatTransactionDate = Now
+  rec.ActualDate = Now
   rec.Amount = 0.0
   
   # Set Transaction Number
@@ -102,7 +108,8 @@ def SimpanData(config, params, returns):
     oTransaction = params.uipTransaction.GetRecord(0)
 
     request = {}
-    request['BatchId'] = oTransaction.GetFieldByName('LBatch.BatchId')
+    #request['BatchId'] = oTransaction.GetFieldByName('LBatch.BatchId')
+    request['ActualDate'] = oTransaction.ActualDate
     request['EmployeeId'] = oTransaction.EmployeeId #oTransaction.GetFieldByName('LEmployee.Nomor_Karyawan')
     request['EmployeeName'] = oTransaction.EmployeeName
     request['CashAccountNo'] = oTransaction.GetFieldByName('LCashAccount.AccountNo')
@@ -163,17 +170,18 @@ def SimpanData(config, params, returns):
 
     sRequest = simplejson.dumps(request)
 
-    #if oTransaction.ShowMode == 1:
-    #  Script = 'Transaction.GeneralTransaction'
-    #else: #ShowMode == 2
-    #  Script = 'Transaction.GeneralTransactionUpdate'
-    
     oService = helper.LoadScript('Transaction.GeneralTransaction')
     
+    if oTransaction.ReimburseAmount > 0.0 :
+      TransactionCode = 'CARB'
+    else:
+      TransactionCode = 'CAR'
+
     if oTransaction.ShowMode == 1:
-      response = oService.CashAdvanceReturnNew(config,sRequest,params)
-    else: #ShowMode == 2
-      response = oService.CashAdvanceReturnUpdate(config,sRequest,params)
+      response = oService.CreateTransaction(TransactionCode, config, sRequest, params)
+    else:
+      response = oService.UpdateTransaction(TransactionCode, config, sRequest, params)
+    # end if
     
     response = simplejson.loads(response)
     TransactionNo = response[u'TransactionNo']

@@ -10,13 +10,14 @@ def FormSetDataEx(uideflist, params) :
     oForm = helper.CreateObject('FormTransaksi')
     return oForm.SetDataEx(uideflist,params)
 
+  Now = int(config.Now())
   recT = uideflist.uipTransaction.Dataset.AddRecord()
   recT.Inputer = str(config.SecurityContext.UserId)
   recT.PaidTo = recT.Inputer
   recT.BranchCode = str(config.SecurityContext.GetUserInfo()[4])
-  recT.TransactionDate = int(config.Now())
-  recT.ActualDate = recT.TransactionDate
-  recT.FloatTransactionDate = int(config.Now())
+  recT.TransactionDate = Now
+  recT.ActualDate = Now
+  recT.FloatTransactionDate = Now
   recT.Rate = 1.0
   recT.TotalAmount = 0.0
   recT.CashType = 'C'
@@ -64,18 +65,21 @@ def SimpanData(config, params, returns):
     request['Description'] = oTransaction.Description
     request['ActualDate'] = oTransaction.ActualDate
     request['Amount'] = oTransaction.TotalAmount
+    request['Rate'] = oTransaction.Rate
+    request['CurrencyCode'] = oTransaction.CurrencyCode
+    request['RateCash'] = oTransaction.RateCash
+    request['RateBank'] = oTransaction.RateBank
+
     request['Inputer'] = oTransaction.Inputer
-    request['BatchId'] = oTransaction.GetFieldByName('LBatch.BatchId')
     request['TransactionNo'] = oTransaction.TransactionNo
     request['PaidTo'] = oTransaction.PaidTo
     request['ReceivedFrom'] = oTransaction.ReceivedFrom
-
-    request['Rate'] = oTransaction.Rate
     request['BankAccountNo'] = oTransaction.GetFieldByName('LBank.AccountNo')
     request['AssetCode'] = oTransaction.GetFieldByName('LAsset.Account_Code')
     request['AssetName'] = oTransaction.GetFieldByName('LAsset.Account_Name')
     request['AssetCurrency'] = oTransaction.GetFieldByName('LValuta.Currency_Code')
     request['BranchCode'] = config.SecurityContext.GetUserInfo()[4]
+    request['PaymentType'] = oTransaction.PaymentType
 
     items = []
 
@@ -96,23 +100,13 @@ def SimpanData(config, params, returns):
 
     request['Items']= items
     sRequest = simplejson.dumps(request)
-    PaymentType = oTransaction.PaymentType
 
-    if oTransaction.ShowMode == 1:
-      Script = 'Transaction.CashIn'
-    else: #ShowMode == 2
-      Script = 'Transaction.CashInUpdate'
+    oService = helper.LoadScript('Transaction.CashIn')
 
-    oService = helper.LoadScript(Script)
-
-    if PaymentType == 'K':
-      response = oService.PettyCashIn(config, sRequest ,params)
-    elif PaymentType == 'C':
-      response = oService.BranchCashIn(config, sRequest ,params)
-    elif PaymentType == 'B':
-      response = oService.BankIn(config, sRequest ,params)
-    else: # PaymentType == 'A'
-      response = oService.AssetCollection(config, sRequest ,params)
+    if oTransaction.ShowMode == 1 :
+      response = oService.CashInNew(config, sRequest,params)
+    else :
+      response = oService.CashInUpdate(config, sRequest,params)
 
     response = simplejson.loads(response)
 

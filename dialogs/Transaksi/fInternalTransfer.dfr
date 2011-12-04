@@ -41,9 +41,6 @@ document <
           Hidden=true
           DataTypeName='integer'
           DataLength=20
-        >, object:rtf::FieldUIElmtSetting<
-          Name='ActualDate'
-          Hidden=true
         >}Name='uipTransaction'
       AlwaysPostToServer=true
       PostLinkValues=true
@@ -103,6 +100,7 @@ document <
     >, object:rtf::Panel<
       Elements={object:rtf::LinkUIElmtSetting<
           Name='LBatch'
+          Hidden=true
           ControlCaption='Pilih batch transaksi'
           ClassTypeName='TransactionBatch'
           DisplayFields='BatchDate;BatchId;BatchNo;Description'
@@ -113,6 +111,23 @@ document <
             'then order by Desc BatchDate;'#13#10]
           LookupOption=loCustomOQL
           FieldBaseName='LBatch'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionNo'
+          ReadOnlyControl=true
+          ControlCaption='Nomor Transaksi'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionDate'
+          ReadOnlyControl=true
+          ControlCaption='Tanggal Input'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ActualDate'
+          ControlCaption='Tanggal Transaksi'
+          DataTypeName='timestamp'
+          DataLength=20
         >, object:rtf::LinkUIElmtSetting<
           Name='LCashAccountSource'
           ControlCaption='Kas/Bank'
@@ -133,6 +148,28 @@ document <
             'then order by AccountName;']
           LookupOption=loCustomOQL
           FieldBaseName='LCashAccountSource'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Rate'
+          Hidden=true
+          ControlCaption='Nilai kurs'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount'
+          Hidden=true
+          ControlCaption='Nilai transfer'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='SourceRate'
+          ControlCaption='Nilai Kurs'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='SourceAmount'
+          ControlCaption='Nilai Transfer'
+          DataTypeName='double'
+          DataLength=20
         >, object:rtf::LinkUIElmtSetting<
           Name='LCashAccountDestination'
           ControlCaption='Kas/Bank'
@@ -154,27 +191,14 @@ document <
           LookupOption=loCustomOQL
           FieldBaseName='LCashAccountDestination'
         >, object:rtf::FieldUIElmtSetting<
-          Name='TransactionNo'
-          ReadOnlyControl=true
-          ControlCaption='Nomor Transaksi'
-          DataTypeName='varchar'
-          DataLength=30
-        >, object:rtf::FieldUIElmtSetting<
-          Name='TransactionDate'
-          ReadOnlyControl=true
-          ControlCaption='Tanggal transaksi'
-          DataTypeName='timestamp'
-          DataLength=20
-        >, object:rtf::FieldUIElmtSetting<
-          Name='Amount'
-          Hidden=true
-          ControlCaption='Nilai transfer'
+          Name='DestRate'
+          ControlCaption='Nilai Kurs'
           DataTypeName='double'
           DataLength=20
         >, object:rtf::FieldUIElmtSetting<
-          Name='Rate'
-          Hidden=true
-          ControlCaption='Nilai kurs'
+          Name='DestAmount'
+          ReadOnlyControl=true
+          ControlCaption='Nilai Debet'
           DataTypeName='double'
           DataLength=20
         >, object:rtf::FieldUIElmtSetting<
@@ -215,79 +239,13 @@ document <
           ControlCaption='Saldo'
           DataTypeName='double'
           DataLength=20
-        >, object:rtf::FieldUIElmtSetting<
-          Name='SourceRate'
-          ControlCaption='Nilai Kurs'
-          DataTypeName='double'
-          DataLength=20
-        >, object:rtf::FieldUIElmtSetting<
-          Name='SourceAmount'
-          ControlCaption='Nilai Transfer'
-          DataTypeName='double'
-          DataLength=20
-        >, object:rtf::FieldUIElmtSetting<
-          Name='DestRate'
-          ControlCaption='Nilai Kurs'
-          DataTypeName='double'
-          DataLength=20
-        >, object:rtf::FieldUIElmtSetting<
-          Name='DestAmount'
-          ReadOnlyControl=true
-          ControlCaption='Nilai Debet'
-          DataTypeName='double'
-          DataLength=20
         >}Name='pTransaction'
       Width=817
       Height=473
       UIPart=$UIPARTS['uipTransaction']
-      Controls={*object:rtf::DBLookupEdit<
-          Name='LBatch'
-          Top=8
-          Left=8
-          ControlCaption='Pilih batch transaksi'
-          FieldName='LBatch.BatchId'
-          DisplayFormat=''
-          LookupField='LBatch.Description'
-          DisplayLookupField=true
-          OnAfterLookup='BatchAfterLookup'
-          DisplayLookupColor=-2147483624
-          DisplayLookupWidth=150
-        >, *object:rtf::DBLookupEdit<
-          Name='LCashAccountSource'
-          Layout=clAbsolute
-          Top=128
-          Left=8
-          Width=100
-          Height=21
-          ControlCaption='Kas/Bank'
-          CaptionWidth=100
-          FieldName='LCashAccountSource.AccountNo'
-          DisplayFormat=''
-          LookupField='LCashAccountSource.AccountName'
-          DisplayLookupField=true
-          OnAfterLookup='SourceAfterLookup'
-          DisplayLookupColor=-2147483624
-          DisplayLookupWidth=150
-        >, *object:rtf::DBLookupEdit<
-          Name='LCashAccountDestination'
-          Layout=clAbsolute
-          Top=128
-          Left=400
-          Width=100
-          Height=21
-          ControlCaption='Kas/Bank'
-          LayoutOrder=5
-          CaptionWidth=100
-          FieldName='LCashAccountDestination.AccountNo'
-          DisplayFormat=''
-          LookupField='LCashAccountDestination.AccountName'
-          DisplayLookupField=true
-          OnAfterLookup='DestinationAfterLookup'
-          DisplayLookupColor=-2147483624
-          DisplayLookupWidth=150
-        >, *object:rtf::DBEdit<
+      Controls={*object:rtf::DBEdit<
           Name='TransactionNo'
-          Top=36
+          Top=8
           Left=8
           Width=225
           Height=21
@@ -297,36 +255,30 @@ document <
           CharCase=ecUpperCase
         >, *object:rtf::DBDateEdit<
           Name='TransactionDate'
-          Top=64
+          Top=36
           Left=8
           Enabled=false
           Color=-2147483624
-          ControlCaption='Tanggal transaksi'
+          ControlCaption='Tanggal Input'
           CaptionWidth=100
-        >, *object:rtf::DBEdit<
-          Name='ReferenceNo'
-          Layout=clAbsolute
-          Top=298
+        >, *object:rtf::DBDateEdit<
+          Name='ActualDate'
+          Top=64
           Left=8
-          Width=289
-          Height=21
           Color=0
-          ControlCaption='Nomor referensi'
-          LayoutOrder=7
-          CaptionWidth=100
-          CharCase=ecUpperCase
-        >, *object:rtf::DBEdit<
-          Name='Description'
+          ControlCaption='Tanggal Transaksi'
+        >, *object:rtf::DBLookupEdit<
+          Name='LCashAccountSource'
           Layout=clAbsolute
-          Top=326
+          Top=128
           Left=8
-          Width=289
+          Width=110
           Height=21
-          Color=0
-          ControlCaption='Keterangan'
-          LayoutOrder=8
-          CaptionWidth=100
-          CharCase=ecUpperCase
+          ForceUseEqualCaptionWidth=true
+          ControlCaption='Kas/Bank'
+          LookupField='LCashAccountSource.AccountName'
+          DisplayLookupField=true
+          OnAfterLookup='SourceAfterLookup'
         >, *object:rtf::DBEdit<
           Name='SourceRate'
           Layout=clAbsolute
@@ -335,37 +287,72 @@ document <
           ForceUseEqualCaptionWidth=true
           Color=0
           ControlCaption='Nilai Kurs'
-          LayoutOrder=3
+          FieldName='SourceRate'
+          DisplayFormat=',0.00'
           OnExit='AmountOnExit'
         >, *object:rtf::DBEdit<
           Name='SourceAmount'
           Layout=clAbsolute
-          Top=244
+          Top=240
           Left=8
           ForceUseEqualCaptionWidth=true
           Color=0
           ControlCaption='Nilai Transfer'
-          LayoutOrder=4
+          FieldName='SourceAmount'
+          DisplayFormat=',0.00'
           OnExit='AmountOnExit'
+        >, *object:rtf::DBLookupEdit<
+          Name='LCashAccountDestination'
+          Layout=clAbsolute
+          Top=128
+          Left=400
+          Width=110
+          Height=21
+          ForceUseEqualCaptionWidth=true
+          ControlCaption='Kas/Bank'
+          LookupField='LCashAccountDestination.AccountName'
+          DisplayLookupField=true
+          OnAfterLookup='DestinationAfterLookup'
         >, *object:rtf::DBEdit<
           Name='DestRate'
           Layout=clAbsolute
-          Top=188
+          Top=184
           Left=400
           ForceUseEqualCaptionWidth=true
           Color=0
           ControlCaption='Nilai Kurs'
-          LayoutOrder=6
+          FieldName='DestRate'
+          DisplayFormat=',0.00'
           OnExit='AmountOnExit'
         >, *object:rtf::DBEdit<
           Name='DestAmount'
           Layout=clAbsolute
-          Top=220
+          Top=212
           Left=400
           Enabled=false
           ForceUseEqualCaptionWidth=true
           Color=-2147483624
           ControlCaption='Nilai Debet'
+          FieldName='DestAmount'
+          DisplayFormat=',0.00'
+        >, *object:rtf::DBEdit<
+          Name='ReferenceNo'
+          Layout=clAbsolute
+          Top=292
+          Left=8
+          ForceUseEqualCaptionWidth=true
+          Color=0
+          ControlCaption='Nomor referensi'
+          CharCase=ecUpperCase
+        >, *object:rtf::DBEdit<
+          Name='Description'
+          Layout=clAbsolute
+          Top=320
+          Left=8
+          ForceUseEqualCaptionWidth=true
+          Color=0
+          ControlCaption='Keterangan'
+          CharCase=ecUpperCase
         >, object:rtf::Label<
           Name='label1'
           Layout=clAbsolute
@@ -431,7 +418,7 @@ document <
           Layout=clAbsolute
           Top=156
           Left=224
-          Width=133
+          Width=143
           Height=21
           Enabled=false
           Color=-2147483624
@@ -443,7 +430,7 @@ document <
           Layout=clAbsolute
           Top=156
           Left=616
-          Width=133
+          Width=143
           Height=21
           Enabled=false
           Color=-2147483624
@@ -460,7 +447,7 @@ document <
           Color=-2147483624
           ControlCaption='Saldo'
           FieldName='LCashAccountSource.Balance'
-          DisplayFormat=''
+          DisplayFormat=',0.00'
         >}EqualCaptionWidth=100
       ControlLeftMargin=8
       ControlTopMargin=8

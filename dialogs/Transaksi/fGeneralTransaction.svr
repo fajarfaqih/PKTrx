@@ -41,11 +41,11 @@ document <
           DataTypeName='VARCHAR'
           DataLength=100
         >, object:rpclass::TCustomLoadedField<
-          Name='ActualDate'
+          Name='TransactionDate'
           DataTypeName='timestamp'
           DataLength=20
         >, object:rpclass::TCustomLoadedField<
-          Name='TransactionDate'
+          Name='ActualDate'
           DataTypeName='timestamp'
           DataLength=20
         >, object:rpclass::TCustomLoadedField<

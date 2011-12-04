@@ -6,7 +6,7 @@ document <
   MinorVersion='0'
 >object:rtf::Form<
   MainContainer=$CONTAINERS['dsMain']
-  Caption='Pembuatan Invoice Aktiva Tetap'
+  Caption='Pencatatan Invoice AsetTetap'
   Left=50
   Top=50
   Width=553
@@ -92,11 +92,17 @@ document <
         >, object:rtf::FieldUIElmtSetting<
           Name='TransactionDate'
           ReadOnlyControl=true
-          ControlCaption='Tanggal transaksi'
+          ControlCaption='Tanggal Input'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ActualDate'
+          ControlCaption='Tanggal Transaksi'
           DataTypeName='timestamp'
           DataLength=20
         >, object:rtf::LinkUIElmtSetting<
           Name='LBatch'
+          Hidden=true
           ControlCaption='Pilih batch transaksi'
           ClassTypeName='TransactionBatch'
           KeyFields={object:rtf::FieldUIElmtSetting<
@@ -441,21 +447,14 @@ document <
           Top=8
           Left=8
           Color=-2147483624
-          ControlCaption='Tanggal transaksi'
+          ControlCaption='Tanggal Input'
           CaptionWidth=100
-        >, *object:rtf::DBLookupEdit<
-          Name='LBatch'
+        >, *object:rtf::DBDateEdit<
+          Name='ActualDate'
           Top=36
           Left=8
-          Width=120
-          Height=21
-          ControlCaption='Pilih batch transaksi'
-          FieldName='LBatch.BatchId'
-          DisplayFormat=''
-          LookupField='LBatch.Description'
-          DisplayLookupField=true
-          DisplayLookupColor=-2147483624
-          DisplayLookupWidth=215
+          Color=0
+          ControlCaption='Tanggal Transaksi'
         >, *object:rtf::DBLookupEdit<
           Name='LFixedAsset'
           Top=64

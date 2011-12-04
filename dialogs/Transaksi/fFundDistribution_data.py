@@ -23,6 +23,7 @@ def FormSetDataEx(uideflist, params) :
   rec.BranchCode = str(config.SecurityContext.GetUserInfo()[4])
   rec.TransactionDate = int(Now)
   rec.FloatTransactionDate = int(Now)
+  rec.ActualDate = rec.TransactionDate
   rec.Rate = 1.0
   rec.TotalAmount = 0.0
   rec.CashType = 'C'
@@ -34,8 +35,8 @@ def FormSetDataEx(uideflist, params) :
   aUserInfo = config.SecurityContext.GetUserInfo()
   aBranchCode = str(aUserInfo[4])
   aBranchName = str(aUserInfo[5])
-  rec.SetFieldByName('LProductBranch.Kode_Cabang', aBranchCode)
-  rec.SetFieldByName('LProductBranch.Nama_Cabang', aBranchName)
+  #rec.SetFieldByName('LProductBranch.Kode_Cabang', aBranchCode)
+  #rec.SetFieldByName('LProductBranch.Nama_Cabang', aBranchName)
 
   rec.SetFieldByName('LCurrency.Currency_Code', '000')
   rec.SetFieldByName('LCurrency.Full_Name', 'Indonesia Rupiah')
@@ -88,7 +89,7 @@ def SimpanData(config, params, returns):
     request['Description'] = oTransaction.Description
     request['Amount'] = oTransaction.TotalAmount
     request['Inputer'] = oTransaction.Inputer
-    request['BatchId'] = oTransaction.GetFieldByName('LBatch.BatchId')
+    #request['BatchId'] = oTransaction.GetFieldByName('LBatch.BatchId')
     request['TransactionNo'] = oTransaction.TransactionNo
     request['PaidTo'] = oTransaction.PaidTo
     request['CashCurrency'] = oTransaction.GetFieldByName('LCurrency.Currency_Code')
@@ -106,7 +107,7 @@ def SimpanData(config, params, returns):
 
     request['SponsorId'] = oTransaction.GetFieldByName('LSponsor.SponsorId')
     request['VolunteerId'] = oTransaction.GetFieldByName('LVolunteer.VolunteerId')
-    request['ProductBranchCode'] = oTransaction.GetFieldByName('LProductBranch.Kode_Cabang')
+    #request['ProductBranchCode'] = oTransaction.GetFieldByName('LProductBranch.Kode_Cabang')
     request['PeriodId'] = oTransaction.GetFieldByName('PeriodId')
     request['PaymentType'] = oTransaction.PaymentType
 

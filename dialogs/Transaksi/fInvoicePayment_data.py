@@ -14,6 +14,8 @@ def FormSetDataEx(uideflist, params) :
     uipTran = uideflist.uipTransaction.Dataset.GetRecord(0)
     oTran = helper.GetObjectByNames('Transaction',{'TransactionNo' : uipTran.TransactionNo})
 
+    uipTran.ActualDate = oTran.ActualDate
+    
     if uipTran.RefCurrencyCode in ['',None]:
       uipTran.RefCurrencyCode = oTran.CurrencyCode
       uipTran.RefRate = 1.0
@@ -22,13 +24,14 @@ def FormSetDataEx(uideflist, params) :
     
     return
 
-
+  Now = int(config.Now())
   rec = uideflist.uipTransaction.Dataset.AddRecord()
   rec.Inputer = str(config.SecurityContext.UserId)
   rec.PaidTo = rec.Inputer
   rec.BranchCode = str(config.SecurityContext.GetUserInfo()[4])
-  rec.TransactionDate = int(config.Now())
-  rec.FloatTransactionDate = int(config.Now())
+  rec.TransactionDate = Now
+  rec.FloatTransactionDate = Now
+  rec.ActualDate = Now
   rec.Amount = 0.0
   
   # Set Transaction Number
@@ -87,7 +90,8 @@ def SimpanData(config, params, returns):
     oTransaction = params.uipTransaction.GetRecord(0)
 
     request = {}
-    request['BatchId'] = oTransaction.GetFieldByName('LBatch.BatchId')
+    #request['BatchId'] = oTransaction.GetFieldByName('LBatch.BatchId')
+    request['ActualDate'] = oTransaction.ActualDate
     request['EmployeeId'] = oTransaction.EmployeeId #oTransaction.GetFieldByName('LEmployee.Nomor_Karyawan')
     request['EmployeeName'] = oTransaction.EmployeeName
     request['CashAccountNo'] = oTransaction.GetFieldByName('LCashAccount.AccountNo')
@@ -114,10 +118,12 @@ def SimpanData(config, params, returns):
 
     oService = helper.LoadScript('Transaction.GeneralTransaction')
 
+    TransactionCode = 'INVP'
     if oTransaction.ShowMode == 1:
-      response = oService.InvoicePaymentNew(config,sRequest,params)
-    else: #ShowMode == 2
-      response = oService.InvoicePaymentUpdate(config,sRequest,params)
+      response = oService.CreateTransaction(TransactionCode, config, sRequest, params)
+    else:
+      response = oService.UpdateTransaction(TransactionCode, config, sRequest, params)
+    # end if
 
     response = simplejson.loads(response)
     TransactionNo = response[u'TransactionNo']

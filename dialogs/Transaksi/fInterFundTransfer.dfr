@@ -61,8 +61,8 @@ document <
       PostLinkValues=true
     >}Containers={object:rtf::DualSplit<
       Name='dsMain'
-      Width=240
-      Height=96
+      Width=817
+      Height=425
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['pTransaction']
       InversedAlign=true
@@ -98,6 +98,7 @@ document <
     >, object:rtf::Panel<
       Elements={object:rtf::LinkUIElmtSetting<
           Name='LBatch'
+          Hidden=true
           ControlCaption='Pilih batch transaksi'
           ClassTypeName='TransactionBatch'
           DisplayFields='BatchId;BatchNo;BatchDate;Description'
@@ -117,7 +118,12 @@ document <
         >, object:rtf::FieldUIElmtSetting<
           Name='TransactionDate'
           ReadOnlyControl=true
-          ControlCaption='Tanggal transaksi'
+          ControlCaption='Tanggal Input'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ActualDate'
+          ControlCaption='Tanggal Transaksi'
           DataTypeName='timestamp'
           DataLength=20
         >, object:rtf::LinkUIElmtSetting<
@@ -222,16 +228,9 @@ document <
       Width=857
       Height=457
       UIPart=$UIPARTS['uipTransaction']
-      Controls={*object:rtf::DBLookupEdit<
-          Name='LBatch'
-          Top=8
-          Left=8
-          ControlCaption='Pilih batch transaksi'
-          LookupField='LBatch.Description'
-          DisplayLookupField=true
-        >, *object:rtf::DBEdit<
+      Controls={*object:rtf::DBEdit<
           Name='TransactionNo'
-          Top=36
+          Top=8
           Left=8
           Width=225
           Height=21
@@ -241,13 +240,19 @@ document <
           CharCase=ecUpperCase
         >, *object:rtf::DBDateEdit<
           Name='TransactionDate'
-          Top=64
+          Top=36
           Left=8
           Enabled=false
           ForceUseEqualCaptionWidth=true
           Color=-2147483624
-          ControlCaption='Tanggal transaksi'
-          LayoutOrder=9
+          ControlCaption='Tanggal Input'
+          LayoutOrder=1
+        >, *object:rtf::DBDateEdit<
+          Name='ActualDate'
+          Top=64
+          Left=8
+          Color=0
+          ControlCaption='Tanggal Transaksi'
         >, *object:rtf::DBLookupEdit<
           Name='LAccountSource'
           Layout=clAbsolute

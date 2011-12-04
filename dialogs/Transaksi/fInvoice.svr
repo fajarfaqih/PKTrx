@@ -53,6 +53,10 @@ document <
           Name='LBatch.BatchDate'
           DataTypeName='TIMESTAMP'
         >, object:rpclass::TCustomLoadedField<
+          Name='ActualDate'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
           Name='SponsorId'
           DataTypeName='integer'
           DataLength=20

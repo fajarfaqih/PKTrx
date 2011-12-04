@@ -25,12 +25,6 @@ document <
   OnEndProcessData=''
   UIParts={object:rtf::PClassUI<
       Elements={object:rtf::FieldUIElmtSetting<
-          Name='TransactionDate'
-          Hidden=true
-          ReadOnlyControl=true
-          DataTypeName='timestamp'
-          DataLength=20
-        >, object:rtf::FieldUIElmtSetting<
           Name='ReferenceNo'
           Hidden=true
           DataTypeName='varchar'
@@ -103,11 +97,6 @@ document <
           Name='DonorId'
           Hidden=true
           DataTypeName='integer'
-          DataLength=20
-        >, object:rtf::FieldUIElmtSetting<
-          Name='ActualDate'
-          Hidden=true
-          DataTypeName='timestamp'
           DataLength=20
         >}Name='uipTransaction'
       FillInDefaultValues=true
@@ -275,18 +264,6 @@ document <
           ControlCaption=''
           FieldName='LBank.CurrencyCode'
           DisplayFormat=''
-        >, object:rtf::DBDateEdit<
-          Name='cbBankDate'
-          Layout=clAbsolute
-          Top=8
-          Left=392
-          Enabled=false
-          ForceUseEqualCaptionWidth=true
-          Color=-2147483624
-          ControlCaption='Tgl Input'
-          CaptionWidth=100
-          FieldName='TransactionDate'
-          DisplayFormat=''
         >, object:rtf::DBEdit<
           Name='RateBank'
           Layout=clAbsolute
@@ -432,18 +409,6 @@ document <
           CaptionWidth=100
           FieldName='Rate'
           DisplayFormat=',0.00'
-        >, object:rtf::DBDateEdit<
-          Name='cbCashDate'
-          Layout=clAbsolute
-          Top=8
-          Left=392
-          Enabled=false
-          ForceUseEqualCaptionWidth=true
-          Color=-2147483624
-          ControlCaption='Tgl Input'
-          CaptionWidth=100
-          FieldName='TransactionDate'
-          DisplayFormat=''
         >, object:rtf::DBEdit<
           Name='RefCash'
           Layout=clNewLine
@@ -503,8 +468,8 @@ document <
       ControlCharCase=ecUpperCase
     >, object:rtf::Grid<
       Name='gBankTransactionItem'
-      Width=240
-      Height=240
+      Width=792
+      Height=165
       UIPart=$UIPARTS['uipTransactionItem']
       ControlLeftMargin=8
       ControlTopMargin=8
@@ -622,8 +587,8 @@ document <
       RowControlGap=7
     >, object:rtf::MultiPages<
       Name='mpBayar'
-      Width=800
-      Height=325
+      Width=320
+      Height=320
       Pages={object:rtf::Page<
           PageName='pgCash'
           PageTitle='Kas'
@@ -731,18 +696,6 @@ document <
           DisplayLookupField=true
           DisplayLookupColor=-2147483624
           DisplayLookupWidth=160
-        >, object:rtf::DBDateEdit<
-          Name='cbAssetDate'
-          Layout=clAbsolute
-          Top=8
-          Left=392
-          Enabled=false
-          ForceUseEqualCaptionWidth=true
-          Color=-2147483624
-          ControlCaption='Tgl Input'
-          CaptionWidth=100
-          FieldName='TransactionDate'
-          DisplayFormat=''
         >, object:rtf::DBEdit<
           Name='RateAsset'
           Layout=clAbsolute
@@ -816,19 +769,19 @@ document <
     >, object:rtf::DualSplit<
       Name='dsBank'
       Width=792
-      Height=297
+      Height=286
       Container1=$CONTAINERS['pBankTransaction']
       Container2=$CONTAINERS['gBankTransactionItem']
     >, object:rtf::DualSplit<
       Name='dsAsset'
       Width=792
-      Height=297
+      Height=289
       Container1=$CONTAINERS['pAssetTransaction']
       Container2=$CONTAINERS['gAssetTransactionItem']
     >, object:rtf::DualSplit<
       Name='dsCash'
       Width=792
-      Height=294
+      Height=286
       Container1=$CONTAINERS['pCashTransaction']
       Container2=$CONTAINERS['gCashTransactionItem']
     >, object:rtf::Grid<
@@ -927,7 +880,7 @@ document <
         >}>, object:rtf::Grid<
       Name='gCashTransactionItem'
       Width=792
-      Height=140
+      Height=132
       UIPart=$UIPARTS['uipTransactionItem']
       ControlLeftMargin=8
       ControlTopMargin=8
@@ -1070,26 +1023,27 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dsMain'
-      Width=800
-      Height=505
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dsBatch']
       InversedAlign=true
     >, object:rtf::DualSplit<
       Name='dsBatch'
-      Width=800
-      Height=468
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pBatch']
       Container2=$CONTAINERS['dsTransaction']
     >, object:rtf::DualSplit<
       Name='dsTransaction'
-      Width=800
-      Height=346
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pSourceOfFund']
       Container2=$CONTAINERS['mpBayar']
     >, object:rtf::Panel<
       Elements={object:rtf::LinkUIElmtSetting<
           Name='LBatch'
+          Hidden=true
           ControlCaption='Pilih batch transaksi'
           ClassTypeName='TransactionBatch'
           DisplayFields='BatchId;BatchNo;Description;BatchDate'
@@ -1101,6 +1055,23 @@ document <
             'then order by desc BatchDate;']
           LookupOption=loCustomOQL
           FieldBaseName='LBatch'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionNo'
+          ReadOnlyControl=true
+          ControlCaption='Nomor Transaksi'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionDate'
+          ReadOnlyControl=true
+          ControlCaption='Tanggal Input'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ActualDate'
+          ControlCaption='Tanggal Transaksi'
+          DataTypeName='timestamp'
+          DataLength=20
         >, object:rtf::LinkUIElmtSetting<
           Name='LSponsor'
           Hidden=true
@@ -1113,12 +1084,6 @@ document <
             'then order by SponsorId;']
           LookupOption=loCustomOQL
           FieldBaseName='LSponsor'
-        >, object:rtf::FieldUIElmtSetting<
-          Name='TransactionNo'
-          ReadOnlyControl=true
-          ControlCaption='Nomor Transaksi'
-          DataTypeName='varchar'
-          DataLength=30
         >, object:rtf::LinkUIElmtSetting<
           Name='LVolunteer'
           ControlCaption='Mitra'
@@ -1139,8 +1104,14 @@ document <
           ControlCaption='Penerima'
           DataTypeName='varchar'
           DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ReceivedFrom'
+          ControlCaption='Kasir'
+          DataTypeName='varchar'
+          DataLength=30
         >, object:rtf::LinkUIElmtSetting<
           Name='LProductBranch'
+          Hidden=true
           ControlCaption='Cabang produk'
           ClassTypeName=''
           ExternalClassTypeName='Cabang'
@@ -1179,100 +1150,92 @@ document <
           ReadOnlyControl=true
           DataTypeName='varchar'
           DataLength=50
-        >, object:rtf::FieldUIElmtSetting<
-          Name='ReceivedFrom'
-          ControlCaption='Kasir'
-          DataTypeName='varchar'
-          DataLength=30
         >}Name='pBatch'
       Width=769
-      Height=121
+      Height=129
       UIPart=$UIPARTS['uipTransaction']
-      Controls={*object:rtf::DBLookupEdit<
-          Name='LBatch'
-          Top=8
-          Left=8
-          ControlCaption='Pilih batch transaksi'
-          LookupField='LBatch.Description'
-          DisplayLookupField=true
-          OnAfterLookup='BatchAfterLookup'
-        >, *object:rtf::DBEdit<
+      Controls={*object:rtf::DBEdit<
           Name='TransactionNo'
-          Top=36
-          Left=8
-          Width=221
+          Layout=clAbsolute
+          Top=8
+          Left=381
+          Width=222
           Height=21
           Enabled=false
           Color=-2147483624
           ControlCaption='Nomor Transaksi'
           LayoutOrder=2
+          CaptionWidth=90
           ReadOnly=true
+        >, *object:rtf::DBDateEdit<
+          Name='TransactionDate'
+          Top=8
+          Left=8
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Tanggal Input'
+        >, *object:rtf::DBDateEdit<
+          Name='ActualDate'
+          Top=36
+          Left=8
+          Color=0
+          ControlCaption='Tanggal Transaksi'
         >, *object:rtf::DBLookupEdit<
           Name='LVolunteer'
           Layout=clAbsolute
-          Top=36
+          Top=64
           Left=381
           ControlCaption='Mitra'
           LayoutOrder=7
-          CaptionWidth=75
+          CaptionWidth=90
           LookupField='LVolunteer.VolunteerName'
           DisplayLookupField=true
         >, *object:rtf::DBEdit<
           Name='PaidTo'
-          Top=92
+          Top=64
           Left=8
           Width=221
           Height=21
           Color=0
           ControlCaption='Penerima'
           LayoutOrder=3
-        >, *object:rtf::DBLookupEdit<
-          Name='LProductBranch'
-          Layout=clAbsolute
-          Top=64
-          Left=381
-          ForceUseEqualCaptionWidth=true
-          ControlCaption='Cabang produk'
-          LayoutOrder=8
-          CaptionWidth=75
-          LookupField='LProductBranch.Nama_Cabang'
-          DisplayLookupField=true
+        >, *object:rtf::DBEdit<
+          Name='ReceivedFrom'
+          Top=92
+          Left=8
+          Width=221
+          Height=21
+          Color=0
+          ControlCaption='Kasir'
         >, *object:rtf::DBEdit<
           Name='DonorNo'
           Layout=clAbsolute
-          Top=8
+          Top=36
           Left=381
           Width=70
           Height=21
           Color=0
           ControlCaption='Id Sponsor'
           LayoutOrder=4
-          CaptionWidth=75
+          CaptionWidth=90
         >, *object:rtf::DBEdit<
           Name='DonorName'
           Layout=clAbsolute
-          Top=8
-          Left=536
-          Width=145
+          Top=36
+          Left=552
+          Width=140
           Height=21
+          Enabled=false
           Color=-2147483624
           ControlCaption=''
           LayoutOrder=5
           CaptionWidth=1
           ReadOnly=true
-        >, *object:rtf::DBEdit<
-          Name='ReceivedFrom'
-          Top=64
-          Left=8
-          Width=221
-          Height=21
-          Color=0
-          ControlCaption='Kasir'
         >, object:rtf::Button<
           Name='button1'
           Layout=clAbsolute
-          Top=8
-          Left=696
+          Top=36
+          Left=704
           Color=0
           ControlCaption=''
           LayoutOrder=6

@@ -28,12 +28,6 @@ document <
       PostLinkValues=true
     >, object:rtf::PClassUI<
       Elements={object:rtf::FieldUIElmtSetting<
-          Name='TransactionDate'
-          Hidden=true
-          ReadOnlyControl=true
-          DataTypeName='timestamp'
-          DataLength=20
-        >, object:rtf::FieldUIElmtSetting<
           Name='ReferenceNo'
           Hidden=true
           DataTypeName='varchar'
@@ -78,11 +72,6 @@ document <
           Name='FloatTransactionDate'
           Hidden=true
           DataTypeName='double'
-          DataLength=20
-        >, object:rtf::FieldUIElmtSetting<
-          Name='ActualDate'
-          Hidden=true
-          DataTypeName='timestamp'
           DataLength=20
         >, object:rtf::FieldUIElmtSetting<
           Name='SaveMode'
@@ -227,8 +216,8 @@ document <
       BeforeDelete='ItemBeforeDelete'
     >}Containers={object:rtf::MultiSplit<
       Name='msMain'
-      Width=320
-      Height=320
+      Width=800
+      Height=550
       Side1Containers={$CONTAINERS['dualsplit1']
       }Side2Containers={$CONTAINERS['pAction']
       }SpaceContainer=$CONTAINERS['dsTransaction']
@@ -352,18 +341,6 @@ document <
           ControlCaption=''
           FieldName='LBank.CurrencyCode'
           DisplayFormat=''
-        >, object:rtf::DBDateEdit<
-          Name='cbBankDate'
-          Layout=clAbsolute
-          Top=36
-          Left=440
-          Enabled=false
-          ForceUseEqualCaptionWidth=true
-          Color=-2147483624
-          ControlCaption='Tgl Input'
-          CaptionWidth=100
-          FieldName='TransactionDate'
-          DisplayFormat=''
         >, object:rtf::DBEdit<
           Name='RateBank'
           Layout=clAbsolute
@@ -429,17 +406,6 @@ document <
           FieldName='Inputer'
           DisplayFormat=''
           ReadOnly=true
-        >, object:rtf::DBDateEdit<
-          Name='cbBankActualDate'
-          Layout=clAbsolute
-          Top=8
-          Left=440
-          Enabled=false
-          Color=-2147483624
-          ControlCaption='Tgl Transaksi'
-          CaptionWidth=100
-          FieldName='ActualDate'
-          DisplayFormat=''
         >}EqualCaptionWidth=100
       ControlLeftMargin=8
       ControlTopMargin=8
@@ -530,18 +496,6 @@ document <
           CaptionWidth=100
           FieldName='Rate'
           DisplayFormat=',0.00'
-        >, object:rtf::DBDateEdit<
-          Name='cbCashDate'
-          Layout=clAbsolute
-          Top=36
-          Left=392
-          Enabled=false
-          ForceUseEqualCaptionWidth=true
-          Color=-2147483624
-          ControlCaption='Tgl Input'
-          CaptionWidth=100
-          FieldName='TransactionDate'
-          DisplayFormat=''
         >, object:rtf::DBEdit<
           Name='RefCash'
           Layout=clNewLine
@@ -594,17 +548,6 @@ document <
           FieldName='Inputer'
           DisplayFormat=''
           ReadOnly=true
-        >, object:rtf::DBDateEdit<
-          Name='cbCashActualDate'
-          Layout=clAbsolute
-          Top=8
-          Left=392
-          Enabled=false
-          Color=-2147483624
-          ControlCaption='Tgl Transaksi'
-          CaptionWidth=100
-          FieldName='ActualDate'
-          DisplayFormat=''
         >}EqualCaptionWidth=100
       ControlLeftMargin=8
       ControlTopMargin=8
@@ -705,8 +648,8 @@ document <
       RowControlGap=7
     >, object:rtf::MultiPages<
       Name='mpBayar'
-      Width=320
-      Height=320
+      Width=800
+      Height=264
       Pages={object:rtf::Page<
           PageName='pgCash'
           PageTitle='Kas'
@@ -836,18 +779,6 @@ document <
           OnAfterLookup='ValutaAfterLookup'
           DisplayLookupColor=-2147483624
           DisplayLookupWidth=160
-        >, object:rtf::DBDateEdit<
-          Name='cbAssetDate'
-          Layout=clAbsolute
-          Top=36
-          Left=392
-          Enabled=false
-          ForceUseEqualCaptionWidth=true
-          Color=-2147483624
-          ControlCaption='Tgl Input'
-          CaptionWidth=100
-          FieldName='TransactionDate'
-          DisplayFormat=''
         >, object:rtf::DBEdit<
           Name='RateAsset'
           Layout=clAbsolute
@@ -913,17 +844,6 @@ document <
           FieldName='Inputer'
           DisplayFormat=''
           ReadOnly=true
-        >, object:rtf::DBDateEdit<
-          Name='cbAssetActualDate'
-          Layout=clAbsolute
-          Top=8
-          Left=392
-          Enabled=false
-          Color=-2147483624
-          ControlCaption='Tgl Transaksi'
-          CaptionWidth=100
-          FieldName='ActualDate'
-          DisplayFormat=''
         >}EqualCaptionWidth=100
       ControlLeftMargin=8
       ControlTopMargin=8
@@ -933,26 +853,26 @@ document <
       ControlCharCase=ecUpperCase
     >, object:rtf::DualSplit<
       Name='dsTransaction'
-      Width=240
-      Height=96
+      Width=800
+      Height=285
       Container1=$CONTAINERS['pPaymentType']
       Container2=$CONTAINERS['mpBayar']
     >, object:rtf::DualSplit<
       Name='dsBank'
       Width=792
-      Height=260
+      Height=236
       Container1=$CONTAINERS['pBankTransaction']
       Container2=$CONTAINERS['gBankTransactionItem']
     >, object:rtf::DualSplit<
       Name='dsAsset'
       Width=792
-      Height=260
+      Height=236
       Container1=$CONTAINERS['pAssetTransaction']
       Container2=$CONTAINERS['gAssetTransactionItem']
     >, object:rtf::DualSplit<
       Name='dsCash'
       Width=792
-      Height=257
+      Height=233
       Container1=$CONTAINERS['pCashTransaction']
       Container2=$CONTAINERS['gCashTransactionItem']
     >, object:rtf::Grid<
@@ -1023,7 +943,7 @@ document <
         >}>, object:rtf::Grid<
       Name='gCashTransactionItem'
       Width=792
-      Height=111
+      Height=87
       UIPart=$UIPARTS['uipTransactionItem']
       ControlLeftMargin=8
       ControlTopMargin=8
@@ -1087,8 +1007,8 @@ document <
           Width=80
         >}>, object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=240
-      Height=203
+      Width=800
+      Height=227
       Container1=$CONTAINERS['pDonor']
       Container2=$CONTAINERS['pBatch']
     >, object:rtf::Panel<
@@ -1242,8 +1162,31 @@ document <
       HorizontalControlGap=4
       RowControlGap=7
     >, object:rtf::Panel<
-      Elements={object:rtf::LinkUIElmtSetting<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='TransactionNo'
+          ReadOnlyControl=true
+          ControlCaption='Nomor Transaksi'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ActualDate'
+          ControlCaption='Tanggal Transaksi'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='PaidTo'
+          ControlCaption='Kasir'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionDate'
+          ReadOnlyControl=true
+          ControlCaption='Tanggal Input'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::LinkUIElmtSetting<
           Name='LBatch'
+          Hidden=true
           ControlCaption='Pilih batch transaksi'
           ClassTypeName='TransactionBatch'
           KeyFields={object:rtf::FieldUIElmtSetting<
@@ -1358,6 +1301,7 @@ document <
           FieldBaseName='LSponsor'
         >, object:rtf::LinkUIElmtSetting<
           Name='LProductBranch'
+          Hidden=true
           ControlCaption='Cabang produk'
           ClassTypeName=''
           ExternalClassTypeName='Cabang'
@@ -1392,66 +1336,55 @@ document <
           OQLSystemContext='corporate'
           LookupOption=loCustomOQL
           FieldBaseName='LProductBranch'
-        >, object:rtf::FieldUIElmtSetting<
-          Name='TransactionNo'
-          ReadOnlyControl=true
-          ControlCaption='Nomor Transaksi'
-          DataTypeName='varchar'
-          DataLength=30
-        >, object:rtf::FieldUIElmtSetting<
-          Name='PaidTo'
-          ControlCaption='Kasir'
-          DataTypeName='varchar'
-          DataLength=30
         >}Name='pBatch'
       Width=785
-      Height=91
+      Height=113
       Bordered=true
       UIPart=$UIPARTS['uipTransaction']
-      Controls={*object:rtf::DBLookupEdit<
-          Name='LBatch'
-          Top=8
-          Left=8
-          ControlCaption='Pilih batch transaksi'
-          LookupField='LBatch.Description'
-          DisplayLookupField=true
-          OnAfterLookup='BatchAfterLookup'
-        >, *object:rtf::DBLookupEdit<
-          Name='LVolunteer'
-          Layout=clNextSide
-          Top=8
-          Left=374
-          Width=100
-          Height=21
-          ForceUseEqualCaptionWidth=true
-          ControlCaption='Mitra'
-          LookupField='LVolunteer.VolunteerName'
-          DisplayLookupField=true
-        >, *object:rtf::DBLookupEdit<
-          Name='LProductBranch'
-          Layout=clNextSide
-          Top=36
-          Left=381
-          ForceUseEqualCaptionWidth=true
-          ControlCaption='Cabang produk'
-          LayoutOrder=4
-          LookupField='LProductBranch.Nama_Cabang'
-          DisplayLookupField=true
-        >, *object:rtf::DBEdit<
+      Controls={*object:rtf::DBEdit<
           Name='TransactionNo'
-          Top=36
+          Top=8
           Left=8
-          Width=229
+          Width=197
           Height=21
           Enabled=false
           Color=-2147483624
           ControlCaption='Nomor Transaksi'
-        >, *object:rtf::DBEdit<
-          Name='PaidTo'
-          Top=64
+        >, *object:rtf::DBDateEdit<
+          Name='ActualDate'
+          Top=36
           Left=8
           Color=0
+          ControlCaption='Tanggal Transaksi'
+        >, *object:rtf::DBEdit<
+          Name='PaidTo'
+          Layout=clAbsolute
+          Top=36
+          Left=352
+          Width=253
+          Height=21
+          Color=0
           ControlCaption='Kasir'
+          CaptionWidth=50
+        >, *object:rtf::DBDateEdit<
+          Name='TransactionDate'
+          Top=64
+          Left=8
+          Enabled=false
+          ForceUseEqualCaptionWidth=true
+          Color=-2147483624
+          ControlCaption='Tanggal Input'
+        >, *object:rtf::DBLookupEdit<
+          Name='LVolunteer'
+          Layout=clAbsolute
+          Top=64
+          Left=352
+          Width=100
+          Height=21
+          ControlCaption='Mitra'
+          CaptionWidth=50
+          LookupField='LVolunteer.VolunteerName'
+          DisplayLookupField=true
         >}EqualCaptionWidth=120
       ControlLeftMargin=8
       ControlTopMargin=8

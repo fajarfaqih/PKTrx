@@ -6,7 +6,7 @@ document <
   MinorVersion='0'
 >object:rtf::Form<
   MainContainer=$CONTAINERS['dsMain']
-  Caption='Pembelian Aktiva Tetap'
+  Caption='Pembelian Aset Tetap'
   State=rsMaximized
   Left=50
   Top=50
@@ -53,8 +53,8 @@ document <
       PostLinkValues=true
     >}Containers={object:rtf::DualSplit<
       Name='dsMain'
-      Width=617
-      Height=600
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dualsplit1']
       InversedAlign=true
@@ -327,7 +327,7 @@ document <
           DataTypeName='varchar'
           DataLength=20
           EnumeratedValues=['T=Tunai'#13#10,
-            'D=Uang Muka'#13#10]
+            'D=Angsuran Awal'#13#10]
         >, object:rtf::LinkUIElmtSetting<
           Name='LCashAccount'
           ControlCaption='Kas/Bank'
@@ -566,19 +566,25 @@ document <
       ControlCharCase=ecUpperCase
     >, object:rtf::Panel<
       Elements={object:rtf::FieldUIElmtSetting<
-          Name='TransactionDate'
-          ReadOnlyControl=true
-          ControlCaption='Tanggal transaksi'
-          DataTypeName='timestamp'
-          DataLength=20
-        >, object:rtf::FieldUIElmtSetting<
           Name='TransactionNo'
           ReadOnlyControl=true
           ControlCaption='Nomor Transaksi'
           DataTypeName='varchar'
           DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionDate'
+          ReadOnlyControl=true
+          ControlCaption='Tanggal Input'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ActualDate'
+          ControlCaption='Tanggal Transaksi'
+          DataTypeName='timestamp'
+          DataLength=20
         >, object:rtf::LinkUIElmtSetting<
           Name='LBatch'
+          Hidden=true
           ControlCaption='Pilih batch transaksi'
           ClassTypeName='TransactionBatch'
           KeyFields={object:rtf::FieldUIElmtSetting<
@@ -627,27 +633,26 @@ document <
       Width=529
       Height=113
       UIPart=$UIPARTS['uipTransaction']
-      Controls={*object:rtf::DBDateEdit<
-          Name='TransactionDate'
+      Controls={*object:rtf::DBEdit<
+          Name='TransactionNo'
           Top=8
           Left=8
           Enabled=false
           Color=-2147483624
-          ControlCaption='Tanggal transaksi'
-        >, *object:rtf::DBEdit<
-          Name='TransactionNo'
+          ControlCaption='Nomor Transaksi'
+        >, *object:rtf::DBDateEdit<
+          Name='TransactionDate'
           Top=36
           Left=8
           Enabled=false
           Color=-2147483624
-          ControlCaption='Nomor Transaksi'
-        >, *object:rtf::DBLookupEdit<
-          Name='LBatch'
+          ControlCaption='Tanggal Input'
+        >, *object:rtf::DBDateEdit<
+          Name='ActualDate'
           Top=64
           Left=8
-          ControlCaption='Pilih batch transaksi'
-          LookupField='LBatch.BatchNo'
-          DisplayLookupField=true
+          Color=0
+          ControlCaption='Tanggal Transaksi'
         >}EqualCaptionWidth=110
       ControlLeftMargin=8
       ControlTopMargin=8
@@ -656,8 +661,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=617
-      Height=564
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pTransactionInfo']
       Container2=$CONTAINERS['pTransaction']
     >}FormClassName='fFixedAssetNew'

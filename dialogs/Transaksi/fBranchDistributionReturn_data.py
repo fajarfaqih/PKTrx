@@ -9,15 +9,18 @@ def FormSetDataEx(uideflist, params) :
 
   if params.GetDatasetByName('trparam') != None :
     oForm = helper.CreateObject('FormTransaksi')
-    return oForm.SetDataEx(uideflist,params)
+    oForm.SetDataEx(uideflist,params)
+    
+    return
 
-
+  Now = int(config.Now())
   rec = uideflist.uipTransaction.Dataset.AddRecord()
   rec.Inputer = str(config.SecurityContext.UserId)
   rec.PaidTo = rec.Inputer
   rec.BranchCode = str(config.SecurityContext.GetUserInfo()[4])
-  rec.TransactionDate = int(config.Now())
-  rec.FloatTransactionDate = int(config.Now())
+  rec.TransactionDate = Now
+  rec.ActualDate = Now
+  rec.FloatTransactionDate = Now
   rec.Amount = 0.0
   
   # Set Transaction Number
@@ -93,7 +96,8 @@ def SimpanData(config, params, returns):
     oTransaction = params.uipTransaction.GetRecord(0)
 
     request = {}
-    request['BatchId'] = oTransaction.GetFieldByName('LBatch.BatchId')
+    #request['BatchId'] = oTransaction.GetFieldByName('LBatch.BatchId')
+    request['ActualDate'] = oTransaction.ActualDate
     request['EmployeeId'] = oTransaction.EmployeeId #oTransaction.GetFieldByName('LEmployee.Nomor_Karyawan')
     request['EmployeeName'] = oTransaction.EmployeeName
     request['CashAccountNo'] = oTransaction.GetFieldByName('LCashAccount.AccountNo')
@@ -138,12 +142,14 @@ def SimpanData(config, params, returns):
 
     sRequest = simplejson.dumps(request)
 
-    oService = helper.LoadScript('Transaction.BranchDistribution')
+    oService = helper.LoadScript('Transaction.GeneralTransaction')
 
+    TransactionCode = 'DTR'
     if oTransaction.ShowMode == 1:
-      response = oService.BranchDistributionReturnNew(config,sRequest,params)
+      response = oService.CreateTransaction(TransactionCode, config, sRequest, params)
     else:
-      response = oService.BranchDistributionReturnUpdate(config,sRequest,params)
+      response = oService.UpdateTransaction(TransactionCode, config, sRequest, params)
+    # end if
 
     response = simplejson.loads(response)
     TransactionNo = response[u'TransactionNo']

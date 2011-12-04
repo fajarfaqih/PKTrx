@@ -4,9 +4,9 @@ DefaultItems = [ 'Inputer',
                  'BranchCode',
                  'TransactionDate',
                  'FloatTransactionDate',
-                 'LBatch.BatchId',
-                 'LBatch.BatchNo',
-                 'LBatch.Description',
+                 #'LBatch.BatchId',
+                 #'LBatch.BatchNo',
+                 #'LBatch.Description',
                  'LCashAccount.AccountNo',
                  'LCashAccount.AccountName',
                  'TransactionNo',
@@ -48,7 +48,8 @@ class fEmployeeAR :
     for item in DefaultItems :
       uipTran.SetFieldValue(item,self.DefaultValues[item])
 
-    self.pTransaction_LBatch.SetFocus()
+    #self.pTransaction_LBatch.SetFocus()
+    self.pTransaction_ActualDate.SetFocus()
 
   def BatchAfterLookup(self, sender, linkui):
     uipTran = self.uipTransaction
@@ -115,9 +116,34 @@ class fEmployeeAR :
         # edit mode
         sender.ExitAction = 1
       # end if
-      
+
+  def CheckRequired(self):
+    uipTran  = self.uipTransaction
+
+    if uipTran.ActualDate in [0, None] :
+      self.app.ShowMessage('Tanggal Transaksi belum diinputkan')
+      return 0
+
+    if uipTran.GetFieldValue('LCashAccount.AccountNo') in ['', None] :
+      self.app.ShowMessage('Kas / Bank Belum diinputkan')
+      return 0
+
+    if uipTran.EmployeeId in [0,None] :
+      self.app.ShowMessage('Nama Debitur Belum diinputkan')
+      return 0
+
+    if (uipTran.Amount or 0.0) <= 0.0 :
+      self.app.ShowMessage('Nilai Transaksi tidak boleh <= 0.0 ')
+      return 0
+
+    return 1
+
   def SimpanData(self):
     app = self.app
+    uipTran = self.uipTransaction
+
+    if not self.CheckRequired(): return 0
+    
     if app.ConfirmDialog('Yakin simpan transaksi ?'):
       self.FormObject.CommitBuffer()
       ph = self.FormObject.GetDataPacket()
@@ -139,6 +165,6 @@ class fEmployeeAR :
           oPrint = app.GetClientClass('PrintLib','PrintLib')()
           #app.ShowMessage("Masukkan kertas ke printer untuk cetak kwitansi")
           oPrint.doProcessByStreamName(app,ph.packet,res.StreamName)
-
+        self.DefaultValues['ActualDate'] = uipTran.ActualDate
         return 1
     #-- if

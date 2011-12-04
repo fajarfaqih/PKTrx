@@ -227,8 +227,8 @@ class fTransactionHistory:
     if TransactionId == 0 : return
     ph = app.CreateValues(['TransactionId',TransactionId])
 
-    dlg = app.CreateForm(formname,formname,0,ph,None)
-    st = dlg.FormContainer.Show()
+    dlg = app.CreateForm(formname,formname,0,None,None)
+    dlg.Show(TransactionId)
 
   def CheckSpecialTransaction(self):
     uipTran = self.uipTransaction

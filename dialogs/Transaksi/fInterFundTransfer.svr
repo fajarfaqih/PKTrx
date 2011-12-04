@@ -61,6 +61,10 @@ document <
           DataTypeName='timestamp'
           DataLength=20
         >, object:rpclass::TCustomLoadedField<
+          Name='ActualDate'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
           Name='LAccountSource.AccountNo'
           DataTypeName='VARCHAR'
           DataLength=30

@@ -85,23 +85,25 @@ class fInvoicePayment :
       uipTran.Description = uipInv.Description
       self.SetEkuivalenAmount()
 
-  def CheckBeforeSave(self):
+  def CheckRequired(self):
     app = self.app
     form = self.form
     uipTran = self.uipTransaction
     
     form.CommitBuffer()
     
-    # Cek Batch
-    BatchId = uipTran.GetFieldValue('LBatch.BatchId') or 0
-    if BatchId == 0 :
-      raise 'PERINGATAN','Anda belum memilih batch'
+    # Cek Tanggal Transaksi
+    if uipTran.ActualDate in [0, None] :
+      raise 'PERINGATAN','Tanggal Transaksi belum diinputkan'
+      
+    # Cek Invoice
+    if uipTran.InvoiceId in [None, 0] :
+      raise 'PERINGATAN','Anda belum memilih no Invoice'
       
     # Cek Cash Account
     AccountNo = uipTran.GetFieldValue('LCashAccount.AccountNo') or ''
     if AccountNo == '' :
       raise 'PERINGATAN','Anda belum memilih rekening kas/bank'
-    
     
   def RateOnExit(self,sender):
     self.SetEkuivalenAmount()
@@ -113,7 +115,7 @@ class fInvoicePayment :
 
   def bSimpanClick(self, sender):
     app = self.app
-    self.CheckBeforeSave()
+    self.CheckRequired()
     if app.ConfirmDialog('Yakin simpan transaksi ?'):
       self.FormObject.CommitBuffer()
       ph = self.FormObject.GetDataPacket()

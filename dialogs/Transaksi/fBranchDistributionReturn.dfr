@@ -251,11 +251,17 @@ document <
         >, object:rtf::FieldUIElmtSetting<
           Name='TransactionDate'
           ReadOnlyControl=true
-          ControlCaption='Tanggal transaksi'
+          ControlCaption='Tanggal Input'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ActualDate'
+          ControlCaption='Tanggal Transaksi'
           DataTypeName='timestamp'
           DataLength=20
         >, object:rtf::LinkUIElmtSetting<
           Name='LBatch'
+          Hidden=true
           ControlCaption='Pilih batch transaksi'
           ClassTypeName='TransactionBatch'
           DisplayFields='BatchId;BatchNo;BatchDate;Description'
@@ -408,17 +414,14 @@ document <
           Top=36
           Left=8
           Color=-2147483624
-          ControlCaption='Tanggal transaksi'
+          ControlCaption='Tanggal Input'
           CaptionWidth=100
-        >, *object:rtf::DBLookupEdit<
-          Name='LBatch'
+        >, *object:rtf::DBDateEdit<
+          Name='ActualDate'
           Top=64
           Left=8
-          Width=100
-          Height=21
-          ControlCaption='Pilih batch transaksi'
-          LookupField='LBatch.Description'
-          DisplayLookupField=true
+          Color=0
+          ControlCaption='Tanggal Transaksi'
         >, *object:rtf::DBEdit<
           Name='RefTransactionNo'
           Layout=clAbsolute

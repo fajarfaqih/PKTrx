@@ -105,6 +105,10 @@ document <
           DataTypeName='VARCHAR'
           DataLength=50
         >, object:rpclass::TCustomLoadedField<
+          Name='PaidTo'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
           Name='AccountNo'
           DataTypeName='varchar'
           DataLength=30
@@ -112,10 +116,6 @@ document <
           Name='AccountName'
           DataTypeName='varchar'
           DataLength=50
-        >, object:rpclass::TCustomLoadedField<
-          Name='PaidTo'
-          DataTypeName='varchar'
-          DataLength=20
         >, object:rpclass::TCustomLoadedField<
           Name='BudgetCode'
           DataTypeName='varchar'

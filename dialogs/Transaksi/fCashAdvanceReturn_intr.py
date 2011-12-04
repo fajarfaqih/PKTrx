@@ -4,9 +4,10 @@ DefaultItems = [ 'Inputer',
                  'BranchCode',
                  'TransactionDate',
                  'FloatTransactionDate',
-                 'LBatch.BatchId',
-                 'LBatch.BatchNo',
-                 'LBatch.Description',
+                 #'LBatch.BatchId',
+                 #'LBatch.BatchNo',
+                 #'LBatch.Description',
+                 'ActualDate',
                  'LCashAccount.AccountNo',
                  'LCashAccount.AccountName',
                  'TransactionNo',
@@ -90,7 +91,8 @@ class fCashAdvanceReturn :
     for item in DefaultItems :
       uipTran.SetFieldValue(item,self.DefaultValues[item])
 
-    self.pTransaction_LBatch.SetFocus()
+    #self.pTransaction_LBatch.SetFocus()
+    self.pTransaction_ActualDate.SetFocus()
     self.InitValues()
 
   def SaveDefaultValues(self):
@@ -259,8 +261,9 @@ class fCashAdvanceReturn :
   
   def SimpanData(self):
     app = self.app
+    uipTran = self.uipTransaction
 
-    self.ValidationBeforeSave()
+    self.CheckRequired()
     
     if app.ConfirmDialog('Yakin simpan transaksi ?'):
       self.FormObject.CommitBuffer()
@@ -281,21 +284,24 @@ class fCashAdvanceReturn :
         if app.ConfirmDialog('Apakah akan cetak kwitansi ?'):
           oPrint = app.GetClientClass('PrintLib','PrintLib')()
           oPrint.doProcessByStreamName(app,ph.packet,res.StreamName)
-          
+        self.DefaultValues['ActualDate'] = uipTran.ActualDate
         return 1
     #-- if
 
-  def ValidationBeforeSave(self):
+  def CheckRequired(self):
     uipTran = self.uipTransaction
 
     self.FormObject.CommitBuffer()
 
     self.CheckRefTransaction()
 
-    BatchId = uipTran.GetFieldValue('LBatch.BatchId') or 0
+    #BatchId = uipTran.GetFieldValue('LBatch.BatchId') or 0
 
-    if BatchId == 0 :
-      raise 'PERINGATAN','Anda Belum Memilih Batch'
+    #if BatchId == 0 :
+    #  raise 'PERINGATAN','Anda Belum Memilih Batch'
+    
+    if uipTran.ActualDate in [0, None] :
+      raise 'PERINGATAN','Tanggal Transaksi belum diinputkan'
 
     CashAccountNo = uipTran.GetFieldValue('LCashAccount.AccountNo') or ''
 

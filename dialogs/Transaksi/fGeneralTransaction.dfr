@@ -74,14 +74,14 @@ document <
     >, object:rtf::DualSplit<
       Name='dsTransaction'
       Width=668
-      Height=209
+      Height=145
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['pTransaction']
       InversedAlign=true
     >, object:rtf::Panel<
       Name='pAction'
       Width=729
-      Height=17
+      Height=14
       Bordered=true
       ControlLeftMargin=8
       ControlTopMargin=8
@@ -91,6 +91,7 @@ document <
     >, object:rtf::Panel<
       Elements={object:rtf::LinkUIElmtSetting<
           Name='LBatch'
+          Hidden=true
           ControlCaption='Pilih batch transaksi'
           ClassTypeName='TransactionBatch'
           DisplayFields='BatchDate;BatchId;BatchNo;Description'
@@ -103,15 +104,14 @@ document <
           LookupOption=loCustomOQL
           FieldBaseName='LBatch'
         >, object:rtf::FieldUIElmtSetting<
-          Name='ActualDate'
-          ReadOnlyControl=true
-          ControlCaption='Tanggal Transaksi'
-          DataTypeName='timestamp'
-          DataLength=20
-        >, object:rtf::FieldUIElmtSetting<
           Name='TransactionDate'
           ReadOnlyControl=true
           ControlCaption='Tanggal Input'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ActualDate'
+          ControlCaption='Tanggal Transaksi'
           DataTypeName='timestamp'
           DataLength=20
         >, object:rtf::FieldUIElmtSetting<
@@ -158,42 +158,24 @@ document <
           DataLength=30
         >}Name='pTransaction'
       Width=753
-      Height=177
+      Height=129
       Bordered=true
       UIPart=$UIPARTS['uipTransaction']
-      Controls={*object:rtf::DBLookupEdit<
-          Name='LBatch'
-          Top=8
-          Left=8
-          ControlCaption='Pilih batch transaksi'
-          FieldName='LBatch.BatchId'
-          DisplayFormat=''
-          LookupField='LBatch.BatchNo'
-          DisplayLookupField=true
-          OnAfterLookup='BatchAfterLookup'
-          DisplayLookupColor=-2147483624
-          DisplayLookupWidth=150
-        >, *object:rtf::DBDateEdit<
-          Name='ActualDate'
-          Top=36
-          Left=8
-          Enabled=false
-          Color=-2147483624
-          ControlCaption='Tanggal Transaksi'
-        >, *object:rtf::DBDateEdit<
+      Controls={*object:rtf::DBDateEdit<
           Name='TransactionDate'
-          Top=64
+          Top=12
           Left=8
-          Enabled=false
-          ForceUseEqualCaptionWidth=true
           Color=-2147483624
           ControlCaption='Tanggal Input'
-          LayoutOrder=3
-          CaptionWidth=100
+        >, *object:rtf::DBDateEdit<
+          Name='ActualDate'
+          Top=40
+          Left=8
+          Color=0
+          ControlCaption='Tanggal Transaksi'
         >, *object:rtf::DBEdit<
           Name='ReferenceNo'
-          Layout=clAbsolute
-          Top=92
+          Top=68
           Left=8
           Width=201
           Height=21
@@ -204,8 +186,7 @@ document <
           CharCase=ecUpperCase
         >, *object:rtf::DBEdit<
           Name='Description'
-          Layout=clAbsolute
-          Top=120
+          Top=96
           Left=8
           Color=0
           ControlCaption='Keterangan'
@@ -215,7 +196,7 @@ document <
         >, *object:rtf::DBEdit<
           Name='TotalDebit'
           Layout=clAbsolute
-          Top=64
+          Top=40
           Left=344
           Enabled=false
           ForceUseEqualCaptionWidth=true
@@ -226,7 +207,7 @@ document <
         >, *object:rtf::DBEdit<
           Name='TotalCredit'
           Layout=clAbsolute
-          Top=92
+          Top=68
           Left=344
           Enabled=false
           ForceUseEqualCaptionWidth=true
@@ -237,7 +218,7 @@ document <
         >, *object:rtf::DBEdit<
           Name='Inputer'
           Layout=clAbsolute
-          Top=120
+          Top=96
           Left=344
           Enabled=false
           ForceUseEqualCaptionWidth=true
@@ -249,7 +230,7 @@ document <
         >, *object:rtf::DBEdit<
           Name='TransactionNo'
           Layout=clAbsolute
-          Top=8
+          Top=12
           Left=344
           Width=217
           Height=21
@@ -260,7 +241,7 @@ document <
           CharCase=ecUpperCase
         >}EqualCaptionWidth=100
       ControlLeftMargin=8
-      ControlTopMargin=8
+      ControlTopMargin=12
       DefaultControlHeight=21
       HorizontalControlGap=4
       RowControlGap=7
@@ -268,7 +249,7 @@ document <
     >, object:rtf::MultiPages<
       Name='mpItem'
       Width=668
-      Height=335
+      Height=399
       Pages={object:rtf::Page<
           PageName='pgMainItem'
           PageTitle='Rincian Transaksi'
@@ -297,7 +278,7 @@ document <
     >, object:rtf::DualSplit<
       Name='dsItem'
       Width=660
-      Height=304
+      Height=368
       Container1=$CONTAINERS['pItemAction']
       Container2=$CONTAINERS['gItem']
       InversedAlign=true
@@ -459,7 +440,7 @@ document <
           DataLength=100
         >}Name='gItem'
       Width=660
-      Height=236
+      Height=300
       UIPart=$UIPARTS['uipTransactionItem']
       ControlLeftMargin=8
       ControlTopMargin=8

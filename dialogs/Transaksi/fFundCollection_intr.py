@@ -9,9 +9,9 @@ DefaultItems = [ 'Inputer',
                  'Rate',
                  'TotalAmount',
                  'CashType',
-                 'LBatch.BatchId',
-                 'LBatch.BatchNo',
-                 'LBatch.Description',
+                 #'LBatch.BatchId',
+                 #'LBatch.BatchNo',
+                 #'LBatch.Description',
                  'LProductBranch.Kode_Cabang',
                  'LProductBranch.Nama_Cabang',
                  'LCurrency.Currency_Code',
@@ -100,7 +100,8 @@ class fFundCollection :
       uipTran.SetFieldValue(item,self.DefaultValues[item])
 
     self.CariDonor()
-    self.pBatch_LBatch.SetFocus()
+    #self.pBatch_LBatch.SetFocus()
+    self.pBatch_ActualDate.SetFocus()
 
   # mode
   # 1 : input mode
@@ -204,7 +205,7 @@ class fFundCollection :
       self.fSelectProduct = fData
     else:
       fData = self.fSelectProduct
-    branchCode = self.uipTransaction.GetFieldValue('LProductBranch.Kode_Cabang')
+    branchCode = self.uipTransaction.BranchCode #GetFieldValue('LProductBranch.Kode_Cabang')
     if fData.GetProduct(branchCode) == 1:
       productId = fData.ProductId
       productName = fData.ProductName
@@ -313,9 +314,18 @@ class fFundCollection :
       return 1
 
   def CheckRequiredGeneral(self):
+    uipDonor = self.uipDonor
     uipTran  = self.uipTransaction
-    if uipTran.GetFieldValue('LBatch.BatchId') == None:
-      self.app.ShowMessage('Batch belum dipilih')
+    #if uipTran.GetFieldValue('LBatch.BatchId') == None:
+    #  self.app.ShowMessage('Batch belum dipilih')
+    #  return 0
+
+    if uipDonor.DonorId in [0,None]:
+      self.app.ShowMessage('Data Donatur belum diinputkan')
+      return 0
+      
+    if uipTran.ActualDate in [0, None] :
+      self.app.ShowMessage('Tanggal Transaksi belum diinputkan')
       return 0
 
     if self.uipTransactionItem.RecordCount <= 0 :
@@ -396,7 +406,7 @@ class fFundCollection :
 
         #if savemode == 1 :
         #  self.DefaultValues['TransactionNo'] = res.NewTransactionNo
-          
+        self.DefaultValues['ActualDate'] = uipTran.ActualDate
       return 1
     #-- if
     return 0

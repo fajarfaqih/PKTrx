@@ -443,7 +443,7 @@ def GetKwitansiPenerimaanNew(oTran):
   Total = oTran.Amount or 0.0
   Currency = oTran.LCurrency
   Terbilang = ToolsConvert.Terbilang(config,Total,
-            KodeMataUang = '000',
+            KodeMataUang = oTran.CurrencyCode,
             NamaMataUang = Currency.Symbol_Says)
   Terbilang = ToolsConvert.Divider(Terbilang,45)
   if len(Terbilang) == 1 : Terbilang.append('')
@@ -494,9 +494,9 @@ def GetKwitansiPenerimaanNew(oTran):
   aSQLText = " select transactionitemid from transactionitem \
                    where transactionid=%d " % oTran.TransactionId        
 
-  aRate = oTran.Rate
   oRes = oTran.Config.CreateSQL(aSQLText).RawResult
-
+  
+  aRate = oTran.Rate
   while not oRes.Eof:
     oItem = oTran.Helper.GetObject(
           'TransactionItem', oRes.TransactionItemId
@@ -504,11 +504,18 @@ def GetKwitansiPenerimaanNew(oTran):
            
     if oItem.MutationType == 'C':
       rowdetail += 1
+      
+      if oItem.CurrencyCode != oTran.CurrencyCode :
+        Amount = oItem.Amount/aRate
+      else:
+        Amount = oItem.Amount
+      # end if
+
       DETAIL += 0 * ' '  + '%(LINE)2s %(NOACCOUNT)-6s  %(DESCRIPTION)-40s  %(CURRSYMBOL)-2s %(AMOUNT)20s \n\\par ' % {
            'LINE' : '-' , #str(rowdetail),
            'NOACCOUNT' : oItem.AccountCode,
            'DESCRIPTION' : oItem.Description[:40],
-           'AMOUNT' :  config.FormatFloat('#,##0.00',oItem.Amount/aRate),
+           'AMOUNT' :  config.FormatFloat('#,##0.00', Amount),
            'CURRSYMBOL' : Currency.Symbol,
         }
     else:
@@ -593,11 +600,17 @@ def GetKwitansiPengembalianUangMuka(oTran):
       ).CastToLowestDescendant()
            
     if oItem.MutationType == 'D':
-      DETAIL += '%(LINE)2s      %(NOACCOUNT)-10s   %(DESCRIPTION)-50s   Rp %(AMOUNT)25s \n\\par ' % {
+      if oItem.CurrencyCode != oTran.CurrencyCode :
+        Amount = oItem.Amount / oTran.Rate
+      else:
+        Amount = oItem.Amount
+         
+      DETAIL += '%(LINE)2s      %(NOACCOUNT)-10s   %(DESCRIPTION)-50s   %(CURRSYMBOL)-2s %(AMOUNT)25s \n\\par ' % {
            'LINE' : str(i),
            'NOACCOUNT' : oItem.AccountCode,
            'DESCRIPTION' : oItem.Description,
-           'AMOUNT' :  config.FormatFloat('#,##0.00',oItem.Amount),
+           'AMOUNT' :  config.FormatFloat('#,##0.00', Amount),
+           'CURRSYMBOL' : Currency.Symbol,
         }
       if oItem.IsA('AccountTransactionItem'):
         if oItem.LFinancialAccount.CastToLowestDescendant().IsA('CashAccount') :

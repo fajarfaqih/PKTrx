@@ -6,7 +6,7 @@ import simplejson
 def FormSetDataEx(uideflist, params) :
   config = uideflist.config
   helper = phelper.PObjectHelper(config)
-  Now = config.Now()
+  Now = int(config.Now())
   
   if params.GetDatasetByName('trparam') != None :
     oForm = helper.CreateObject('FormTransaksi')
@@ -24,8 +24,9 @@ def FormSetDataEx(uideflist, params) :
   rec.Inputer = str(config.SecurityContext.UserId)
   rec.BranchCode = str(config.SecurityContext.GetUserInfo()[4])
   rec.BranchName = str(config.SecurityContext.GetUserInfo()[5])
-  rec.TransactionDate = int(Now)
-  rec.FloatTransactionDate = int(Now)
+  rec.TransactionDate = Now
+  rec.ActualDate = Now
+  rec.FloatTransactionDate = Now
   rec.Amount = 0.0
   
   # Set Transaction Number
@@ -49,7 +50,8 @@ def SimpanData(config, params, returns):
     oTransaction = params.uipTransaction.GetRecord(0)
 
     request = {}
-    request['BatchId'] = oTransaction.GetFieldByName('LBatch.BatchId')
+    #request['BatchId'] = oTransaction.GetFieldByName('LBatch.BatchId')
+    request['ActualDate'] = oTransaction.ActualDate
     request['DestBranchCode'] = oTransaction.GetFieldByName('LBranchDestination.BranchCode')
     request['SourceAccountNo'] = oTransaction.GetFieldByName('LCashAccount.AccountNo')
     request['DestAccountNo'] = oTransaction.GetFieldByName('LCashAccountDestination.AccountNo')
@@ -68,12 +70,14 @@ def SimpanData(config, params, returns):
     
     sRequest = simplejson.dumps(request)
     
-    oService = helper.LoadScript('Transaction.BranchDistribution')
+    oService = helper.LoadScript('Transaction.GeneralTransaction')
 
+    TransactionCode = 'DT'
     if oTransaction.ShowMode == 1:
-      response = oService.BranchDistributionNew(config,sRequest,params)
+      response = oService.CreateTransaction(TransactionCode, config, sRequest, params)
     else:
-      response = oService.BranchDistributionUpdate(config,sRequest,params)
+      response = oService.UpdateTransaction(TransactionCode, config, sRequest, params)
+    # end if
     
     response = simplejson.loads(response)
     TransactionNo = response[u'TransactionNo']

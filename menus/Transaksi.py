@@ -204,6 +204,7 @@ def productZakatClick (menu, app):
 
 def showHistoriTransaksi (menu, app):
   GetAccess(app, menu.Name)
+  app.SetLocalResourceMode(0)
   fHist = app.CreateForm('Transaksi/fTransactionHistory', 'Transaksi/fTransactionHistory', 0, None, None)
   fHist.Show()
 

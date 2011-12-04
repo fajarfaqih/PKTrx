@@ -385,10 +385,8 @@ class fCashAdvanceReturn :
     
     self.CheckRefTransaction()
     
-    BatchId = uipTran.GetFieldValue('LBatch.BatchId') or 0
-
-    if BatchId == 0 :
-      raise 'PERINGATAN','Anda Belum Memilih Batch'
+    if uipTran.ActualDate in [0, None] :
+      raise 'PERINGATAN','Tanggal Transaksi belum diinputkan'
 
     CashAccountNo = uipTran.GetFieldValue('LCashAccount.AccountNo') or ''
     

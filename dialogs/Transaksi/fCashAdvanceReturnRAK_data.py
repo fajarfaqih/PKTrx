@@ -9,15 +9,25 @@ def FormSetDataEx(uideflist, params) :
 
   if params.GetDatasetByName('trparam') != None :
     oForm = helper.CreateObject('FormTransaksi')
-    return oForm.SetDataEx(uideflist,params)
+    oForm.SetDataEx(uideflist,params)
+    
+    rec = uideflist.uipTransaction.Dataset.GetRecord(0)
+    
+    # Set Field For Old Transaction Compatible
+    oTran = helper.GetObjectByNames('Transaction',{'TransactionNo' : rec.TransactionNo})
+    rec.ActualDate = oTran.GetAsTDateTime('ActualDate')
+    
+    return 1
 
 
+  Now = int(config.Now())
   rec = uideflist.uipTransaction.Dataset.AddRecord()
   rec.Inputer = str(config.SecurityContext.UserId)
   rec.PaidTo = rec.Inputer
   rec.BranchCode = str(config.SecurityContext.GetUserInfo()[4])
-  rec.TransactionDate = int(config.Now())
-  rec.FloatTransactionDate = int(config.Now())
+  rec.TransactionDate = Now
+  rec.FloatTransactionDate = Now
+  rec.ActualDate = Now
   rec.Amount = 0.0
   
   # Set Transaction Number
@@ -76,7 +86,7 @@ def SimpanData(config, params, returns):
     oTransaction = params.uipTransaction.GetRecord(0)
 
     request = {}
-    request['BatchId'] = oTransaction.GetFieldByName('LBatch.BatchId')
+    request['ActualDate'] = oTransaction.ActualDate
     request['EmployeeId'] = oTransaction.EmployeeId #oTransaction.GetFieldByName('LEmployee.Nomor_Karyawan')
     request['EmployeeName'] = oTransaction.EmployeeName
     request['CashAccountNo'] = oTransaction.GetFieldByName('LCashAccount.AccountNo')
@@ -92,42 +102,18 @@ def SimpanData(config, params, returns):
     request['TransactionNo'] = oTransaction.TransactionNo
     request['PaidTo'] = oTransaction.PaidTo
     
-    """
-    items = []
-
-    for i in range(params.uipTransactionItem.RecordCount):
-      oItem = params.uipTransactionItem.GetRecord(i)
-      item = {}
-      #item['ProductId'] = oItem.GetFieldByName('LProduct.ProductId')
-      item['AccountId'] = oItem.AccountId
-      item['AccountName'] = oItem.AccountName
-      item['Ashnaf'] = oItem.Ashnaf
-      item['Amount'] = oItem.Amount
-      #item['Valuta'] = oItem.GetFieldByName('LCurrency.Currency_Code')
-      item['Rate']   = oItem.Rate
-      item['Ekuivalen'] = oItem.Ekuivalen
-      item['Description'] = oItem.Description
-      item['FundEntity'] = oItem.FundEntity
-      item['DistItemAccount'] = oItem.DistItemCode
-      item['BudgetId'] = oItem.BudgetId or 0
-      item['ItemType'] = oItem.ItemType or 0
-
-      items.append(item)
-    #-- for
-
-    request['Items']= items"""
-
     sRequest = simplejson.dumps(request)
 
 
     oService = helper.LoadScript('Transaction.GeneralTransaction')
     
+    TransactionCode = 'CARR'
     if oTransaction.ShowMode == 1:
-      response = oService.CashAdvanceReturnRAKNew(config,sRequest,params)
+      response = oService.CreateTransaction(TransactionCode, config, sRequest, params)
     else:
-      response = oService.CashAdvanceReturnRAKUpdate(config,sRequest,params)
+      response = oService.UpdateTransaction(TransactionCode, config, sRequest, params)
     # end if
-    
+
     response = simplejson.loads(response)
     TransactionNo = response[u'TransactionNo']
 

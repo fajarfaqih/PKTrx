@@ -25,6 +25,7 @@ def FormSetDataEx(uideflist, params) :
   rec.BranchCode = str(config.SecurityContext.GetUserInfo()[4])
   rec.TransactionDate = int(Now)
   rec.FloatTransactionDate = int(Now)
+  rec.ActualDate = int(Now)
   rec.Amount = 0.0
   rec.ReceivedFrom = rec.Inputer
   
@@ -49,7 +50,7 @@ def SimpanData(config, params, returns):
     oTransaction = params.uipTransaction.GetRecord(0)
 
     request = {}
-    request['BatchId'] = oTransaction.GetFieldByName('LBatch.BatchId')
+    request['ActualDate'] = oTransaction.ActualDate
     #request['EmployeeId'] = oTransaction.EmployeeId #oTransaction.GetFieldByName('LEmployee.Nomor_Karyawan')
     #request['EmployeeName'] = oTransaction.EmployeeName
     request['CashAccountNo'] = oTransaction.GetFieldByName('LCashAccount.AccountNo')
@@ -61,20 +62,18 @@ def SimpanData(config, params, returns):
     request['BranchCode'] = config.SecurityContext.GetUserInfo()[4]
     request['TransactionNo'] = oTransaction.TransactionNo
     request['InvoiceNo'] = oTransaction.GetFieldByName('LInvoiceFA.InvoiceNo')
-    request['InvoiceId'] = 1
+    request['InvoiceId'] = oTransaction.GetFieldByName('LInvoiceFA.InvoiceId')
     request['FAAccountNo'] = oTransaction.GetFieldByName('LInvoiceFA.AccountNo')
     
     
     sRequest = simplejson.dumps(request)
 
+    TransactionCode = 'FAIP'
     if oTransaction.ShowMode == 1:
-      Script = 'Transaction.FixedAsset'
-    else: #ShowMode == 2
-      Script = 'Transaction.FixedAssetUpdate'
+      response = oService.CreateFixedAssetTransaction(TransactionCode, config, sRequest, params)
+    else:
+      response = oService.UpdateFixedAssetTransaction(TransactionCode, config,sRequest,params)
 
-    oService = helper.LoadScript(Script)
-
-    response = oService.InvoicePayment(config,sRequest,params)
     
     response = simplejson.loads(response)
     TransactionNo = response[u'TransactionNo']

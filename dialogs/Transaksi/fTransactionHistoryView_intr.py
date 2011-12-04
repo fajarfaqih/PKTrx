@@ -6,10 +6,10 @@ class fTransactionHistoryView:
     self.userapp = self.app.UserAppObject
     self.oPrint = self.app.GetClientClass('PrintLib','PrintLib')()
 
-  def Show(self):
-    self.uipData.Edit()
-    self.uipData.BeginItemNo = 1
-    
+  def Show(self,TransactionId):
+    params = self.app.CreateValues(['TransactionId',TransactionId])
+  
+    self.FormObject.SetDataWithParameters(params)
     return self.FormContainer.Show()
 
 

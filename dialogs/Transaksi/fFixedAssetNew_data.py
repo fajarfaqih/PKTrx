@@ -15,6 +15,10 @@ def FormSetDataEx(uideflist, params) :
 
     rec = uideflist.uipTransaction.Dataset.GetRecord(0)
 
+    oTran = helper.GetObjectByNames('Transaction',{'TransactionNo':rec.TransactionNo})
+
+    rec.ActualDate = oTran.GetAsTDateTime('ActualDate')
+    
     # Search Object Fixed Asset
     TransactionId = params.FirstRecord.TransactionId
     oqlCheck = "select from AccountTransactionItem \
@@ -46,6 +50,7 @@ def FormSetDataEx(uideflist, params) :
   rec.BranchCode = str(config.SecurityContext.GetUserInfo()[4])
   rec.TransactionDate = int(Now)
   rec.FloatTransactionDate = int(Now)
+  rec.ActualDate = int(Now)
   rec.Amount = 0.0
   rec.ReceivedFrom = rec.Inputer
   
@@ -70,7 +75,8 @@ def SimpanData(config, params, returns):
     oTransaction = params.uipTransaction.GetRecord(0)
 
     request = {}
-    request['BatchId'] = oTransaction.GetFieldByName('LBatch.BatchId')
+    #request['BatchId'] = oTransaction.GetFieldByName('LBatch.BatchId')
+    request['ActualDate'] = oTransaction.ActualDate
     #request['EmployeeId'] = oTransaction.EmployeeId #oTransaction.GetFieldByName('LEmployee.Nomor_Karyawan')
     #request['EmployeeName'] = oTransaction.EmployeeName
     request['AssetName'] = oTransaction.AssetName
@@ -98,10 +104,11 @@ def SimpanData(config, params, returns):
 
     oService = helper.LoadScript('Transaction.FixedAsset')
       
+    TransactionCode = 'FA'
     if oTransaction.ShowMode == 1:
-      response = oService.FixedAssetNew(config,sRequest,params)
+      response = oService.CreateFixedAssetTransaction(TransactionCode, config, sRequest, params)
     else:
-      response = oService.FixedAssetUpdate(config,sRequest,params)
+      response = oService.UpdateFixedAssetTransaction(TransactionCode, config,sRequest,params)
     
     response = simplejson.loads(response)
     TransactionNo = response[u'TransactionNo']

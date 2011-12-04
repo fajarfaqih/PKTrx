@@ -122,11 +122,31 @@ class fInvoice:
       uipInvoice.SetFieldValue('LCurrency.Currency_Code',CurrencyCode)
       uipInvoice.SetFieldValue('LCurrency.Short_Name',CurrencyName)
 
+  def CheckRequired(self):
+    uipInvoice = self.uipInvoice
+
+    if uipInvoice.ActualDate in [0, None] :
+      raise 'PERINGATAN','Tanggal Transaksi belum diinputkan'
+
+    if uipInvoice.SponsorId in [0, None] :
+      raise 'PERINGATAN','Nama Sponsor belum diinputkan'
+      
+    if uipInvoice.InvoiceDate in [0, None] :
+      raise 'PERINGATAN','Tanggal Invoice belum diinputkan'
+
+    if uipInvoice.ProductAccountNo in [0, None] :
+      raise 'PERINGATAN','Nama Program belum diinputkan'
+
+    if (uipTran.Amount or 0.0) <= 0.0:
+      raise 'PERINGATAN','Jumlah Tagihan tidak boleh <= 0.0 '
+
+      
   def PrintInvoiceClick(self,sender):
     app = self.app
     form = self.form
     uipInvoice = self.uipInvoice
 
+    self.CheckRequired()
     form.CommitBuffer()
     
     if uipInvoice.ShowMode == 1:

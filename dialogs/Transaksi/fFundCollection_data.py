@@ -14,7 +14,11 @@ def FormSetDataEx(uideflist, params) :
     oForm.SetDataEx(uideflist,params)
     uipTran = uideflist.uipTransaction.Dataset.GetRecord(0)
     uipDonor = uideflist.uipDonor.Dataset.GetRecord(0)
+
     oTran = helper.GetObjectByNames('Transaction',{'TransactionNo' : uipTran.TransactionNo})
+    
+    rec.ActualDate = oTran.GetAsTDateTime('ActualDate')
+
     uipDonor.DonorNo = oTran.DonorNo
     uipDonor.DonorName = oTran.DonorName
     uipDonor.BranchId = int(config.SecurityContext.GetUserInfo()[2])
@@ -62,8 +66,8 @@ def FormSetDataEx(uideflist, params) :
   aUserInfo = config.SecurityContext.GetUserInfo()
   aBranchCode = str(aUserInfo[4])
   aBranchName = str(aUserInfo[5])
-  recT.SetFieldByName('LProductBranch.Kode_Cabang', aBranchCode)
-  recT.SetFieldByName('LProductBranch.Nama_Cabang', aBranchName)
+  #recT.SetFieldByName('LProductBranch.Kode_Cabang', aBranchCode)
+  #recT.SetFieldByName('LProductBranch.Nama_Cabang', aBranchName)
 
   recT.SetFieldByName('LCurrency.Currency_Code', '000')
   recT.SetFieldByName('LCurrency.Full_Name', 'Indonesia Rupiah')
@@ -157,7 +161,7 @@ def SimpanData(config, params, returns):
     request['ActualDate'] = oTransaction.ActualDate
     request['Amount'] = oTransaction.TotalAmount
     request['Inputer'] = oTransaction.Inputer
-    request['BatchId'] = oTransaction.GetFieldByName('LBatch.BatchId')
+    #request['BatchId'] = oTransaction.GetFieldByName('LBatch.BatchId')
     request['TransactionNo'] = oTransaction.TransactionNo
     request['CashCurrency'] = oTransaction.GetFieldByName('LCurrency.Currency_Code')
     request['PaidTo'] = oTransaction.PaidTo
@@ -170,6 +174,11 @@ def SimpanData(config, params, returns):
     request['DonorType'] = oDonor.DonorType
     request['MarketerId'] = oDonor.GetFieldByName('LMarketer.MarketerId')
     
+    # Cek Marketer
+    oMarketer = helper.GetObject('Marketer',request['MarketerId'])
+    if oMarketer.isnull :
+      raise '','Data Marketer tidak ditemukan / tidak valid / tidak terdaftar sebagai marketer'
+    
     request['Rate'] = oTransaction.Rate
     request['BankAccountNo'] = oTransaction.GetFieldByName('LBank.AccountNo')
     request['AssetCode'] = oTransaction.GetFieldByName('LAsset.Account_Code')
@@ -179,7 +188,7 @@ def SimpanData(config, params, returns):
 
     request['SponsorId'] = oTransaction.GetFieldByName('LSponsor.SponsorId')
     request['VolunteerId'] = oTransaction.GetFieldByName('LVolunteer.VolunteerId')
-    request['ProductBranchCode'] = oTransaction.GetFieldByName('LProductBranch.Kode_Cabang')
+    #request['ProductBranchCode'] = oTransaction.GetFieldByName('LProductBranch.Kode_Cabang')
     request['ShowMode'] = oTransaction.ShowMode
     request['PaymentType'] = oTransaction.PaymentType
     

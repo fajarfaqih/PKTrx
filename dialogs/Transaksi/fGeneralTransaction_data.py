@@ -11,12 +11,13 @@ def FormSetDataEx(uideflist, params) :
     oForm = helper.CreateObject('FormTransaksi')
     return oForm.SetDataEx(uideflist,params)
 
+  Now = int(config.Now())
   rec = uideflist.uipTransaction.Dataset.AddRecord()
   rec.Inputer = str(config.SecurityContext.UserId)
   rec.BranchCode = str(config.SecurityContext.GetUserInfo()[4])
-  rec.TransactionDate = int(config.Now())
-  rec.ActualDate = rec.TransactionDate
-  rec.FloatTransactionDate = int(config.Now())
+  rec.TransactionDate = Now
+  rec.ActualDate = Now
+  rec.FloatTransactionDate = Now
   rec.TotalDebit = 0.0
   rec.TotalCredit = 0.0
 
@@ -51,9 +52,9 @@ def SimpanData(config, params, returns):
     request['TotalDebit'] = oTransaction.TotalDebit
     request['TotalCredit'] = oTransaction.TotalCredit
     request['Amount'] = oTransaction.TotalDebit
-    request['Rate'] = 1
+    request['Rate'] = 1.0
     request['Inputer'] = oTransaction.Inputer
-    request['BatchId'] = oTransaction.GetFieldByName('LBatch.BatchId')
+    #request['BatchId'] = oTransaction.GetFieldByName('LBatch.BatchId')
     request['BranchCode'] = config.SecurityContext.GetUserInfo()[4]
     request['ActualDate'] = oTransaction.ActualDate
     request['TransactionNo'] = oTransaction.TransactionNo
@@ -105,10 +106,12 @@ def SimpanData(config, params, returns):
 
     oService = helper.LoadScript('Transaction.GeneralTransaction')
 
+    TransactionCode = 'GT'
     if oTransaction.ShowMode == 1:
-      response = oService.GeneralTransactionNew(config, sRequest,params)
-    else: #ShowMode == 2
-      response = oService.GeneralTransactionUpdate(config, sRequest,params)
+      response = oService.CreateTransaction(TransactionCode, config, sRequest, params)
+    else:
+      response = oService.UpdateTransaction(TransactionCode, config, sRequest, params)
+
 
     response = simplejson.loads(response)
     TransactionNo = response[u'TransactionNo']

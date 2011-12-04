@@ -44,10 +44,6 @@ document <
           DataTypeName='double'
           DataLength=20
         >, object:rpclass::TCustomLoadedField<
-          Name='ActualDate'
-          DataTypeName='timestamp'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
           Name='PeriodId'
           DataTypeName='integer'
           DataLength=20
@@ -59,6 +55,10 @@ document <
           Name='ShowMode'
           DataTypeName='integer'
           DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='CurrencyCode'
+          DataTypeName='varchar'
+          DataLength=10
         >, object:rpclass::TCustomLoadedField<
           Name='LBank.AccountNo'
           DataTypeName='VARCHAR'
@@ -76,9 +76,32 @@ document <
           DataTypeName='VARCHAR'
           DataLength=20
         >, object:rpclass::TCustomLoadedField<
+          Name='RateBank'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
           Name='CashType'
           DataTypeName='varchar'
           DataLength=1
+        >, object:rpclass::TCustomLoadedField<
+          Name='LCurrencyCash.Currency_Code'
+          DataTypeName='VARCHAR'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LCurrencyCash.Currency_Code'
+          DataTypeName='VARCHAR'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LCurrencyCash.Short_Name'
+          DataTypeName='VARCHAR'
+          DataLength=10
+        >, object:rpclass::TCustomLoadedField<
+          Name='LCurrencyCash.Kurs_Tengah_BI'
+          DataTypeName='DOUBLE'
+        >, object:rpclass::TCustomLoadedField<
+          Name='RateCash'
+          DataTypeName='double'
+          DataLength=20
         >, object:rpclass::TCustomLoadedField<
           Name='LAsset.Account_Code'
           DataTypeName='varchar'
@@ -125,6 +148,10 @@ document <
           Name='LBatch.BatchDate'
           DataTypeName='TIMESTAMP'
         >, object:rpclass::TCustomLoadedField<
+          Name='ActualDate'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
           Name='TransactionNo'
           DataTypeName='varchar'
           DataLength=30
@@ -140,6 +167,10 @@ document <
           Name='LBank'
           ClassTypeName='BankCash'
           FieldNames='AccountNo;AccountNo;BankName;CurrencyCode'
+        >, object:rpclass::TCustomLoadedLink<
+          Name='LCurrencyCash'
+          ClassTypeName='Currency'
+          FieldNames='Currency_Code;Currency_Code;Short_Name;Kurs_Tengah_BI'
         >, object:rpclass::TCustomLoadedLink<
           Name='LBatch'
           ClassTypeName='TransactionBatch'

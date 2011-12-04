@@ -4,9 +4,9 @@ DefaultItems = [ 'Inputer',
                  'BranchCode',
                  'TransactionDate',
                  'FloatTransactionDate',
-                 'LBatch.BatchId',
-                 'LBatch.BatchNo',
-                 'LBatch.Description',
+                 #'LBatch.BatchId',
+                 #'LBatch.BatchNo',
+                 #'LBatch.Description',
                  'LCashAccount.AccountNo',
                  'LCashAccount.AccountName',
                  'TransactionNo',
@@ -14,7 +14,8 @@ DefaultItems = [ 'Inputer',
                  'Amount',
                  'ReceivedFrom',
                  'FundEntity',
-                 'PeriodId'
+                 'PeriodId',
+                 'ActualDate'
                  ]
 
 
@@ -28,13 +29,16 @@ class fCashAdvance :
 
   # --- PRIVATE METHOD ---
   def Show(self , mode = 1):
-    self.uipTransaction.Edit()
-    self.uipTransaction.ShowMode = mode
+    uipTran = self.uipTransaction
+
+    uipTran.Edit()
+    uipTran.ShowMode = mode
+    
     if mode == 1 : # Insert Mode
-      self.uipTransaction.FundEntity = 4
+      uipTran.FundEntity = 4
       self.SaveDefaultValues()
     else: # Edit Mode
-      self.pTransaction_Rate.Enabled = (uipTran.CurrencyCode != '000')
+      self.pTransaction2_Rate.Enabled = (uipTran.CurrencyCode != '000')
       
     return self.FormContainer.Show()
 
@@ -52,7 +56,8 @@ class fCashAdvance :
     for item in DefaultItems :
       uipTran.SetFieldValue(item,self.DefaultValues[item])
 
-    self.pTransaction_LBatch.SetFocus()
+    #self.pTransaction_LBatch.SetFocus()
+    self.pTransaction_ActualDate.SetFocus()
 
   # --- FORM EVENT ---
   def BatchAfterLookup(self, sender, linkui):
@@ -72,7 +77,7 @@ class fCashAdvance :
     uipTran.CurrencyName = uipTran.GetFieldValue('LCashAccount.LCurrency.Short_Name')
     uipTran.Rate = uipTran.GetFieldValue('LCashAccount.LCurrency.Kurs_Tengah_BI')
 
-    self.pTransaction_Rate.Enabled = (uipTran.CurrencyCode != '000')
+    self.pTransaction2_Rate.Enabled = (uipTran.CurrencyCode != '000')
     
   def RateOnExit(self,sender):
     self.SetEkuivalenAmount()
@@ -149,8 +154,32 @@ class fCashAdvance :
     uipTran = self.uipTransaction
     uipTran.AmountEkuivalen = (uipTran.Amount or 0.0) * (uipTran.Rate or 1.0)
     
+  def CheckRequired(self):
+    uipTran  = self.uipTransaction
+
+    if uipTran.ActualDate in [0, None] :
+      self.app.ShowMessage('Tanggal Transaksi belum diinputkan')
+      return 0
+
+    if uipTran.GetFieldValue('LCashAccount.AccountNo') in ['', None] :
+      self.app.ShowMessage('Kas / Bank Belum diinputkan')
+      return 0
+
+    if uipTran.EmployeeId in [0,None] :
+      self.app.ShowMessage('Nama Karyawan Belum diinputkan')
+      return 0
+
+    if (uipTran.Amount or 0.0) <= 0.0 :
+      self.app.ShowMessage('Nilai Transaksi tidak boleh <= 0.0 ')
+      return 0
+
+    return 1
+
   def SimpanData(self):
     app = self.app
+    uipTran = self.uipTransaction
+
+    if not self.CheckRequired(): return 0
     
     if app.ConfirmDialog('Yakin simpan transaksi ?'):
       self.FormObject.CommitBuffer()
@@ -170,6 +199,6 @@ class fCashAdvance :
         if app.ConfirmDialog('Apakah akan cetak kwitansi ?'):
           oPrint = app.GetClientClass('PrintLib','PrintLib')()
           oPrint.doProcessByStreamName(app,ph.packet,res.StreamName)
-
+        self.DefaultValues['ActualDate'] = uipTran.ActualDate
         return 1
     #-- if

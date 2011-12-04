@@ -17,6 +17,14 @@ class fBranchDistribution:
     uipTran.Edit()
     uipTran.ActualDate = uipTran.GetFieldValue('LBatch.BatchDate')
     
+  def LCashDestBeforeLookup(self, sender, linkui):
+    uipTran = self.uipTransaction
+
+    if uipTran.BranchCodeDestination in ['',None] :
+      raise 'PERINGATAN','Pilih Dahulu Cabang Tujuan'
+      
+    return 1
+
   def EmployeeAfterLookup (self, sender, linkui):
     self.uipTransaction.EmployeeName = self.uipTransaction.GetFieldValue('LEmployee.Nama_Lengkap')
 
@@ -93,8 +101,29 @@ class fBranchDistribution:
 
     return 1
 
+  def CheckRequired(self):
+    uipTran = self.uipTransaction
+
+    if uipTran.ActualDate in [0, None] :
+      raise 'PERINGATAN','Tanggal Transaksi belum diinputkan'
+
+    if uipTran.GetFieldValue('LCashAccount.AccountNo') in ['', None] :
+      raise 'PERINGATAN','Kas / Bank Pengirim Belum diinputkan'
+
+    if uipTran.GetFieldValue('LCashAccountDestination.AccountNo') in ['', None] :
+      raise 'PERINGATAN','Kas / Bank Penerima Belum diinputkan'
+      
+    if uipTran.AccountNo in ['', None] :
+      raise 'PERINGATAN','Produk Belum diinputkan'
+
+    if (uipTran.Amount or 0.0) <= 0.0:
+      raise 'PERINGATAN','Nilai Transaksi tidak boleh <= 0.0 '
+
+
   def bSimpanClick(self, sender):
     app = self.app
+    
+    self.CheckRequired()
     
     if app.ConfirmDialog('Yakin simpan transaksi ?'):
       self.FormObject.CommitBuffer()

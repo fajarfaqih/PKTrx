@@ -99,6 +99,7 @@ document <
           DataLength=30
         >, object:rtf::LinkUIElmtSetting<
           Name='LBatch'
+          Hidden=true
           ControlCaption='Pilih batch transaksi'
           ClassTypeName='TransactionBatch'
           DisplayFields='BatchId;BatchNo;BatchDate;Description'
@@ -112,13 +113,12 @@ document <
         >, object:rtf::FieldUIElmtSetting<
           Name='TransactionDate'
           ReadOnlyControl=true
-          ControlCaption='Tanggal transaksi'
+          ControlCaption='Tanggal Input'
           DataTypeName='timestamp'
           DataLength=20
         >, object:rtf::FieldUIElmtSetting<
           Name='ActualDate'
-          ReadOnlyControl=true
-          ControlCaption='Tanggal Aktual'
+          ControlCaption='Tanggal Transaksi'
           DataTypeName='timestamp'
           DataLength=20
         >, object:rtf::FieldUIElmtSetting<
@@ -178,6 +178,9 @@ document <
           LookupOption=loCustomOQL
           FieldBaseName='LCashAccountDestination'
         >, object:rtf::FieldUIElmtSetting<
+          Name='PaidTo'
+          ControlCaption='Dibayar Kepada'
+        >, object:rtf::FieldUIElmtSetting<
           Name='AccountNo'
           ReadOnlyControl=true
           ControlCaption='Program / Project'
@@ -189,9 +192,6 @@ document <
           ControlCaption='-'
           DataTypeName='varchar'
           DataLength=50
-        >, object:rtf::FieldUIElmtSetting<
-          Name='PaidTo'
-          ControlCaption='Dibayar Kepada'
         >, object:rtf::FieldUIElmtSetting<
           Name='BudgetCode'
           ReadOnlyControl=true
@@ -231,27 +231,19 @@ document <
           Color=-2147483624
           ControlCaption='Nomor Transaksi'
           CharCase=ecUpperCase
-        >, *object:rtf::DBLookupEdit<
-          Name='LBatch'
-          Top=36
-          Left=8
-          ControlCaption='Pilih batch transaksi'
-          LookupField='LBatch.Description'
-          DisplayLookupField=true
-          OnAfterLookup='BatchAfterLookup'
         >, *object:rtf::DBDateEdit<
           Name='TransactionDate'
-          Top=64
+          Top=36
           Left=8
           Color=-2147483624
-          ControlCaption='Tanggal transaksi'
+          ControlCaption='Tanggal Input'
           CaptionWidth=100
         >, *object:rtf::DBDateEdit<
           Name='ActualDate'
-          Top=92
+          Top=64
           Left=8
-          Color=-2147483624
-          ControlCaption='Tanggal Aktual'
+          Color=0
+          ControlCaption='Tanggal Transaksi'
         >, *object:rtf::DBEdit<
           Name='BranchCode'
           Layout=clAbsolute
@@ -309,6 +301,18 @@ document <
           ControlCaption='Kas/Bank'
           LookupField='LCashAccountDestination.AccountName'
           DisplayLookupField=true
+          OnBeforeLookup='LCashDestBeforeLookup'
+        >, *object:rtf::DBEdit<
+          Name='PaidTo'
+          Layout=clAbsolute
+          Top=208
+          Left=472
+          Width=281
+          Height=21
+          ForceUseEqualCaptionWidth=true
+          Color=0
+          ControlCaption='Dibayar Kepada'
+          CharCase=ecUpperCase
         >, *object:rtf::DBEdit<
           Name='AccountNo'
           Layout=clAbsolute
@@ -327,18 +331,6 @@ document <
           Left=213
           Color=-2147483624
           ControlCaption='-'
-          CharCase=ecUpperCase
-        >, *object:rtf::DBEdit<
-          Name='PaidTo'
-          Layout=clAbsolute
-          Top=208
-          Left=472
-          Width=281
-          Height=21
-          ForceUseEqualCaptionWidth=true
-          Color=0
-          ControlCaption='Dibayar Kepada'
-          LayoutOrder=120
           CharCase=ecUpperCase
         >, *object:rtf::DBEdit<
           Name='BudgetCode'

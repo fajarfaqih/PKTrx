@@ -4,9 +4,10 @@ DefaultItems = [ 'Inputer',
                  'BranchCode',
                  'TransactionDate',
                  'FloatTransactionDate',
-                 'LBatch.BatchId',
-                 'LBatch.BatchNo',
-                 'LBatch.Description',
+                 #'LBatch.BatchId',
+                 #'LBatch.BatchNo',
+                 #'LBatch.Description',
+                 'ActualDate',
                  'LCashAccount.AccountNo',
                  'LCashAccount.AccountName',
                  'TransactionNo',
@@ -46,7 +47,8 @@ class fInvestmentReturn :
     for item in DefaultItems :
       uipTran.SetFieldValue(item,self.DefaultValues[item])
 
-    self.pTransaction_LBatch.SetFocus()
+    #self.pTransaction_LBatch.SetFocus()
+    self.pTransaction_ActualDate.SetFocus()
 
   # --- FORM EVENT ---
   def BatchAfterLookup(self, sender, linkui):
@@ -116,8 +118,27 @@ class fInvestmentReturn :
         sender.ExitAction = 1
       # end if
 
+  def CheckRequired(self):
+    uipTran = self.uipTransaction
+
+    if uipTran.InvestmentAccountNo in [0, None] :
+      raise 'PERINGATAN','Data Investasi Belum Diinputkan'
+      
+    if uipTran.ActualDate in [0, None] :
+      raise 'PERINGATAN','Tanggal Transaksi belum diinputkan'
+
+    if uipTran.GetFieldValue('LCashAccount.AccountNo') in ['', None] :
+      raise 'PERINGATAN','Kas / Bank Belum diinputkan'
+
+    if ((uipTran.Amount or 0.0) <= 0.0) and ((uipTran.Share or 0.0) <= 0.0) :
+      raise 'PERINGATAN','Nilai Pokok atau Bagi Hasil tidak boleh <= 0.0 '
+
+
   def SimpanData(self):
     app = self.app
+    uipTran = self.uipTransaction
+
+    self.CheckRequired()
     
     if app.ConfirmDialog('Yakin simpan transaksi ?'):
       self.FormObject.CommitBuffer()
@@ -138,5 +159,7 @@ class fInvestmentReturn :
           oPrint = app.GetClientClass('PrintLib','PrintLib')()
           oPrint.doProcessByStreamName(app,ph.packet,res.StreamName)
 
+        self.DefaultValues['ActualDate'] = uipTran.ActualDate
+        
         return 1
     #-- if

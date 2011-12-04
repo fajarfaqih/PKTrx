@@ -22,7 +22,8 @@ def FormSetDataEx(uideflist, params) :
         })
     rec.SourceRate = oCTran.Rate
     rec.SourceAmount = oCTran.Amount
-
+    rec.ActualDate = oCTran.LTransaction.ActualDate
+    
     oDTran = helper.GetObjectByNames('AccountTransactionItem',
       { 'MutationType' : 'D',
         'AccountNo' : rec.GetFieldByName('LCashAccountDestination.AccountNo'),
@@ -34,11 +35,13 @@ def FormSetDataEx(uideflist, params) :
 
     return
 
+  Now = int(config.Now())
   rec = uideflist.uipTransaction.Dataset.AddRecord()
   rec.Inputer = str(config.SecurityContext.UserId)
   rec.BranchCode = str(config.SecurityContext.GetUserInfo()[4])
-  rec.TransactionDate = int(config.Now())
-  rec.FloatTransactionDate = int(config.Now())
+  rec.TransactionDate = Now
+  rec.FloatTransactionDate = Now
+  rec.ActualDate = Now
   rec.Rate = 1.0
   rec.Amount = 0.0
 
@@ -57,7 +60,8 @@ def SimpanData(config, params, returns):
     oTransaction = params.uipTransaction.GetRecord(0)
 
     request = {}
-    request['BatchId'] = oTransaction.GetFieldByName('LBatch.BatchId')
+    #request['BatchId'] = oTransaction.GetFieldByName('LBatch.BatchId')
+    request['ActualDate'] = oTransaction.ActualDate
     request['SourceAccountNo'] = oTransaction.GetFieldByName('LCashAccountSource.AccountNo')
     request['DestAccountNo'] = oTransaction.GetFieldByName('LCashAccountDestination.AccountNo')
     request['TransactionNo'] = oTransaction.TransactionNo
@@ -78,17 +82,13 @@ def SimpanData(config, params, returns):
 
     sRequest = simplejson.dumps(request)
 
-    #if oTransaction.ShowMode == 1:
-    #  Script = 'Transaction.GeneralTransaction'
-    #else: #ShowMode == 2
-    #  Script = 'Transaction.GeneralTransactionUpdate'
-
     oService = helper.LoadScript('Transaction.GeneralTransaction')
 
-    if oTransaction.ShowMode == 1 :
-      response = oService.InternalTransferNew(config, sRequest, params)
+    TransactionCode = 'TI'
+    if oTransaction.ShowMode == 1:
+      response = oService.CreateTransaction(TransactionCode, config, sRequest, params)
     else:
-      response = oService.InternalTransferUpdate(config, sRequest, params)
+      response = oService.UpdateTransaction(TransactionCode, config, sRequest, params)
 
     response = simplejson.loads(response)
 

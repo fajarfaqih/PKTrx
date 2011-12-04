@@ -53,21 +53,29 @@ class fFixedAssetInvoicePayment :
       uipTran.BudgetId = form.BudgetId
     # end if
 
-  def CheckInput(self):
+  def CheckRequired(self):
     app = self.app
     uipTran = self.uipTransaction
-    
+
     self.FormObject.CommitBuffer()
 
-    if (uipTran.Amount or 0.0) < 0.0:
-      raise 'PERINGATAN','Nilai asset belum diinputkan'
+    if uipTran.ActualDate in [0, None] :
+      raise 'PERINGATAN','Tanggal Transaksi belum diinputkan'
 
-    if (uipTran.CashAdvance or 0.0) > (uipTran.Amount or 0.0):
-      raise 'PERINGATAN','Nominal uang muka lebih besar daripada nilai asset'
+    if uipTran.GetFieldValue('LCashAccount.AccountNo') in ['',None] :
+      raise 'PERINGATAN','Kas /Bank belum dipilih'
+      
+    if uipTran.GetFieldValue('LInvoiceFA.InvoiceId') in ['',None] :
+      raise 'PERINGATAN','Invoice belum dipilih'
+
+    if (uipTran.Amount or 0.0) <= 0.0:
+      raise 'PERINGATAN','Nilai invoice belum diinputkan'
     
   def bSimpanClick(self, sender):
     app = self.app
-    #self.CheckInput()
+
+    self.CheckRequired()
+    
     if app.ConfirmDialog('Yakin simpan transaksi ?'):
       self.FormObject.CommitBuffer()
 

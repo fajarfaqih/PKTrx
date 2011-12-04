@@ -339,19 +339,25 @@ document <
       RowControlGap=7
     >, object:rtf::Panel<
       Elements={object:rtf::FieldUIElmtSetting<
+          Name='TransactionNo'
+          ReadOnlyControl=true
+          ControlCaption='Nomor Transaksi'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
           Name='TransactionDate'
           ReadOnlyControl=true
           ControlCaption='Tanggal Input'
           DataTypeName='timestamp'
           DataLength=20
         >, object:rtf::FieldUIElmtSetting<
-          Name='TransactionNo'
-          ReadOnlyControl=true
-          ControlCaption='Nomor Transaksi'
-          DataTypeName='varchar'
-          DataLength=30
+          Name='ActualDate'
+          ControlCaption='Tanggal Transaksi'
+          DataTypeName='timestamp'
+          DataLength=20
         >, object:rtf::LinkUIElmtSetting<
           Name='LBatch'
+          Hidden=true
           ControlCaption='Pilih batch transaksi'
           ClassTypeName='TransactionBatch'
           KeyFields={object:rtf::FieldUIElmtSetting<
@@ -557,16 +563,9 @@ document <
       Width=793
       Height=385
       UIPart=$UIPARTS['uipTransaction']
-      Controls={*object:rtf::DBDateEdit<
-          Name='TransactionDate'
-          Top=8
-          Left=8
-          Color=-2147483624
-          ControlCaption='Tanggal Input'
-          CaptionWidth=100
-        >, *object:rtf::DBEdit<
+      Controls={*object:rtf::DBEdit<
           Name='TransactionNo'
-          Top=36
+          Top=8
           Left=8
           Width=249
           Height=21
@@ -574,16 +573,19 @@ document <
           Color=-2147483624
           ControlCaption='Nomor Transaksi'
           CharCase=ecUpperCase
-        >, *object:rtf::DBLookupEdit<
-          Name='LBatch'
+        >, *object:rtf::DBDateEdit<
+          Name='TransactionDate'
+          Top=36
+          Left=8
+          Color=-2147483624
+          ControlCaption='Tanggal Input'
+          CaptionWidth=100
+        >, *object:rtf::DBDateEdit<
+          Name='ActualDate'
           Top=64
           Left=8
-          Width=100
-          Height=21
-          ControlCaption='Pilih batch transaksi'
-          LookupField='LBatch.Description'
-          DisplayLookupField=true
-          OnAfterLookup='BatchAfterLookup'
+          Color=0
+          ControlCaption='Tanggal Transaksi'
         >, *object:rtf::DBLookupEdit<
           Name='LEmployee'
           Top=92

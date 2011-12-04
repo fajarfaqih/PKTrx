@@ -14,6 +14,10 @@ def FormSetDataEx(uideflist, params) :
 
     rec = uideflist.uipTransaction.Dataset.GetRecord(0)
     
+    oTran = helper.GetObjectByNames('Transaction',{'TransactionNo' : rec.TransactionNo})
+    
+    rec.ActualDate = oTran.GetAsTDateTime('ActualDate')
+    
     # Search Object Investment
     TransactionId = params.FirstRecord.TransactionId
     oqlCheck = "select from AccountTransactionItem \
@@ -37,11 +41,13 @@ def FormSetDataEx(uideflist, params) :
     
     return st
 
+  Now = int(Now)
   rec = uideflist.uipTransaction.Dataset.AddRecord()
   rec.Inputer = str(config.SecurityContext.UserId)
   rec.BranchCode = str(config.SecurityContext.GetUserInfo()[4])
-  rec.TransactionDate = int(Now)
-  rec.FloatTransactionDate = int(Now)
+  rec.TransactionDate = Now
+  rec.ActualDate = Now
+  rec.FloatTransactionDate = Now
   rec.Amount = 0.0
   rec.ReceivedFrom = rec.Inputer
   
@@ -66,7 +72,8 @@ def SimpanData(config, params, returns):
     oTransaction = params.uipTransaction.GetRecord(0)
 
     request = {}
-    request['BatchId'] = oTransaction.GetFieldByName('LBatch.BatchId')
+    #request['BatchId'] = oTransaction.GetFieldByName('LBatch.BatchId')
+    request['ActualDate'] = oTransaction.ActualDate
     request['InvesteeId'] = oTransaction.InvesteeId #oTransaction.GetFieldByName('LEmployee.Nomor_Karyawan')
     request['InvesteeName'] = oTransaction.InvesteeName
     request['InvesteeCategory'] = oTransaction.InvesteeCategory
@@ -91,19 +98,15 @@ def SimpanData(config, params, returns):
     
     sRequest = simplejson.dumps(request)
 
-#    if oTransaction.ShowMode == 1:
-#      Script = 'Transaction.GeneralTransaction'
-#    else: #ShowMode == 2
-#      Script = 'Transaction.GeneralTransactionUpdate'
-
     oService = helper.LoadScript('Transaction.GeneralTransaction')
     
+    TransactionCode = 'INVS'
     if oTransaction.ShowMode == 1:
-      response = oService.InvestmentNew(config,sRequest,params)
+      response = oService.CreateTransaction(TransactionCode, config, sRequest, params)
     else:
-      response = oService.InvestmentUpdate(config,sRequest,params)
+      response = oService.UpdateTransaction(TransactionCode, config, sRequest, params)
     # end if
-      
+
     response = simplejson.loads(response)
     TransactionNo = response[u'TransactionNo']
 

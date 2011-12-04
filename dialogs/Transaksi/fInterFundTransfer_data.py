@@ -9,13 +9,25 @@ def FormSetDataEx(uideflist, params) :
 
   if params.GetDatasetByName('trparam') != None :
     oForm = helper.CreateObject('FormTransaksi')
-    return oForm.SetDataEx(uideflist,params)
+    oForm.SetDataEx(uideflist,params)
+    
+    rec = uideflist.uipTransaction.Dataset.GetRecord(0)
+
+    # Set Field For Old Transaction Compatible
+    oTran = helper.GetObjectByNames('Transaction',{'TransactionNo' : rec.TransactionNo})
+    rec.ActualDate = oTran.GetAsTDateTime('ActualDate')
+
+    return 1
+
+  Now = int(config.Now())
 
   rec = uideflist.uipTransaction.Dataset.AddRecord()
   rec.Inputer = str(config.SecurityContext.UserId)
   rec.BranchCode = str(config.SecurityContext.GetUserInfo()[4])
-  rec.TransactionDate = int(config.Now())
-  rec.FloatTransactionDate = int(config.Now())
+
+  rec.TransactionDate = Now
+  rec.FloatTransactionDate = Now
+  rec.ActualDate = Now
   
   # Set Transaction Number
   oService = helper.LoadScript('Transaction.TransactionHelper')
@@ -35,7 +47,8 @@ def SimpanData(config, params, returns):
     oTransaction = params.uipTransaction.GetRecord(0)
 
     request = {}
-    request['BatchId'] = oTransaction.GetFieldByName('LBatch.BatchId')
+    #request['BatchId'] = oTransaction.GetFieldByName('LBatch.BatchId')
+    request['ActualDate'] = oTransaction.ActualDate
     request['SourceAccountNo'] = oTransaction.GetFieldByName('LAccountSource.AccountNo')
     request['DestAccountNo'] = oTransaction.GetFieldByName('LAccountDestination.AccountNo')
     request['TransactionNo'] = oTransaction.TransactionNo
@@ -54,12 +67,11 @@ def SimpanData(config, params, returns):
 
     oService = helper.LoadScript('Transaction.GeneralTransaction')
 
-
+    TransactionCode = 'PAD'
     if oTransaction.ShowMode == 1:
-      response = oService.InterFundTransferNew(config, sRequest,params)
+      response = oService.CreateTransaction(TransactionCode, config, sRequest, params)
     else:
-      response = oService.InterFundTransferUpdate(config, sRequest,params)
-    # end if
+      response = oService.UpdateTransaction(TransactionCode, config, sRequest, params)
     
     response = simplejson.loads(response)
     TransactionNo = response[u'TransactionNo']

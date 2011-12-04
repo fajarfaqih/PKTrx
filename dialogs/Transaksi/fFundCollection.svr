@@ -53,10 +53,6 @@ document <
     >, object:rpclass::TPClassUIDef<
       Name='uipTransaction'
       CustomLoadedFields={object:rpclass::TCustomLoadedField<
-          Name='TransactionDate'
-          DataTypeName='timestamp'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
           Name='ReferenceNo'
           DataTypeName='varchar'
           DataLength=30
@@ -87,10 +83,6 @@ document <
         >, object:rpclass::TCustomLoadedField<
           Name='FloatTransactionDate'
           DataTypeName='double'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='ActualDate'
-          DataTypeName='timestamp'
           DataLength=20
         >, object:rpclass::TCustomLoadedField<
           Name='SaveMode'
@@ -177,6 +169,22 @@ document <
           DataTypeName='varchar'
           DataLength=20
         >, object:rpclass::TCustomLoadedField<
+          Name='TransactionNo'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='ActualDate'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='PaidTo'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='TransactionDate'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
           Name='LBatch.BatchId'
           DataTypeName='INTEGER'
         >, object:rpclass::TCustomLoadedField<
@@ -227,14 +235,6 @@ document <
           Name='LProductBranch.Nama_Cabang'
           DataTypeName='varchar'
           DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='TransactionNo'
-          DataTypeName='varchar'
-          DataLength=30
-        >, object:rpclass::TCustomLoadedField<
-          Name='PaidTo'
-          DataTypeName='varchar'
-          DataLength=30
         >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
           Name='LBank'
           ClassTypeName='BankCash'

@@ -32,10 +32,13 @@ def SetTransactionData(oTran,request):
 def CollectionNew(config, srequest ,params):
   request = simplejson.loads(srequest)
   helper = phelper.PObjectHelper(config)
-  
+
+  oBatchHelper = helper.CreateObject('BatchHelper')
+  oBatch = oBatchHelper.GetBatchUser(request['ActualDate'])
+
   config.BeginTransaction()
   try:
-    oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
+    #oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
     oTran = oBatch.NewTransaction('SD001')
     
 #     if request[u'PaymentType'] == 'K' : PettyCash 
@@ -65,6 +68,9 @@ def CollectionUpdate(config, srequest ,params):
   request = simplejson.loads(srequest)
   helper = phelper.PObjectHelper(config)
 
+  oBatchHelper = helper.CreateObject('BatchHelper')
+  oBatch = oBatchHelper.GetBatchUser(request['ActualDate'])
+
   oTran = helper.GetObjectByNames(
       'Transaction',{'TransactionNo': request[u'TransactionNo'] }
     )
@@ -76,7 +82,7 @@ def CollectionUpdate(config, srequest ,params):
   config.BeginTransaction()
   try:
     oTran.CancelTransaction()
-    oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
+    #oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
     oTran.BatchId = oBatch.BatchId
 
 #     if request[u'PaymentType'] == 'K' : PettyCash
@@ -113,17 +119,17 @@ def BranchCashCollection(helper,oTran,oBatch,request,params):
   oTran.DonorNo = request[u'DonorNo']
   oTran.DonorName = request[u'DonorName']
   oTran.CurrencyCode = aValuta
-  oTran.Rate = aRate
+  oTran.Rate = aRate  
   oTran.MarketerId = request[u'MarketerId']
   oTran.ChannelCode = 'R'
-    
-  aProductBranchCode = request[u'ProductBranchCode']
-  if aProductBranchCode != aBranchCode:
-    aJournalCode = 'C15'
-    aJournalCodeDebit = '15'
-  else:
-    aJournalCode = 'C10'
-    aJournalCodeDebit = '10'
+  
+  #aProductBranchCode = request[u'ProductBranchCode']
+  #if aProductBranchCode != aBranchCode :
+  #  aJournalCode = 'C15'
+  #  aJournalCodeDebit = '15'
+  #else:
+  aJournalCode = 'C10'
+  aJournalCodeDebit = '10'
   #-- if.else
   
   # Get Sponsor & volunteer
@@ -145,7 +151,7 @@ def BranchCashCollection(helper,oTran,oBatch,request,params):
   if oBranchCash.isnull:
     raise 'Collection', 'Rekening kas cabang %s:%s tidak ditemukan' % (aBranchCode, aValuta)
         
-#     oListBranchCash = {}
+  # oListBranchCash = {}
   totalAmount = 0.0
   items = request[u'Items']
   for item in items:
@@ -201,13 +207,13 @@ def BankCollection(helper,oTran,oBatch,request,params):
   oTran.MarketerId = request[u'MarketerId'] 
   oTran.ChannelCode = 'A'
   
-  aProductBranchCode = request[u'ProductBranchCode']
-  if aProductBranchCode != aBranchCode:
-    aJournalCode = 'C15'
-    aJournalCodeDebit = '15'
-  else:
-    aJournalCode = 'C10'
-    aJournalCodeDebit = '10'
+  #aProductBranchCode = request[u'ProductBranchCode']
+  #if aProductBranchCode != aBranchCode :
+  #  aJournalCode = 'C15'
+  #  aJournalCodeDebit = '15'
+  #else:
+  aJournalCode = 'C10'
+  aJournalCodeDebit = '10'
 
   #-- if.else
 
@@ -290,13 +296,14 @@ def AssetCollection(helper,oTran,oBatch,request,params):
   oTran.MarketerId = request[u'MarketerId']
   oTran.ChannelCode = 'G'
   
-  aProductBranchCode = request[u'ProductBranchCode']
-  if aProductBranchCode != aBranchCode:
-    aJournalCode = 'C15'
-    aJournalCodeDebit = '11'
-  else:
-    aJournalCode = 'C10'
-    aJournalCodeDebit = '10'
+  #aProductBranchCode = request[u'ProductBranchCode']
+  #if aProductBranchCode != aBranchCode :
+  #  aJournalCode = 'C15'
+  #  aJournalCodeDebit = '15'
+  #else:
+  aJournalCode = 'C10'
+  aJournalCodeDebit = '10'
+
   #-- if.else
 
 
@@ -364,13 +371,13 @@ def PettyCashCollection(config, srequest ,params):
   aValuta = request[u'CashCurrency']
   aRate = request[u'Rate']
   
-  aProductBranchCode = request[u'ProductBranchCode']
-  if aProductBranchCode != aBranchCode :
-    aJournalCode = 'C15'
-    aJournalCodeDebit = '15'
-  else:
-    aJournalCode = 'C10'
-    aJournalCodeDebit = '10'
+  #aProductBranchCode = request[u'ProductBranchCode']
+  #if aProductBranchCode != aBranchCode :
+  #  aJournalCode = 'C15'
+  #  aJournalCodeDebit = '15'
+  #else:
+  aJournalCode = 'C10'
+  aJournalCodeDebit = '10'
   #-- if.else
   
   oTran.Inputer     = aInputer

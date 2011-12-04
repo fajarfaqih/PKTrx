@@ -73,29 +73,50 @@ class fFixedAssetNew :
     uipTran.Edit()
     uipTran.CashAdvance = uipTran.Qty * uipTran.Amount
     
-  def CheckInput(self):
+  def CheckRequired(self):
     app = self.app
     uipTran = self.uipTransaction
     
     self.FormObject.CommitBuffer()
 
-    if (uipTran.Amount or 0.0) < 0.0:
-      raise 'PERINGATAN','Nilai asset belum diinputkan'
+    if uipTran.ActualDate in [0, None] :
+      raise 'PERINGATAN','Tanggal Transaksi belum diinputkan'
+      
+    if uipTran.GetFieldValue('LAssetCategory.AssetCategoryCode') in ['',None] :
+      raise 'PERINGATAN','Kategori Aset belum dipilih'
+
+    if (uipTran.AssetType == 'T') and (uipTran.GetFieldValue('LProduct.ProductCode') in ['',None]) :
+      raise 'PERINGATAN','Nama Produk/Program belum dipilih'
+
+    if uipTran.AssetName in ['',None] :
+      raise 'PERINGATAN','Nama Aset Belum Diinputkan'
+
+
+    if (uipTran.Amount or 0.0) <= 0.0:
+      raise 'PERINGATAN','Nilai asset tidak boleh <= 0.0'
+
+    if uipTran.GetFieldValue('LCashAccount.AccountNo') in ['',None] :
+      raise 'PERINGATAN','Kas / Bank belum dipilih'
+
+    if (uipTran.CashAdvance or 0.0) <= 0.0:
+      raise 'PERINGATAN','Nilai pembayaran tidak boleh <= 0.0'
 
     if uipTran.PaymentType == 'T' :
       self.SetCashAdvance()
       
     if (uipTran.CashAdvance or 0.0) > (uipTran.Amount or 0.0):
       raise 'PERINGATAN','Nominal uang muka lebih besar daripada nilai asset'
-    
+
   def SetTotalAmount(self):
     uipTran = self.uipTransaction
     uipTran.Edit()
     uipTran.TotalAmount = (uipTran.Qty or 0.0 ) * (uipTran.Amount or 0.0)
+    self.SetCashAdvance()
     
   def bSimpanClick(self, sender):
     app = self.app
-    self.CheckInput()
+    self.CheckRequired()
+    
     if app.ConfirmDialog('Yakin simpan transaksi ?'):
       self.FormObject.CommitBuffer()
 

@@ -12,6 +12,7 @@ def FormSetDataEx(uideflist, params) :
     st =  oForm.SetDataEx(uideflist,params)
     
     rec = uideflist.uipTransaction.Dataset.GetRecord(0)
+
     # Set DebtorId
     if rec.DebtorType in ['',None]:
       rec.DebtorType = 'E'
@@ -21,12 +22,14 @@ def FormSetDataEx(uideflist, params) :
 
     return st
 
+  Now = int(config.Now())
   rec = uideflist.uipTransaction.Dataset.AddRecord()
   rec.Inputer = str(config.SecurityContext.UserId)
   rec.Casher = rec.Inputer
   rec.BranchCode = str(config.SecurityContext.GetUserInfo()[4])
-  rec.TransactionDate = int(config.Now())
-  rec.FloatTransactionDate = int(config.Now())
+  rec.TransactionDate = Now
+  rec.FloatTransactionDate = Now
+  rec.ActualDate = Now
   rec.Amount = 0.0
   rec.TransactionType = 'P'
   
@@ -45,7 +48,7 @@ def SimpanData(config, params, returns):
     oTransaction = params.uipTransaction.GetRecord(0)
 
     request = {}
-    request['BatchId'] = oTransaction.GetFieldByName('LBatch.BatchId')
+    #request['BatchId'] = oTransaction.GetFieldByName('LBatch.BatchId')
     request['EmployeeId'] = oTransaction.EmployeeId #oTransaction.GetFieldByName('LEmployee.Nomor_Karyawan')
     request['EmployeeName'] = oTransaction.EmployeeName
     request['DebtorType'] = oTransaction.DebtorType or 'E'
@@ -61,6 +64,7 @@ def SimpanData(config, params, returns):
     request['TransactionNo'] = oTransaction.TransactionNo
     request['Casher'] = oTransaction.Casher
     request['FundEntity'] = oTransaction.FundEntity
+    request['ActualDate'] = oTransaction.ActualDate
     
     TransNoPrefix = oTransaction.TransactionNo[:2]
     request['IsChangeTransactionNo'] = (
@@ -69,24 +73,25 @@ def SimpanData(config, params, returns):
 
     sRequest = simplejson.dumps(request)
 
-    #if oTransaction.ShowMode == 1:
-    #  Script = 'Transaction.GeneralTransaction'
-    #else: #ShowMode == 2
-    #  Script = 'Transaction.GeneralTransactionUpdate'
-
     oService = helper.LoadScript('Transaction.GeneralTransaction')
 
-    if oTransaction.ShowMode == 1:
-      if transactionType == 'P':
-        response = oService.EmployeeARNew(config, sRequest, params)
-      elif transactionType == 'B':
-        response = oService.PayEmployeeARNew(config, sRequest, params)
-    else :
-      if transactionType == 'P':
-        response = oService.EmployeeARUpdate(config, sRequest, params)
-      elif transactionType == 'B':
-        response = oService.PayEmployeeARUpdate(config, sRequest, params)
+    if transactionType == 'P' : # Pinjam
+      dictTranCode = {
+        'E' : 'EAR', # Karyawan
+        'X' : 'XAR'  # Ekternal Debitur
+        }
+    elif transactionType == 'B': # Bayar
+      dictTranCode = {
+        'E' : 'PEAR', # Karyawan
+        'X' : 'PXAR'  # Ekternal Debitur
+        }
 
+    TransactionCode = dictTranCode[oTransaction.DebtorType]
+    
+    if oTransaction.ShowMode == 1:
+      response = oService.CreateTransaction(TransactionCode, config, sRequest, params)
+    else:
+      response = oService.UpdateTransaction(TransactionCode, config, sRequest, params)
       
     response = simplejson.loads(response)
     TransactionNo = response[u'TransactionNo']

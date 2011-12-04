@@ -135,13 +135,17 @@ document <
           DataTypeName='varchar'
           DataLength=100
         >, object:rpclass::TCustomLoadedField<
+          Name='TransactionNo'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
           Name='TransactionDate'
           DataTypeName='timestamp'
           DataLength=20
         >, object:rpclass::TCustomLoadedField<
-          Name='TransactionNo'
-          DataTypeName='varchar'
-          DataLength=30
+          Name='ActualDate'
+          DataTypeName='timestamp'
+          DataLength=20
         >, object:rpclass::TCustomLoadedField<
           Name='LBatch.BatchId'
           DataTypeName='INTEGER'

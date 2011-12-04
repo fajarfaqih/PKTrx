@@ -4,9 +4,10 @@ DefaultItems = [ 'Inputer',
                  'BranchCode',
                  'TransactionDate',
                  'FloatTransactionDate',
-                 'LBatch.BatchId',
-                 'LBatch.BatchNo',
-                 'LBatch.Description',
+                 #'LBatch.BatchId',
+                 #'LBatch.BatchNo',
+                 #'LBatch.Description',
+                 'ActualDate',
                  'LCashAccount.AccountNo',
                  'LCashAccount.AccountName',
                  'TransactionNo',
@@ -50,7 +51,8 @@ class fInvestment :
     for item in DefaultItems :
       uipTran.SetFieldValue(item,self.DefaultValues[item])
 
-    self.pTransaction_LBatch.SetFocus()
+    #self.pTransaction_LBatch.SetFocus()
+    self.pTransaction_ActualDate.SetFocus()
 
   # --- FORM EVENT ---
   def BatchAfterLookup(self, sender, linkui):
@@ -115,9 +117,38 @@ class fInvestment :
         sender.ExitAction = 1
       # end if
 
+  def CheckRequired(self):
+    uipTran = self.uipTransaction
+    
+    if uipTran.ActualDate in [0, None] :
+      raise 'PERINGATAN','Tanggal Transaksi belum diinputkan'
+      
+    if uipTran.GetFieldValue('LCashAccount.AccountNo') in ['', None] :
+      raise 'PERINGATAN','Kas / Bank Belum diinputkan'
+
+    if (uipTran.Amount or 0.0) <= 0.0 :
+      raise 'PERINGATAN','Nilai Transaksi tidak boleh <= 0.0 '
+
+    if uipTran.GetFieldValue('LInvestmentCategory.InvestmentCatCode') in ['', None] :
+      raise 'PERINGATAN','Jenis Investasi Belum diinputkan'
+      
+    if uipTran.InvesteeId in [0, None] :
+      raise 'PERINGATAN','Nama Investee Belum diinputkan'
+
+    if uipTran.StartDate in [0, None] :
+      raise 'PERINGATAN','Tanggal Mulai Investasi belum diinputkan'
+      
+    if uipTran.LifeTime in [0, None] :
+      raise 'PERINGATAN','Jangka Waktu Investasi belum diinputkan'
+
+    if uipTran.Nisbah in [0, None] :
+      raise 'PERINGATAN','Nisbah Investasi belum diinputkan'
+      
   def SimpanData(self):
     app = self.app
+    uipTran = self.uipTransaction
     
+    self.CheckRequired()
     if app.ConfirmDialog('Yakin simpan transaksi ?'):
       self.FormObject.CommitBuffer()
       ph = self.FormObject.GetDataPacket()
@@ -137,5 +168,7 @@ class fInvestment :
           oPrint = app.GetClientClass('PrintLib','PrintLib')()
           oPrint.doProcessByStreamName(app,ph.packet,res.StreamName)
 
+        self.DefaultValues['ActualDate'] = uipTran.ActualDate
+        
         return 1
     #-- if

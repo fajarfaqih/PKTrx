@@ -95,8 +95,14 @@ document <
           ControlCaption='Tanggal transaksi'
           DataTypeName='timestamp'
           DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ActualDate'
+          ControlCaption='Tanggal Transaksi'
+          DataTypeName='timestamp'
+          DataLength=20
         >, object:rtf::LinkUIElmtSetting<
           Name='LBatch'
+          Hidden=true
           ControlCaption='Pilih batch transaksi'
           ClassTypeName='TransactionBatch'
           KeyFields={object:rtf::FieldUIElmtSetting<
@@ -279,19 +285,12 @@ document <
           Color=-2147483624
           ControlCaption='Tanggal transaksi'
           CaptionWidth=100
-        >, *object:rtf::DBLookupEdit<
-          Name='LBatch'
+        >, *object:rtf::DBDateEdit<
+          Name='ActualDate'
           Top=36
           Left=8
-          Width=120
-          Height=21
-          ControlCaption='Pilih batch transaksi'
-          FieldName='LBatch.BatchId'
-          DisplayFormat=''
-          LookupField='LBatch.Description'
-          DisplayLookupField=true
-          DisplayLookupColor=-2147483624
-          DisplayLookupWidth=215
+          Color=0
+          ControlCaption='Tanggal Transaksi'
         >, *object:rtf::DBLookupEdit<
           Name='LCashAccount'
           Top=64

@@ -42,6 +42,12 @@ document <
           DataTypeName='double'
           DataLength=20
         >, object:rtf::FieldUIElmtSetting<
+          Name='TotalAmountEkuivalen'
+          Hidden=true
+          ReadOnlyControl=true
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
           Name='Inputer'
           Hidden=true
           ReadOnlyControl=true
@@ -67,11 +73,6 @@ document <
           DataTypeName='double'
           DataLength=20
         >, object:rtf::FieldUIElmtSetting<
-          Name='ActualDate'
-          Hidden=true
-          DataTypeName='timestamp'
-          DataLength=20
-        >, object:rtf::FieldUIElmtSetting<
           Name='PeriodId'
           Hidden=true
           DataTypeName='integer'
@@ -85,6 +86,11 @@ document <
           Name='ShowMode'
           Hidden=true
           DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='CurrencyCode'
+          Hidden=true
+          DataTypeName='varchar'
           DataLength=20
         >}Name='uipTransaction'
       FillInDefaultValues=true
@@ -212,8 +218,8 @@ document <
       AfterNewRecord='ItemNewRecord'
     >}Containers={object:rtf::MultiSplit<
       Name='msMain'
-      Width=800
-      Height=550
+      Width=320
+      Height=320
       Side1Containers={$CONTAINERS['pBatch']
       }Side2Containers={$CONTAINERS['pAction']
       }SpaceContainer=$CONTAINERS['dsTransaction']
@@ -295,6 +301,13 @@ document <
               UsedAsDisplay=true
               KeyOrDisplayName='CurrencyCode'
               FinalDisplayFieldName='CurrencyCode'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LBank.LCurrency.Kurs_Tengah_BI'
+              DataTypeName='DOUBLE'
+              DataLength=0
+              UsedAsDisplay=true
+              KeyOrDisplayName='LCurrency.Kurs_Tengah_BI'
+              FinalDisplayFieldName='Kurs_Tengah_BI'
             >}Restrictions='BranchCode|BranchCode'
           OQLText=['Select from BankCash [Status = ''A'' and BranchCode = :BranchCode]'#13#10,
             '('#13#10,
@@ -305,23 +318,38 @@ document <
             '  BranchCode,'#13#10,
             '  CurrencyCode,'#13#10,
             '  Balance,'#13#10,
+            '  LCurrency.Kurs_Tengah_BI,'#13#10,
             '  self'#13#10,
             ')'#13#10,
             'then order by BankName;'#13#10]
           LookupOption=loCustomOQL
           FieldBaseName='LBank'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='RateBank'
+          ControlCaption='Rate Kurs'
+          DataTypeName='double'
+          DataLength=20
         >}Name='pBankTransaction'
       Width=801
-      Height=120
+      Height=129
       UIPart=$UIPARTS['uipTransaction']
       Controls={*object:rtf::DBLookupEdit<
           Name='LBank'
-          Top=8
+          Top=12
           Left=8
           ForceUseEqualCaptionWidth=true
           ControlCaption='Rekening Bank'
           LookupField='LBank.BankName'
           DisplayLookupField=true
+          OnAfterLookup='BankAfterLookup'
+        >, *object:rtf::DBEdit<
+          Name='RateBank'
+          Top=40
+          Left=8
+          Color=0
+          ControlCaption='Rate Kurs'
+          FieldName='RateBank'
+          DisplayFormat=',0.00'
         >, object:rtf::DBText<
           Name='dbBankCurrency'
           Layout=clAbsolute
@@ -333,35 +361,10 @@ document <
           ControlCaption=''
           FieldName='LBank.CurrencyCode'
           DisplayFormat=''
-        >, object:rtf::DBDateEdit<
-          Name='cbBankDate'
-          Layout=clAbsolute
-          Top=8
-          Left=392
-          Enabled=false
-          ForceUseEqualCaptionWidth=true
-          Color=-2147483624
-          ControlCaption='Tgl Transaksi'
-          CaptionWidth=100
-          FieldName='TransactionDate'
-          DisplayFormat=''
-        >, object:rtf::DBEdit<
-          Name='RateBank'
-          Layout=clAbsolute
-          Top=36
-          Left=8
-          Width=73
-          Height=21
-          ForceUseEqualCaptionWidth=true
-          Color=0
-          ControlCaption='Nilai Kurs'
-          CaptionWidth=100
-          FieldName='Rate'
-          DisplayFormat=',0.00'
         >, object:rtf::DBEdit<
           Name='RefBank'
-          Layout=clAbsolute
-          Top=64
+          Layout=clNewLine
+          Top=68
           Left=8
           Width=217
           Height=21
@@ -373,8 +376,8 @@ document <
           DisplayFormat=''
         >, object:rtf::DBEdit<
           Name='DescBank'
-          Layout=clAbsolute
-          Top=92
+          Layout=clNewLine
+          Top=96
           Left=8
           Width=217
           Height=21
@@ -387,7 +390,7 @@ document <
         >, object:rtf::DBEdit<
           Name='edAmount'
           Layout=clAbsolute
-          Top=36
+          Top=12
           Left=392
           Enabled=false
           ForceUseEqualCaptionWidth=true
@@ -400,7 +403,7 @@ document <
         >, object:rtf::DBEdit<
           Name='inputerBank'
           Layout=clAbsolute
-          Top=64
+          Top=40
           Left=392
           Enabled=false
           ForceUseEqualCaptionWidth=true
@@ -412,7 +415,7 @@ document <
           ReadOnly=true
         >}EqualCaptionWidth=100
       ControlLeftMargin=8
-      ControlTopMargin=8
+      ControlTopMargin=12
       DefaultControlHeight=21
       HorizontalControlGap=4
       RowControlGap=7
@@ -426,26 +429,75 @@ document <
           DataLength=1
           EnumeratedValues=['K=Kas Kecil'#13#10,
             'C=Kas Cabang'#13#10]
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LCurrencyCash'
+          ControlCaption='Kode Valuta'
+          ClassTypeName='Currency'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LCurrencyCash.Currency_Code'
+              DataTypeName='VARCHAR'
+              DataLength=20
+              UsedAsKey=true
+              KeyOrDisplayName='Currency_Code'
+              FinalDisplayFieldName='Currency_Code'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LCurrencyCash.Currency_Code'
+              DataTypeName='VARCHAR'
+              DataLength=20
+              UsedAsDisplay=true
+              KeyOrDisplayName='Currency_Code'
+              FinalDisplayFieldName='Currency_Code'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LCurrencyCash.Short_Name'
+              DataTypeName='VARCHAR'
+              DataLength=10
+              UsedAsDisplay=true
+              KeyOrDisplayName='Short_Name'
+              FinalDisplayFieldName='Short_Name'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LCurrencyCash.Kurs_Tengah_BI'
+              DataTypeName='DOUBLE'
+              DataLength=0
+              UsedAsDisplay=true
+              KeyOrDisplayName='Kurs_Tengah_BI'
+              FinalDisplayFieldName='Kurs_Tengah_BI'
+            >}Restrictions=''
+          OQLText=['select from Currency'#13#10,
+            '(Currency_Code,'#13#10,
+            ' Short_Name,'#13#10,
+            ' Kurs_Tengah_BI,'#13#10,
+            ' self) then order by Currency_Code;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LCurrencyCash'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='RateCash'
+          ControlCaption='Rate Kurs'
+          DataTypeName='double'
+          DataLength=20
         >}Name='pCashTransaction'
       Width=745
       Height=120
       UIPart=$UIPARTS['uipTransaction']
-      Controls={object:rtf::DBDateEdit<
-          Name='cbCashDate'
-          Layout=clAbsolute
-          Top=10
-          Left=392
-          Enabled=false
-          ForceUseEqualCaptionWidth=true
-          Color=-2147483624
-          ControlCaption='Tgl Transaksi'
-          CaptionWidth=100
-          FieldName='TransactionDate'
-          DisplayFormat=''
+      Controls={*object:rtf::DBLookupEdit<
+          Name='LCurrencyCash'
+          Top=12
+          Left=8
+          ControlCaption='Kode Valuta'
+          LookupField='LCurrencyCash.Short_Name'
+          DisplayLookupField=true
+          OnAfterLookup='LCurrencyCashAfterLookup'
+        >, *object:rtf::DBEdit<
+          Name='RateCash'
+          Top=40
+          Left=8
+          Color=0
+          ControlCaption='Rate Kurs'
+          FieldName='RateCash'
+          DisplayFormat=',0.00'
         >, object:rtf::DBEdit<
           Name='RefCash'
-          Layout=clAbsolute
-          Top=10
+          Layout=clNewLine
+          Top=68
           Left=8
           Width=217
           Height=21
@@ -457,8 +509,8 @@ document <
           DisplayFormat=''
         >, object:rtf::DBEdit<
           Name='DescCash'
-          Layout=clAbsolute
-          Top=40
+          Layout=clNewLine
+          Top=96
           Left=8
           Width=217
           Height=21
@@ -471,7 +523,7 @@ document <
         >, object:rtf::DBEdit<
           Name='edAmount'
           Layout=clAbsolute
-          Top=36
+          Top=12
           Left=392
           Enabled=false
           ForceUseEqualCaptionWidth=true
@@ -484,7 +536,7 @@ document <
         >, object:rtf::DBEdit<
           Name='inputerCash'
           Layout=clAbsolute
-          Top=64
+          Top=40
           Left=392
           Enabled=false
           ForceUseEqualCaptionWidth=true
@@ -496,7 +548,7 @@ document <
           ReadOnly=true
         >}EqualCaptionWidth=100
       ControlLeftMargin=8
-      ControlTopMargin=8
+      ControlTopMargin=12
       DefaultControlHeight=21
       HorizontalControlGap=4
       RowControlGap=7
@@ -596,8 +648,8 @@ document <
       RowControlGap=7
     >, object:rtf::MultiPages<
       Name='mpBayar'
-      Width=800
-      Height=370
+      Width=320
+      Height=320
       Pages={object:rtf::Page<
           PageName='pgCash'
           PageTitle='Kas'
@@ -712,15 +764,14 @@ document <
       UIPart=$UIPARTS['uipTransaction']
       Controls={*object:rtf::DBLookupEdit<
           Name='LAsset'
-          Top=8
+          Top=12
           Left=8
           ControlCaption='Rekening Aktiva'
           LookupField='LAsset.Account_Name'
           DisplayLookupField=true
         >, *object:rtf::DBLookupEdit<
           Name='LValuta'
-          Layout=clAbsolute
-          Top=36
+          Top=40
           Left=8
           ForceUseEqualCaptionWidth=true
           ControlCaption='Kode Valuta'
@@ -731,22 +782,10 @@ document <
           OnAfterLookup='ValutaAfterLookup'
           DisplayLookupColor=-2147483624
           DisplayLookupWidth=160
-        >, object:rtf::DBDateEdit<
-          Name='cbAssetDate'
-          Layout=clAbsolute
-          Top=36
-          Left=392
-          Enabled=false
-          ForceUseEqualCaptionWidth=true
-          Color=-2147483624
-          ControlCaption='Tgl Transaksi'
-          CaptionWidth=100
-          FieldName='TransactionDate'
-          DisplayFormat=''
         >, object:rtf::DBEdit<
           Name='RateAsset'
-          Layout=clAbsolute
-          Top=64
+          Layout=clNewLine
+          Top=68
           Left=8
           Width=73
           Height=21
@@ -758,8 +797,8 @@ document <
           DisplayFormat=',0.00'
         >, object:rtf::DBEdit<
           Name='RefAsset'
-          Layout=clAbsolute
-          Top=92
+          Layout=clNewLine
+          Top=96
           Left=8
           Width=217
           Height=21
@@ -771,8 +810,8 @@ document <
           DisplayFormat=''
         >, object:rtf::DBEdit<
           Name='DescAsset'
-          Layout=clAbsolute
-          Top=120
+          Layout=clNewLine
+          Top=124
           Left=8
           Width=217
           Height=21
@@ -785,8 +824,8 @@ document <
         >, object:rtf::DBEdit<
           Name='edAmount'
           Layout=clAbsolute
-          Top=64
-          Left=392
+          Top=12
+          Left=384
           Enabled=false
           ForceUseEqualCaptionWidth=true
           Color=-2147483624
@@ -798,8 +837,8 @@ document <
         >, object:rtf::DBEdit<
           Name='inputerAsset'
           Layout=clAbsolute
-          Top=92
-          Left=392
+          Top=40
+          Left=384
           Enabled=false
           ForceUseEqualCaptionWidth=true
           Color=-2147483624
@@ -808,27 +847,17 @@ document <
           FieldName='Inputer'
           DisplayFormat=''
           ReadOnly=true
-        >, object:rtf::DBDateEdit<
-          Name='cbAssetActualDate'
-          Layout=clAbsolute
-          Top=8
-          Left=392
-          Color=0
-          ControlCaption='Tgl Aktual'
-          CaptionWidth=100
-          FieldName='ActualDate'
-          DisplayFormat=''
         >}EqualCaptionWidth=100
       ControlLeftMargin=8
-      ControlTopMargin=8
+      ControlTopMargin=12
       DefaultControlHeight=21
       HorizontalControlGap=4
       RowControlGap=7
       ControlCharCase=ecUpperCase
     >, object:rtf::DualSplit<
       Name='dsTransaction'
-      Width=800
-      Height=391
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pPaymentType']
       Container2=$CONTAINERS['mpBayar']
     >, object:rtf::DualSplit<
@@ -880,6 +909,7 @@ document <
         >}>, object:rtf::Grid<
       Elements={object:rtf::LinkUIElmtSetting<
           Name='LCurrency'
+          Hidden=true
           ControlCaption='Valuta'
           ClassTypeName=''
           ExternalClassTypeName='Currency'
@@ -923,16 +953,7 @@ document <
       DefaultControlHeight=21
       HorizontalControlGap=4
       RowControlGap=7
-      Columns={*object:rtf::GridColumn<
-          Name='LCurrency.Short_Name'
-          InputStyle=cisLookup
-          EnumeratedValues=''
-          Index=4
-          FieldName='LCurrency.Short_Name'
-          DisplayFormat=''
-          TitleCaption='Valuta'
-          Width=50
-        >, object:rtf::GridColumn<
+      Columns={object:rtf::GridColumn<
           Name='Amount'
           InputStyle=cisNormal
           EnumeratedValues=''
@@ -950,6 +971,7 @@ document <
           DisplayFormat=',0.00'
           TitleCaption='Nilai Kurs'
           Width=60
+          Hidden=true
         >, object:rtf::GridColumn<
           Name='Ekuivalen'
           InputStyle=cisNormal
@@ -959,6 +981,7 @@ document <
           DisplayFormat=',0.00'
           TitleCaption='Nilai Ekuivalen'
           Width=100
+          Hidden=true
           ReadOnly=true
         >, object:rtf::GridColumn<
           Name='Description'
@@ -1011,6 +1034,7 @@ document <
         >}>, object:rtf::Panel<
       Elements={object:rtf::LinkUIElmtSetting<
           Name='LBatch'
+          Hidden=true
           ControlCaption='Pilih batch transaksi'
           ClassTypeName='TransactionBatch'
           KeyFields={object:rtf::FieldUIElmtSetting<
@@ -1057,6 +1081,11 @@ document <
           LookupOption=loCustomOQL
           FieldBaseName='LBatch'
         >, object:rtf::FieldUIElmtSetting<
+          Name='ActualDate'
+          ControlCaption='Tanggal Transaksi'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
           Name='TransactionNo'
           ReadOnlyControl=true
           ControlCaption='Nomor Transaksi'
@@ -1077,18 +1106,17 @@ document <
       Height=121
       Bordered=true
       UIPart=$UIPARTS['uipTransaction']
-      Controls={*object:rtf::DBLookupEdit<
-          Name='LBatch'
+      Controls={*object:rtf::DBDateEdit<
+          Name='ActualDate'
           Top=8
           Left=8
-          ControlCaption='Pilih batch transaksi'
-          LookupField='LBatch.Description'
-          DisplayLookupField=true
+          Color=0
+          ControlCaption='Tanggal Transaksi'
         >, *object:rtf::DBEdit<
           Name='TransactionNo'
           Top=36
           Left=8
-          Width=221
+          Width=205
           Height=21
           Enabled=false
           Color=-2147483624
@@ -1097,12 +1125,16 @@ document <
           Name='PaidTo'
           Top=64
           Left=8
+          Width=205
+          Height=21
           Color=0
           ControlCaption='Kasir'
         >, *object:rtf::DBEdit<
           Name='ReceivedFrom'
           Top=92
           Left=8
+          Width=205
+          Height=21
           Color=0
           ControlCaption='Terima Dari'
         >}EqualCaptionWidth=120

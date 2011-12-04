@@ -15,6 +15,87 @@ def GenerateResponse(Status,ErrMessage,TransactionNo,FileKwitansi):
   
   return simplejson.dumps(response)
 
+def GetBatch(helper,ActualDate):
+  oBatchHelper = helper.CreateObject('BatchHelper')
+  oBatch = oBatchHelper.GetBatchUser(ActualDate)
+  return oBatch
+
+def ExecFunction(TranCode,helper,oTran,oBatch,request,params):
+  if TranCode == 'FA' :
+    FileKwitansi = FixAssetAdd(helper,oTran,oBatch,request,params)
+  elif TranCode == 'FAI' :
+    FileKwitansi = FixAssetInvoice(helper,oTran,oBatch,request,params)
+  elif TranCode == 'FAIP' :
+    FileKwitansi = AssetInvoicePayment(helper,oTran,oBatch,request,params)
+  elif TranCode == 'FAID' :
+    FileKwitansi = AssetDisposal(helper,oTran,oBatch,request,params)  
+  else:
+    raise '','Kode Transaksi Tidak Dikenal'
+  return FileKwitansi
+
+def CreateFixedAssetTransaction(TranCode, config, srequest, params):
+  request = simplejson.loads(srequest)
+  helper = phelper.PObjectHelper(config)
+
+  status = 0
+  msg = ''
+   
+  oBatch = GetBatch(helper,request['ActualDate'])
+   
+  config.BeginTransaction()
+  try:
+    #oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
+    oTran = oBatch.NewTransaction(TranCode)
+
+    FileKwitansi = ExecFunction(TranCode, helper, oTran, oBatch, request, params)
+
+    # Check for auto approval
+    corporate = helper.CreateObject('Corporate')
+    if corporate.CheckLimitOtorisasi(request[u'Amount']):
+      oTran.AutoApproval()
+      
+    config.Commit()
+  except:
+    config.Rollback()
+    raise
+  
+  status,msg = oTran.CreateJournal()      
+  return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
+
+def UpdateFixedAssetTransaction(TranCode, config, srequest, params):
+  request = simplejson.loads(srequest)
+  helper = phelper.PObjectHelper(config)
+  
+  oBatch = GetBatch(helper,request['ActualDate'])
+
+  oTran = helper.GetObjectByNames(
+      'Transaction',{'TransactionNo': request[u'TransactionNo'] }
+    )
+  
+  TranHelper = helper.LoadScript('Transaction.TransactionHelper')
+  TranHelper.DeleteTransactionJournal(oTran)
+
+  status = 0
+  msg = ''
+  
+  config.BeginTransaction()
+  try:
+    oTran.CancelTransaction()
+    oTran.BatchId = oBatch.BatchId
+    
+    FileKwitansi = ExecFunction(TranCode, helper, oTran, oBatch, request, params)
+    
+    # Check for auto approval
+    oTran.AutoApprovalUpdate()
+    
+    config.Commit()
+  except:
+    config.Rollback()
+    raise
+
+  status,msg = oTran.CreateJournal()      
+  return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
+
 def CreateAssetPaymentTransaction(oTran,oAsset,Amount,Description):
   if oAsset.LAssetCategory.AssetType == 'T' :      
     oProduct = oAsset.LProductAccount
@@ -32,67 +113,7 @@ def CreateAssetPaymentTransaction(oTran,oAsset,Amount,Description):
     oItemFA.SetJournalParameter('DA02B')
   return oItemFA
 
-def FixedAssetNew(config, srequest,params):
-  request = simplejson.loads(srequest)
-  helper = phelper.PObjectHelper(config)
-
-  status = 0
-  msg = ''
-   
-  config.BeginTransaction()
-  try:
-    oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
-    oTran = oBatch.NewTransaction('FA')
-    
-    FileKwitansi = FixAsset(helper,oTran,oBatch,request,params)    
-        
-    # Check for auto approval
-    corporate = helper.CreateObject('Corporate')
-    if corporate.CheckLimitOtorisasi(request[u'Amount']):
-      oTran.AutoApproval()
-      
-    config.Commit()
-  except:
-    config.Rollback()
-    raise
-  
-  status,msg = oTran.CreateJournal()      
-  return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
-
-def FixedAssetUpdate(config,srequest ,params):
-  request = simplejson.loads(srequest)
-  helper = phelper.PObjectHelper(config)
-  
-  oTran = helper.GetObjectByNames(
-      'Transaction',{'TransactionNo': request[u'TransactionNo'] }
-    )
-  
-  TranHelper = helper.LoadScript('Transaction.TransactionHelper')
-  TranHelper.DeleteTransactionJournal(oTran)
-
-  status = 0
-  msg = ''
-  
-  config.BeginTransaction()
-  try:
-    oTran.CancelTransaction()
-    oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
-    oTran.BatchId = oBatch.BatchId
-    
-    FileKwitansi = FixAsset(helper,oTran,oBatch,request,params)
-    
-    # Check for auto approval
-    oTran.AutoApprovalUpdate()
-    
-    config.Commit()
-  except:
-    config.Rollback()
-    raise
-
-  status,msg = oTran.CreateJournal()      
-  return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)  
- 
-def FixAsset(helper,oTran,oBatch,request,params):
+def FixAssetAdd(helper,oTran,oBatch,request,params):
   CashAdvance = request[u'CashAdvance']
   PaymentType = request[u'PaymentType']
 
@@ -178,224 +199,160 @@ def FixAsset(helper,oTran,oBatch,request,params):
   
   return FileKwitansi
 
-def Invoice(config, srequest,params):
-  request = simplejson.loads(srequest)
-  helper = phelper.PObjectHelper(config)
+def FixAssetInvoice(helper,oTran,oBatch,request,params):
+  oTran.ReferenceNo = request[u'ReferenceNo']
+  oTran.Description = request[u'Description']
+  oTran.Inputer     = request[u'Inputer']
+  oTran.BranchCode  = request[u'BranchCode']
+  oTran.Amount = request[u'Amount']
+  oTran.CurrencyCode = '000'
+  #oTran.ReceivedFrom = request[u'ReceivedFrom']
+  oTran.ActualDate = oBatch.GetAsTDateTime('BatchDate')
+  aValuta = '000'
+  aAmount = request[u'Amount']
+  aRate = 1.0
 
-  status = 0
-  msg = ''
+  # Fixed Asset Account
+  AssetAccountNo = request[u'AssetAccountNo']    
+  oFAAccount = helper.GetObject('FixedAsset',str(AssetAccountNo))
+  
+  #oItemFA = oTran.CreateAccountTransactionItem(oFAAccount)
+  #oItemFA.SetMutation('D', request[u'Amount'], 1.0)
+  #oItemFA.Description = request[u'Description']
+  #oItemFA.SetJournalParameter('DA03A')
+  #oItemFA.AccountCode = oFAAccount.GetAssetAccount()
+  
+  AccountCode = oFAAccount.GetLiabilityAccount()
+  oAccount = helper.GetObject('Account',AccountCode)
+  oItemGL = oTran.CreateGLTransactionItem(AccountCode, aValuta)
+  oItemGL.RefAccountName = oAccount.Account_Name
+  oItemGL.SetMutation('D', aAmount, aRate)
+  oItemGL.Description = 'Invoice Aktiva'
+  oItemGL.SetJournalParameter('DA03A')
+  
+  # Create Invoice
+  oInvoiceFA = helper.CreatePObject('InvoiceFA')
+  oInvoiceFA.AccountNo = AssetAccountNo
+  oInvoiceFA.InvoiceNo = request[u'InvoiceNo']
+  oInvoiceFA.InvoiceDate = oTran.ActualDate
+  oInvoiceFA.InvoiceAmount = aAmount    
 
-  config.BeginTransaction()
-  try:
-    oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
-    oTran = oBatch.NewTransaction('FAI')
-
-    oTran.ReferenceNo = request[u'ReferenceNo']
-    oTran.Description = request[u'Description']
-    oTran.Inputer     = request[u'Inputer']
-    oTran.BranchCode  = request[u'BranchCode']
-    oTran.Amount = request[u'Amount']
-    oTran.CurrencyCode = '000'
-    #oTran.ReceivedFrom = request[u'ReceivedFrom']
-    oTran.ActualDate = oBatch.GetAsTDateTime('BatchDate')
-    aValuta = '000'
-    aAmount = request[u'Amount']
-    aRate = 1.0
-
-    # Fixed Asset Account
-    AssetAccountNo = request[u'AssetAccountNo']    
-    oFAAccount = helper.GetObject('FixedAsset',str(AssetAccountNo))
-    
-    #oItemFA = oTran.CreateAccountTransactionItem(oFAAccount)
-    #oItemFA.SetMutation('D', request[u'Amount'], 1.0)
-    #oItemFA.Description = request[u'Description']
-    #oItemFA.SetJournalParameter('DA03A')
-    #oItemFA.AccountCode = oFAAccount.GetAssetAccount()
-    
-    AccountCode = oFAAccount.GetLiabilityAccount()
-    oAccount = helper.GetObject('Account',AccountCode)
-    oItemGL = oTran.CreateGLTransactionItem(AccountCode, aValuta)
-    oItemGL.RefAccountName = oAccount.Account_Name
-    oItemGL.SetMutation('D', aAmount, aRate)
-    oItemGL.Description = 'Invoice Aktiva'
-    oItemGL.SetJournalParameter('DA03A')
-    
-    # Create Invoice
-    oInvoiceFA = helper.CreatePObject('InvoiceFA')
-    oInvoiceFA.AccountNo = AssetAccountNo
-    oInvoiceFA.InvoiceNo = request[u'InvoiceNo']
-    oInvoiceFA.InvoiceDate = oTran.ActualDate
-    oInvoiceFA.InvoiceAmount = aAmount    
-
-    oTran.GenerateTransactionNumber('000')
-    oTran.SaveInbox(params)
-    FileKwitansi = oTran.GetKwitansi()
+  oTran.GenerateTransactionNumber('000')
+  oTran.SaveInbox(params)
+  FileKwitansi = oTran.GetKwitansi()
         
-    # Check for auto approval
-    corporate = helper.CreateObject('Corporate')
-    if corporate.CheckLimitOtorisasi(request[u'Amount']):
-      oTran.AutoApproval()
+  return FileKwitansi
 
-    config.Commit()
-  except:
-    config.Rollback()
-    raise
+def AssetInvoicePayment(helper,oTran,oBatch,request,params):
 
-  status,msg = oTran.CreateJournal()      
-  return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
+  oTran.ReferenceNo = request[u'ReferenceNo']
+  oTran.Description = request[u'Description']
+  oTran.Inputer     = request[u'Inputer']
+  oTran.BranchCode  = request[u'BranchCode']
+  oTran.Amount = request[u'Amount']
+  oTran.CurrencyCode = '000'
+  #oTran.ReceivedFrom = request[u'ReceivedFrom']
+  oTran.ActualDate = oBatch.GetAsTDateTime('BatchDate')
+  aValuta = '000'
+  aAmount = request[u'Amount']
+  aRate = 1.0
+
+  # Cash Account 
+  oCashAccount = helper.GetObject('CashAccount',
+    str(request[u'CashAccountNo'])).CastToLowestDescendant()
+  if oCashAccount.isnull:
+    raise 'Cash/Bank', 'Rekening %s tidak ditemukan' % request[u'CashAccountNo']
+
+  oItemCA = oTran.CreateAccountTransactionItem(oCashAccount)
+  oItemCA.SetMutation('C', aAmount, 1.0)    
+  oItemCA.Description = request[u'Description']
+  oItemCA.SetJournalParameter('DA03B')
   
-def InvoicePayment(config, srequest,params):
-  request = simplejson.loads(srequest)
-  helper = phelper.PObjectHelper(config)
 
-  status = 0
-  msg = ''
+  # Get Invoice
+  oInvoiceFA = helper.GetObject('InvoiceFA', request[u'InvoiceId'])
+  oInvoiceFA.InvoicePaymentStatus = 'T'
 
-  config.BeginTransaction()
-  try:
-    oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
-    oTran = oBatch.NewTransaction('FAIP')
-
-    oTran.ReferenceNo = request[u'ReferenceNo']
-    oTran.Description = request[u'Description']
-    oTran.Inputer     = request[u'Inputer']
-    oTran.BranchCode  = request[u'BranchCode']
-    oTran.Amount = request[u'Amount']
-    oTran.CurrencyCode = '000'
-    #oTran.ReceivedFrom = request[u'ReceivedFrom']
-    oTran.ActualDate = oBatch.GetAsTDateTime('BatchDate')
-    aValuta = '000'
-    aAmount = request[u'Amount']
-    aRate = 1.0
-
-    # Cash Account 
-    oCashAccount = helper.GetObject('CashAccount',
-      str(request[u'CashAccountNo'])).CastToLowestDescendant()
-    if oCashAccount.isnull:
-      raise 'Cash/Bank', 'Rekening %s tidak ditemukan' % request[u'CashAccountNo']
+  # Get FinancialAccount
+  oFA = helper.GetObject('FixedAsset',str(request[u'FAAccountNo']))
+  oProduct = oFA.LProductAccount
   
-    oItemCA = oTran.CreateAccountTransactionItem(oCashAccount)
-    oItemCA.SetMutation('C', aAmount, 1.0)    
-    oItemCA.Description = request[u'Description']
-    oItemCA.SetJournalParameter('DA03B')
-    
-    # Get Invoice
-    oInvoiceFA = helper.GetObjectByNames('InvoiceFA',{'InvoiceNo' : request[u'InvoiceNo']})
-    oInvoiceFA.InvoicePaymentStatus = 'T'
-    
-    # Get FinancialAccount
-    oFA = helper.GetObject('FixedAsset',str(request[u'FAAccountNo']))
-    oProduct = oFA.LProductAccount
-    
-    oItemFA = oTran.CreateAccountTransactionItem(oProduct)
-    oItemFA.SetMutation('D',aAmount,1.0)
-    oItemFA.Description = request[u'Description']
-    oItemFA.SetJournalParameter('DA02A')
-    oItemFA.SetDistributionEntity(2)
-    
-    oFA.TotalDibayar += aAmount
-    
+  oItemFA = oTran.CreateAccountTransactionItem(oProduct)
+  oItemFA.SetMutation('D',aAmount,1.0)
+  oItemFA.Description = request[u'Description']
+  oItemFA.SetJournalParameter('DA02A')
+  oItemFA.SetDistributionEntity(2)
+  
+  oFA.TotalDibayar += aAmount
+  
 #     oInvoiceFA.AccountNo = AssetAccountNo
 #     oInvoiceFA.InvoiceNo = request[u'InvoiceNo']
 #     oInvoiceFA.InvoiceDate = oTran.ActualDate
 
-    oTran.GenerateTransactionNumber(oCashAccount.CashCode)
-    oTran.SaveInbox(params)
-    FileKwitansi = oTran.GetKwitansi()
-        
-    # Check for auto approval
-    corporate = helper.CreateObject('Corporate')
-    if corporate.CheckLimitOtorisasi(request[u'Amount']):
-      oTran.AutoApproval()
+  oTran.GenerateTransactionNumber(oCashAccount.CashCode)
+  oTran.SaveInbox(params)
+  FileKwitansi = oTran.GetKwitansi()
 
-    config.Commit()
-  except:
-    config.Rollback()
-    raise
-
-  status,msg = oTran.CreateJournal()
-  return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
+  return FileKwitansi      
   
-def Disposal(config, srequest,params):
-  request = simplejson.loads(srequest)
-  helper = phelper.PObjectHelper(config)
+def AssetDisposal(helper,oTran,oBatch,request,params):
+  oTran.ReferenceNo = request[u'ReferenceNo']
+  oTran.Description = request[u'Description']
+  oTran.Inputer     = request[u'Inputer']
+  oTran.BranchCode  = request[u'BranchCode']
+  oTran.Amount = request[u'Amount']
+  oTran.CurrencyCode = '000'
+  #oTran.ReceivedFrom = request[u'ReceivedFrom']
+  oTran.ActualDate = oBatch.GetAsTDateTime('BatchDate')
+  aValuta = '000'
+  aAmount = request[u'Amount']
+  aAssetValue = request[u'AssetValue'] 
+  aRate = 1.0
 
-  status = 0
-  msg = ''
-
-  config.BeginTransaction()
-  try:
-    oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
-    oTran = oBatch.NewTransaction('FAIP')
-
-    oTran.ReferenceNo = request[u'ReferenceNo']
-    oTran.Description = request[u'Description']
-    oTran.Inputer     = request[u'Inputer']
-    oTran.BranchCode  = request[u'BranchCode']
-    oTran.Amount = request[u'Amount']
-    oTran.CurrencyCode = '000'
-    #oTran.ReceivedFrom = request[u'ReceivedFrom']
-    oTran.ActualDate = oBatch.GetAsTDateTime('BatchDate')
-    aValuta = '000'
-    aAmount = request[u'Amount']
-    aAssetValue = request[u'AssetValue'] 
-    aRate = 1.0
-
-    if  aAmount > aAssetValue : # Jual Untung
-      JournalCode = 'DA07'
-    elif aAmount < aAssetValue : # Jual Rugi
-      JournalCode = 'DA06'
-    else : # 
-      JournalCode = 'DA08'
-    # end if elif else
-    
-      
-    # Fixed Asset Account
-    oFAAccount = helper.GetObject('FixedAsset',str(request[u'AssetAccountNo']))
-
-    oItemFA = oTran.CreateAccountTransactionItem(oFAAccount)
-    oItemFA.SetMutation('C', aAssetValue, 1.0)
-    oItemFA.Description = request[u'Description']
-    oItemFA.SetJournalParameter(JournalCode)
-    oItemFA.AccountCode = oFAAccount.GetAssetAccount()
-    
-    # Create Fixed Transaction Additional Info
-    oFAAccount.CreateSellTransactInfo(oItemFA,aAmount)
-    
-    # Cash Account
-    oCashAccount = helper.GetObject('CashAccount',
-        str(request[u'CashAccountNo'])).CastToLowestDescendant()
-    if oCashAccount.isnull:
-        raise 'Cash/Bank', 'Rekening %s tidak ditemukan' % request[u'CashAccountNo']        
+  if  aAmount > aAssetValue : # Jual Untung
+    JournalCode = 'DA07'
+  elif aAmount < aAssetValue : # Jual Rugi
+    JournalCode = 'DA06'
+  else : # 
+    JournalCode = 'DA08'
+  # end if elif else
   
-    oItemCA = oTran.CreateAccountTransactionItem(oCashAccount)
-    oItemCA.SetMutation('D', aAmount, 1.0)    
-    oItemCA.Description = request[u'Description']
-    oItemCA.SetJournalParameter('10')
+    
+  # Fixed Asset Account
+  oFAAccount = helper.GetObject('FixedAsset',str(request[u'AssetAccountNo']))
 
-    # Product Account
-    oProduct = oFAAccount.LProductAccount
-    #oProduct = helper.GetObject('ProductAccount',str(ProductAccountNo).CastToLowestDescendant()
-    
-    oItemPA = oTran.CreateAccountTransactionItem(oProduct)
-    oItemPA.SetMutation('C',oFAAccount.NilaiSisa,1.0)
-    oItemPA.Description = request[u'Description']
-    oItemPA.SetJournalParameter('DA09')
-    oItemPA.SetCollectionEntity(2)
-    
-    oTran.GenerateTransactionNumber('000')
-    oTran.SaveInbox(params)
-    FileKwitansi = oTran.GetKwitansi()
+  oItemFA = oTran.CreateAccountTransactionItem(oFAAccount)
+  oItemFA.SetMutation('C', aAssetValue, 1.0)
+  oItemFA.Description = request[u'Description']
+  oItemFA.SetJournalParameter(JournalCode)
+  oItemFA.AccountCode = oFAAccount.GetAssetAccount()
+  
+  # Create Fixed Transaction Additional Info
+  oFAAccount.CreateSellTransactInfo(oItemFA,aAmount)
+  
+  # Cash Account
+  oCashAccount = helper.GetObject('CashAccount',
+      str(request[u'CashAccountNo'])).CastToLowestDescendant()
+  if oCashAccount.isnull:
+      raise 'Cash/Bank', 'Rekening %s tidak ditemukan' % request[u'CashAccountNo']        
+
+  oItemCA = oTran.CreateAccountTransactionItem(oCashAccount)
+  oItemCA.SetMutation('D', aAmount, 1.0)    
+  oItemCA.Description = request[u'Description']
+  oItemCA.SetJournalParameter('10')
+
+  # Product Account
+  oProduct = oFAAccount.LProductAccount
+  #oProduct = helper.GetObject('ProductAccount',str(ProductAccountNo).CastToLowestDescendant()
+
+  oItemPA = oTran.CreateAccountTransactionItem(oProduct)
+  oItemPA.SetMutation('C',oFAAccount.NilaiSisa,1.0)
+  oItemPA.Description = request[u'Description']
+  oItemPA.SetJournalParameter('DA09')
+  oItemPA.SetCollectionEntity(2)
+  
+  oTran.GenerateTransactionNumber('000')
+  oTran.SaveInbox(params)
+  FileKwitansi = oTran.GetKwitansi()
         
-    # Check for auto approval
-    corporate = helper.CreateObject('Corporate')
-    if corporate.CheckLimitOtorisasi(request[u'Amount']):
-      oTran.AutoApproval()
-
-    config.Commit()
-  except:
-    config.Rollback()
-    raise
-
-  status,msg = oTran.CreateJournal()
-  return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
+  return FileKwitansi

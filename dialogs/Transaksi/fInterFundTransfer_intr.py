@@ -31,9 +31,9 @@ class fInterFundTransfer :
 
   def bSimpanClick(self, sender):
     app = self.app
+    self.CheckRequired()
+    
     if self.app.ConfirmDialog('Yakin simpan transaksi ?'):
-      self.CheckInput()
-
       self.FormObject.CommitBuffer()
       ph = self.FormObject.GetDataPacket()
 
@@ -121,11 +121,30 @@ class fInterFundTransfer :
       uipTran.DestAmount = (uipTran.SourceAmount or 0.0 ) / (uipTran.Rate or 0.0)
       uipTran.Amount = uipTran.DestAmount
 
-  def CheckInput(self):
+  def CheckRequired(self):
     uipTran = self.uipTransaction
-    if (uipTran.GetFieldValue('LBatch.BatchId') or 0) == 0 :
-      raise 'PERINGATAN', 'Batch transaksi belum diinputkan. Silahkan input dahulu batch transaksi'
+    #if (uipTran.GetFieldValue('LBatch.BatchId') or 0) == 0 :
+    #  raise 'PERINGATAN', 'Batch transaksi belum diinputkan. Silahkan input dahulu batch transaksi'
+
+    if uipTran.ActualDate in [0, None] :
+      raise 'PERINGATAN','Tanggal Transaksi belum diinputkan'
+
+    SAccountNo = uipTran.GetFieldValue('LAccountSource.AccountNo') or ''
+    if SAccountNo in ['',None] :
+      raise 'PERINGATAN','Produk pada dana sumber belum diinputkan'
+
+    DAccountNo = uipTran.GetFieldValue('LAccountDestination.AccountNo') or ''
+    if DAccountNo in ['',None] :
+      raise 'PERINGATAN','Produk pada dana tujuan belum diinputkan'
+
+    if SAccountNo == DAccountNo :
+      raise 'PERINGATAN','Produk dana sumber dan tujuan tidak boleh sama'
       
+    SourceAmount = uipTran.SourceAmount or 0.0
+    if SourceAmount <= 0.0 :
+      raise 'PERINGATAN','Nilai Transaksi tidak boleh <= 0.0'
+      
+
     return
     #if (self.uipTransaction.GetFieldValue('LAccountSource.CurrencyCode') !=
     #  self.uipTransaction.GetFieldValue('LAccountDestination.CurrencyCode')):

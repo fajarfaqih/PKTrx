@@ -9,9 +9,7 @@ def FormSetDataEx(uideflist, parameter):
 
   if (parameter.DatasetCount == 0 or
     parameter.GetDataset(0).Structure.StructureName != 'data'):
-    rec = uideflist.uipData.Dataset.AddRecord()
-    rec.user_id = config.securitycontext.InitUser
-
+    return
   else:
     #-- routine untuk SetDataWithParameters
     helper = phelper.PObjectHelper(config, 'default')

@@ -6,8 +6,9 @@ DefaultItems = [ 'Inputer',
                  'Rate',
                  'TotalAmount',
                  'CashType',
-                 'LBatch.BatchId',
-                 'LBatch.BatchNo',
+                 #'LBatch.BatchId',
+                 #'LBatch.BatchNo',
+                 'ActualDate',
                  'LValuta.Currency_Code',
                  'LValuta.Full_Name',
                  'LValuta.Kurs_Tengah_BI',
@@ -38,7 +39,8 @@ class fCashIn :
     uipTran.Edit()
     for item in DefaultItems :
       uipTran.SetFieldValue(item,self.DefaultValues[item])
-    self.pBatch_LBatch.SetFocus()
+    #self.pBatch_LBatch.SetFocus()
+    self.pBatch_ActualDate.SetFocus()
 
   def InitValues(self):
 
@@ -85,6 +87,38 @@ class fCashIn :
 
     return self.FormContainer.Show()
 
+  def LCurrencyCashAfterLookup(self,sender,linkui):
+    uipTran = self.uipTransaction
+    uipTran.Edit()
+    uipTran.RateCash = uipTran.GetFieldValue('LCurrencyCash.Kurs_Tengah_BI')
+    uipTran.CurrencyCode = self.GetCurrencyCode()
+    uipTran.Rate = self.GetRate()
+    self.pCashTransaction_RateCash.enabled = (uipTran.GetFieldValue('LCurrencyCash.Currency_Code') != '000')
+    
+  def BankAfterLookup(self,sender,linkui):
+    uipTran = self.uipTransaction
+    uipTran.Edit()
+    uipTran.RateBank = uipTran.GetFieldValue('LBank.LCurrency.Kurs_Tengah_BI')
+    uipTran.CurrencyCode = self.GetCurrencyCode()
+    uipTran.Rate = self.GetRate()
+    self.pBankTransaction_RateBank.enabled = (uipTran.GetFieldValue('LBank.CurrencyCode') != '000')
+    
+  def GetRate(self):
+    dictRateByPaymentType = {
+      0 : 'RateCash',
+      1 : 'RateBank',
+    }
+    uipTran = self.uipTransaction
+    return uipTran.GetFieldValue(dictRateByPaymentType[self.mpBayar.ActivePageIndex])
+
+  def GetCurrencyCode(self):
+    dictCurrCodeByPaymentType = {
+      0 : 'LCurrencyCash.Currency_Code',
+      1 : 'LBank.CurrencyCode',
+    }
+    uipTran = self.uipTransaction
+    return uipTran.GetFieldValue(dictCurrCodeByPaymentType[self.mpBayar.ActivePageIndex])
+
   def GLAccountBeforeLookup(self,sender,linkui):
     if self.fSelectAccount == None :
       formname = 'Transaksi/fSelectAccount'
@@ -119,10 +153,10 @@ class fCashIn :
   def ItemNewRecord (self, sender):
     sender.ItemIdx = self.IdxCounter
     sender.Amount = 0.0
-    sender.Rate   = 1.0
-    sender.Ekuivalen = 0.0
-    sender.SetFieldValue('LCurrency.Currency_Code', '000')
-    sender.SetFieldValue('LCurrency.Short_Name', 'IDR')
+    #sender.Rate   = self.GetRate()
+    #sender.Ekuivalen = 0.0
+    #sender.SetFieldValue('LCurrency.Currency_Code', '000')
+    #sender.SetFieldValue('LCurrency.Short_Name', 'IDR')
 
   def ItemBeforePost(self, sender) :
     AccountCode = sender.AccountCode
@@ -132,21 +166,6 @@ class fCashIn :
     if sender.Amount <= 0.0 :
       raise 'Nilai Transaksi', 'Nilai transaksi tidak boleh negatif atau 0.0'
 
-    sender.Ekuivalen = sender.Amount * sender.Rate
-    
-    #if ( AccountCode[0] not in ['4','5']
-    #     and sender.BudgetCode not in ['',None] ):
-    #  sender.BudgetCode = ''
-    #  sender.BudgetOwner = ''
-    #  sender.BudgetId = 0
-    #  raise 'Budget', 'Budget hanya dapat dipilih untuk akun 4 atau 5'
-      
-    #if ( AccountCode[0] in ['4','5']
-    #     and sender.BudgetCode not in ['',None]
-    #     and sender.BudgetId in [None,0] ):
-    #  pass
-
-
   def ItemAfterPost(self, sender) :
     self.IdxCounter += 1
 
@@ -155,10 +174,10 @@ class fCashIn :
       amountbefore = self.AmountList[Idx]
     else:
       amountbefore = 0.0
-    self.AmountList[Idx] = sender.Ekuivalen
+    self.AmountList[Idx] = sender.Amount
 
     self.uipTransaction.Edit()
-    self.uipTransaction.TotalAmount += (sender.Ekuivalen - amountbefore)
+    self.uipTransaction.TotalAmount += (sender.Amount - amountbefore)
     self.uipTransaction.Post()
 
   def bCancelClick(self, sender):
@@ -168,15 +187,24 @@ class fCashIn :
       sender.ExitAction = 0
 
   def CheckRequiredGeneral(self):
-    if self.uipTransaction.GetFieldValue('LBatch.BatchId') == None:
-      self.app.ShowMessage('Batch belum dipilih')
+    uipTran  = self.uipTransaction
+
+    if uipTran.ActualDate in [0, None] :
+      self.app.ShowMessage('Tanggal Transaksi belum diinputkan')
       return 0
-      
+
     if self.uipTransactionItem.RecordCount <= 0 :
-      self.app.ShowMessage('Transaksi belum diinput')
+      self.app.ShowMessage('Detail Transaksi belum diinput')
       return 0
       
     return 1
+
+  def CheckRequiredCash(self):
+    if self.uipTransaction.GetFieldValue('LCurrencyCash.Currency_Code') == None:
+      self.app.ShowMessage('Kode Valuta Kas belum dipilih')
+      return 0
+    else:
+      return 1
 
   def CheckRequiredBank(self):
     if self.uipTransaction.GetFieldValue('LBank.AccountNo') == None:
@@ -218,9 +246,14 @@ class fCashIn :
       uipTran = self.uipTransaction
       uipTran.Edit()
       uipTran.SaveMode = savemode
+      uipTran.CurrencyCode = self.GetCurrencyCode()
+      uipTran.Rate = self.GetRate()
+      
       pType = self.mpBayar.ActivePageIndex
       if pType == 0:
         self.uipTransaction.PaymentType = self.uipTransaction.CashType
+        if not self.CheckRequiredCash():
+          return 0
       elif pType == 1:
         self.uipTransaction.PaymentType = 'B'
         if not self.CheckRequiredBank():
@@ -250,8 +283,9 @@ class fCashIn :
             #app.ShowMessage("Masukkan kertas ke printer untuk cetak kwitansi")
             oPrint.doProcessByStreamName(app,ph.packet,res.StreamName)
 
-        self.DefaultValues['LBatch.BatchId'] = uipTran.GetFieldValue('LBatch.BatchId')
-        self.DefaultValues['LBatch.BatchNo'] = uipTran.GetFieldValue('LBatch.BatchNo')
+        #self.DefaultValues['LBatch.BatchId'] = uipTran.GetFieldValue('LBatch.BatchId')
+        #self.DefaultValues['LBatch.BatchNo'] = uipTran.GetFieldValue('LBatch.BatchNo')
+        self.DefaultValues['ActualDate'] = uipTran.ActualDate
         
         #if savemode == 1 :
         #  self.DefaultValues['TransactionNo'] = res.NewTransactionNo

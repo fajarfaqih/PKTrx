@@ -19,6 +19,7 @@ def FormSetDataEx(uideflist, params) :
   rec.BranchCode = str(config.SecurityContext.GetUserInfo()[4])
   rec.TransactionDate = int(Now)
   rec.FloatTransactionDate = int(Now)
+  rec.ActualDate = int(Now)
   rec.Amount = 0.0
   rec.ReceivedFrom = rec.Inputer
   
@@ -37,7 +38,7 @@ def SimpanData(config, params, returns):
     oTransaction = params.uipTransaction.GetRecord(0)
 
     request = {}
-    request['BatchId'] = oTransaction.GetFieldByName('LBatch.BatchId')
+    request['ActualDate'] = oTransaction.ActualDate
     request['CashAccountNo'] = oTransaction.GetFieldByName('LCashAccount.AccountNo')
     request['Amount'] = oTransaction.Amount
     request['ReferenceNo'] = oTransaction.ReferenceNo
@@ -58,14 +59,13 @@ def SimpanData(config, params, returns):
 
     oService = helper.LoadScript('Transaction.GeneralTransaction')
 
+    TransactionCode = 'CPIA'
     if oTransaction.ShowMode == 1:
-      response = oService.CostPaidInAdvanceNew(config, sRequest, params)
-    else: #ShowMode == 2
-      response = oService.CostPaidInAdvanceUpdate(config, sRequest, params)
+      response = oService.CreateTransaction(TransactionCode, config, sRequest, params)
+    else:
+      response = oService.UpdateTransaction(TransactionCode, config, sRequest, params)
     # end if
 
-
-    
     response = simplejson.loads(response)
     TransactionNo = response[u'TransactionNo']
 

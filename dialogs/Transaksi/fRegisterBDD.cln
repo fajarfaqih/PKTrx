@@ -81,11 +81,17 @@ document <
         >, object:rtf::FieldUIElmtSetting<
           Name='TransactionDate'
           ReadOnlyControl=true
-          ControlCaption='Tanggal transaksi'
+          ControlCaption='Tanggal Input'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ActualDate'
+          ControlCaption='Tanggal Transaksi'
           DataTypeName='timestamp'
           DataLength=20
         >, object:rtf::LinkUIElmtSetting<
           Name='LBatch'
+          Hidden=true
           ControlCaption='Pilih batch transaksi'
           ClassTypeName='TransactionBatch'
           KeyFields={object:rtf::FieldUIElmtSetting<
@@ -175,16 +181,6 @@ document <
           ControlCaption='Nilai'
           DataTypeName='double'
           DataLength=20
-        >, object:rtf::FieldUIElmtSetting<
-          Name='ReferenceNo'
-          ControlCaption='Nomor referensi'
-          DataTypeName='varchar'
-          DataLength=30
-        >, object:rtf::FieldUIElmtSetting<
-          Name='Description'
-          ControlCaption='Keterangan'
-          DataTypeName='varchar'
-          DataLength=100
         >, object:rtf::LinkUIElmtSetting<
           Name='LCPIACategory'
           ControlCaption='Kategori Biaya Dimuka'
@@ -268,6 +264,16 @@ document <
           ControlCaption='Tanggal berakhir kontrak'
           DataTypeName='timestamp'
           DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ReferenceNo'
+          ControlCaption='Nomor referensi'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Description'
+          ControlCaption='Keterangan'
+          DataTypeName='varchar'
+          DataLength=100
         >}Name='pTransaction'
       Width=537
       Height=401
@@ -285,19 +291,20 @@ document <
           Top=36
           Left=8
           Color=-2147483624
-          ControlCaption='Tanggal transaksi'
+          ControlCaption='Tanggal Input'
           CaptionWidth=130
-        >, *object:rtf::DBLookupEdit<
-          Name='LBatch'
+        >, *object:rtf::DBDateEdit<
+          Name='ActualDate'
           Top=64
           Left=8
-          ControlCaption='Pilih batch transaksi'
-          LookupField='LBatch.Description'
-          DisplayLookupField=true
+          Color=0
+          ControlCaption='Tanggal Transaksi'
         >, *object:rtf::DBEdit<
           Name='ReceivedFrom'
           Top=92
           Left=8
+          Width=299
+          Height=21
           Color=0
           ControlCaption='Kasir'
           CharCase=ecUpperCase
@@ -313,7 +320,7 @@ document <
           LookupField='LCashAccount.AccountName'
           DisplayLookupField=true
           DisplayLookupColor=-2147483624
-          DisplayLookupWidth=215
+          DisplayLookupWidth=200
         >, *object:rtf::DBEdit<
           Name='Amount'
           Top=148
@@ -323,43 +330,23 @@ document <
           CaptionWidth=130
           FieldName='Amount'
           DisplayFormat=',0.00'
-        >, *object:rtf::DBEdit<
-          Name='ReferenceNo'
-          Top=176
-          Left=8
-          Width=201
-          Height=21
-          Color=0
-          ControlCaption='Nomor referensi'
-          CaptionWidth=130
-          CharCase=ecUpperCase
-        >, *object:rtf::DBEdit<
-          Name='Description'
-          Top=204
-          Left=8
-          Width=313
-          Height=21
-          Color=0
-          ControlCaption='Keterangan'
-          CaptionWidth=130
-          CharCase=ecUpperCase
         >, *object:rtf::DBLookupEdit<
           Name='LCPIACategory'
-          Top=232
+          Top=176
           Left=8
           ControlCaption='Kategori Biaya Dimuka'
           LookupField='LCPIACategory.CPIACatName'
           DisplayLookupField=true
         >, *object:rtf::DBLookupEdit<
           Name='LCostAccount'
-          Top=260
+          Top=204
           Left=8
           ControlCaption='Account Biaya'
           LookupField='LCostAccount.Account_Name'
           DisplayLookupField=true
         >, *object:rtf::DBCheckBox<
           Name='HasContract'
-          Top=288
+          Top=232
           Left=8
           Color=0
           ControlCaption='Memiliki Kontrak'
@@ -367,17 +354,39 @@ document <
           ValueUnchecked='F'
         >, *object:rtf::DBEdit<
           Name='ContractNo'
-          Top=316
+          Top=260
           Left=8
+          Width=299
+          Height=21
           Color=0
           ControlCaption='Nomor Kontrak'
           CharCase=ecUpperCase
         >, *object:rtf::DBDateEdit<
           Name='ContractEndDate'
-          Top=344
+          Top=288
           Left=8
           Color=0
           ControlCaption='Tanggal berakhir kontrak'
+        >, *object:rtf::DBEdit<
+          Name='ReferenceNo'
+          Top=316
+          Left=8
+          Width=299
+          Height=21
+          Color=0
+          ControlCaption='Nomor referensi'
+          CaptionWidth=130
+          CharCase=ecUpperCase
+        >, *object:rtf::DBEdit<
+          Name='Description'
+          Top=344
+          Left=8
+          Width=299
+          Height=21
+          Color=0
+          ControlCaption='Keterangan'
+          CaptionWidth=130
+          CharCase=ecUpperCase
         >}EqualCaptionWidth=130
       ControlLeftMargin=8
       ControlTopMargin=8

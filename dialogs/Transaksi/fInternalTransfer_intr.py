@@ -2,9 +2,7 @@ DefaultItems = [ 'Inputer',
                  'BranchCode',
                  'TransactionDate',
                  'FloatTransactionDate',
-                 'LBatch.BatchId',
-                 'LBatch.BatchNo',
-                 'LBatch.Description',
+                 'ActualDate',
                  'TransactionNo',
                  'ShowMode',
                  ]
@@ -104,7 +102,8 @@ class fInternalTransfer :
     uipTran.Edit()
     for item in DefaultItems :
       uipTran.SetFieldValue(item,self.DefaultValues[item])
-    self.pTransaction_LBatch.SetFocus()
+      
+    self.pTransaction_ActualDate.SetFocus()
 
   # Method untuk set nilai-nilai transaksi
   def SetEkuivalenAmount(self):
@@ -149,8 +148,18 @@ class fInternalTransfer :
       uipTran.DestAmount = (uipTran.SourceAmount or 0.0 ) / (uipTran.Rate or 0.0)
       uipTran.Amount = uipTran.DestAmount
 
-  def CheckInput(self):
+  def CheckRequired(self):
     uipTran = self.uipTransaction
+    
+    if uipTran.ActualDate in [0, None] :
+      raise 'PERINGATAN','Tanggal Transaksi belum diinputkan'
+
+    if uipTran.GetFieldValue('LCashAccountSource.AccountNo') == None :
+      raise 'PERINGATAN', 'Kas Sumber belum diinputkan!'
+
+    if uipTran.GetFieldValue('LCashAccountDestination.AccountNo') == None :
+      raise 'PERINGATAN', 'Kas Tujuan belum diinputkan!'
+      
     if (uipTran.GetFieldValue('LCashAccountSource.AccountNo') ==
       uipTran.GetFieldValue('LCashAccountDestination.AccountNo')):
       raise 'PERINGATAN', 'Kas Sumber dan Tujuan tidak boleh sama!'
@@ -167,9 +176,11 @@ class fInternalTransfer :
   def Simpan(self,savemode):
     app = self.app
     uipTran = self.uipTransaction
+    
+    self.CheckRequired()
+    
     if app.ConfirmDialog('Yakin simpan transaksi ?'):
       self.FormObject.CommitBuffer()
-      self.CheckInput()
       ph = self.FormObject.GetDataPacket()
 
       ph = self.FormObject.CallServerMethod("SimpanData", ph)
@@ -190,7 +201,7 @@ class fInternalTransfer :
             oPrint.doProcessByStreamName(app,ph.packet,res.StreamName)
           # endif
         # endif
-
+        self.DefaultValues['ActualDate'] = uipTran.ActualDate
       # endif else
 
       return 1

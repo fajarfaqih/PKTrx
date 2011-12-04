@@ -15,8 +15,8 @@ DefaultItems = [ 'Inputer',
                  'TotalCredit',
                  'TransactionNo',
                  'ShowMode',
-                 'LBatch.BatchId',
-                 'LBatch.BatchNo',
+                 #'LBatch.BatchId',
+                 #'LBatch.BatchNo',
                  'ActualDate',
 #                 'LProductBranch.Kode_Cabang',
 #                 'LProductBranch.Nama_Cabang',
@@ -81,7 +81,8 @@ class fGeneralTransaction :
     for item in DefaultItems :
       uipTran.SetFieldValue(item,self.DefaultValues[item])
 
-    self.pTransaction_LBatch.SetFocus()
+    #self.pTransaction_LBatch.SetFocus()
+    self.pTransaction_ActualDate.SetFocus()
     
   def Show(self,mode=1):
     self.uipTransaction.Edit()
@@ -371,8 +372,21 @@ class fGeneralTransaction :
     if self.Simpan(2):
       sender.ExitAction = 1
         
+  def CheckRequired(self):
+    app = self.app
+    uipTran = self.uipTransaction
+
+    if uipTran.ActualDate in [0, None] :
+      raise 'PERINGATAN','Tanggal Transaksi belum diinputkan'
+
+    if self.uipTransactionItem.RecordCount <= 0 :
+      raise 'PERINGATAN','Detail Transaksi belum diinput'
+
   def Simpan(self,savemode):
     app = self.app
+    uipTran = self.uipTransaction
+    
+    self.CheckRequired()
     
     if self.uipTransaction.TotalDebit != self.uipTransaction.TotalCredit:
       self.app.ShowMessage('Total debit tidak sama dengan total kredit!')
@@ -400,6 +414,7 @@ class fGeneralTransaction :
             oPrint = app.GetClientClass('PrintLib','PrintLib')()
             #app.ShowMessage("Masukkan kertas ke printer untuk cetak kwitansi")
             oPrint.doProcessByStreamName(app,ph.packet,res.StreamName)
+        self.DefaultValues['ActualDate'] = uipTran.ActualDate
         return 1
 
     #-- if

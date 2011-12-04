@@ -8,9 +8,9 @@ DefaultItems = [ 'Inputer',
                  'Rate',
                  'TotalAmount',
                  'CashType',
-                 'LBatch.BatchId',
-                 'LBatch.BatchNo',
-                 'LBatch.Description',
+#                 'LBatch.BatchId',
+#                 'LBatch.BatchNo',
+#                 'LBatch.Description',
                  'LProductBranch.Kode_Cabang',
                  'LProductBranch.Nama_Cabang',
                  'LValuta.Currency_Code',
@@ -56,8 +56,9 @@ class fFundDistribution :
     uipTran.Edit()
     for item in DefaultItems :
       uipTran.SetFieldValue(item,self.DefaultValues[item])
-    self.pBatch_LBatch.SetFocus()
-
+    #self.pBatch_LBatch.SetFocus()
+    self.pBatch_ActualDate.SetFocus()
+    
   def InitValues(self):
     if self.uipTransaction.ShowMode == 1 : # insert mode
       self.AmountList = {}
@@ -145,7 +146,7 @@ class fFundDistribution :
       self.fSelectProduct = fData
     else:
       fData = self.fSelectProduct
-    branchCode = self.uipTransaction.GetFieldValue('LProductBranch.Kode_Cabang')
+    branchCode = self.uipTransaction.BranchCode #GetFieldValue('LProductBranch.Kode_Cabang')
     if fData.GetProduct(branchCode) == 1:
       productId = fData.ProductId
       productName = fData.ProductName
@@ -309,8 +310,12 @@ class fFundDistribution :
 
   def CheckRequiredGeneral(self):
     uipTran  = self.uipTransaction
-    if self.uipTransaction.GetFieldValue('LBatch.BatchId') == None:
-      self.app.ShowMessage('Batch belum dipilih')
+    #if self.uipTransaction.GetFieldValue('LBatch.BatchId') == None:
+    #  self.app.ShowMessage('Batch belum dipilih')
+    #  return 0
+    
+    if uipTran.ActualDate in [0, None] :
+      self.app.ShowMessage('Tanggal Transaksi belum diinputkan')
       return 0
 
     if self.uipTransactionItem.RecordCount <= 0 :
@@ -393,8 +398,9 @@ class fFundDistribution :
             #app.ShowMessage("Masukkan kertas ke printer untuk cetak kwitansi")
             oPrint.doProcessByStreamName(app,ph.packet,res.StreamName)
 
-        self.DefaultValues['LBatch.BatchId'] = uipTran.GetFieldValue('LBatch.BatchId')
-        self.DefaultValues['LBatch.BatchNo'] = uipTran.GetFieldValue('LBatch.BatchNo')
+        #self.DefaultValues['LBatch.BatchId'] = uipTran.GetFieldValue('LBatch.BatchId')
+        #self.DefaultValues['LBatch.BatchNo'] = uipTran.GetFieldValue('LBatch.BatchNo')
+        self.DefaultValues['ActualDate'] = uipTran.ActualDate
         #if savemode == 1 :
         #  self.DefaultValues['TransactionNo'] = res.NewTransactionNo
       

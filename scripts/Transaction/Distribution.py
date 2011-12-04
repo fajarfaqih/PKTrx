@@ -15,9 +15,12 @@ def DistributionNew(config, srequest ,params):
   request = simplejson.loads(srequest)
   helper = phelper.PObjectHelper(config)
   
+  oBatchHelper = helper.CreateObject('BatchHelper')
+  oBatch = oBatchHelper.GetBatchUser(request['ActualDate'])
+
   config.BeginTransaction()
   try:
-    oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
+    #oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
     oTran = oBatch.NewTransaction('DD001')
     
 #     if request[u'PaymentType'] == 'K' : PettyCash 
@@ -47,6 +50,9 @@ def DistributionUpdate(config, srequest ,params):
   request = simplejson.loads(srequest)
   helper = phelper.PObjectHelper(config)
 
+  oBatchHelper = helper.CreateObject('BatchHelper')
+  oBatch = oBatchHelper.GetBatchUser(request['ActualDate'])
+
   oTran = helper.GetObjectByNames(
       'Transaction',{'TransactionNo': request[u'TransactionNo'] }
     )
@@ -58,7 +64,7 @@ def DistributionUpdate(config, srequest ,params):
   config.BeginTransaction()
   try:
     oTran.CancelTransaction()
-    oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
+    #oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
     oTran.BatchId = oBatch.BatchId
 
 #     if request[u'PaymentType'] == 'K' : PettyCash
@@ -109,11 +115,11 @@ def PettyCashDistribution(config, srequest ,params):
     oTran.ActualDate = request[u'ActualDate']
     oTran.Rate = aRate    
             
-    aProductBranchCode = request[u'ProductBranchCode']
-    if aProductBranchCode != aBranchCode:
-      aJournalCode = '15'
-    else:
-      aJournalCode = '10'
+    #aProductBranchCode = request[u'ProductBranchCode']
+    #if aProductBranchCode != aBranchCode:
+    #  aJournalCode = '15'
+    #else:
+    aJournalCode = '10'
     #-- if.else
     
     # Get Sponsor
@@ -205,11 +211,11 @@ def BranchCashDistribution(helper,oTran,oBatch,request,params):
   oTran.Rate = aRate
   oTran.CurrencyCode = aValuta
               
-  aProductBranchCode = request[u'ProductBranchCode']
-  if aProductBranchCode != aBranchCode:
-    aJournalCode = '15'
-  else:
-    aJournalCode = '10'
+  #aProductBranchCode = request[u'ProductBranchCode']
+  #if aProductBranchCode != aBranchCode:
+  #  aJournalCode = '15'
+  #else:
+  aJournalCode = '10'
   #-- if.else
   
   # Get Sponsor
@@ -284,11 +290,11 @@ def BankDistribution(helper,oTran,oBatch,request,params):
   oTran.ReceivedFrom = request[u'ReceivedFrom']
   oTran.ActualDate = request[u'ActualDate']
       
-  aProductBranchCode = request[u'ProductBranchCode']
-  if aProductBranchCode != aBranchCode:
-    aJournalCode = '15'
-  else:
-    aJournalCode = '10'
+  #aProductBranchCode = request[u'ProductBranchCode']
+  #if aProductBranchCode != aBranchCode:
+  #  aJournalCode = '15'
+  #else:
+  aJournalCode = '10'
   #-- if.else
   
   # Get Sponsor
@@ -371,11 +377,11 @@ def AssetDistribution(helper,oTran,oBatch,request,params):
   oTran.ReceivedFrom = request[u'ReceivedFrom']
   oTran.ActualDate = request[u'ActualDate']
       
-  aProductBranchCode = request[u'ProductBranchCode']
-  if aProductBranchCode != aBranchCode:
-    aJournalCode = '15'
-  else:
-    aJournalCode = '10'
+  #aProductBranchCode = request[u'ProductBranchCode']
+  #if aProductBranchCode != aBranchCode:
+  #  aJournalCode = '15'
+  #else:
+  aJournalCode = '10'
   #-- if.else
 
   # Get Sponsor

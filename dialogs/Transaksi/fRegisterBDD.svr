@@ -32,6 +32,10 @@ document <
           DataTypeName='timestamp'
           DataLength=20
         >, object:rpclass::TCustomLoadedField<
+          Name='ActualDate'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
           Name='LBatch.BatchId'
           DataTypeName='INTEGER'
         >, object:rpclass::TCustomLoadedField<
@@ -69,14 +73,6 @@ document <
           DataTypeName='double'
           DataLength=20
         >, object:rpclass::TCustomLoadedField<
-          Name='ReferenceNo'
-          DataTypeName='varchar'
-          DataLength=30
-        >, object:rpclass::TCustomLoadedField<
-          Name='Description'
-          DataTypeName='varchar'
-          DataLength=100
-        >, object:rpclass::TCustomLoadedField<
           Name='LCPIACategory.CPIACatId'
           DataTypeName='INTEGER'
         >, object:rpclass::TCustomLoadedField<
@@ -110,6 +106,14 @@ document <
           Name='ContractEndDate'
           DataTypeName='timestamp'
           DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='ReferenceNo'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='Description'
+          DataTypeName='varchar'
+          DataLength=100
         >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
           Name='LBatch'
           ClassTypeName='TransactionBatch'

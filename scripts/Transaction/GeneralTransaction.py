@@ -27,17 +27,70 @@ def Main(config, srequest,params):
   status,msg = oTran.CreateJournal()      
   return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
 
-def GeneralTransactionNew(config,srequest ,params):
+def GetBatch(helper,ActualDate):
+  oBatchHelper = helper.CreateObject('BatchHelper')
+  oBatch = oBatchHelper.GetBatchUser(ActualDate)
+  return oBatch
+
+def GenerateResponse(Status,ErrMessage,TransactionNo,FileKwitansi):
+  response = {}
+  response['Status'] = Status
+  response['TransactionNo'] = TransactionNo
+  response['ErrMessage'] = ErrMessage
+  response['FileKwitansi'] = FileKwitansi
+  
+  return simplejson.dumps(response)
+
+def ExecFunction(TranCode, helper, oTran, oBatch, request, params):
+  if TranCode == 'GT' : # Transaksi Umum
+    FileKwitansi = GeneralTransaction(helper,oTran,oBatch,request,params)
+  elif TranCode == 'TI' : # Transfer Internal
+    FileKwitansi = InternalTransfer(helper,oTran,oBatch,request,params)
+  elif TranCode == 'PAD' : # Pinjaman Antar Dana
+    FileKwitansi = InterFundTransfer(helper,oTran,oBatch,request,params)
+  elif TranCode in ['EAR','XAR'] : # Piutang Karyawan
+    FileKwitansi = EmployeeAR(helper,oTran,oBatch,request,params)
+  elif TranCode in ['PEAR','PXAR'] : # Piutang Karyawan
+    FileKwitansi = PayEmployeeAR(helper,oTran,oBatch,request,params)
+  elif TranCode == 'CA' : # Penyerahan Uang Muka
+    FileKwitansi = CashAdvance(helper,oTran,oBatch,request,params)
+  elif TranCode in ['CARB','CAR'] : # LPJ Uang Muka
+    FileKwitansi = CashAdvanceReturn(helper,oTran,oBatch,request,params)
+  elif TranCode == 'INVS' : # Investasi
+    FileKwitansi = Investment(helper,oTran,oBatch,request,params)
+  elif TranCode == 'INVSR' : # Pengembalian Investasi
+    FileKwitansi = InvestmentReturn(helper,oTran,oBatch,request,params)
+  elif TranCode == 'CARR' : # Pengembalian UM RAK
+    FileKwitansi = CashAdvanceReturnRAK(helper,oTran,oBatch,request,params)
+  elif TranCode == 'CPIA' : # Biaya Dibayar Di muka
+    FileKwitansi = CostPaidInAdvance(helper,oTran,oBatch,request,params)
+  elif TranCode == 'INVP' : # Pembayaran Invoice
+    FileKwitansi = InvoicePayment(helper,oTran,oBatch,request,params)
+  elif TranCode == 'DT' : # Transfer Dana RAK
+    FileKwitansi = BranchDistribution(helper,oTran,oBatch,request,params)
+  elif TranCode == 'DTR' : # LPJ Dana RAK
+    FileKwitansi = BranchDistributionReturn(helper,oTran,oBatch,request,params)
+  else:
+    raise '','Kode Transaksi Tidak Dikenal'
+
+  return FileKwitansi
+
+def CreateTransaction(TranCode, config, srequest, params):
   request = simplejson.loads(srequest)
   helper = phelper.PObjectHelper(config)
 
+  status = 0
+  msg = ''
+   
+  oBatch = GetBatch(helper,request['ActualDate'])
+   
   config.BeginTransaction()
   try:
-    oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
-    oTran = oBatch.NewTransaction('GT')
-    
-    FileKwitansi = GeneralTransaction(helper,oTran,oBatch,request,params)
-    
+    #oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
+    oTran = oBatch.NewTransaction(TranCode)
+
+    FileKwitansi = ExecFunction(TranCode, helper, oTran, oBatch, request, params)
+
     # Check for auto approval
     corporate = helper.CreateObject('Corporate')
     if corporate.CheckLimitOtorisasi(request[u'Amount'] * request[u'Rate']):
@@ -48,13 +101,15 @@ def GeneralTransactionNew(config,srequest ,params):
     config.Rollback()
     raise
   
-  status,msg = oTran.CreateJournal()
+  status,msg = oTran.CreateJournal()      
   return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
-  
-def GeneralTransactionUpdate(config,srequest ,params):
+
+def UpdateTransaction(TranCode, config, srequest, params):
   request = simplejson.loads(srequest)
   helper = phelper.PObjectHelper(config)
   
+  oBatch = GetBatch(helper,request['ActualDate'])
+
   oTran = helper.GetObjectByNames(
       'Transaction',{'TransactionNo': request[u'TransactionNo'] }
     )
@@ -68,10 +123,10 @@ def GeneralTransactionUpdate(config,srequest ,params):
   config.BeginTransaction()
   try:
     oTran.CancelTransaction()
-    oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
     oTran.BatchId = oBatch.BatchId
+    oTran.TransactionCode = TranCode
     
-    FileKwitansi = GeneralTransaction(helper,oTran,oBatch,request,params)
+    FileKwitansi = ExecFunction(TranCode, helper, oTran, oBatch, request, params)
     
     # Check for auto approval
     oTran.AutoApprovalUpdate()
@@ -82,7 +137,7 @@ def GeneralTransactionUpdate(config,srequest ,params):
     raise
 
   status,msg = oTran.CreateJournal()      
-  return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)  
+  return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
 
 def GeneralTransaction(helper,oTran,oBatch,request,params):
   aInputer    = request[u'Inputer']
@@ -190,64 +245,7 @@ def GeneralTransaction(helper,oTran,oBatch,request,params):
   
   return FileKwitansi
 
-### -------  INTERNAL TRANSFER ----------------------------------- 
-def InternalTransferNew(config,srequest ,params):
-  request = simplejson.loads(srequest)
-  helper = phelper.PObjectHelper(config)
-
-  config.BeginTransaction()
-  try:
-    oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
-    oTran = oBatch.NewTransaction('TI')
-    
-    FileKwitansi = InternalTransfer(helper,oTran,oBatch,request,params)
-    
-    # Check for auto approval
-    corporate = helper.CreateObject('Corporate')
-    if corporate.CheckLimitOtorisasi(request[u'Amount'] * request[u'Rate']):
-      oTran.AutoApproval()
-      
-    config.Commit()
-  except:
-    config.Rollback()
-    raise
-  
-  status,msg = oTran.CreateJournal()
-  return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
-  
-def InternalTransferUpdate(config,srequest ,params):
-  request = simplejson.loads(srequest)
-  helper = phelper.PObjectHelper(config)
-  
-  oTran = helper.GetObjectByNames(
-      'Transaction',{'TransactionNo': request[u'TransactionNo'] }
-    )
-  
-  #oTran.DeleteJournal()
-
-  status = 0
-  msg = ''
-  
-  config.BeginTransaction()
-  try:
-    oTran.CancelTransaction()
-    oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
-    oTran.BatchId = oBatch.BatchId
-    
-    FileKwitansi = InternalTransfer(helper,oTran,oBatch,request,params)
-    
-    # Check for auto approval
-    oTran.AutoApprovalUpdate()
-    
-    config.Commit()
-  except:
-    config.Rollback()
-    raise
-
-  status,msg = oTran.CreateJournal()      
-  return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)  
-
-      
+### -------  INTERNAL TRANSFER -----------------------------------      
 def InternalTransfer(helper,oTran,oBatch,request,params):
   oTran.ReferenceNo = request[u'ReferenceNo']
   oTran.Description = request[u'Description']
@@ -294,61 +292,6 @@ def InternalTransfer(helper,oTran,oBatch,request,params):
 ### -------  END INTERNAL TRANSFER -----------------------------------
 
 ### -------  INTERFUND TRANSFER -----------------------------------  
-def InterFundTransferNew(config, srequest, params):
-  request = simplejson.loads(srequest)
-  helper = phelper.PObjectHelper(config)
-  
-  config.BeginTransaction()
-  try:
-    oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
-    oTran = oBatch.NewTransaction('PAD')
-
-    FileKwitansi = InterFundTransfer(helper,oTran,oBatch,request,params)
-    
-    # Check for auto approval
-    corporate = helper.CreateObject('Corporate')
-    if corporate.CheckLimitOtorisasi(request[u'Amount'] * request[u'Rate']):
-      oTran.AutoApproval()
-    
-    config.Commit()
-  except:
-    config.Rollback()
-    raise
-
-  status,msg = oTran.CreateJournal()      
-  return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
-      
-def InterFundTransferUpdate(config, srequest, params):
-  request = simplejson.loads(srequest)
-  helper = phelper.PObjectHelper(config)
-
-  oTran = helper.GetObjectByNames(
-      'Transaction',{'TransactionNo': request[u'TransactionNo'] }
-    )
-  
-  #oTran.DeleteJournal()
-  status = 0
-  msg = ''
-  
-  config.BeginTransaction()
-  try:
-    oTran.CancelTransaction()
-    oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
-    oTran.BatchId = oBatch.BatchId
-    
-    FileKwitansi = InterFundTransfer(helper,oTran,oBatch,request,params)
-    
-    # Check for auto approval
-    oTran.AutoApprovalUpdate()
-    
-    config.Commit()
-  except:
-    config.Rollback()
-    raise
-
-  status,msg = oTran.CreateJournal()      
-  return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
-      
 def InterFundTransfer(helper,oTran,oBatch,request,params):
   FundEntityMap = {1 : 'PADZ', 2 : 'PADI', 3 : 'PADW', 4 : 'PADA' , 5 : 'PADN'}
   oTran.ReferenceNo = request[u'ReferenceNo']
@@ -399,71 +342,7 @@ def InterFundTransfer(helper,oTran,oBatch,request,params):
 ### ------- END INTERFUND TRANSFER -----------------------------------
   
 
-### ------- EMPLOYEE ACCOUNT RECEIVABLE -----------------------------------
-def EmployeeARNew(config, srequest, params):
-  request = simplejson.loads(srequest)
-  helper = phelper.PObjectHelper(config)
-
-  config.BeginTransaction()
-  try:
-    oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
-    if request[u'DebtorType'] == 'E' :
-      oTran = oBatch.NewTransaction('EAR')
-    else :
-      oTran = oBatch.NewTransaction('XAR')  
-
-    FileKwitansi = EmployeeAR(helper,oTran,oBatch,request,params)
-     
-    # Check for auto approval
-    corporate = helper.CreateObject('Corporate')
-    if corporate.CheckLimitOtorisasi(request[u'Amount']):
-      oTran.AutoApproval()
-
-    config.Commit()
-  except:
-    config.Rollback()
-    raise
-
-  status,msg = oTran.CreateJournal()      
-  return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
-    
-def EmployeeARUpdate(config, srequest, params):
-  request = simplejson.loads(srequest)
-  helper = phelper.PObjectHelper(config)
-
-  oTran = helper.GetObjectByNames(
-      'Transaction',{'TransactionNo': request[u'TransactionNo'] }
-    )
-  
-  #oTran.DeleteJournal()
-
-  status = 0
-  msg = ''
-  
-  config.BeginTransaction()
-  try:
-    oTran.CancelTransaction()
-    oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
-    oTran.BatchId = oBatch.BatchId
-    if request[u'DebtorType'] == 'E' :
-      oTran.TransactionCode = 'EAR'
-    else :
-      oTran.TransactionCode = 'XAR'    
-    
-    
-    FileKwitansi = EmployeeAR(helper,oTran,oBatch,request,params)
-  
-    # Check for auto approval
-    oTran.AutoApprovalUpdate()
-
-    config.Commit()
-  except:
-    config.Rollback()
-    raise
-
-  status,msg = oTran.CreateJournal()      
-  return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
-  
+### ------- EMPLOYEE ACCOUNT RECEIVABLE -----------------------------------  
 def EmployeeAR(helper,oTran,oBatch,request,params):
     FundEntityMap = {1 : 'AK-Z', 2 : 'AK-I', 3 : 'AK-W', 4 : 'AK-A'}
     
@@ -535,71 +414,6 @@ def EmployeeAR(helper,oTran,oBatch,request,params):
     oTran.SaveInbox(params)
     return oTran.GetKwitansi()
 
-def PayEmployeeARNew(config, srequest, params):
-  request = simplejson.loads(srequest)
-  helper = phelper.PObjectHelper(config)
-
-  config.BeginTransaction()
-  try:
-    oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
-    if request[u'DebtorType'] == 'E' :
-      oTran = oBatch.NewTransaction('PEAR')
-    else :
-      oTran = oBatch.NewTransaction('PXAR')
-    
-
-    FileKwitansi = PayEmployeeAR(helper,oTran,oBatch,request,params)
-     
-    # Check for auto approval
-    corporate = helper.CreateObject('Corporate')
-    if corporate.CheckLimitOtorisasi(request[u'Amount']):
-      oTran.AutoApproval()
-
-    config.Commit()
-  except:
-    config.Rollback()
-    raise
-
-  status,msg = oTran.CreateJournal()      
-  return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
-    
-def PayEmployeeARUpdate(config, srequest, params):
-  request = simplejson.loads(srequest)
-  helper = phelper.PObjectHelper(config)
-
-  oTran = helper.GetObjectByNames(
-      'Transaction',{'TransactionNo': request[u'TransactionNo'] }
-    )
-  
-  #oTran.DeleteJournal()
-
-  status = 0
-  msg = ''
-  
-  config.BeginTransaction()
-  try:
-    oTran.CancelTransaction()
-    oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
-    oTran.BatchId = oBatch.BatchId
-    if request[u'DebtorType'] == 'E' :
-      oTran.TransactionCode = 'PEAR'
-    else :
-      oTran.TransactionCode = 'PXAR'
-    
-
-    FileKwitansi = PayEmployeeAR(helper,oTran,oBatch,request,params)
-
-    # Check for auto approval
-    oTran.AutoApprovalUpdate()
-
-    config.Commit()
-  except:
-    config.Rollback()
-    raise
-
-  status,msg = oTran.CreateJournal()      
-  return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
-
 def PayEmployeeAR(helper,oTran,oBatch,request,params):
   FundEntityMap = {1 : 'PAK-Z', 2 : 'PAK-I', 3 : 'PAK-W', 4 : 'PAK-A'}
 
@@ -667,63 +481,6 @@ def PayEmployeeAR(helper,oTran,oBatch,request,params):
 ### ------- END EMPLOYEE ACCOUNT RECEIVABLE -----------------------------------
 
 ### ------- CASH ADVANCE  -----------------------------------
-def CashAdvanceNew(config, srequest, params):
-  request = simplejson.loads(srequest)
-  helper = phelper.PObjectHelper(config)
-
-  config.BeginTransaction()
-  try:
-    oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
-    oTran = oBatch.NewTransaction('CA')
-
-    FileKwitansi = CashAdvance(helper,oTran,oBatch,request,params)
-     
-    # Check for auto approval
-    corporate = helper.CreateObject('Corporate')
-    if corporate.CheckLimitOtorisasi(request[u'Amount']):
-      oTran.AutoApproval()
-
-    config.Commit()
-  except:
-    config.Rollback()
-    raise
-
-  status,msg = oTran.CreateJournal()      
-  return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
-
-def CashAdvanceUpdate(config, srequest, params):
-  request = simplejson.loads(srequest)
-  helper = phelper.PObjectHelper(config)
-
-  oTran = helper.GetObjectByNames(
-      'Transaction',{'TransactionNo': request[u'TransactionNo'] }
-    )
-  
-  #oTran.DeleteJournal()
-
-  status = 0
-  msg = ''
-  
-  config.BeginTransaction()
-  try:
-    oTran.CancelTransaction()
-    oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
-    oTran.BatchId = oBatch.BatchId
-    oTran.TransactionCode = 'CA'
-
-    FileKwitansi = CashAdvance(helper,oTran,oBatch,request,params)
-
-    # Check for auto approval
-    oTran.AutoApprovalUpdate()
-
-    config.Commit()
-  except:
-    config.Rollback()
-    raise
-
-  status,msg = oTran.CreateJournal()      
-  return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
-  
 def CashAdvance(helper,oTran,oBatch,request,params):
   FundEntityMap = {1 : 'AK-Z', 2 : 'AK-I', 3 : 'AK-W', 4 : 'AK-A'}
   
@@ -799,73 +556,6 @@ def CashAdvance(helper,oTran,oBatch,request,params):
 ### ------- End CASH ADVANCE  -------------------------------------------
 
 ### ------- Begin CASH ADVANCE RETURN -----------------------------------
-def CashAdvanceReturnNew(config, srequest, params):
-  request = simplejson.loads(srequest)
-  helper = phelper.PObjectHelper(config)
-
-  config.BeginTransaction()
-  try:
-    oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
-    if request[u'ReimburseAmount'] > 0.0 :
-      TranCode = 'CARB'
-    else:
-      TranCode = 'CAR'
-    # end if    
-    oTran = oBatch.NewTransaction(TranCode)
-
-    FileKwitansi = CashAdvanceReturn(helper,oTran,oBatch,request,params)
-    
-    # Check for auto approval
-    corporate = helper.CreateObject('Corporate')
-    if corporate.CheckLimitOtorisasi(request[u'Amount']):
-      oTran.AutoApproval()
-
-    config.Commit()
-  except:
-    config.Rollback()
-    raise
-
-  status,msg = oTran.CreateJournal()      
-  return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
-   
-def CashAdvanceReturnUpdate(config, srequest, params):
-  request = simplejson.loads(srequest)
-  helper = phelper.PObjectHelper(config)
-
-  oTran = helper.GetObjectByNames(
-      'Transaction',{'TransactionNo': request[u'TransactionNo'] }
-    )
-  
-  #oTran.DeleteJournal()
-
-  status = 0
-  msg = ''
-  
-  config.BeginTransaction()
-  try:
-    oTran.CancelTransaction()
-    oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
-    oTran.BatchId = oBatch.BatchId
-    if request[u'ReimburseAmount'] > 0.0 :
-      TranCode = 'CARB'
-    else:
-      TranCode = 'CAR'
-    # end if
-    oTran.TransactionCode = TranCode
-
-    FileKwitansi = CashAdvanceReturn(helper,oTran,oBatch,request,params)
-
-    # Check for auto approval
-    oTran.AutoApprovalUpdate()
-
-    config.Commit()
-  except:
-    config.Rollback()
-    raise
-
-  status,msg = oTran.CreateJournal()      
-  return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
-  
 def CashAdvanceReturn(helper,oTran,oBatch,request,params):
   FundEntityMap = {1 : 'PAK-Z', 2 : 'PAK-I', 3 : 'PAK-W', 4 : 'PAK-A'}
     
@@ -1055,63 +745,6 @@ def CashAdvanceReturn(helper,oTran,oBatch,request,params):
 ### ------- End CASH ADVANCE RETURN -----------------------------------
 
 ### ------- INVESTMENT -----------------------------------
-def InvestmentNew(config, srequest, params):
-  request = simplejson.loads(srequest)
-  helper = phelper.PObjectHelper(config)
-
-  config.BeginTransaction()
-  try:
-    oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
-    oTran = oBatch.NewTransaction('INVS')
-
-    FileKwitansi = Investment(helper,oTran,oBatch,request,params)
-     
-    # Check for auto approval
-    corporate = helper.CreateObject('Corporate')
-    if corporate.CheckLimitOtorisasi(request[u'Amount']):
-      oTran.AutoApproval()
-
-    config.Commit()
-  except:
-    config.Rollback()
-    raise
-
-  status,msg = oTran.CreateJournal()      
-  return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
-
-def InvestmentUpdate(config, srequest, params):
-  request = simplejson.loads(srequest)
-  helper = phelper.PObjectHelper(config)
-
-  oTran = helper.GetObjectByNames(
-      'Transaction',{'TransactionNo': request[u'TransactionNo'] }
-    )
-  
-  #oTran.DeleteJournal()
-
-  status = 0
-  msg = ''
-  
-  config.BeginTransaction()
-  try:
-    oTran.CancelTransaction()
-    oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
-    oTran.BatchId = oBatch.BatchId
-    oTran.TransactionCode = 'INVS'
-
-    FileKwitansi = Investment(helper,oTran,oBatch,request,params)
-
-    # Check for auto approval
-    oTran.AutoApprovalUpdate()
-
-    config.Commit()
-  except:
-    config.Rollback()
-    raise
-
-  status,msg = oTran.CreateJournal()      
-  return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
-  
 def Investment(helper,oTran,oBatch,request,params):
   FundEntityMap = {1 : 'AK-Z', 2 : 'AK-I', 3 : 'AK-W', 4 : 'AK-A'}
   
@@ -1183,64 +816,7 @@ def Investment(helper,oTran,oBatch,request,params):
 ### ------- End INVESTMENT  -----------------------------------
 
 
-### ------- Begin INVESTMENT RETURN  -----------------------------------
-def InvestmentReturnNew(config, srequest, params):
-  request = simplejson.loads(srequest)
-  helper = phelper.PObjectHelper(config)
-
-  config.BeginTransaction()
-  try:
-    oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
-    oTran = oBatch.NewTransaction('INVSR')
-
-    FileKwitansi = InvestmentReturn(helper,oTran,oBatch,request,params)
-     
-    # Check for auto approval
-    corporate = helper.CreateObject('Corporate')
-    if corporate.CheckLimitOtorisasi(request[u'Amount']):
-      oTran.AutoApproval()
-
-    config.Commit()
-  except:
-    config.Rollback()
-    raise
-
-  status,msg = oTran.CreateJournal()      
-  return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
-
-def InvestmentReturnUpdate(config, srequest, params):
-  request = simplejson.loads(srequest)
-  helper = phelper.PObjectHelper(config)
-
-  oTran = helper.GetObjectByNames(
-      'Transaction',{'TransactionNo': request[u'TransactionNo'] }
-    )
-  
-  #oTran.DeleteJournal()
-
-  status = 0
-  msg = ''
-  
-  config.BeginTransaction()
-  try:
-    oTran.CancelTransaction()
-    oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
-    oTran.BatchId = oBatch.BatchId
-    oTran.TransactionCode = 'INVSR'
-
-    FileKwitansi = InvestmentReturn(helper,oTran,oBatch,request,params)
-
-    # Check for auto approval
-    oTran.AutoApprovalUpdate()
-
-    config.Commit()
-  except:
-    config.Rollback()
-    raise
-
-  status,msg = oTran.CreateJournal()      
-  return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
-  
+### ------- Begin INVESTMENT RETURN  -----------------------------------  
 def InvestmentReturn(helper,oTran,oBatch,request,params):
   FundEntityMap = {1 : 'PAK-Z', 2 : 'PAK-I', 3 : 'PAK-W', 4 : 'PAK-A'}
   
@@ -1300,63 +876,6 @@ def InvestmentReturn(helper,oTran,oBatch,request,params):
 ### ------- End INVESTMENT RETURN -----------------------------------
 
 ### ------- Begin CashAdvance RETURN  -----------------------------------
-def CashAdvanceReturnRAKNew(config, srequest, params):
-  request = simplejson.loads(srequest)
-  helper = phelper.PObjectHelper(config)
-
-  config.BeginTransaction()
-  try:
-    oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
-    oTran = oBatch.NewTransaction('CARR')
-
-    FileKwitansi = CashAdvanceReturnRAK(helper,oTran,oBatch,request,params)
-     
-    # Check for auto approval
-    corporate = helper.CreateObject('Corporate')
-    if corporate.CheckLimitOtorisasi(request[u'Amount']):
-      oTran.AutoApproval()
-
-    config.Commit()
-  except:
-    config.Rollback()
-    raise
-
-  status,msg = oTran.CreateJournal()      
-  return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
-
-def CashAdvanceReturnRAKUpdate(config, srequest, params):
-  request = simplejson.loads(srequest)
-  helper = phelper.PObjectHelper(config)
-
-  oTran = helper.GetObjectByNames(
-      'Transaction',{'TransactionNo': request[u'TransactionNo'] }
-    )
-  
-  #oTran.DeleteJournal()
-
-  status = 0
-  msg = ''
-  
-  config.BeginTransaction()
-  try:
-    oTran.CancelTransaction()
-    oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
-    oTran.BatchId = oBatch.BatchId
-    oTran.TransactionCode = 'CARR'
-
-    FileKwitansi = CashAdvanceReturnRAK(helper,oTran,oBatch,request,params)
-
-    # Check for auto approval
-    oTran.AutoApprovalUpdate()
-
-    config.Commit()
-  except:
-    config.Rollback()
-    raise
-
-  status,msg = oTran.CreateJournal()      
-  return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
-
 def CashAdvanceReturnRAK(helper,oTran,oBatch,request,params):
   
   oTran.ReferenceNo = request[u'ReferenceNo']
@@ -1414,72 +933,6 @@ def CashAdvanceReturnRAK(helper,oTran,oBatch,request,params):
   
   return oTran.GetKwitansi()
     
-def GenerateResponse(Status,ErrMessage,TransactionNo,FileKwitansi):
-  response = {}
-  response['Status'] = Status
-  response['TransactionNo'] = TransactionNo
-  response['ErrMessage'] = ErrMessage
-  response['FileKwitansi'] = FileKwitansi
-  
-  return simplejson.dumps(response)
-
-def CostPaidInAdvanceNew(config, srequest, params):
-  request = simplejson.loads(srequest)
-  helper = phelper.PObjectHelper(config)
-
-  config.BeginTransaction()
-  try:
-    oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
-    oTran = oBatch.NewTransaction('CPIA')
-
-    FileKwitansi = CostPaidInAdvance(helper,oTran,oBatch,request,params)
-     
-    # Check for auto approval
-    corporate = helper.CreateObject('Corporate')
-    if corporate.CheckLimitOtorisasi(request[u'Amount']):
-      oTran.AutoApproval()
-
-    config.Commit()
-  except:
-    config.Rollback()
-    raise
-
-  status,msg = oTran.CreateJournal()      
-  return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
-  
-def CostPaidInAdvanceUpdate(config, srequest, params):
-  request = simplejson.loads(srequest)
-  helper = phelper.PObjectHelper(config)
-
-  oTran = helper.GetObjectByNames(
-      'Transaction',{'TransactionNo': request[u'TransactionNo'] }
-    )
-  
-  TranHelper = helper.LoadScript('Transaction.TransactionHelper')
-  TranHelper.DeleteTransactionJournal(oTran)
-
-  status = 0
-  msg = ''
-  
-  config.BeginTransaction()
-  try:
-    oTran.CancelTransaction()
-    oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
-    oTran.BatchId = oBatch.BatchId
-
-    FileKwitansi = CostPaidInAdvance(helper,oTran,oBatch,request,params)
-
-    # Check for auto approval
-    oTran.AutoApprovalUpdate()
-
-    config.Commit()
-  except:
-    config.Rollback()
-    raise
-
-  status,msg = oTran.CreateJournal()      
-  return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
-  
 def CostPaidInAdvance(helper,oTran,oBatch,request,params):
   # Creating Account
   oAccount = helper.CreatePObject('CostPaidInAdvance')    
@@ -1527,62 +980,6 @@ def CostPaidInAdvance(helper,oTran,oBatch,request,params):
   
   return FileKwitansi
 
-def InvoicePaymentNew(config, srequest, params):
-  request = simplejson.loads(srequest)
-  helper = phelper.PObjectHelper(config)
-
-  config.BeginTransaction()
-  try:
-    oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
-    oTran = oBatch.NewTransaction('INVP')
-
-    FileKwitansi = InvoicePayment(helper,oTran,oBatch,request,params)
-     
-    # Check for auto approval
-    corporate = helper.CreateObject('Corporate')
-    if corporate.CheckLimitOtorisasi(request[u'Amount']):
-      oTran.AutoApproval()
-
-    config.Commit()
-  except:
-    config.Rollback()
-    raise
-
-  status,msg = oTran.CreateJournal()      
-  return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
-  
-def InvoicePaymentUpdate(config, srequest, params):
-  request = simplejson.loads(srequest)
-  helper = phelper.PObjectHelper(config)
-
-  oTran = helper.GetObjectByNames(
-      'Transaction',{'TransactionNo': request[u'TransactionNo'] }
-    )
-  
-  TranHelper = helper.LoadScript('Transaction.TransactionHelper')
-  TranHelper.DeleteTransactionJournal(oTran)
-
-  status = 0
-  msg = ''
-  
-  config.BeginTransaction()
-  try:
-    oTran.CancelTransaction()
-    oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
-    oTran.BatchId = oBatch.BatchId
-
-    FileKwitansi = InvoicePayment(helper,oTran,oBatch,request,params)
-
-    # Check for auto approval
-    oTran.AutoApprovalUpdate()
-
-    config.Commit()
-  except:
-    config.Rollback()
-    raise
-
-  status,msg = oTran.CreateJournal()      
-  return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
 
 def InvoicePayment(helper,oTran,oBatch,request,params):
   oTran.ReferenceNo = request[u'ReferenceNo']
@@ -1642,4 +1039,175 @@ def InvoicePayment(helper,oTran,oBatch,request,params):
   
   FileKwitansi = oTran.GetKwitansi()
     
+  return FileKwitansi
+
+def BranchDistribution(helper,oTran,oBatch,request,params):
+  aBranchCode = request[u'BranchCode']
+  
+  oTran.ReferenceNo = request[u'ReferenceNo']
+  oTran.Description = request[u'Description']
+  oTran.Inputer     = request[u'Inputer']
+  oTran.BranchCode  = aBranchCode
+  oTran.Amount = request[u'Amount']
+  oTran.CurrencyCode = '000'
+  oTran.PaidTo = request[u'PaidTo']
+  oTran.ActualDate = oBatch.GetAsTDateTime('BatchDate')    
+
+  # Source Cash Account
+  aSourceAccountNo = str(request[u'SourceAccountNo'])
+  oSCashAccount = helper.GetObject('CashAccount',
+       aSourceAccountNo).CastToLowestDescendant()
+  
+  if oSCashAccount.isnull:
+    raise 'Cash/Bank', 'Kas Asal tidak ditemukan'
+  
+  oItemCA = oTran.CreateAccountTransactionItem(oSCashAccount)
+  oItemCA.SetMutation('C', request[u'Amount'], 1.0)    
+  oItemCA.Description = request[u'Description']
+  oItemCA.SetJournalParameter('15')
+  
+  # Create BudgetTransaction
+  aBudgetId = request[u'BudgetId'] 
+  
+  if aBudgetId != 0 :
+    oBudget = helper.GetObject('Budget',aBudgetId)
+    oItemCA.CreateBudgetTransaction(oBudget.BudgetId)
+  # endif 
+
+  # Destination Cash Account    
+  aDestBranchCode = request[u'DestBranchCode']
+  aDestAccountNo = str(request[u'DestAccountNo'])
+  oDCashAccount = helper.GetObject('BranchCash',
+       aDestAccountNo).CastToLowestDescendant()
+  if oDCashAccount.isnull:
+    raise 'Cash/Bank', 'Kas Tujuan tidak ditemukan'
+  
+  oItemDCA = oTran.CreateAccountTransactionItem(oDCashAccount)
+  oItemDCA.SetMutation('D', request[u'Amount'], 1.0)    
+  oItemDCA.Description = request[u'Description']
+  oItemDCA.SetJournalParameter('15')
+  
+  oTran.GenerateTransactionNumber(oSCashAccount.CashCode)
+  oTran.SaveInbox(params)
+
+  oTransferInfo = helper.GetObjectByNames('DistributionTransferInfo',{'TransactionId' : oTran.TransactionId}) 
+  
+  if oTransferInfo.isnull: 
+    oTransferInfo = helper.CreatePObject('DistributionTransferInfo')
+    oTransferInfo.TransactionId = oTran.TransactionId
+    #oTransferInfo.TransactionItemId = oItemCA.TransactionItemId
+    oTransferInfo.CashAccountNoDest = aDestAccountNo
+    oTransferInfo.CashAccountNoSource = aSourceAccountNo
+
+  oTransferInfo.AccountNo = request[u'AccountNo']
+  oTransferInfo.BranchSource = aBranchCode
+  oTransferInfo.BranchDestination = aDestBranchCode
+    
+  return oTran.GetKwitansi()
+
+def BranchDistributionReturn(helper,oTran,oBatch,request,params):
+
+  oTran.ReferenceNo = request[u'ReferenceNo']
+  oTran.Description = request[u'Description']
+  oTran.Inputer     = request[u'Inputer']
+  oTran.BranchCode  = request[u'BranchCode']
+  #oTran.TransactionNo = request[u'TransactionNo']
+  oTran.Amount = request[u'RefAmount']
+  oTran.CurrencyCode = '000'
+  oTran.ReceivedFrom = request[u'EmployeeName']
+  oTran.PaidTo = request[u'PaidTo']
+  oTran.ActualDate = oBatch.GetAsTDateTime('BatchDate')
+  
+  # Destination Transaction
+  aJournalCode = 15
+  oCashAccount = helper.GetObject('CashAccount',
+    str(request[u'CashAccountNo'])).CastToLowestDescendant()
+  if oCashAccount.isnull:
+    raise 'Cash/Bank', 'Rekening %s tidak ditemukan' % request[u'CashAccountNo']
+
+  if request[u'Amount'] > 0.0 :
+    oItemCA = oTran.CreateAccountTransactionItem(oCashAccount)
+    oItemCA.SetMutation('D', request[u'Amount'], 1.0)
+    
+    oItemCA.Description = oCashAccount.AccountName #request[u'Description']
+    oItemCA.SetJournalParameter('15')
+    
+    #oBudgetTrans = helper.GetObject('BudgetTransaction',request[u'RefTransactionItemId'])
+    
+    #aBudgetId = oBudgetTrans.BudgetId
+    #if aBudgetId != 0 :
+    ##  oBudget = helper.GetObject('Budget',aBudgetId)
+    #  oItemCA.CreateBudgetTransactionReturn(oBudget.BudgetId)
+      
+    # Source BranchCash Account
+    #raise '',request[u'BranchCodeDestination']
+    oCashAccountDest = helper.GetObject('CashAccount',str(request[u'DestAccountNo'])).CastToLowestDescendant()
+    if oCashAccountDest.isnull:
+      raise 'Cash/Bank', 'Rekening %s cabang penerima tidak ditemukan' % request[u'DestAccountNo']
+    
+    oItemDCA = oTran.CreateAccountTransactionItem(oCashAccountDest)
+    oItemDCA.SetMutation('D', request[u'Amount'], 1.0)    
+    oItemDCA.Description = request[u'Description']
+    oItemDCA.SetJournalParameter('15')
+
+  aBranchCode = request[u'BranchCode']
+  aValuta = oCashAccount.CurrencyCode    
+  totalAmount = 0.0
+  items = request[u'Items']
+  
+  for item in items:
+    if item[u'ItemType'] == 'D':        
+      # Create Item for ProductAccount
+      aAccountNo  = item[u'AccountId']
+      #oProductAccount = helper.GetObjectByNames('ProductAccount',
+      #  {'ProductId': aProductId, 'BranchCode': aBranchCode, 'CurrencyCode': aValuta})
+      
+      oProductAccount = helper.GetObjectByNames('ProductAccount',{'AccountNo' :aAccountNo})
+      if oProductAccount.isnull:
+        raise 'Collection', 'Rekening produk %s tidak ditemukan' % (aAccountNo)
+      
+      oItemPA = oTran.CreateZakahDistTransactItem(oProductAccount, item[u'Ashnaf'])  
+      oItemPA.SetMutation('D', item[u'Amount'], item[u'Rate'])
+      oItemPA.Description = item[u'Description']
+      oItemPA.SetJournalParameter(aJournalCode)
+      oItemPA.SetDistributionEntity(item[u'FundEntity'])
+      oItemPA.DistributionItemAccount = item[u'DistItemAccount']
+      oItemBudget = oItemPA
+      
+    elif item[u'ItemType'] == 'G':      
+      oItemGL = oTran.CreateGLTransactionItem(item[u'AccountId'], aValuta)
+      oItemGL.RefAccountName = item[u'AccountName']
+      oItemGL.SetMutation('D', item[u'Amount'], item[u'Rate'])
+      oItemGL.Description = item[u'Description']
+      oItemGL.SetJournalParameter(aJournalCode)
+      oItemBudget = oItemGL
+                
+    else:
+      raise '','Kode Item Tidak Dikenal'
+    
+
+    # Create BudgetTransaction
+#       aBudgetId = item[u'BudgetId'] 
+#  
+#       if aBudgetId != 0 :
+#         oBudget = helper.GetObject('Budget',aBudgetId)
+#         oItemBudget.CreateBudgetTransaction(oBudget.BudgetId)
+    # endif 
+    
+    totalAmount += item[u'Amount']
+    #-- if.else
+  #-- for
+
+  # Set DistributionInfo
+  #oRefTransItem = helper.GetObject('TransactionItem',request[u'RefTransactionItemId'])
+  oDistInfo = helper.GetObjectByNames('DistributionTransferInfo',{'TransactionId' : request[u'RefTransactionId']})
+  oDistInfo.ReportStatus = 'T'
+  oDistInfo.ReportTransactionId = oTran.TransactionId
+  
+  oTran.GenerateTransactionNumber(oCashAccount.CashCode)
+  
+  oTran.SaveInbox(params)
+  
+  FileKwitansi = oTran.GetKwitansi()
+  
   return FileKwitansi
