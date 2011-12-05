@@ -570,6 +570,7 @@ def CashAdvanceReturn(helper,oTran,oBatch,request,params):
   oTran.PaidTo = request[u'PaidTo']
   oTran.ActualDate = oBatch.GetAsTDateTime('BatchDate')
   oTran.Rate = request[u'Rate']
+  oTran.ChannelAccountNo = str(request[u'CashAccountNo'])
   
   aRate = request[u'Rate']
   aCurrencyCode = request[u'CurrencyCode']
