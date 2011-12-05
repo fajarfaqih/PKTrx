@@ -17,7 +17,7 @@ def FormSetDataEx(uideflist, params) :
 
     oTran = helper.GetObjectByNames('Transaction',{'TransactionNo' : uipTran.TransactionNo})
     
-    rec.ActualDate = oTran.GetAsTDateTime('ActualDate')
+    uipTran.ActualDate = oTran.GetAsTDateTime('ActualDate')
 
     uipDonor.DonorNo = oTran.DonorNo
     uipDonor.DonorName = oTran.DonorName
