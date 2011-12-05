@@ -4,12 +4,18 @@ import simplejson
 def FormSetDataEx(uideflist, parameters) :
   config = uideflist.config
 
-  if parameters.DatasetCount == 0 : return 1
-
+  BranchCode = config.SecurityContext.GetUserInfo()[4]
+  BranchName = config.SecurityContext.GetUserInfo()[5]
+  
   rec = uideflist.uipFilter.Dataset.AddRecord()
-  rec.BranchCode = str(config.SecurityContext.GetUserInfo()[4])
+
   rec.BeginDate = int(config.Now())
   rec.EndDate = rec.BeginDate
+
+  rec.BranchCode = BranchCode
+  rec.BranchName = BranchName
+  rec.HeadOfficeCode = config.SysVarIntf.GetStringSysVar('OPTION','HeadOfficeCode')
+
 
 def GetHistTransaction(config, params, returns):
   def AsDateTime(tdate):
@@ -23,7 +29,7 @@ def GetHistTransaction(config, params, returns):
   IsAllOwner = rec.IsAllOwner
   BeginDate = rec.BeginDate
   EndDate   = rec.EndDate
-  BranchCode = str(config.SecurityContext.GetUserInfo()[4])
+  BranchCode = rec.BranchCode
 
   if BeginDate == EndDate:
      Tanggal = '%s' % config.FormatDateTime('dd-mm-yyyy', BeginDate)

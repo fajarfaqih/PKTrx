@@ -8,6 +8,17 @@ class fBudgetReport:
     uipFilter = self.uipFilter
     uipFilter.Edit()
     uipFilter.IsAllOwner = 'F'
+
+    IsHeadOffice = (uipFilter.BranchCode == uipFilter.HeadOfficeCode)
+
+    self.pFilter_LBranch.enabled = IsHeadOffice
+    self.MasterBranchCode = ''
+
+    if not IsHeadOffice :
+      uipFilter.MasterBranchCode = uipFilter.BranchCode
+
+    uipFilter.SetFieldValue('LBranch.BranchCode', uipFilter.BranchCode)
+    uipFilter.SetFieldValue('LBranch.BranchName', uipFilter.BranchName)
     
     self.FormContainer.Show()
 
@@ -31,6 +42,11 @@ class fBudgetReport:
     uipFilter = self.uipFilter
     OwnerId = uipFilter.GetFieldValue('LBudgetOwner.OwnerId') or 0
 
+    BranchCode = uipFilter.GetFieldValue("LBranch.BranchCode") or ''
+
+    if BranchCode == '' :
+      raise 'Peringatan','Pilih Cabang terlebih dahulu'
+
     if uipFilter.BeginDate > uipFilter.EndDate :
        raise 'PERINGATAN','Tanggal Awal tidak boleh lebih besar dari tanggal akhir'
        
@@ -42,6 +58,7 @@ class fBudgetReport:
     ph = self.FormObject.CallServerMethod(
       'GetHistTransaction',
       self.app.CreateValues(
+        ['BranchCode', BranchCode],
         ['OwnerId' , OwnerId ],
         ['IsAllOwner' , uipFilter.IsAllOwner],
         ['BeginDate', uipFilter.BeginDate],

@@ -30,10 +30,25 @@ document <
           DataTypeName='varchar'
           DataLength=10
         >, object:rtf::FieldUIElmtSetting<
+          Name='BranchCodeParam'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rtf::FieldUIElmtSetting<
+          Name='MasterBranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rtf::FieldUIElmtSetting<
           Name='BranchName'
           Hidden=true
           DataTypeName='varchar'
           DataLength=50
+        >, object:rtf::FieldUIElmtSetting<
+          Name='HeadOfficeCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=10
         >}Name='uipBudget'
       FillInDefaultValues=true
       AlwaysPostToServer=true
@@ -45,6 +60,20 @@ document <
       PostLinkValues=true
     >}Containers={object:rtf::Panel<
       Elements={object:rtf::LinkUIElmtSetting<
+          Name='LBranch'
+          ControlCaption='Cabang / Capem'
+          ClassTypeName='Branch'
+          DisplayFields='BranchCode;BranchName'
+          Restrictions='MasterBranchCode|BranchCodeParam'
+          OQLText=['select from Branch'#13#10,
+            '[ BranchCode LIKE :BranchCodeParam or '#13#10,
+            '  MasterBranchCode LIKE :BranchCodeParam'#13#10,
+            ']'#13#10,
+            '( BranchCode,BranchName,self'#13#10,
+            ') then order by BranchName;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LBranch'
+        >, object:rtf::LinkUIElmtSetting<
           Name='LBudgetOwner'
           ControlCaption='Pemilik Anggaran'
           ClassTypeName='BudgetOwner'
@@ -108,8 +137,15 @@ document <
       Height=97
       UIPart=$UIPARTS['uipBudget']
       Controls={*object:rtf::DBLookupEdit<
-          Name='LBudgetOwner'
+          Name='LBranch'
           Top=8
+          Left=8
+          ControlCaption='Cabang / Capem'
+          LookupField='LBranch.BranchName'
+          DisplayLookupField=true
+        >, *object:rtf::DBLookupEdit<
+          Name='LBudgetOwner'
+          Top=36
           Left=8
           ControlCaption='Pemilik Anggaran'
           FieldName='LBudgetOwner.OwnerCode'
@@ -121,7 +157,7 @@ document <
         >, *object:rtf::DBCheckBox<
           Name='IsAllOwner'
           Layout=clNextSide
-          Top=8
+          Top=36
           Left=458
           Width=177
           Height=17
@@ -133,7 +169,7 @@ document <
         >, object:rtf::DBComboBox<
           Name='cbPeriod'
           Layout=clNewLine
-          Top=36
+          Top=64
           Left=8
           Width=185
           Height=21
@@ -146,7 +182,7 @@ document <
         >, object:rtf::Button<
           Name='bShow'
           Layout=clAbsolute
-          Top=40
+          Top=64
           Left=304
           Color=0
           ControlCaption=''
@@ -155,7 +191,7 @@ document <
         >, object:rtf::Button<
           Name='button1'
           Layout=clAbsolute
-          Top=40
+          Top=64
           Left=384
           Color=0
           ControlCaption=''

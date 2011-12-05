@@ -23,6 +23,26 @@ document <
           Hidden=true
           DataTypeName='integer'
           DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BranchCodeParam'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rtf::FieldUIElmtSetting<
+          Name='MasterBranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BranchName'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rtf::FieldUIElmtSetting<
+          Name='HeadOfficeCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=10
         >}Name='uipFilter'
     >, object:rtf::PClassUI<
       Name='uipTransaction'
@@ -42,6 +62,40 @@ document <
       Container2=$CONTAINERS['gTransaction']
     >, object:rtf::Panel<
       Elements={object:rtf::LinkUIElmtSetting<
+          Name='LBranch'
+          ControlCaption='Cabang / Capem'
+          ClassTypeName='Branch'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LBranch.BranchCode'
+              DataTypeName='VARCHAR'
+              DataLength=3
+              UsedAsKey=true
+              KeyOrDisplayName='BranchCode'
+              FinalDisplayFieldName='BranchCode'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LBranch.BranchCode'
+              DataTypeName='VARCHAR'
+              DataLength=3
+              UsedAsDisplay=true
+              KeyOrDisplayName='BranchCode'
+              FinalDisplayFieldName='BranchCode'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LBranch.BranchName'
+              DataTypeName='VARCHAR'
+              DataLength=30
+              UsedAsDisplay=true
+              KeyOrDisplayName='BranchName'
+              FinalDisplayFieldName='BranchName'
+            >}Restrictions='MasterBranchCode|BranchCodeParam'
+          OQLText=['select from Branch'#13#10,
+            '[ BranchCode LIKE :BranchCodeParam or '#13#10,
+            '  MasterBranchCode LIKE :BranchCodeParam'#13#10,
+            ']'#13#10,
+            '( BranchCode,BranchName,self'#13#10,
+            ') then order by BranchName;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LBranch'
+        >, object:rtf::LinkUIElmtSetting<
           Name='LBudgetOwner'
           ControlCaption='Pemilik Anggaran'
           ClassTypeName='BudgetOwner'
@@ -104,12 +158,19 @@ document <
           DataLength=20
         >}Name='pFilter'
       Width=657
-      Height=105
+      Height=129
       Bordered=true
       UIPart=$UIPARTS['uipFilter']
       Controls={*object:rtf::DBLookupEdit<
-          Name='LBudgetOwner'
+          Name='LBranch'
           Top=8
+          Left=8
+          ControlCaption='Cabang / Capem'
+          LookupField='LBranch.BranchName'
+          DisplayLookupField=true
+        >, *object:rtf::DBLookupEdit<
+          Name='LBudgetOwner'
+          Top=36
           Left=8
           ControlCaption='Pemilik Anggaran'
           FieldName='LBudgetOwner.OwnerCode'
@@ -121,7 +182,7 @@ document <
         >, *object:rtf::DBCheckBox<
           Name='IsAllOwner'
           Layout=clNextSide
-          Top=8
+          Top=36
           Left=398
           Width=161
           Height=17
@@ -132,21 +193,21 @@ document <
           OnClick='AllOwnerOnClick'
         >, *object:rtf::DBDateEdit<
           Name='BeginDate'
-          Top=36
+          Top=64
           Left=8
           Color=0
           ControlCaption='Periode Tgl'
         >, *object:rtf::DBDateEdit<
           Name='EndDate'
           Layout=clNextSide
-          Top=36
+          Top=64
           Left=256
           Color=0
           ControlCaption='s/d'
         >, object:rtf::Button<
           Name='button1'
           Layout=clAbsolute
-          Top=72
+          Top=96
           Left=7
           Width=130
           Height=25
@@ -157,7 +218,7 @@ document <
         >, object:rtf::Button<
           Name='button2'
           Layout=clAbsolute
-          Top=72
+          Top=96
           Left=144
           Width=130
           Height=25
@@ -252,7 +313,7 @@ document <
           DataLength=30
         >}Name='gTransaction'
       Width=700
-      Height=357
+      Height=333
       UIPart=$UIPARTS['uipTransaction']
       ControlLeftMargin=8
       ControlTopMargin=8

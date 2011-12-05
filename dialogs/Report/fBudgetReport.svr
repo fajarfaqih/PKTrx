@@ -16,6 +16,34 @@ document <
           DataTypeName='integer'
           DataLength=20
         >, object:rpclass::TCustomLoadedField<
+          Name='BranchCodeParam'
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rpclass::TCustomLoadedField<
+          Name='MasterBranchCode'
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rpclass::TCustomLoadedField<
+          Name='BranchName'
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rpclass::TCustomLoadedField<
+          Name='HeadOfficeCode'
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBranch.BranchCode'
+          DataTypeName='VARCHAR'
+          DataLength=3
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBranch.BranchCode'
+          DataTypeName='VARCHAR'
+          DataLength=3
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBranch.BranchName'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
           Name='LBudgetOwner.OwnerID'
           DataTypeName='INTEGER'
         >, object:rpclass::TCustomLoadedField<
@@ -42,6 +70,10 @@ document <
           DataTypeName='timestamp'
           DataLength=20
         >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
+          Name='LBranch'
+          ClassTypeName='Branch'
+          FieldNames='BranchCode;BranchCode;BranchName'
+        >, object:rpclass::TCustomLoadedLink<
           Name='LBudgetOwner'
           ClassTypeName='BudgetOwner'
           FieldNames='OwnerID;OwnerCode;OwnerID;OwnerName'

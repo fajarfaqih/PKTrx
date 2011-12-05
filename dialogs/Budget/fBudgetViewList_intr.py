@@ -9,6 +9,20 @@ class fBudgetViewList:
         
   def Show(self):
     self.FillPeriodYear()
+    uipBudget = self.uipBudget
+
+    uipBudget.Edit()
+    uipBudget.IsAllOwner = 'F'
+    IsHeadOffice = (uipBudget.BranchCode == uipBudget.HeadOfficeCode)
+    self.pBudget_LBranch.enabled = IsHeadOffice
+    self.MasterBranchCode = ''
+
+    if not IsHeadOffice :
+      uipBudget.MasterBranchCode = uipBudget.BranchCode
+      
+    uipBudget.SetFieldValue('LBranch.BranchCode', uipBudget.BranchCode)
+    uipBudget.SetFieldValue('LBranch.BranchName', uipBudget.BranchName)
+    
     return self.FormContainer.Show()
 
   def AllOnCheck(self,sender):
@@ -70,7 +84,7 @@ class fBudgetViewList:
     workbook = self.oPrint.OpenExcelTemplate(app,'tplBudgetData.xls')
     workbook.ActivateWorksheet('Data')
     try :
-      workbook.SetCellValue(2, 2, status.BranchName)
+      workbook.SetCellValue(2, 2, uipBudget.GetFieldValue('LBranch.BranchName'))
       workbook.SetCellValue(3, 2, status.PeriodYear)
       workbook.SetCellValue(4, 2, uipBudget.GetFieldValue("LBudgetOwner.OwnerName"))
 
@@ -107,19 +121,25 @@ class fBudgetViewList:
   def GenerateParamForSendToServer(self):
     uipBudget = self.uipBudget
 
-    OwnerId = uipBudget.GetFieldValue("LBudgetOwner.OwnerId") or 0
+    OwnerId    = uipBudget.GetFieldValue("LBudgetOwner.OwnerId") or 0
     IsAllOwner = uipBudget.IsAllOwner
-    PeriodID = uipBudget.PeriodID
+    PeriodID   = uipBudget.PeriodID
+    BranchCode = uipBudget.GetFieldValue("LBranch.BranchCode") or ''
 
     # Validation Check
+    if BranchCode == '' :
+      raise 'Peringatan','Pilih Cabang terlebih dahulu'
+      
     if OwnerId == 0 and uipBudget.IsAllOwner == 'F' :
       raise 'Peringatan','Pilih pemilik anggaran terlebih dahulu'
 
     if PeriodID in [None,0,''] :
       raise 'Peringatan','Pilih periode anggaran terlebih dahulu'
       
+      
     # Create DataPacket
     ph = self.app.CreateValues(
+          ['BranchCode', BranchCode],
           ['PeriodId', PeriodID],
           ['OwnerId', OwnerId],
           ['IsAllOwner',IsAllOwner]
@@ -128,6 +148,7 @@ class fBudgetViewList:
     return ph
     
   def ShowDataClick(self,sender):
+    self.uipBudgetItem.ClearData()
     ph = self.GenerateParamForSendToServer()
     self.form.SetDataWithParameters(ph)
 

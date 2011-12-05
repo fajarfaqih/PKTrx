@@ -2,17 +2,26 @@ import com.ihsan.foundation.pobjecthelper as phelper
 import sys
 
 def FormSetDataEx(uideflist, parameters) :
-
-  if parameters.DatasetCount == 0 : return 1
-  
   config = uideflist.Config
+
+  if parameters.DatasetCount == 0 :
+    rec = uideflist.uipBudget.Dataset.AddRecord()
+
+    BranchCode = config.SecurityContext.GetUserInfo()[4]
+    BranchName = config.SecurityContext.GetUserInfo()[5]
+    rec.BranchCode = BranchCode
+    rec.BranchName = BranchName
+    rec.HeadOfficeCode = config.SysVarIntf.GetStringSysVar('OPTION','HeadOfficeCode')
+
+    return 1
+  
   helper = phelper.PObjectHelper(config)
   param = parameters.FirstRecord
   
   PeriodId= param.PeriodId
   OwnerId= param.OwnerId
   IsAllOwner = param.IsAllOwner
-  BranchCode = config.SecurityContext.GetUserInfo()[4]
+  BranchCode = param.BranchCode
 
   ds  = RunOQLDataBudget(config,OwnerId,PeriodId,BranchCode,IsAllOwner)
 
@@ -108,7 +117,7 @@ def GetBudgetData(config,params,returns):
     param = params.FirstRecord
     OwnerId = param.OwnerId
     PeriodId = param.PeriodId
-    BranchCode = config.SecurityContext.GetUserInfo()[4]
+    BranchCode = param.BranchCode
     IsAllOwner = param.IsAllOwner
     
     dsBudgetData = returns.AddNewDatasetEx(
