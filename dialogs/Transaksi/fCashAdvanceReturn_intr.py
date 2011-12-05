@@ -71,7 +71,8 @@ class fCashAdvanceReturn :
       # Hitung Ulang Total Penyaluran & Pengembalian
       uipTran.Edit()
       uipTran.TotalAmount = TotalAmount
-      uipTran.Amount = uipTran.RefAmount - TotalAmount
+      #uipTran.Amount = uipTran.RefAmount - TotalAmount
+      self.CalculateAmount()
       self.RefTransactionNo = uipTran.RefTransactionNo
       self.pTransaction_Rate.enabled = (uipTran.CurrencyCode != '000')
 
