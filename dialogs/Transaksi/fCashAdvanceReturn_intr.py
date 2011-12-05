@@ -72,6 +72,7 @@ class fCashAdvanceReturn :
       uipTran.Edit()
       uipTran.TotalAmount = TotalAmount
       uipTran.Amount = uipTran.RefAmount - TotalAmount
+      self.RefTransactionNo = uipTran.RefTransactionNo
       self.pTransaction_Rate.enabled = (uipTran.CurrencyCode != '000')
 
   def Show(self,mode = 1):
@@ -199,7 +200,7 @@ class fCashAdvanceReturn :
     if rec.Is_Err :
       uipTran.RefAmount = 0.0
       uipTran.Amount = 0.0
-      uipTran.ReimbursementAmount = 0.0
+      uipTran.ReimburseAmount = 0.0
       uipTran.RefTransactionDate = None
       uipTran.RefDescription = ''
       uipTran.RefTransactionItemId = 0

@@ -269,10 +269,10 @@ document <
           Name='TR0019'
           Caption='Buat batch transaksi...'
           OnClick='NewBatchClick'
-          AllowedGroups='ADM;SPV;KEU'
+          AllowedGroups='HIDDEN'
         >, object:rmn::MenuItem<
           Caption='-'
-          AllowedGroups='ADM;SPV;KEU'
+          AllowedGroups='HIDDEN'
         >, object:rmn::MenuItem<
           Name='TR0020'
           Caption='Transaksi penghimpunan dana...'
