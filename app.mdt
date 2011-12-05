@@ -3296,6 +3296,7 @@ document <
           PhysicalName='BUDGETTRANSTYPE'
           DataType=$TYPEDECLS['VARCHAR']
           DataLength=1
+          Enumerator=$TYPEDECLS['eBudgetTransactionType']
         >}ClassID='{81C6AE42-4339-4DAE-9F9B-4A445DE8988D}'
     >, object:ClassTypeDecl<
       TypeName='SponsorTransactionProgram'
@@ -4939,6 +4940,15 @@ document <
           PhysicalName='BRANCH_ID'
           DataType=$TYPEDECLS['INTEGER']
         >}ClassID='{6FCDCBD9-4941-4EED-A246-EFBDFAA9F73A}'
-    >}PhysicalDB=object:ODLDatabase<
+    >, object:EnumTypeDecl<
+      TypeName='eBudgetTransactionType'
+      EnumType=etString
+      EnumMembers={object:EnumMember<
+          StringValue='A'
+          DescriptiveName='Pemanfaatan Anggaran'
+        >, object:EnumMember<
+          StringValue='R'
+          DescriptiveName='Pengembalian Anggaran'
+        >}>}PhysicalDB=object:ODLDatabase<
   >LastMethodID=6
 >

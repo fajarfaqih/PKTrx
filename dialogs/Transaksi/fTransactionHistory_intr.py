@@ -182,24 +182,6 @@ class fTransactionHistory:
       #-- if
     #--if
 
-  def bPrintKwitansiClick(self,sender):
-    transactionId = self.uipTransaction.TransactionId
-    if transactionId != None:
-      ph = self.app.CreateValues(
-        ['TransactionId', transactionId])
-
-      ph = self.form.CallServerMethod('PrintKwitansi', ph)
-
-      st = ph.FirstRecord
-      if st.Is_Err == 1:
-        raise 'PERINGATAN', st.Err_Message
-      #-- if
-      
-      # Print Slip Transaksi
-      self.app.ShowMessage("Masukkan Aplikasi ke Printer")
-      self.oPrint.doProcessByStreamName(self.app,ph.packet,st.Stream_Name)
-    #--if
-
   def ViewDetailClick(self,sender):
     self.ViewTransaksiDetail()
 
@@ -233,8 +215,14 @@ class fTransactionHistory:
   def CheckSpecialTransaction(self):
     uipTran = self.uipTransaction
 
-    if uipTran.TransactionCode == 'INVS' :
+    if uipTran.TransactionCode == 'INVC' :
       raise 'PERINGATAN','Transaksi pembuatan invoice tidak dapat diubah / dihapus menggunakan form ini.\n Silahkan gunakan form daftar Invoice'
+
+    if uipTran.TransactionCode == 'SD002' :
+      raise 'PERINGATAN','Transaksi ini tidak dapat diubah / dihapus menggunakan form ini karena berasal dari eksternal aplikasi.\n Silahkan gunakan fungsi hapus / ubah dari eksternal aplikasi'
+
+    if uipTran.TransactionCode == 'TB' :
+      raise 'PERINGATAN','Transaksi Saldo Awal tidak dapat diubah / dihapus menggunakan form ini .\n Silahkan gunakan form Saldo Awal'
 
   def EditTransaction(self):
     app = self.app

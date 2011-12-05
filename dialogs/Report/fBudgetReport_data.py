@@ -66,7 +66,8 @@ def GetHistTransaction(config, params, returns):
       'OwnerCode:string',
       'BudgetCode:string',
       'GroupName:string',
-      'ItemName:string'
+      'ItemName:string',
+      'BudgetTransTypeDesc:string'
     ])
   )
 
@@ -106,7 +107,8 @@ def GetHistTransaction(config, params, returns):
       LBudget.LBudgetItem.BudgetItemDescription as ItemDetail, \
       LBudget.LOwner.OwnerName, \
       LBudget.LOwner.OwnerCode, \
-      BudgetTransType, \
+      self.BudgetTransType, \
+      self.BudgetTransType $ as BudgetTransTypeDesc,  \
       Self \
     ) \
     THEN ORDER BY ASC OwnerCode,BudgetCode, ActualDate, ASC TransactionItemId;' % AddParam
@@ -150,13 +152,15 @@ def GetHistTransaction(config, params, returns):
     # end if
       
     recHist.Amount = Amount
+    recHist.AmountEkuivalen = ds.Ekuivalenamount
 
     if ds.BudgetTransType == 'R' :
       recHist.Amount = -1 * Amount
+      recHist.AmountEkuivalen = -1 * ds.Ekuivalenamount
 
     recHist.CurrencyCode = CurrencyCode
     recHist.CurrencyName = CurrencyName
-    recHist.AmountEkuivalen = ds.Ekuivalenamount
+
     recHist.Rate = ds.Rate
     TotalAmount += ds.Ekuivalenamount
     recHist.ReferenceNo = ds.ReferenceNo
@@ -166,6 +170,7 @@ def GetHistTransaction(config, params, returns):
     recHist.GroupName = ds.BudgetItemDescription
     recHist.ItemName = ds.BudgetItemDescription_1
     recHist.BudgetCode = ds.BudgetCode
+    recHist.BudgetTransTypeDesc = ds.Enum_Description
 
     ds.Next()
   #-- while

@@ -518,7 +518,7 @@ document <
           Caption='-'
         >, object:rmn::MenuItem<
           Name='TR0030'
-          Caption='Laporan Anggaran'
+          Caption='Laporan Detail Transaksi Anggaran'
           OnClick='ShowReportClick'
           StringTag='fBudgetReport'
         >, object:rmn::MenuItem<

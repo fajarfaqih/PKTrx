@@ -74,6 +74,10 @@ document <
           Name='TransactionItemId'
           DataTypeName='integer'
           DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='BudgetTransactionType'
+          DataTypeName='varchar'
+          DataLength=100
         >}Mode=imMultiRow
     >}OnSetDataEx='FormSetDataEx'
 >

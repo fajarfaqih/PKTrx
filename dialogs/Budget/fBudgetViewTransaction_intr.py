@@ -12,6 +12,7 @@ class fBudgetViewTransaction:
                ['BudgetId', BudgetId],
     )
     self.form.SetDataWithParameters(ph)
+    self.ViewHistTransaction(1)
     
     return self.FormContainer.Show()
 
@@ -57,6 +58,7 @@ class fBudgetViewTransaction:
         uipTran.ReferenceNo       = rec.ReferenceNo
         uipTran.Description       = rec.Description
         uipTran.Inputer           = rec.Inputer
+        uipTran.BudgetTransactionType = rec.BudgetTransactionType
 
         i += 1
       # end of while
@@ -84,9 +86,10 @@ class fBudgetViewTransaction:
           workbook.SetCellValue(row, 1, rec.TransactionDateStr)
           workbook.SetCellValue(row, 2, rec.TransactionType)
           workbook.SetCellValue(row, 3, rec.Amount)
-          workbook.SetCellValue(row, 4, rec.Description)
-          workbook.SetCellValue(row, 5, rec.Inputer)
-          workbook.SetCellValue(row, 6, rec.NoTransaksi)
+          workbook.SetCellValue(row, 4, rec.BudgetTransactionType)
+          workbook.SetCellValue(row, 5, rec.Description)
+          workbook.SetCellValue(row, 6, rec.Inputer)
+          workbook.SetCellValue(row, 7, rec.NoTransaksi)
           i += 1
         # end of while
 

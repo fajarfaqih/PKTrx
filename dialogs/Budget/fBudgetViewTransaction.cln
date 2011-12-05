@@ -28,15 +28,15 @@ document <
       MultiLine=true
     >}Containers={object:rtf::DualSplit<
       Name='dsMain'
-      Width=700
-      Height=505
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pSelect']
       Container2=$CONTAINERS['dsTransaction']
       InversedAlign=true
     >, object:rtf::DualSplit<
       Name='dsTransaction'
-      Width=700
-      Height=463
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pBudget']
       Container2=$CONTAINERS['gTransaction']
     >, object:rtf::Panel<
@@ -179,6 +179,7 @@ document <
           DataLength=30
         >, object:rtf::FieldUIElmtSetting<
           Name='Description'
+          ControlCaption='Keterangan Transaksi'
           DataTypeName='varchar'
           DataLength=100
         >, object:rtf::FieldUIElmtSetting<
@@ -197,6 +198,11 @@ document <
           ReadOnlyControl=true
           DataTypeName='integer'
           DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BudgetTransactionType'
+          ControlCaption='Tipe Transaksi'
+          DataTypeName='varchar'
+          DataLength=100
         >}Name='gTransaction'
       Width=700
       Height=285
@@ -233,7 +239,11 @@ document <
           Width=80
         >, *object:rtf::GridColumn<
           Name='Description'
-          Index=5
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Description'
+          DisplayFormat=''
+          TitleCaption='Keterangan Transaksi'
           Width=200
         >, *object:rtf::GridColumn<
           Name='TransactionCode'
@@ -253,6 +263,14 @@ document <
           DisplayFormat=''
           TitleCaption='Inputer'
           Width=60
+        >, *object:rtf::GridColumn<
+          Name='BudgetTransactionType'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='BudgetTransactionType'
+          DisplayFormat=''
+          TitleCaption='Tipe Transaksi'
+          Width=120
         >}ReadOnly=true
       RowSelect=true
       SuppressHelpLine=true

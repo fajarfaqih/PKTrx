@@ -19,17 +19,6 @@ class fCashAdvanceReturn :
     else: # edit mode
       self.AmountList = {}
 
-      idx = 1
-      uipItem = self.uipTransactionItem
-      uipItem.First()
-      TotalItemRow = uipItem.RecordCount
-      for i in range(TotalItemRow):
-        self.AmountList[uipItem.ItemIdx] = uipItem.Amount #uipItem.Ekuivalen
-        idx +=1
-      # end for
-      self.IdxCounter = TotalItemRow + 1
-
-
   def Show(self,mode = 1):
     self.uipTransaction.Edit()
     self.uipTransaction.ShowMode = mode

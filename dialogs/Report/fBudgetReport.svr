@@ -140,6 +140,10 @@ document <
           Name='TransactionNo'
           DataTypeName='varchar'
           DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='BudgetTransTypeDesc'
+          DataTypeName='varchar'
+          DataLength=100
         >}Mode=imMultiRow
     >}OnSetDataEx='FormSetDataEx'
 >

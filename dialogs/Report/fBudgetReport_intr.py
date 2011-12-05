@@ -96,6 +96,7 @@ class fBudgetReport:
         uipTran.Rate = rec.Rate
         uipTran.CurrencyName = rec.CurrencyName
         uipTran.TransactionNo = rec.NoTransaksi
+        uipTran.BudgetTransTypeDesc = rec.BudgetTransTypeDesc
         
 
         i += 1

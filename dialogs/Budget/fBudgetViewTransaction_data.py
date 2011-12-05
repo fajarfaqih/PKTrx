@@ -64,7 +64,8 @@ def GetHistTransaction(config, params, returns):
       'ReferenceNo: string',
       'Description: string',
       'Inputer: string',
-      'NoTransaksi:string'
+      'NoTransaksi:string',
+      'BudgetTransactionType:string'
     ])
   )
 
@@ -87,6 +88,8 @@ def GetHistTransaction(config, params, returns):
       LTransaction.LTransaction.Description, \
       LTransaction.LTransaction.Inputer, \
       LTransaction.LTransaction.TransactionNo,\
+      self.BudgetTransType, \
+      self.BudgetTransType $ as BudgetTransTypeDesc,  \
       Self \
     ) \
     THEN ORDER BY ASC ActualDate, ASC TransactionItemId;'
@@ -116,6 +119,7 @@ def GetHistTransaction(config, params, returns):
     recHist.Description = ds.Description_1
     recHist.Inputer = ds.Inputer
     recHist.NoTransaksi = ds.TransactionNo
+    recHist.BudgetTransactionType = ds.Enum_Description
 
     ds.Next()
   #-- while

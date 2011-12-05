@@ -271,6 +271,11 @@ document <
           ControlCaption='Nomor Transaksi'
           DataTypeName='varchar'
           DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BudgetTransTypeDesc'
+          ControlCaption='Tipe Transaksi'
+          DataTypeName='varchar'
+          DataLength=100
         >}Name='gTransaction'
       Width=700
       Height=333
@@ -377,6 +382,14 @@ document <
           DisplayFormat=''
           TitleCaption='Inputer'
           Width=100
+        >, *object:rtf::GridColumn<
+          Name='BudgetTransTypeDesc'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='BudgetTransTypeDesc'
+          DisplayFormat=''
+          TitleCaption='Tipe Transaksi'
+          Width=120
         >}ReadOnly=true
       RowSelect=true
       SuppressHelpLine=true
