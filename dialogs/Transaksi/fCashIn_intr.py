@@ -84,7 +84,6 @@ class fCashIn :
 
       self.mpBayar.ActivePageIndex = PageIndex[uipTran.PaymentType]
 
-
     return self.FormContainer.Show()
 
   def LCurrencyCashAfterLookup(self,sender,linkui):

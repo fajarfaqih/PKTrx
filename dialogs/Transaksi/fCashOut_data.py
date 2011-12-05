@@ -9,7 +9,20 @@ def FormSetDataEx(uideflist, params) :
 
   if params.GetDatasetByName('trparam') != None :
     oForm = helper.CreateObject('FormTransaksi')
-    return oForm.SetDataEx(uideflist,params)
+    oForm.SetDataEx(uideflist,params)
+    
+    uipTran = uideflist.uipTransaction.Dataset.GetRecord(0)
+    oTran = helper.GetObjectByNames('Transaction',{'TransactionNo' : uipTran.TransactionNo})
+
+    if uipTran.PaymentType == 'B' :
+      uipTran.RateBank = oTran.Rate
+    elif uipTran.PaymentType == 'C':
+      uipTran.RateCash = oTran.Rate
+      uipTran.SetFieldByName('LCurrencyCash.Currency_Code', oTran.CurrencyCode)
+      uipTran.SetFieldByName('LCurrencyCash.Short_Name', oTran.LCurrency.Short_Name)
+    # end if
+
+    return
 
   Now = int(config.Now())
   recT = uideflist.uipTransaction.Dataset.AddRecord()
@@ -144,5 +157,6 @@ def SimpanData(config, params, returns):
       ['NewTransactionNo',NewTransactionNo],
       ['TransactionNo',TransactionNo]
   )
+
 
 
