@@ -30,6 +30,8 @@ class fSelectProgram :
     if st == 1:
       self.ProductId = self.qProduct.GetFieldValue('VProduct.ProductId')
       self.ProductName = self.qProduct.GetFieldValue('VProduct.AccountName')
+      self.ProductCode = self.qProduct.GetFieldValue('VProduct.ProductCode')
+      
       self.FundCategory = self.qProduct.GetFieldValue('VProduct.FundCategory')
       self.PercentageOfAmilFunds = self.qProduct.GetFieldValue('VProduct.PercentageOfAmilFunds')
       self.AccountNo = self.qProduct.GetFieldValue('VProduct.AccountNo')
