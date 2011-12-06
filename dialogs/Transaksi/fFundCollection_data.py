@@ -23,7 +23,10 @@ def FormSetDataEx(uideflist, params) :
     uipDonor.DonorName = oTran.DonorName
     uipDonor.BranchId = int(config.SecurityContext.GetUserInfo()[2])
     uipTran.TotalAmount = oTran.Amount
-    uipTran.SetFieldByName('LVolunteer.VolunteerId',oTran.VolunteerId)    
+    uipTran.SetFieldByName('LVolunteer.VolunteerId',oTran.VolunteerId)
+    if oTran.VolunteerId not in ['',None,0] :
+      oVolunteer = helper.GetObject('Volunteer',oTran.VolunteerId)
+      uipTran.SetFieldByName('LVolunteer.VolunteerName',oVolunteer.VolunteerName)
     return
 
 
