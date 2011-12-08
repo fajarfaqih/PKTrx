@@ -101,7 +101,7 @@ def SimpanData(config, params, returns):
     request['PaymentType'] = oTransaction.PaymentType
 
     items = []
-    
+
     for i in range(params.uipTransactionItem.RecordCount):
       oItem = params.uipTransactionItem.GetRecord(i)
       item = {}
@@ -116,7 +116,7 @@ def SimpanData(config, params, returns):
       
       items.append(item)
     #-- for
-    
+
     request['Items']= items
     sRequest = simplejson.dumps(request)
 

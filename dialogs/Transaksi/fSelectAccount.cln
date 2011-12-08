@@ -56,7 +56,6 @@ document <
       DefaultControlHeight=21
       HorizontalControlGap=4
       RowControlGap=7
-      SystemContext='accounting'
       PClassName='Account'
       WindowSize=20
       Columns={object:rtf::QueryColumn<

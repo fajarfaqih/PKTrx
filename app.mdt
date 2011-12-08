@@ -3454,6 +3454,11 @@ document <
           PhysicalName='IS_DETAIL'
           DataType=$TYPEDECLS['VARCHAR']
           DataLength=1
+        >, object:FieldMember<
+          MemberName='Account_Type'
+          PhysicalName='ACCOUNT_TYPE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
         >}ClassID='{37BE411F-DBAD-4095-AE05-A2A361217554}'
     >, object:ClassTypeDecl<
       TypeName='VProduct'

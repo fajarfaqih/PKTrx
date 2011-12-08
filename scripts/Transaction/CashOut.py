@@ -245,6 +245,7 @@ def Bank(helper,oTran,oBatch,request,params):
   if oBankAccount.isnull:
     raise 'Cash In', 'Rekening bank %s tidak ditemukan' % (aBankAccountNo)    
   # end if.else  
+  
 
   aRate = request[u'Rate']
   aValuta = oBankAccount.CurrencyCode
@@ -253,17 +254,16 @@ def Bank(helper,oTran,oBatch,request,params):
       
   # Generate TransactionNo
   oTran.GenerateTransactionNumber(oBankAccount.CashCode)
-      
+  
   totalAmount = 0.0
   items = request[u'Items']
   for item in items:
-    aValuta = item[u'Valuta'] 
     AccountCode  = item[u'AccountCode']
     AccountName = item[u'AccountName']
     aAmount = item[u'Amount']
-    aRate = item[u'Rate']
     aDesc = item[u'Description']
     
+
     oItemGL = oTran.CreateGLTransactionItem(AccountCode, aValuta)
     oItemGL.RefAccountName = AccountName
     oItemGL.GLName = AccountName
@@ -280,6 +280,7 @@ def Bank(helper,oTran,oBatch,request,params):
     totalAmount += aAmount
   #-- for
   oTran.Amount = totalAmount
+
 
   oItemBA = oTran.CreateAccountTransactionItem(oBankAccount)
   oItemBA.SetMutation('C', totalAmount, aRate)
