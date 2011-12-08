@@ -212,8 +212,8 @@ document <
       AfterNewRecord='ItemNewRecord'
     >}Containers={object:rtf::MultiSplit<
       Name='msMain'
-      Width=800
-      Height=550
+      Width=320
+      Height=320
       Side1Containers={$CONTAINERS['pBatch']
       }Side2Containers={$CONTAINERS['pAction']
       }SpaceContainer=$CONTAINERS['dsTransaction']
@@ -293,6 +293,13 @@ document <
               UsedAsDisplay=true
               KeyOrDisplayName='CurrencyCode'
               FinalDisplayFieldName='CurrencyCode'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LBank.LCurrency.Kurs_Tengah_BI'
+              DataTypeName='DOUBLE'
+              DataLength=0
+              UsedAsDisplay=true
+              KeyOrDisplayName='LCurrency.Kurs_Tengah_BI'
+              FinalDisplayFieldName='Kurs_Tengah_BI'
             >}Restrictions='BranchCode|BranchCode'
           OQLText=['Select from BankCash [Status = ''A'' and BranchCode = :BranchCode]'#13#10,
             '('#13#10,
@@ -302,6 +309,7 @@ document <
             '  BankAccountNo,'#13#10,
             '  BranchCode,'#13#10,
             '  CurrencyCode,'#13#10,
+            '  LCurrency.Kurs_Tengah_BI,'#13#10,
             '  Balance,'#13#10,
             '  self'#13#10,
             ')'#13#10,
@@ -629,8 +637,8 @@ document <
       RowControlGap=7
     >, object:rtf::MultiPages<
       Name='mpBayar'
-      Width=800
-      Height=369
+      Width=320
+      Height=320
       Pages={object:rtf::Page<
           PageName='pgCash'
           PageTitle='Kas'
@@ -838,8 +846,8 @@ document <
       ControlCharCase=ecUpperCase
     >, object:rtf::DualSplit<
       Name='dsTransaction'
-      Width=800
-      Height=390
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pPaymentType']
       Container2=$CONTAINERS['mpBayar']
     >, object:rtf::DualSplit<

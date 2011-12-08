@@ -38,6 +38,7 @@ def GetCurrencyRate(config, params, returns):
     ['Full_Name',rec.Full_Name],
     ['Kurs_Tengah_BI',rec.Kurs_Tengah_BI],
   )
+
 def SimpanData(config, params, returns):
   IsErr = 0
   ErrMessage = ''
