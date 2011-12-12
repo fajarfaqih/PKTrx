@@ -4954,6 +4954,21 @@ document <
         >, object:EnumMember<
           StringValue='R'
           DescriptiveName='Pengembalian Anggaran'
-        >}>}PhysicalDB=object:ODLDatabase<
+        >}>, object:ClassTypeDecl<
+      TypeName='MapAccount'
+      PTableName='MAPACCOUNT'
+      Members={object:FieldMember<
+          MemberName='OldAccount'
+          PhysicalName='OLDACCOUNT'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='NewAccount'
+          PhysicalName='NEWACCOUNT'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >}ClassID='{2C9CC566-0FD3-425F-8F1D-245C1ED1555D}'
+    >}PhysicalDB=object:ODLDatabase<
   >LastMethodID=6
 >

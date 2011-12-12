@@ -60,6 +60,10 @@ document <
           DataTypeName='varchar'
           DataLength=10
         >, object:rpclass::TCustomLoadedField<
+          Name='ServerMessage'
+          DataTypeName='varchar'
+          DataLength=300
+        >, object:rpclass::TCustomLoadedField<
           Name='LBank.AccountNo'
           DataTypeName='VARCHAR'
           DataLength=30

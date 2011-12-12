@@ -6,8 +6,6 @@ DefaultItems = [ 'Inputer',
                  'Rate',
                  'TotalAmount',
                  'CashType',
-                 #'LBatch.BatchId',
-                 #'LBatch.BatchNo',
                  'ActualDate',
                  'LValuta.Currency_Code',
                  'LValuta.Full_Name',
@@ -40,7 +38,7 @@ class fCashOut :
     uipTran.Edit()
     for item in DefaultItems :
       uipTran.SetFieldValue(item,self.DefaultValues[item])
-    #self.pBatch_LBatch.SetFocus()
+      
     self.pBatch_ActualDate.SetFocus()
 
   def InitValues(self):
@@ -60,6 +58,12 @@ class fCashOut :
       # end for
       self.IdxCounter = TotalItemRow + 1
 
+  def FormOnShow(self,sender,param) :
+    #uipTran = self.uipTransaction
+    #if uipTran.ServerMessage != '' :
+    #  self.app.ShowMessage(uipTran.ServerMessage + 'Harap ubah detail transaksi')
+    pass
+
   def Show(self,mode=1):
     uipTran = self.uipTransaction
     uipTran.Edit()
@@ -72,7 +76,6 @@ class fCashOut :
     else:
       # Edit Mode
 
-      #self.pBatch_LBatch.Enabled = 0
       # Set Save button hidden
       self.pAction_bSave.Visible = 0
 
@@ -83,7 +86,6 @@ class fCashOut :
       PageIndex = {'C' : 0 , 'K' : 0 ,'B' : 1 , 'A':2}
 
       self.mpBayar.ActivePageIndex = PageIndex[uipTran.PaymentType]
-
       
     return self.FormContainer.Show()
 

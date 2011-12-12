@@ -20,6 +20,22 @@ def FormSetDataEx(uideflist, params) :
       uipTran.SetFieldByName('LCurrencyCash.Currency_Code', oTran.CurrencyCode)
       uipTran.SetFieldByName('LCurrencyCash.Short_Name', oTran.LCurrency.Short_Name)
     # end if
+    
+    TotalItem = uideflist.uipTransactionItem.Dataset.RecordCount
+    uipItem = uideflist.uipTransactionItem.Dataset
+    for i in range(TotalItem):
+      recItem = uipItem.GetRecord(i)
+
+      AccountCode = recItem.AccountCode
+
+      oAccount = helper.GetAccount('Account',AccountCode)
+      if oAccount.isnull :
+        oMapAccount = helper.GetObject('MapAccount',AccountCode)
+        if not oMapAccount.isnull :
+          recItem.AccountCode = oMapAccount.NewAccount
+        # end if
+      # end if
+    # end for
 
     return
 

@@ -125,6 +125,7 @@ VEmployee=mextern
 UserApp=mextern
 Currency=mextern
 VDonor=mextern
+MapAccount=mextern
 
 ExternalDebtor=mextdebtor
 PrintHelper=mclass

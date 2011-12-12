@@ -86,6 +86,11 @@ document <
           Hidden=true
           DataTypeName='varchar'
           DataLength=10
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ServerMessage'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=300
         >}Name='uipTransaction'
       FillInDefaultValues=true
       AlwaysPostToServer=true
@@ -545,8 +550,8 @@ document <
       ControlCharCase=ecUpperCase
     >, object:rtf::Grid<
       Name='gBankTransactionItem'
-      Width=792
-      Height=217
+      Width=240
+      Height=240
       UIPart=$UIPARTS['uipTransactionItem']
       ControlLeftMargin=8
       ControlTopMargin=8
@@ -853,13 +858,13 @@ document <
     >, object:rtf::DualSplit<
       Name='dsBank'
       Width=792
-      Height=338
+      Height=341
       Container1=$CONTAINERS['pBankTransaction']
       Container2=$CONTAINERS['gBankTransactionItem']
     >, object:rtf::DualSplit<
       Name='dsAsset'
       Width=792
-      Height=338
+      Height=341
       Container1=$CONTAINERS['pAssetTransaction']
       Container2=$CONTAINERS['gAssetTransactionItem']
     >, object:rtf::DualSplit<
@@ -870,8 +875,8 @@ document <
       Container2=$CONTAINERS['gCashTransactionItem']
     >, object:rtf::Grid<
       Name='gAssetTransactionItem'
-      Width=792
-      Height=187
+      Width=240
+      Height=240
       UIPart=$UIPARTS['uipTransactionItem']
       ControlLeftMargin=8
       ControlTopMargin=8

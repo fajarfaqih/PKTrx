@@ -129,6 +129,11 @@ class Account(pobject.PObject):
   pobject_classname = 'Account'
   pobject_keys = ['Account_Code']
   
+class MapAccount(pobject.PObject):
+  # static variable
+  pobject_classname = 'MapAccount'
+  pobject_keys = ['OldAccount']
+    
 class Branch(pobject.PObject):
   # static variable
   pobject_classname = 'Branch'

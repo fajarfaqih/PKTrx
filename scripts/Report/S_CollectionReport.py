@@ -111,7 +111,7 @@ def GetReportData(config,param):
       addFilter += " and t.MarketerId=%d " % param.GetFieldByName('LMarketer.MarketerId')
     
     qParam = {}
-    qParam['BDATE'] = config.FormatDateTime('yyyy-mm-dd', aBeginDate) 
+    qParam['BDATE'] = config.FormatDateTime('yyyy-mm-dd', aBeginDate)
     qParam['EDATE'] = config.FormatDateTime('yyyy-mm-dd', aEndDate) 
     
     #qParam['BRANCH'] = aBranchCode
@@ -121,7 +121,9 @@ def GetReportData(config,param):
        
     sSQL = "\
         select t.ActualDate, t.ReferenceNo, f.AccountName, \
-          t.Description, i.Amount, i.Rate, i.Ekuivalenamount, i.CurrencyCode, t.Inputer, \
+          t.Description, (case when i.mutationtype = 'C' then i.Amount else -1 * i.Amount end) as Amount , \
+          (case when i.mutationtype = 'C' then i.Ekuivalenamount else -1 * i.Ekuivalenamount end) as Ekuivalenamount , \
+          i.Rate , i.CurrencyCode, t.Inputer, \
           t.AuthStatus, t.TransactionId, t.donorname, d.full_name, \
           (case when t.ChannelCode = 'R' then 'Kas Cabang' \
                 when t.ChannelCode = 'P' then 'Kas Kecil' \
@@ -132,7 +134,7 @@ def GetReportData(config,param):
                 when a.FundEntity = '4' then 'Amil' \
                 when a.FundEntity = '5' then 'Lainnya' \
                 else '' end) as FundEntity, t.MarketerId ,\
-           i.transactionitemid, b.branchname ,t.TransactionNo , \
+           i.transactionitemid, b.branchname , t.TransactionNo , i.MutationType, \
          t.currencycode as TransCurrencyCode , t.rate as TransRate , \
            (select volunteername \
               from transaction.volunteertransaction vt , \
@@ -155,7 +157,6 @@ def GetReportData(config,param):
           and a.Accounttitype = 'D' \
           and t.ActualDate >= '%(BDATE)s' \
           and t.ActualDate <= '%(EDATE)s' \
-          and i.MutationType='C' \
           %(ADDFILTER)s \
       " % qParam
     
@@ -535,7 +536,7 @@ def GetDataTransaction(config,parameters,returns):
     status.ZakatBalance = FundEntityBalance(config,BranchCode,aBeginDate,1,addFilter)    
     status.InfaqBalance = FundEntityBalance(config,BranchCode,aBeginDate,2,addFilter)
     status.WakafBalance = FundEntityBalance(config,BranchCode,aBeginDate,3,addFilter)
-    status.AmilBalance = FundEntityBalance(config,BranchCode,aBeginDate,4,addFilter) #+ AmilBalance(config,BranchCode,aBeginDate,addFilter)   
+    status.AmilBalance = 0.0 #FundEntityBalance(config,BranchCode,aBeginDate,4,addFilter) #+ AmilBalance(config,BranchCode,aBeginDate,addFilter)   
     status.OtherBalance = FundEntityBalance(config,BranchCode,aBeginDate,5,addFilter)
 
       
@@ -565,14 +566,13 @@ def FundEntityBalance(config,Branch=None,Date=None, FundEntity=1,addFilter=''):
   
   sSQL ="\
     select \
-    	sum(i.ekuivalenamount) as BeginBalance \
+    	sum(case when i.mutationtype = 'C' then i.Ekuivalenamount else -1 * i.Ekuivalenamount end) as BeginBalance \
     from transactionitem i, accounttransactionitem a, transaction t , branch b , productaccount p \
     where i.transactionitemid = a.transactionitemid \
       and i.transactionid = t.transactionid \
       and p.accountno = a.accountno \
       and a.FundEntity = %(FUNDENTITY)s \
       and t.actualdate < '%(DATE)s' \
-      and i.mutationtype = 'C' \
       and b.branchcode = i.branchcode \
       and a.Accounttitype = 'D' \
   " % param 
@@ -589,7 +589,7 @@ def CollectionSummary(config, BeginDate=None, EndDate = None, addFilter=''):
   
   sSQL ="\
     select \
-      sum(i.ekuivalenamount) as BeginBalance \
+      sum(case when i.mutationtype = 'C' then i.Ekuivalenamount else -1 * i.Ekuivalenamount end) as BeginBalance \
         from accounttransactionitem a, transactionitem i, \
           transaction t, financialaccount f , productaccount p, \
           public.php_donor d, branch b \
@@ -599,10 +599,9 @@ def CollectionSummary(config, BeginDate=None, EndDate = None, addFilter=''):
           and a.AccountNo = f.AccountNo \
           and a.DonorId = d.id \
           and b.branchcode = i.branchcode \
-          and a.Accounttitype = 'D' \
+          and a.AccountTIType = 'D' \
           and t.ActualDate >= '%(BEGINDATE)s' \
           and t.ActualDate <= '%(ENDDATE)s' \
-          and i.MutationType='C' \
   " % param 
 
   res = config.CreateSQL(sSQL + addFilter).rawresult
