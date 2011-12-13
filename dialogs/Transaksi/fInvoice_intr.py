@@ -137,7 +137,7 @@ class fInvoice:
     if uipInvoice.ProductAccountNo in [0, None] :
       raise 'PERINGATAN','Nama Program belum diinputkan'
 
-    if (uipTran.Amount or 0.0) <= 0.0:
+    if (uipInvoice.Amount or 0.0) <= 0.0:
       raise 'PERINGATAN','Jumlah Tagihan tidak boleh <= 0.0 '
 
       

@@ -10,8 +10,8 @@ document <
   State=rsMaximized
   Left=50
   Top=50
-  Width=697
-  Height=537
+  Width=689
+  Height=569
   UIParts={object:rtf::PClassUI<
       Elements={object:rtf::FieldUIElmtSetting<
           Name='TransactionItemId'
@@ -52,8 +52,8 @@ document <
       AlwaysPostToServer=true
     >}Containers={object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=240
-      Height=96
+      Width=689
+      Height=569
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dualsplit2']
       InversedAlign=true
@@ -293,7 +293,7 @@ document <
           DataLength=30
         >}Name='pInvoice'
       Width=777
-      Height=369
+      Height=401
       UIPart=$UIPARTS['uipInvoice']
       Controls={*object:rtf::DBDateEdit<
           Name='InvoiceDate'
@@ -490,8 +490,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit2'
-      Width=240
-      Height=96
+      Width=689
+      Height=511
       Container1=$CONTAINERS['pSponsor']
       Container2=$CONTAINERS['pInvoice']
     >}FormClassName='fInvoice'
