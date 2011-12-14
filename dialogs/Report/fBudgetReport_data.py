@@ -152,17 +152,18 @@ def GetHistTransaction(config, params, returns):
     # end if
       
     recHist.Amount = Amount
+    recHist.Rate = Rate
     recHist.AmountEkuivalen = ds.Ekuivalenamount
 
     if ds.BudgetTransType == 'R' :
       recHist.Amount = -1 * Amount
       recHist.AmountEkuivalen = -1 * ds.Ekuivalenamount
 
+    TotalAmount += ds.Ekuivalenamount
+    
     recHist.CurrencyCode = CurrencyCode
     recHist.CurrencyName = CurrencyName
 
-    recHist.Rate = ds.Rate
-    TotalAmount += ds.Ekuivalenamount
     recHist.ReferenceNo = ds.ReferenceNo
     recHist.Description = ds.Description_1
     recHist.Inputer = ds.Inputer

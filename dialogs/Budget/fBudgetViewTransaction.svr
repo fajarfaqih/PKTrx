@@ -55,6 +55,14 @@ document <
           DataTypeName='double'
           DataLength=20
         >, object:rpclass::TCustomLoadedField<
+          Name='CurrencyName'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='AmountEkuivalen'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
           Name='ReferenceNo'
           DataTypeName='varchar'
           DataLength=30
@@ -75,7 +83,7 @@ document <
           DataTypeName='integer'
           DataLength=20
         >, object:rpclass::TCustomLoadedField<
-          Name='BudgetTransactionType'
+          Name='BudgetTransTypeDesc'
           DataTypeName='varchar'
           DataLength=100
         >}Mode=imMultiRow

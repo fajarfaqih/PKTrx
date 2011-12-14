@@ -54,11 +54,13 @@ class fBudgetViewTransaction:
         uipTran.TransactionItemId = rec.TransactionItemId
         uipTran.TransactionDate   = rec.TransactionDate
         uipTran.TransactionCode   = rec.TransactionType
-        uipTran.Amount = rec.Amount
+        uipTran.Amount            = rec.Amount
+        uipTran.CurrencyName      = rec.CurrencyName
+        uipTran.AmountEkuivalen   = rec.AmountEkuivalen
         uipTran.ReferenceNo       = rec.ReferenceNo
         uipTran.Description       = rec.Description
         uipTran.Inputer           = rec.Inputer
-        uipTran.BudgetTransactionType = rec.BudgetTransactionType
+        uipTran.BudgetTransTypeDesc = rec.BudgetTransTypeDesc
 
         i += 1
       # end of while
@@ -86,7 +88,7 @@ class fBudgetViewTransaction:
           workbook.SetCellValue(row, 1, rec.TransactionDateStr)
           workbook.SetCellValue(row, 2, rec.TransactionType)
           workbook.SetCellValue(row, 3, rec.Amount)
-          workbook.SetCellValue(row, 4, rec.BudgetTransactionType)
+          workbook.SetCellValue(row, 4, rec.BudgetTransTypeDesc)
           workbook.SetCellValue(row, 5, rec.Description)
           workbook.SetCellValue(row, 6, rec.Inputer)
           workbook.SetCellValue(row, 7, rec.NoTransaksi)

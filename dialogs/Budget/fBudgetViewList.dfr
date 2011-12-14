@@ -337,8 +337,8 @@ document <
       SuppressHelpLine=true
     >, object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=240
-      Height=96
+      Width=721
+      Height=481
       Container1=$CONTAINERS['pBudget']
       Container2=$CONTAINERS['dualsplit2']
     >, object:rtf::DualSplit<

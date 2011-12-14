@@ -186,7 +186,11 @@ class fBudgetViewList:
       
       
   def ViewDetailClick(self,sender):
-    BudgetId = self.uipBudgetItem.BudgetId
+    BudgetId = self.uipBudgetItem.BudgetId or 0
+
+    if BudgetId == 0 :
+      raise 'PERINGATAN','Silahkan pilih dahulu anggaran yang akan dilihat'
+      
     if self.fViewDetail == None :
       param = self.app.CreateValues(
                ['BudgetId', BudgetId],
@@ -199,7 +203,11 @@ class fBudgetViewList:
     form.ViewData(BudgetId)
 
   def ViewTransactionClick(self,sender):
-    BudgetId = self.uipBudgetItem.BudgetId
+    BudgetId = self.uipBudgetItem.BudgetId or 0
+    
+    if BudgetId == 0 :
+      raise 'PERINGATAN','Silahkan pilih dahulu anggaran yang akan dilihat'
+      
     if self.fViewTran == None :
       param = self.app.CreateValues(
                ['BudgetId', BudgetId],
@@ -215,8 +223,13 @@ class fBudgetViewList:
     app = self.app
     form = self.form
     uipBudgetItem = self.uipBudgetItem
-    
-    param = app.CreateValues(['BudgetId',uipBudgetItem.BudgetId])
+
+    BudgetId = uipBudgetItem.BudgetId or 0
+
+    if BudgetId == 0 :
+      raise 'PERINGATAN','Silahkan pilih dahulu anggaran yang akan dihapus'
+
+    param = app.CreateValues(['BudgetId',BudgetId])
     rph = form.CallServerMethod('DeleteBudget',param)
     
     rec = rph.FirstRecord

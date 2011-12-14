@@ -7,6 +7,7 @@ document <
 >object:rtf::Form<
   MainContainer=$CONTAINERS['dsMain']
   Caption='Peragaan detail budget item'
+  State=rsMaximized
   Left=50
   Top=50
   Width=700
@@ -173,6 +174,16 @@ document <
           DataTypeName='double'
           DataLength=20
         >, object:rtf::FieldUIElmtSetting<
+          Name='CurrencyName'
+          ControlCaption='Kd Valuta'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AmountEkuivalen'
+          ControlCaption='Nilai Ekuivalen (Rp)'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
           Name='ReferenceNo'
           ControlCaption='No Referensi'
           DataTypeName='varchar'
@@ -199,8 +210,8 @@ document <
           DataTypeName='integer'
           DataLength=20
         >, object:rtf::FieldUIElmtSetting<
-          Name='BudgetTransactionType'
-          ControlCaption='Tipe Transaksi'
+          Name='BudgetTransTypeDesc'
+          ControlCaption='Tipe Transaksi Anggaran'
           DataTypeName='varchar'
           DataLength=100
         >}Name='gTransaction'
@@ -228,7 +239,23 @@ document <
           FieldName='Amount'
           DisplayFormat=',0.00'
           TitleCaption='Nilai Transaksi'
-          Width=120
+          Width=100
+        >, *object:rtf::GridColumn<
+          Name='CurrencyName'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='CurrencyName'
+          DisplayFormat=''
+          TitleCaption='Kd Valuta'
+          Width=60
+        >, *object:rtf::GridColumn<
+          Name='AmountEkuivalen'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='AmountEkuivalen'
+          DisplayFormat=',0.00'
+          TitleCaption='Nilai Ekuivalen (Rp)'
+          Width=100
         >, *object:rtf::GridColumn<
           Name='ReferenceNo'
           InputStyle=cisNormal
@@ -264,12 +291,12 @@ document <
           TitleCaption='Inputer'
           Width=60
         >, *object:rtf::GridColumn<
-          Name='BudgetTransactionType'
+          Name='BudgetTransTypeDesc'
           InputStyle=cisNormal
           EnumeratedValues=''
-          FieldName='BudgetTransactionType'
+          FieldName='BudgetTransTypeDesc'
           DisplayFormat=''
-          TitleCaption='Tipe Transaksi'
+          TitleCaption='Tipe Transaksi Anggaran'
           Width=120
         >}ReadOnly=true
       RowSelect=true

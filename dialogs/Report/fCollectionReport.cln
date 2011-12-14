@@ -42,8 +42,8 @@ document <
       PostLinkValues=true
     >}Containers={object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=793
-      Height=329
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dualsplit2']
       InversedAlign=true
@@ -120,8 +120,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit2'
-      Width=793
-      Height=286
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pFilter']
       Container2=$CONTAINERS['dualsplit3']
     >, object:rtf::Panel<
@@ -257,7 +257,7 @@ document <
             '  VolunteerId, VolunteerName, HomeAddress, MobilePhone,'#13#10,
             '  self'#13#10,
             ')'#13#10,
-            'then order by VolunteerId;']
+            'then order by VolunteerName;']
           LookupOption=loCustomOQL
           FieldBaseName='LVolunteer'
         >, object:rtf::FieldUIElmtSetting<
@@ -589,8 +589,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit3'
-      Width=793
-      Height=236
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pFilter2']
       Container2=$CONTAINERS['pFilter3']
       SplitDirection=sdrSplitLeftRight

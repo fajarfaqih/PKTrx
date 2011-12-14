@@ -61,11 +61,20 @@ def GetHistTransaction(config, params, returns):
       'TransactionType: string',
       'MutationType: string',
       'Amount: float',
+      'AmountEkuivalen: float',
+      'Rate: float',
+      'CurrencyCode: string',
+      'CurrencyName: string',
       'ReferenceNo: string',
       'Description: string',
       'Inputer: string',
       'NoTransaksi:string',
-      'BudgetTransactionType:string'
+      'OwnerName:string',
+      'OwnerCode:string',
+      'BudgetCode:string',
+      'GroupName:string',
+      'ItemName:string',
+      'BudgetTransTypeDesc:string'
     ])
   )
 
@@ -84,10 +93,22 @@ def GetHistTransaction(config, params, returns):
       LTransaction.LTransaction.LTransactionType.Description as TransactionType, \
       LTransaction.MutationType, \
       LTransaction.Amount, \
+      LTransaction.Ekuivalenamount, \
+      LTransaction.Rate, \
+      LTransaction.CurrencyCode, \
+      LTransaction.LCurrency.Short_Name, \
+      LTransaction.LTransaction.Rate as TransRate, \
+      LTransaction.LTransaction.CurrencyCode as TransCurrencyCode, \
+      LTransaction.LTransaction.LCurrency.Short_Name as TransCurrencyName, \
       LTransaction.LTransaction.ReferenceNo, \
       LTransaction.LTransaction.Description, \
       LTransaction.LTransaction.Inputer, \
       LTransaction.LTransaction.TransactionNo,\
+      LBudget.BudgetCode, \
+      LBudget.LBudgetItem.LParent.BudgetItemDescription as ItemGroup, \
+      LBudget.LBudgetItem.BudgetItemDescription as ItemDetail, \
+      LBudget.LOwner.OwnerName, \
+      LBudget.LOwner.OwnerCode, \
       self.BudgetTransType, \
       self.BudgetTransType $ as BudgetTransTypeDesc,  \
       Self \
@@ -113,13 +134,42 @@ def GetHistTransaction(config, params, returns):
     recHist.TransactionCode = ds.TransactionCode
     recHist.TransactionType = ds.Description
     recHist.MutationType = ds.MutationType
-    recHist.Amount = ds.Amount
-    TotalAmount += ds.Amount
+
+    TranCurrencyCode = ds.CurrencyCode_1
+    TranCurrencyName = ds.Short_Name_1
+    TransRate        = ds.Rate_1
+
+    if ds.CurrencyCode != TranCurrencyCode and ds.CurrencyCode == '000':
+      CurrencyCode = TranCurrencyCode
+      CurrencyName = TranCurrencyName
+      Rate = TransRate
+      Amount      = ds.Amount / Rate
+    else :
+      CurrencyCode = ds.CurrencyCode
+      CurrencyName = ds.Short_Name
+      Rate = ds.Rate
+      Amount = ds.Amount
+    # end if
+
+    recHist.Amount = Amount
+    recHist.Rate = Rate
+    recHist.AmountEkuivalen = ds.Ekuivalenamount
+    
+    if ds.BudgetTransType == 'R' :
+      recHist.Amount = -1 * Amount
+      recHist.AmountEkuivalen = -1 * ds.Ekuivalenamount
+    # end if
+
+    TotalAmount += ds.Ekuivalenamount
+    
+    recHist.CurrencyCode = CurrencyCode
+    recHist.CurrencyName = CurrencyName
+    
     recHist.ReferenceNo = ds.ReferenceNo
     recHist.Description = ds.Description_1
     recHist.Inputer = ds.Inputer
     recHist.NoTransaksi = ds.TransactionNo
-    recHist.BudgetTransactionType = ds.Enum_Description
+    recHist.BudgetTransTypeDesc = ds.Enum_Description
 
     ds.Next()
   #-- while

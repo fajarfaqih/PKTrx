@@ -121,7 +121,11 @@ class fBudgetEditList:
       
       
   def EditClick(self,sender):
-    BudgetId = self.uipBudgetItem.BudgetId
+    BudgetId = self.uipBudgetItem.BudgetId or 0
+
+    if BudgetId == 0 :
+      raise 'PERINGATAN','Silahkan pilih dahulu anggaran yang akan diubah'
+    
     if self.fEditBudget == None :
       param = self.app.CreateValues(
                ['BudgetId', BudgetId],
@@ -143,8 +147,13 @@ class fBudgetEditList:
     app = self.app
     form = self.form
     uipBudgetItem = self.uipBudgetItem
+
+    BudgetId = uipBudgetItem.BudgetId or 0
+    if BudgetId == 0 :
+      raise 'PERINGATAN','Silahkan pilih dahulu anggaran yang akan dihapus'
+
+    param = app.CreateValues(['BudgetId',BudgetId])
     
-    param = app.CreateValues(['BudgetId',uipBudgetItem.BudgetId])
     rph = form.CallServerMethod('DeleteBudget',param)
     
     rec = rph.FirstRecord

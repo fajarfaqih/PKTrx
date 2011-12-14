@@ -470,7 +470,11 @@ class InvestmentEmployee(Investment):
     return self.Helper.GetObject('ParameterGlobal', 'GLIINVEST').Get()
 
   def GetInvesteeName(self):
-    return self.LEmployee.EmployeeName
+    oEmployee = self.Helper.GetObject('VEmployee',self.EmployeeId)
+    if oEmployee.isnull:
+      return ''
+    else:  
+      return self.LEmployee.EmployeeName
        
 class DailyBalance(pobject.PObject):
   #static variable
