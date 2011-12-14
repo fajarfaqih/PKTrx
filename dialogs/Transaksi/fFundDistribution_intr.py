@@ -8,9 +8,6 @@ DefaultItems = [ 'Inputer',
                  'Rate',
                  'TotalAmount',
                  'CashType',
-#                 'LBatch.BatchId',
-#                 'LBatch.BatchNo',
-#                 'LBatch.Description',
                  'LProductBranch.Kode_Cabang',
                  'LProductBranch.Nama_Cabang',
                  'LValuta.Currency_Code',
@@ -56,7 +53,7 @@ class fFundDistribution :
     uipTran.Edit()
     for item in DefaultItems :
       uipTran.SetFieldValue(item,self.DefaultValues[item])
-    #self.pBatch_LBatch.SetFocus()
+
     self.pBatch_ActualDate.SetFocus()
     
   def InitValues(self):
@@ -113,7 +110,6 @@ class fFundDistribution :
     else:
       # Edit Mode
       
-      #self.pBatch_LBatch.Enabled = 0
       # Set Save button hidden
       self.pAction_bSave.Visible = 0
 
@@ -125,15 +121,6 @@ class fFundDistribution :
       self.mpBayar.ActivePageIndex = PageIndex[uipTran.PaymentType]
       
     return self.FormContainer.Show()
-    
-  def BatchAfterLookup(self, sender, linkui):
-    uipTran = self.uipTransaction
-    uipTran.Edit()
-    uipTran.ActualDate = uipTran.GetFieldValue('LBatch.BatchDate')
-    self.DefaultValues['LBatch.BatchId'] = uipTran.GetFieldValue('LBatch.BatchId')
-    self.DefaultValues['LBatch.BatchNo'] = uipTran.GetFieldValue('LBatch.BatchNo')
-    self.DefaultValues['LBatch.Description'] = uipTran.GetFieldValue('LBatch.Description')
-    self.DefaultValues['ActualDate'] = uipTran.ActualDate
 
   def CashCurrAfterLookup(self, sender, linkui):
     uipItem = self.uipTransactionItem
@@ -214,7 +201,11 @@ class fFundDistribution :
       fSelectBudget = self.app.CreateForm(formname,formname,0,None, None)
       self.fSelectBudget = fSelectBudget
 
-    if self.fSelectBudget.GetBudget(self.uipTransaction.PeriodId) == 1:
+    ActualDate = self.uipTransaction.ActualDate or 0
+    if ActualDate == 0 :
+      raise 'Peringatan','Tanggal transaksi belum diinput. Silahkan input tanggal transaksi lebih dahulu'
+
+    if self.fSelectBudget.GetBudget(ActualDate) == 1:
       BudgetCode = self.fSelectBudget.BudgetCode
       BudgetId = self.fSelectBudget.BudgetId
       BudgetOwner = self.fSelectBudget.BudgetOwner
@@ -310,10 +301,7 @@ class fFundDistribution :
 
   def CheckRequiredGeneral(self):
     uipTran  = self.uipTransaction
-    #if self.uipTransaction.GetFieldValue('LBatch.BatchId') == None:
-    #  self.app.ShowMessage('Batch belum dipilih')
-    #  return 0
-    
+
     if uipTran.ActualDate in [0, None] :
       self.app.ShowMessage('Tanggal Transaksi belum diinputkan')
       return 0
@@ -398,8 +386,6 @@ class fFundDistribution :
             #app.ShowMessage("Masukkan kertas ke printer untuk cetak kwitansi")
             oPrint.doProcessByStreamName(app,ph.packet,res.StreamName)
 
-        #self.DefaultValues['LBatch.BatchId'] = uipTran.GetFieldValue('LBatch.BatchId')
-        #self.DefaultValues['LBatch.BatchNo'] = uipTran.GetFieldValue('LBatch.BatchNo')
         self.DefaultValues['ActualDate'] = uipTran.ActualDate
         #if savemode == 1 :
         #  self.DefaultValues['TransactionNo'] = res.NewTransactionNo

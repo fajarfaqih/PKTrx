@@ -9,8 +9,8 @@ document <
   Caption='Biaya Dibayar Dimuka'
   Left=50
   Top=50
-  Width=505
-  Height=305
+  Width=497
+  Height=265
   BeforeDeleteRow=''
   BeforeResultSent=''
   OnGeneralSetData=''
@@ -51,15 +51,15 @@ document <
       PostLinkValues=true
     >}Containers={object:rtf::DualSplit<
       Name='dsMain'
-      Width=240
-      Height=96
+      Width=497
+      Height=265
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['pTransaction']
       InversedAlign=true
     >, object:rtf::Panel<
       Name='pAction'
       Width=425
-      Height=30
+      Height=48
       Controls={object:rtf::Button<
           Name='bSave'
           Layout=clNewLine
@@ -196,10 +196,12 @@ document <
           DataLength=20
         >, object:rtf::FieldUIElmtSetting<
           Name='BudgetCode'
+          Hidden=true
           ReadOnlyControl=true
           ControlCaption='Budget'
         >, object:rtf::FieldUIElmtSetting<
           Name='BudgetOwner'
+          Hidden=true
           ReadOnlyControl=true
           ControlCaption='-'
           DataTypeName='varchar'
@@ -267,34 +269,6 @@ document <
           Left=8
           Color=0
           ControlCaption='Tanggal berakhir kontrak'
-        >, *object:rtf::DBEdit<
-          Name='BudgetCode'
-          Top=204
-          Left=8
-          Width=83
-          Height=21
-          Enabled=false
-          Color=-2147483624
-          ControlCaption='Budget'
-          CharCase=ecUpperCase
-        >, *object:rtf::DBEdit<
-          Name='BudgetOwner'
-          Layout=clNextSide
-          Top=204
-          Left=229
-          Enabled=false
-          Color=-2147483624
-          ControlCaption='-'
-          CharCase=ecUpperCase
-        >, object:rtf::Button<
-          Name='bBudget'
-          Layout=clAbsolute
-          Top=200
-          Left=448
-          Color=0
-          ControlCaption=''
-          Caption='Cari Budget'
-          OnClick='bBudgetClick'
         >}EqualCaptionWidth=130
       ControlLeftMargin=8
       ControlTopMargin=8

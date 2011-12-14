@@ -6,7 +6,14 @@ def FormSetDataEx(uideflist, parameter):
 
   if parameter.DatasetCount != 0 :
     rec = parameter.FirstRecord
-    PeriodId = rec.PeriodId
+    #PeriodId = rec.PeriodId
+    ActualDate = rec.ActualDate
+
+    tahun = int(config.FormatDateTime('yyyy',ActualDate))
+
+    oBudgetPeriod = helper.GetObjectByNames('BudgetPeriod', {'PeriodValue': tahun})
+    PeriodId = oBudgetPeriod.PeriodId
+    
     FilterCategory = rec.FilterCategory
     FilterText = rec.FilterText
 

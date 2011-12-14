@@ -142,7 +142,11 @@ class fCashOut :
       fSelectBudget = self.app.CreateForm(formname,formname,0,None, None)
       self.fSelectBudget = fSelectBudget
       
-    if self.fSelectBudget.GetBudget(self.uipTransaction.PeriodId) == 1:
+    ActualDate = self.uipTransaction.ActualDate or 0
+    if ActualDate == 0 :
+      raise 'Peringatan','Tanggal transaksi belum diinput. Silahkan input tanggal transaksi lebih dahulu'
+      
+    if self.fSelectBudget.GetBudget(ActualDate) == 1:
       BudgetCode = self.fSelectBudget.BudgetCode
       BudgetId = self.fSelectBudget.BudgetId
       BudgetOwner = self.fSelectBudget.BudgetOwner

@@ -46,7 +46,6 @@ class fCARCPIA :
   def bBudgetClick(self,sender):
     uipData = self.uipData
     if self.fSearchBudget == None:
-      #formname = 'Transaksi/fSelectBudgetYear'
       formname = 'Transaksi/fSelectBudgetCode'
       form = self.app.CreateForm(formname,formname,0,None,None)
       self.fSearchBudget = form
@@ -54,9 +53,13 @@ class fCARCPIA :
       form = self.fSearchBudget
     # end if
 
+    ActualDate = uipData.ActualDate or 0
+    if ActualDate == 0 :
+      raise 'Peringatan','Tanggal transaksi belum diinput. Silahkan input tanggal transaksi lebih dahulu'
+
     BranchCode = uipData.BranchCode
     PeriodId = uipData.PeriodId
-    if form.GetBudget(PeriodId) == 1:
+    if form.GetBudget(ActualDate) == 1:
       uipData.Edit()
       uipData.BudgetCode = form.BudgetCode
       uipData.BudgetOwner = form.BudgetOwner

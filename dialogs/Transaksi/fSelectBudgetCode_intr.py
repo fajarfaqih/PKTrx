@@ -4,10 +4,12 @@ class fSelectBudgetCode :
     self.ItemCode = None
     self.ItemName = None
 
-  def GetBudget(self,PeriodId):
+  def GetBudget(self, ActualDate):
 
     uipFilter = self.uipFilter
-    uipFilter.PeriodId = PeriodId
+    uipFilter.Edit()
+    #uipFilter.PeriodId = PeriodId
+    uipFilter.ActualDate = ActualDate
 
     if uipFilter.FilterCategory in [None,''] :
       uipFilter.FilterCategory = '0'
@@ -32,7 +34,7 @@ class fSelectBudgetCode :
     uipFilter = self.uipFilter
 
     ph = self.app.CreateValues(
-      ['PeriodId', uipFilter.PeriodId],
+      ['ActualDate', uipFilter.ActualDate],
       ['FilterCategory', uipFilter.FilterCategory or ''],
       ['FilterText', uipFilter.FilterText or '']
     )

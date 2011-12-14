@@ -48,11 +48,7 @@ def FormSetDataEx(uideflist, params) :
   
   bulan = int(config.FormatDateTime('m',Now))
   tahun = int(config.FormatDateTime('yyyy',Now))
-  #rsPeriod = config.CreateSQL(' \
-  #     select a.periodid from budgetperiod a , budgetperiod b \
-  #     where a.parentperiodid=b.periodid \
-  #         and a.periodvalue=%d and b.periodvalue=%d' % (bulan,tahun)).RawResult
-  #rec.SetFieldByName('PeriodId', rsPeriod.GetFieldValueAt(0) or 0)
+
   oBudgetPeriod = helper.GetObjectByNames('BudgetPeriod', {'PeriodValue': tahun})
   rec.PeriodId = oBudgetPeriod.PeriodId
 

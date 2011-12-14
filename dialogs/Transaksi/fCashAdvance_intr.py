@@ -110,10 +110,12 @@ class fCashAdvance :
     else:
       form = self.fSearchBudget
     # end if
+    
+    ActualDate = self.uipTransaction.ActualDate or 0
+    if ActualDate == 0 :
+      raise 'Peringatan','Tanggal transaksi belum diinput. Silahkan input tanggal transaksi lebih dahulu'
 
-    BranchCode = uipTran.BranchCode
-    PeriodId = uipTran.PeriodId
-    if form.GetBudget(PeriodId) == 1:
+    if form.GetBudget(ActualDate) == 1:
       uipTran.Edit()
       uipTran.BudgetCode = form.BudgetCode
       uipTran.BudgetOwner = form.BudgetOwner

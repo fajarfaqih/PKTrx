@@ -52,22 +52,6 @@ class fCashAdvanceReturn :
       uipTran.EmployeeId = form.uipEmployee.EmployeeId
     # end if
 
-  def BudgetBeforeLookUp(self,sender,linkui):
-    if self.fSelectBudget == None :
-      formname = 'Transaksi/fSelectBudgetCode'
-      fSelectBudget = self.app.CreateForm(formname,formname,0,None, None)
-      self.fSelectBudget = fSelectBudget
-
-    if self.fSelectBudget.GetBudget(self.uipTransaction.PeriodId) == 1:
-      BudgetCode = self.fSelectBudget.BudgetCode
-      BudgetId = self.fSelectBudget.BudgetId
-      BudgetOwner = self.fSelectBudget.BudgetOwner
-
-      self.uipTransactionItem.Edit()
-      self.uipTransactionItem.BudgetCode = BudgetCode
-      self.uipTransactionItem.BudgetId = BudgetId
-      self.uipTransactionItem.BudgetOwner = BudgetOwner
-
   def ProductBeforeLookup(self, sender, linkui):
     if self.fSelectProduct == None:
       fData = self.app.CreateForm('Transaksi/fSelectProduct', 'Transaksi/fSelectProduct', 0, None, None)
