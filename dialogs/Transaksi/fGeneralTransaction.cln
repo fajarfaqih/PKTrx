@@ -755,7 +755,7 @@ document <
             '5=Non Halal'#13#10]
         >, object:rtf::FieldUIElmtSetting<
           Name='IsReverseCollection'
-          ControlCaption='Transaksi koreksi'
+          ControlCaption='Transaksi koreksi / reversal'
           DataTypeName='varchar'
           DataLength=1
           EnumeratedValues=['F=False'#13#10,
@@ -849,8 +849,10 @@ document <
           Layout=clNextSide
           Top=148
           Left=237
+          Width=185
+          Height=17
           Color=0
-          ControlCaption='Transaksi koreksi'
+          ControlCaption='Transaksi koreksi / reversal'
           LayoutOrder=9
           ValueChecked='T'
           ValueUnchecked='F'

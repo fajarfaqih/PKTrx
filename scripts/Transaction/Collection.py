@@ -28,7 +28,22 @@ def SetTransactionData(oTran,request):
   oTran.VolunteerId = request[u'VolunteerId']
   
 
+def GetDataDonor(helper,DonorId):
+  oDonor = helper.CreateObject('ExtDonor')
+  oDonor.GetData(DonorId)
+
+  return oDonor
+
 #------------- COLLECTION -------------------
+# dictJournalCode = { FunEntity : JournalCode }
+dictJournalCode = {
+  1 : 'C10Z',
+  2 : 'C10I',
+  3 : 'C10W',
+  4 : '10',
+  5 : '10'
+}
+
 def CollectionNew(config, srequest ,params):
   request = simplejson.loads(srequest)
   helper = phelper.PObjectHelper(config)
@@ -123,22 +138,11 @@ def BranchCashCollection(helper,oTran,oBatch,request,params):
   oTran.MarketerId = request[u'MarketerId']
   oTran.ChannelCode = 'R'
   
-  #aProductBranchCode = request[u'ProductBranchCode']
-  #if aProductBranchCode != aBranchCode :
-  #  aJournalCode = 'C15'
-  #  aJournalCodeDebit = '15'
-  #else:
-  aJournalCode = 'C10'
-  aJournalCodeDebit = '10'
-  #-- if.else
-  
   # Get Sponsor & volunteer
   oSponsor = helper.GetObject('Sponsor', request[u'SponsorId'])
   oVolunteer = helper.GetObject('Volunteer', str(request[u'VolunteerId']))
+  oDonor = GetDataDonor(helper,request[u'DonorId'])
   
-  oDonor = helper.CreateObject('ExtDonor')
-  oDonor.GetData(request[u'DonorId'])
-
   # Set Information
   oTran.SponsorId = request[u'SponsorId']
   oTran.VolunteerId = request[u'VolunteerId']
@@ -167,9 +171,17 @@ def BranchCashCollection(helper,oTran,oBatch,request,params):
     oItemPA.SetMutation(item[u'Amount'], aRate)
     oItemPA.Description = item[u'Description']
 
-    oItemPA.SetJournalParameter('C10')
-    oItemPA.SetCollectionEntity(item[u'FundEntity'])
-    oItemPA.PercentageOfAmil = item['PercentageOfAmil']
+    FundEntity = item[u'FundEntity']
+    PercentageOfAmil = item[u'PercentageOfAmil']
+    if PercentageOfAmil <= 0.0 :
+      JournalCode ='10'
+    else:
+      JournalCode = dictJournalCode[FundEntity]
+    # end if
+    oItemPA.SetJournalParameter(JournalCode)
+
+    oItemPA.SetCollectionEntity(FundEntity)
+    oItemPA.PercentageOfAmil = PercentageOfAmil
 
     if not oSponsor.isnull  : oSponsor.AddTransaction(oItemPA)
     if not oVolunteer.isnull: oVolunteer.AddTransaction(oItemPA)
@@ -182,7 +194,7 @@ def BranchCashCollection(helper,oTran,oBatch,request,params):
   oItemBC = oTran.CreateAccountTransactionItem(oBranchCash)
   oItemBC.SetMutation('D', totalAmount, aRate)
   oItemBC.Description = request[u'Description']
-  oItemBC.SetJournalParameter(aJournalCodeDebit)
+  oItemBC.SetJournalParameter('10')
   
   # Generate TransactionNo
   oTran.GenerateTransactionNumber(oBranchCash.CashCode)
@@ -207,21 +219,10 @@ def BankCollection(helper,oTran,oBatch,request,params):
   oTran.MarketerId = request[u'MarketerId'] 
   oTran.ChannelCode = 'A'
   
-  #aProductBranchCode = request[u'ProductBranchCode']
-  #if aProductBranchCode != aBranchCode :
-  #  aJournalCode = 'C15'
-  #  aJournalCodeDebit = '15'
-  #else:
-  aJournalCode = 'C10'
-  aJournalCodeDebit = '10'
-
-  #-- if.else
-
   # Get Sponsor & volunteer
   oSponsor = helper.GetObject('Sponsor', request[u'SponsorId'])
   oVolunteer = helper.GetObject('Volunteer', str(request[u'VolunteerId']))
-  oDonor = helper.CreateObject('ExtDonor')
-  oDonor.GetData(request[u'DonorId'])
+  oDonor = GetDataDonor(helper,request[u'DonorId'])
   
   # Set Information
   oTran.SponsorId = request[u'SponsorId']
@@ -259,9 +260,18 @@ def BankCollection(helper,oTran,oBatch,request,params):
     oItemPA = oTran.CreateDonorTransactionItem(oProductAccount, request[u'DonorId'])
     oItemPA.SetMutation(item[u'Amount'], aRate)
     oItemPA.Description = item[u'Description']
-    oItemPA.SetJournalParameter('C10')
-    oItemPA.SetCollectionEntity(item[u'FundEntity'])
-    oItemPA.PercentageOfAmil = item['PercentageOfAmil']
+
+    FundEntity = item[u'FundEntity']
+    PercentageOfAmil = item[u'PercentageOfAmil']
+    if PercentageOfAmil <= 0.0 :
+      JournalCode ='10'
+    else:
+      JournalCode = dictJournalCode[FundEntity]
+    # end if
+    oItemPA.SetJournalParameter(JournalCode)
+
+    oItemPA.SetCollectionEntity(FundEntity)
+    oItemPA.PercentageOfAmil = PercentageOfAmil
 
     if not oSponsor.isnull  : oSponsor.AddTransaction(oItemPA)
     if not oVolunteer.isnull: oVolunteer.AddTransaction(oItemPA)
@@ -274,7 +284,7 @@ def BankCollection(helper,oTran,oBatch,request,params):
   oItemBA = oTran.CreateAccountTransactionItem(oBankAccount)
   oItemBA.SetMutation('D', totalAmount, aRate)
   oItemBA.Description = request[u'Description']
-  oItemBA.SetJournalParameter(aJournalCodeDebit)
+  oItemBA.SetJournalParameter('10')
   
   oTran.SaveInbox(params)
   
@@ -296,22 +306,10 @@ def AssetCollection(helper,oTran,oBatch,request,params):
   oTran.MarketerId = request[u'MarketerId']
   oTran.ChannelCode = 'G'
   
-  #aProductBranchCode = request[u'ProductBranchCode']
-  #if aProductBranchCode != aBranchCode :
-  #  aJournalCode = 'C15'
-  #  aJournalCodeDebit = '15'
-  #else:
-  aJournalCode = 'C10'
-  aJournalCodeDebit = '10'
-
-  #-- if.else
-
-
   # Get Sponsor & volunteer
   oSponsor = helper.GetObject('Sponsor', request[u'SponsorId'])
   oVolunteer = helper.GetObject('Volunteer', str(request[u'VolunteerId']))
-  oDonor = helper.CreateObject('ExtDonor')
-  oDonor.GetData(request[u'DonorId'])
+  oDonor = GetDataDonor(helper,request[u'DonorId'])
 
   # Set Information
   oTran.SponsorId = request[u'SponsorId']
@@ -342,9 +340,18 @@ def AssetCollection(helper,oTran,oBatch,request,params):
     oItemPA = oTran.CreateDonorTransactionItem(oProductAccount, request[u'DonorId'])
     oItemPA.SetMutation(item[u'Amount'], aRate)
     oItemPA.Description = item[u'Description']
-    oItemPA.SetJournalParameter('C10')
-    oItemPA.SetCollectionEntity(item[u'FundEntity'])
-    oItemPA.PercentageOfAmil = item['PercentageOfAmil']
+    
+    FundEntity = item[u'FundEntity']
+    PercentageOfAmil = item[u'PercentageOfAmil']
+    if PercentageOfAmil <= 0.0 :
+      JournalCode ='10'
+    else:
+      JournalCode = dictJournalCode[FundEntity]
+    # end if
+    oItemPA.SetJournalParameter(JournalCode)
+
+    oItemPA.SetCollectionEntity(FundEntity)
+    oItemPA.PercentageOfAmil = PercentageOfAmil
 
     if not oSponsor.isnull  : oSponsor.AddTransaction(oItemPA)
     if not oVolunteer.isnull: oVolunteer.AddTransaction(oItemPA)
@@ -358,7 +365,7 @@ def AssetCollection(helper,oTran,oBatch,request,params):
   oItemGL.RefAccountName = request[u'AssetName']
   oItemGL.SetMutation('D', totalAmount, aRate)
   oItemGL.Description = item[u'Description']
-  oItemGL.SetJournalParameter(aJournalCodeDebit)
+  oItemGL.SetJournalParameter('10')
 
   oTran.SaveInbox(params)
   FileKwitansi = oTran.GetKwitansi()
@@ -370,15 +377,6 @@ def PettyCashCollection(config, srequest ,params):
   aBranchCode = request[u'BranchCode']
   aValuta = request[u'CashCurrency']
   aRate = request[u'Rate']
-  
-  #aProductBranchCode = request[u'ProductBranchCode']
-  #if aProductBranchCode != aBranchCode :
-  #  aJournalCode = 'C15'
-  #  aJournalCodeDebit = '15'
-  #else:
-  aJournalCode = 'C10'
-  aJournalCodeDebit = '10'
-  #-- if.else
   
   oTran.Inputer     = aInputer
   oTran.BranchCode  = aBranchCode
@@ -393,8 +391,7 @@ def PettyCashCollection(config, srequest ,params):
   # Get Sponsor & volunteer
   oSponsor = helper.GetObject('Sponsor', request[u'SponsorId'])
   oVolunteer = helper.GetObject('Volunteer', str(request[u'VolunteerId']))
-  oDonor = helper.CreateObject('ExtDonor')
-  oDonor.GetData(request[u'DonorId'])
+  oDonor = GetDataDonor(helper,request[u'DonorId'])
 
   # Set Information
   oTran.SponsorId = request[u'SponsorId']
@@ -421,9 +418,18 @@ def PettyCashCollection(config, srequest ,params):
     oItemPA = oTran.CreateDonorTransactionItem(oProductAccount, request[u'DonorId'])
     oItemPA.SetMutation(item[u'Amount'], aRate)
     oItemPA.Description = item[u'Description']
-    oItemPA.SetJournalParameter('C10')
-    oItemPA.SetCollectionEntity(item[u'FundEntity'])
-    oItemPA.PercentageOfAmil = item['PercentageOfAmil']
+    
+    FundEntity = item[u'FundEntity']
+    PercentageOfAmil = item[u'PercentageOfAmil']
+    if PercentageOfAmil <= 0.0 :
+      JournalCode ='10'
+    else:
+      JournalCode = dictJournalCode[FundEntity]
+    # end if
+    oItemPA.SetJournalParameter(JournalCode)
+
+    oItemPA.SetCollectionEntity(FundEntity)
+    oItemPA.PercentageOfAmil = PercentageOfAmil
 
     if not oSponsor.isnull  : oSponsor.AddTransaction(oItemPA)        
     if not oVolunteer.isnull: oVolunteer.AddTransaction(oItemPA)      
@@ -437,7 +443,7 @@ def PettyCashCollection(config, srequest ,params):
   oItemPC = oTran.CreateAccountTransactionItem(oPettyCash)
   oItemPC.SetMutation('D', totalAmount, aRate)
   oItemPC.Description = request[u'Description']
-  oItemPC.SetJournalParameter(aJournalCodeDebit)
+  oItemPC.SetJournalParameter('10')
   
   oTran.GenerateTransactionNumber(oPettyCash.CashCode)
   oTran.SaveInbox(params)

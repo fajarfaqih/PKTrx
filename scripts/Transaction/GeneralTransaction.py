@@ -139,6 +139,14 @@ def UpdateTransaction(TranCode, config, srequest, params):
   status,msg = oTran.CreateJournal()      
   return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
 
+dictJournalCodeDonor = {
+  1 : 'C10Z',
+  2 : 'C10I',
+  3 : 'C10W',
+  4 : '10',
+  5 : '10'
+}
+
 def GeneralTransaction(helper,oTran,oBatch,request,params):
   aInputer    = request[u'Inputer']
   aBranchCode = request[u'BranchCode']
@@ -179,15 +187,24 @@ def GeneralTransaction(helper,oTran,oBatch,request,params):
         oItemPA.SetReverseMutation(aAmount, aRate)
       # end if else  
       oItemPA.Description = aDesc
-      oItemPA.SetJournalParameter('C10')
-      oItemPA.SetCollectionEntity(item[u'FundEntity'])
-      oItemPA.PercentageOfAmil = 0.0
+
+      FundEntity = item[u'FundEntity']
+      PercentageOfAmil = item[u'PercentageOfAmil']
+      if PercentageOfAmil <= 0.0 :
+        JournalCode ='10'
+      else:
+        JournalCode = dictJournalCodeDonor[FundEntity]
+      # end if
+
+      oItemPA.SetJournalParameter(JournalCode)
+      oItemPA.SetCollectionEntity(FundEntity)
+      oItemPA.PercentageOfAmil = PercentageOfAmil
 
       #oSponsor = helper.GetObject('Sponsor', item[u'SponsorId'])
       #if not oSponsor.isnull  : oSponsor.AddTransaction(oItemPA)
       
       oDonor = helper.CreateObject('ExtDonor')
-      oDonor.GetData(item[u'DonorId'])        
+      oDonor.GetData(item[u'DonorId'])
       if oDonor.IsSponsor() : oDonor.AddTransaction(oItemPA)
       
       oVolunteer = helper.GetObject('Volunteer', str(item[u'VolunteerId']))

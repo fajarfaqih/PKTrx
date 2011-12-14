@@ -76,6 +76,7 @@ def SimpanData(config, params, returns):
 #        item['SponsorId'] = oItem.GetFieldByName('SponsorCol.SponsorId')
         item['VolunteerId'] = oItem.GetFieldByName('LVolunteer.VolunteerId')
         item['FundEntity'] = oItem.FundEntityCollection
+        item['PercentageOfAmil'] = oItem.PercentageOfAmil
       elif itemType == 'D':
         item['ProductId'] = oItem.ProductIdDist #oItem.GetFieldByName('ProductDist.ProductId')
         item['AccountNo'] = oItem.AccountNoDist
