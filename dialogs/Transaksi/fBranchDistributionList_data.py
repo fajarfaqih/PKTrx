@@ -115,7 +115,7 @@ def GetExcelData(config, params, returns):
     pathtemplates = config.HomeDir + 'templates\\'
     pathresult = corporate.GetUserHomeDir() + '\\'
 
-    resFilename  = pathresult + 'BrachDistributionList.xls'
+    resFilename  = pathresult + 'BranchDistributionList.xls'
 
     recParams = params.FirstRecord
     aBeginDate = recParams.BeginDate
@@ -127,7 +127,7 @@ def GetExcelData(config, params, returns):
 
     res = GetDataDistribution(config,aBranchCode,aBeginDate,aEndDate,aFilterSourceBranch,aFilterDestBranchCode,aIsReportedShow)
 
-    workbook = pyFlexcel.Open(pathtemplates + 'tplBrachDistributionList.xls')
+    workbook = pyFlexcel.Open(pathtemplates + 'tplBranchDistributionList.xls')
     workbook.ActivateWorksheet('data')
     try :
       StrTanggal = ''
