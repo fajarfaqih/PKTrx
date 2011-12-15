@@ -13,6 +13,7 @@ class fBranchDistributionList:
     self.Description = None
     self.fReturnTrans = None
     self.fCADetail = None
+    self.oPrint = self.app.GetClientClass('PrintLib','PrintLib')()
 
   def GetTransaction(self,BranchCode):
     self.uipFilter.Edit()
@@ -39,6 +40,28 @@ class fBranchDistributionList:
     
   def bApplyClick(self,sender):
     self.DisplayTransaction()
+
+  def bExcelClick(self,sender):
+    app = self.app
+    uipFilter = self.uipFilter
+
+    resp = self.form.CallServerMethod('GetExcelData',self.GenerateParamFromFilter())
+
+    status = resp.FirstRecord
+
+    if status.Is_Err :
+      raise 'PERINGATAN',status.Err_Message
+
+    sw = resp.Packet.GetStreamWrapper(0)
+
+    fileName = self.oPrint.ConfirmDestinationPath(app,'xls')
+
+    if fileName in ['',None,0] :
+      return
+
+    sw.SaveToFile(fileName)
+    self.app.ShellExecuteFile(fileName)
+    
 
   def CreateReturnTransactionClick(self,sender):
     app = self.app
@@ -79,13 +102,13 @@ class fBranchDistributionList:
     form.ShowDetail(DistributionId)
 
 
-  def DisplayTransaction(self):
+  def GenerateParamFromFilter(self):
     app = self.app
     uipFilter = self.uipFilter
-    
-    SourceBranchCode = self.uipFilter.GetFieldValue('LSourceBranch.BranchCode') or ''
-    DestBranchCode = self.uipFilter.GetFieldValue('LDestBranch.BranchCode') or ''
-    IsReportedShow = self.uipFilter.IsReportedShow
+
+    SourceBranchCode = uipFilter.GetFieldValue('LSourceBranch.BranchCode') or ''
+    DestBranchCode = uipFilter.GetFieldValue('LDestBranch.BranchCode') or ''
+    IsReportedShow = uipFilter.IsReportedShow
     ph = app.CreateValues(
       ['BeginDate',uipFilter.BeginDate],
       ['EndDate',uipFilter.EndDate],
@@ -93,46 +116,15 @@ class fBranchDistributionList:
       ['DestBranchCode',DestBranchCode],
       ['IsReportedShow',IsReportedShow]
     )
+
+    return ph
     
+  def DisplayTransaction(self):
+    app = self.app
+
+    ph = self.GenerateParamFromFilter()
     self.form.SetDataWithParameters(ph)
-    
-    """
-    BeginY, BeginM, BeginD = uipFilter.BeginDate[:3]
-    EndY, EndM, EndD = uipFilter.EndDate[:3]
-    intBeginDate = app.ModDateTime.EncodeDate(BeginY,BeginM,BeginD)
-    sBegin = '%s-%s-%s' % (str(BeginM).zfill(2),str(BeginD).zfill(2),str(BeginY))
-    intEndDate = app.ModDateTime.EncodeDate(EndY,EndM,EndD)
-    sEnd = '%s-%s-%s' % (str(EndM).zfill(2),str(EndD).zfill(2),str(EndY))
 
-    self.form.SetDataFromQuery('uipCATransactItem',
-         " \
-         LTransaction.BranchCode = '%s'  \
-         and LTransaction.TransactionDate >= '%s' \
-         and LTransaction.TransactionDate <= '%s' \
-         and MutationType = 'D' \
-         and LTransaction.TransactionCode = 'DT'  \
-         " % (uipFilter.BranchCode,sBegin,sEnd), '')
-
-    return"""
-
-  def DisplayInfoList(self):
-    qDistTransferInfo = self.qDistributionTransferInfo
-
-    sOQL = " \
-      select from DistributionTransferInfo \
-       [LTransaction.BranchCode = :BranchCode and \
-        LTransaction.ActualDate >= :BeginDate and \
-        LTransaction.ActualDate <= :EndDate ] \
-      (LTransaction.ActualDate, \
-       LTransaction.LBranchDestination.BranchName , \
-       LTransaction.Amount , \
-       LTransaction.TransactionNo, \
-       LTransaction.Description, \
-       self) \
-       then order by ActualDate ; \
-     "
-
-    
   def GridDoubleClick(self,sender):
     self.ProsesClick(self.pAction_bPilih)
     

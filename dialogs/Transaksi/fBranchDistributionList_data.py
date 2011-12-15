@@ -1,5 +1,8 @@
 import com.ihsan.foundation.pobjecthelper as phelper
 import com.ihsan.timeutils as timeutils
+import pyFlexcel
+import sys
+import os
 
 def FormSetDataEx(uideflist,params):
 
@@ -95,3 +98,77 @@ def OnSetData(sender):
   rec.TransactionDate = oDonorTrans.LTransaction.GetAsTDateTime('TransactionDate')
   rec.Description = oDonorTrans.LTransaction.Description
 
+dictReportStatus = {
+  'F' : 'Belum Dilaporkan',
+  'T' : 'Telah Dilaporkan',
+}
+
+def GetExcelData(config, params, returns):
+  status = returns.CreateValues(
+    ['Is_Err',0],
+    ['Err_Message',''],
+    ['FileName',''],)
+    
+  try:
+    helper = phelper.PObjectHelper(config)
+    corporate = helper.CreateObject('Corporate')
+    pathtemplates = config.HomeDir + 'templates\\'
+    pathresult = corporate.GetUserHomeDir() + '\\'
+
+    resFilename  = pathresult + 'BrachDistributionList.xls'
+
+    recParams = params.FirstRecord
+    aBeginDate = recParams.BeginDate
+    aEndDate = recParams.EndDate
+    aBranchCode = config.SecurityContext.GetUserInfo()[4]
+    aFilterSourceBranch = recParams.SourceBranchCode
+    aFilterDestBranchCode = recParams.DestBranchCode
+    aIsReportedShow = recParams.IsReportedShow
+
+    res = GetDataDistribution(config,aBranchCode,aBeginDate,aEndDate,aFilterSourceBranch,aFilterDestBranchCode,aIsReportedShow)
+
+    workbook = pyFlexcel.Open(pathtemplates + 'tplBrachDistributionList.xls')
+    workbook.ActivateWorksheet('data')
+    try :
+      StrTanggal = ''
+      if aBeginDate == aEndDate:
+         StrTanggal = '%s' % config.FormatDateTime('dd mmm yyyy', aBeginDate)
+      else:
+         StrTanggal = '%s s.d. %s' % (
+                     config.FormatDateTime('dd mmm yyyy', aBeginDate),
+                     config.FormatDateTime('dd mmm yyyy', aEndDate)
+                   )
+
+      workbook.SetCellValue(2, 3, StrTanggal)
+
+      idx = 0
+      while not res.Eof :
+        row = idx + 5
+        workbook.SetCellValue(row , 1, str(idx+1))
+        workbook.SetCellValue(row , 2, config.FormatDateTime('dd-mm-yyyy',timeutils.AsTDateTime(config, res.ActualDate)))
+        workbook.SetCellValue(row , 3, res.BranchName)
+        workbook.SetCellValue(row , 4, res.BranchName_1)
+        workbook.SetCellValue(row , 5, res.Amount)
+        workbook.SetCellValue(row , 6, res.TransactionNo)
+        workbook.SetCellValue(row , 7, res.Description)
+        workbook.SetCellValue(row , 8, dictReportStatus[res.ReportStatus])
+        
+        idx += 1
+        res.Next()
+      # end while
+
+      if os.access(resFilename, os.F_OK) == 1:
+        os.remove(resFilename)
+      workbook.SaveAs(resFilename)
+
+    finally:
+      workbook = None
+
+    sw = returns.AddStreamWrapper()
+    sw.LoadFromFile(resFilename)
+    sw.MIMEType = config.AppObject.GetMIMETypeFromExtension(resFilename)
+
+  except:
+    status.Is_Err = 1
+    status.Err_Message =str(sys.exc_info()[1])
+  # end try except

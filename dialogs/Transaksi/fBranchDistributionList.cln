@@ -256,7 +256,7 @@ document <
           Name='button1'
           Layout=clAbsolute
           Top=8
-          Left=10
+          Left=186
           Width=169
           Height=25
           Visible=false
@@ -268,7 +268,7 @@ document <
           Name='button2'
           Layout=clAbsolute
           Top=8
-          Left=192
+          Left=360
           Width=225
           Height=25
           Visible=false
@@ -276,6 +276,17 @@ document <
           ControlCaption=''
           Caption='&2. Detil Transaksi Penyerahan Uang Muka'
           OnClick='DetilUMClick'
+        >, object:rtf::Button<
+          Name='bExcel'
+          Layout=clAbsolute
+          Top=8
+          Left=8
+          Width=145
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='Export E&xcel'
+          OnClick='bExcelClick'
         >}ControlLeftMargin=8
       ControlTopMargin=8
       DefaultControlHeight=21
