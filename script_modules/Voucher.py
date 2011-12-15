@@ -1,19 +1,5 @@
 REVERSE_MNEMONIC = {'D':'C','C':'D'}
 
-CURRSYMBOL = {
-      '000' : ['Rp','Rupiah'],
-      '411' : ['USD','US Dollar'],
-      '333' : ['EUR','Euro'],
-      '111' : ['JPY','Yen'],
-      '311' : ['AUD','AUD'],
-      '511' : ['GBP','POUND'],
-      '124' : ['RM','MYR'],
-      '143' : ['SR','SAR'],
-      '122' : ['SGD','SGD'],
-      '611' : ['HGD','HGD'],
-      '614' : ['CAD','CAD'],
-    }
-
 def GetKwitansiDonor(oTran):
 #   LsTemplate = {
 #     'EN' : {
@@ -256,6 +242,122 @@ def GetKwitansiInvoiceNew(oTran):
   ToolsConvert = oTran.Helper.LoadScript('Tools.S_Convert')
 
   # Set Terbilang
+  Currency = oTran.LCurrency  
+  Total = oTran.Amount or 0.0
+
+  Terbilang = ToolsConvert.Terbilang(config,Total,
+            KodeMataUang = oTran.CurrencyCode,
+            NamaMataUang = Currency.Symbol_Says)          
+  Terbilang = ToolsConvert.Divider(Terbilang,45)
+  if len(Terbilang) == 1 : Terbilang.append('')
+  
+  # Get Template
+  PrintHelper = oTran.Helper.CreateObject('PrintHelper')
+  #templateKwitansi = PrintHelper.LoadTemplate('KwitansiPenerimaan')
+  
+  TemplateName = 'KwitansiDonorFix'
+  if oTran.CurrencyCode != '000':
+    TemplateName = 'KwitansiDonorFixEN'
+
+  templateKwitansi = PrintHelper.LoadRtfTemplate(TemplateName)
+  
+  NamaLembaga = oTran.Helper.GetObject('ParameterGlobal', 'COMPNAME').Get()
+  
+  UserInfo = oTran.Config.SecurityContext.GetUserInfo()
+  
+  # Get Invoice
+  oInvoice = oTran.Helper.GetObjectByNames('InvoiceProduct', 
+          {'TransactionId' : oTran.TransactionId}
+      ).CastToLowestDescendant()
+
+  # Get Data donor
+  oSponsor = oInvoice.LSponsor
+  DonorNo = oSponsor.Donor_No
+  Name = oSponsor.full_name
+  Address = oSponsor.address
+  
+  aAddress = ['','']
+  if len(Address) > 0 :  
+    aAddress = ToolsConvert.Divider(Address,50)      
+    if len(aAddress) == 1 : aAddress.append('')
+  
+  dataKwitansi = {}
+  dataKwitansi['NOTRANSAKSI'] = oTran.TransactionNo
+  dataKwitansi['IDDONOR'] = DonorNo
+  dataKwitansi['RECEIVEDFROM'] = Name
+  dataKwitansi['ALAMAT1'] = aAddress[0]
+  dataKwitansi['ALAMAT2'] = aAddress[1]
+  dataKwitansi['NAMAKAS'] = ''
+  dataKwitansi['KODEAKUN'] = ''
+  dataKwitansi['TERBILANG1'] = Terbilang[0]
+  dataKwitansi['TERBILANG2'] = Terbilang[1]
+  dataKwitansi['NAMA_LEMBAGA'] = NamaLembaga
+  dataKwitansi['USER_CETAK'] = oTran.PaidTo
+  dataKwitansi['WAKTU_CETAK'] = config.FormatDateTime('dd-mm-yyyy hh:nn',config.Now())
+  dataKwitansi['TGL_BAYAR'] = config.FormatDateTime('dd mmmm yyyy',oTran.GetAsTDateTime('ActualDate'))
+  dataKwitansi['TOTAL'] = config.FormatFloat('#,##0.00',Total)
+  dataKwitansi['CURRSYMBOL'] = Currency.Symbol
+  dataKwitansi['KETERANGAN'] = oTran.Description
+  dataKwitansi['MARKETER'] = oInvoice.InvoiceContactPerson
+  dataKwitansi['TELP'] = ''
+  
+  # Set Data Info Cabang
+  oBranch = oTran.Helper.GetObject('Branch',UserInfo[4])
+  if oBranch.isnull : raise 'PERINGATAN','Data Cabang tidak ditemukan'
+  dataKwitansi['CABANGNAMA'] = oBranch.BranchName or ''
+  dataKwitansi['CABANGALAMAT'] = oBranch.Branch_Address or ''
+  dataKwitansi['CABANGTELEPON'] = oBranch.Branch_Phone or ''
+  dataKwitansi['CABANGFAX'] = oBranch.Branch_Fax or ''
+  dataKwitansi['CABANGREK1'] = "- %s" % oBranch.Branch_BankAccount1 or ''
+  Account2 = ''
+  if oBranch.Branch_BankAccount2 not in ['',None] :
+    Account2 = "- %s" % oBranch.Branch_BankAccount2 
+  dataKwitansi['CABANGREK2'] = Account2
+  dataKwitansi['KOTA'] = oBranch.Location or ''
+
+  DETAIL = ''
+  
+  dataKwitansi['NAMAKAS'] = "%s %s " % (oInvoice.InvoiceBankName,oInvoice.InvoiceBankAccountNumber)
+  dataKwitansi['KODEAKUN'] = ''
+  
+  oItem = oTran.Helper.GetObjectByNames('TransactionItem', 
+          {'TransactionId' : oTran.TransactionId}
+      ).CastToLowestDescendant()
+  
+  aRate = oTran.Rate
+  if oItem.CurrencyCode != oTran.CurrencyCode :
+    Amount = oItem.Amount/aRate
+  else:
+    Amount = oItem.Amount  
+  # end if
+
+  DETAIL += 0 * ' '  + '%(LINE)2s %(NOACCOUNT)-6s  %(DESCRIPTION)-40s  %(CURRSYMBOL)-2s %(AMOUNT)20s \n\\par ' % {
+           'LINE' : '-' , #str(rowdetail),
+           'NOACCOUNT' : oItem.AccountCode,
+           'DESCRIPTION' : oInvoice.LProductAccount.AccountName, #oItem.Description[:40],
+           'AMOUNT' :  config.FormatFloat('#,##0.00',Amount),
+           'CURRSYMBOL' : Currency.Symbol,
+        } 
+  
+  # Tambah isi detail dengan sisa baris max detail (max 5 baris)
+  for row in range(4):
+    DETAIL += '\n\\par '
+  # end for
+  
+  # Tambah isi detail dengan garis pemisah dengan total  
+  UNDERLINE =  54 * ' '  + '-----------------------'
+  dataKwitansi['DETAIL'] = DETAIL + UNDERLINE
+  
+  return oTran.CreateRTFForPrint(templateKwitansi,dataKwitansi)
+
+def GetKwitansiInvoiceNew_OLD(oTran):
+  config = oTran.Config
+  config.FlushUpdates()
+  
+  # Get Tools
+  ToolsConvert = oTran.Helper.LoadScript('Tools.S_Convert')
+
+  # Set Terbilang
   
   Currency = oTran.LCurrency
   Total = oTran.Amount or 0.0
@@ -319,8 +421,8 @@ def GetKwitansiInvoiceNew(oTran):
           {'TransactionId' : oTran.TransactionId}
       ).CastToLowestDescendant()
       
-  dataKwitansi['NAMAKAS'] = "%s %s " % (oInvoice.InvoiceBankName,oInvoice.InvoiceBankAccountNumber) 
-  dataKwitansi['KODEAKUN'] = ''    
+  dataKwitansi['NAMAKAS'] = "%s %s " % (oInvoice.InvoiceBankName,oInvoice.InvoiceBankAccountNumber)
+  dataKwitansi['KODEAKUN'] = ''
   
   oItem = oTran.Helper.GetObjectByNames('TransactionItem', 
           {'TransactionId' : oTran.TransactionId}

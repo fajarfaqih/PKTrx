@@ -222,35 +222,7 @@ class Transaction(pobject.PObject):
 
     # Proses generate number
     config = self.Config
-    MapCode = {
-      'SD001' : 'KM',
-      'DD001' : 'KK',
-      'EAR'   : 'KK',
-      'PEAR'  : 'KM',
-      'INVP'  : 'KM',
-      'INVC'  : 'GT',         
-      'TI'    : 'GT',
-      'PAD'   : 'GT',
-      'FA'    : 'KK',
-      'FAI'    : 'GT',
-      'FAIP'   : 'GT',
-      'CPA'   : 'GT',
-      'DEPR'   : 'GT',                    
-      'CI' : 'KM',
-      'CO' : 'KK',
-      'CA' : 'KK',
-      'CAR' : 'KK',
-      'CARR' : 'KK',      
-      'TM' : 'GT',
-      'DT' : 'KK',
-      'DTR' : 'KM',
-      'INVS' : 'KK',
-      'INVSR' : 'KM',      
-      'DEFAULT' : 'GT',
-      'XAR' : 'KK',
-      'PXAR' : 'KM',
-      'GT' : 'GT'
-    }
+    
     TransactionCode = self.TransactionCode or ''
     if  TransactionCode == '' :
       raise 'GenerateTransactionNumber','TransactionCode tidak ditemukan'
@@ -266,7 +238,7 @@ class Transaction(pobject.PObject):
     #raise '',"TES %s " %self.LTransactionType.VoucherCode
 
     prefixNumber = "%s-%s-%s-%s" % (
-              self.LTransactionType.VoucherCode , #MapCode[TransactionCode],
+              self.LTransactionType.VoucherCode ,
               str(y),
               branchCode,
               CashCode)
