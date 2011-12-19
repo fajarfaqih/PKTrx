@@ -30,19 +30,25 @@ def MergeEmployeeCashAdvance(config,params,returns):
     ToAccountNo = param.ToAccountNo
 
     oSourceEmployeeCA = helper.GetObject("EmployeeCashAdvance",SourceAccountNo)
+    oToEmployeeCA = helper.GetObject("EmployeeCashAdvance",ToAccountNo)
+    
     oEmployee = helper.GetObject("VEmployee",oSourceEmployeeCA.EmployeeIdNumber)
 
-
     if not oEmployee.isnull:
-      message = "Proses tidak dapat dilanjutkan karena data karyawan yang akan digabungkan masih ada pada database php."
-      message += "\nSilahkan hubungi administrator database untuk menghapus atau menggabungkan data karyawan dengan data berikut :"
+      message = "Proses tidak dapat dilanjutkan karena data karyawan yang akan digabungkan masih ada pada database intranet."
+      message += "\nSilahkan hubungi administrator database untuk menghapus data karyawan dengan data berikut :"
       message += "\n- ID\t: %d" % oSourceEmployeeCA.EmployeeIdNumber
       message += "\n- Nama\t: %s" % oEmployee.EmployeeName
       raise 'PERINGATAN', message
-    
-    
-    oToEmployeeCA = helper.GetObject("EmployeeCashAdvance",ToAccountNo)
-    
+
+    oEmployeeDest = helper.GetObject("VEmployee", oToEmployeeCA.EmployeeIdNumber)
+    if oEmployeeDest.isnull:
+      message = "Proses tidak dapat dilanjutkan karena data karyawan yang menjadi tujuan tidak ditemukan dalam data intranet."
+      message += "\nSilahkan hubungi administrator database untuk melakukan pengecekan apakah data karyawan berikut ada :"
+      message += "\n- ID\t: %d" % oToEmployeeCA.EmployeeIdNumber
+      message += "\n- Nama\t: %s" % oEmployeeDest.EmployeeName
+      raise 'PERINGATAN', message
+
     sBackup = "\
          insert into logmergeaccount (transactionitemid,oldaccount,newaccount,mergedate) \
          select transactionitemid,accountno,'%s','%s' \
@@ -53,6 +59,9 @@ def MergeEmployeeCashAdvance(config,params,returns):
     sUpdate = "update accounttransactionitem set accountno='%s' where accountno='%s' " % (ToAccountNo,SourceAccountNo)
     ExecuteSQL(config,sUpdate)
 
+    sUpdate = "update investment set employeeid=%d where employeeid=%d " % (oToEmployeeCA.EmployeeIdNumber , oSourceEmployeeCA.EmployeeIdNumber)
+    ExecuteSQL(config,sUpdate)
+    
     oToEmployeeCA.Balance += oSourceEmployeeCA.Balance
     
     oSourceEmployeeCA.Delete()

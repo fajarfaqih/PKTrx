@@ -49,9 +49,7 @@ def MergeEmployeeAccountReceivable(config,params,returns):
       message += "\n- ID\t: %d" % oToEmployeeCA.EmployeeIdNumber
       message += "\n- Nama\t: %s" % oEmployeeDest.EmployeeName
       raise 'PERINGATAN', message
-      
 
-    
     sBackup = "\
          insert into logmergeaccount (transactionitemid,oldaccount,newaccount,mergedate) \
          select transactionitemid,accountno,'%s','%s' \
@@ -61,6 +59,9 @@ def MergeEmployeeAccountReceivable(config,params,returns):
     sUpdate = "update accounttransactionitem set accountno='%s' where accountno='%s' " % (ToAccountNo,SourceAccountNo)
     ExecuteSQL(config,sUpdate)
 
+    sUpdate = "update investment set employeeid=%d where employeeid=%d " % (oToEmployeeCA.EmployeeIdNumber , oSourceEmployeeCA.EmployeeIdNumber)
+    ExecuteSQL(config,sUpdate)
+    
     oToEmployeeCA.Balance += oSourceEmployeeCA.Balance
     
     oSourceEmployeeCA.Delete()
