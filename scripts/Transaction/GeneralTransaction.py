@@ -792,16 +792,20 @@ def Investment(helper,oTran,oBatch,request,params):
   
   oAccount.BranchCode = request[u'BranchCode']
   oAccount.CurrencyCode = '000'
-  oAccount.AccountName  = request[u'Description'] #request[u'ManagerName']
+  oAccount.AccountName  = request[u'Description']
   oAccount.FundEntity = request[u'FundEntity']
   oAccount.InvestmentAmount = request[u'Amount']
   oAccount.SetLifeTime(request[u'LifeTime'])
   oAccount.InvestmentCatId = request[u'InvestmentCatId']
   oAccount.StartDate = request[u'StartDate']
   oAccount.InvestmentNisbah = request[u'Nisbah'] 
+  
+  
    
-  oItemInv = oTran.CreateAccountTransactionItem(oAccount)
-  oItemInv.SetMutation('D', request[u'Amount'], 1.0)
+  #oItemInv = oTran.CreateAccountTransactionItem(oAccount)
+  #oItemInv.SetMutation('D', request[u'Amount'], 1.0)
+  oItemInv = oTran.CreateInvestmentTransactItem(oAccount)  
+  oItemInv.SetMutation('D', request[u'Amount'], 0.0, 1.0)
   oItemInv.Description = request[u'Description']
   oItemInv.SetFundEntity(request[u'FundEntity'])
   oItemInv.SetJournalParameter(FundEntityMap[request[u'FundEntity']])
@@ -852,19 +856,20 @@ def InvestmentReturn(helper,oTran,oBatch,request,params):
   if oAccount.isnull:
     raise '','Data Investasi tidak ditemukan' 
 
-  oItemInvR = oTran.CreateAccountTransactionItem(oAccount)
-  oItemInvR.SetMutation('C', request[u'Amount'], 1.0)
+  oItemInvR = oTran.CreateInvestmentTransactItem(oAccount)
+  oItemInvR.SetMutation('C', request[u'Amount'], request[u'Share'], 1.0)
   oItemInvR.Description = request[u'Description']
   oItemInvR.SetFundEntity(oAccount.FundEntity)
   oItemInvR.SetJournalParameter(FundEntityMap[oAccount.FundEntity])
   
-  oItemShare = oTran.CreateAccountTransactionItem(oAccount,IsUpdateBalance='F')
-  oItemShare.SetMutation('C', request[u'Share'], 1.0)
-  oItemShare.Description = 'Bagi Hasil'
-  oItemShare.SetFundEntity(oAccount.FundEntity)  
+  
+  #oItemShare = oTran.CreateAccountTransactionItem(oAccount,IsUpdateBalance='F')
+  #oItemShare.SetMutation('C', request[u'Share'], 1.0)
+  #oItemShare.Description = 'Bagi Hasil'
+  #oItemShare.SetFundEntity(oAccount.FundEntity)  
   # Set Account Bagi Hasil Investasi Pengelola
-  oItemShare.SetAccountInterface('4510603')
-  oItemShare.SetJournalParameter('10')
+  #oItemShare.SetAccountInterface('4510603')
+  #oItemShare.SetJournalParameter('10')
 
   # Create BudgetTransaction
 #   aBudgetId = request[u'BudgetId'] 
@@ -881,7 +886,7 @@ def InvestmentReturn(helper,oTran,oBatch,request,params):
     raise 'Cash/Bank', 'Rekening %s tidak ditemukan' % request[u'CashAccountNo']
 
   oItemCA = oTran.CreateAccountTransactionItem(oCashAccount)
-  oItemCA.SetMutation('D', request[u'Amount']+request[u'Share'], 1.0)    
+  oItemCA.SetMutation('D', request[u'Amount'] + request[u'Share'], 1.0)    
   oItemCA.Description = request[u'Description']
   oItemCA.SetJournalParameter('10')
   

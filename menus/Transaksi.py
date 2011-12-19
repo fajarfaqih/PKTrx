@@ -154,6 +154,11 @@ def InvestmentReturnClick(menu, app):
   fTran= app.CreateForm('Transaksi/fInvestmentReturn', 'Transaksi/fInvestmentReturn', 0, ph, None)
   fTran.Show()
   
+def InvestmentTransListClick(menu, app):
+  GetAccess(app, menu.Name)
+  fTran= app.CreateForm('Transaksi/fInvestmentTransList', 'Transaksi/fInvestmentTransList', 0, None, None)
+  fTran.Show()
+  
 def CashAdvanceReturnRAKClick(menu,app) :
   GetAccess(app, menu.Name)
   ph = app.CreateValues()

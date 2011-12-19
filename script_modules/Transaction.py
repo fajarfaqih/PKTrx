@@ -293,6 +293,12 @@ class Transaction(pobject.PObject):
 
     return oItem
 
+  def CreateInvestmentTransactItem(self,InvestmentAccount):
+    param = {'Owner': self, 'Account': InvestmentAccount}
+    oItem = self.Helper.CreatePObject('InvestmentTransactItem', param)
+
+    return oItem
+
   def CreateGLTransactionItem(self, GLAccount, aCurrency):
     param = {'Owner': self, 'GLAccount': GLAccount, 'CurrencyCode': aCurrency}
     oItem = self.Helper.CreatePObject('GLTransactionItem', param)
@@ -1041,7 +1047,7 @@ class AccountTransactionItem(TransactionItem):
 
   def SetMutation(self, MutationType, Amount, Rate):
     TransactionItem.SetMutation(self, MutationType, Amount, Rate)
-    # place here if you wan to update balance on transaction
+    # place here if you want to update balance on transaction
 
   def SetApproval(self):
     oAccount = self.LFinancialAccount.CastToLowestDescendant()
@@ -1114,11 +1120,44 @@ class CashAdvanceTransactItem(AccountTransactionItem):
   # static variable
   pobject_classname = 'CashAdvanceTransactItem'
 
+class AccReceivableTransactItem(AccountTransactionItem):
+  # static variable
+  pobject_classname = 'AccReceivableTransactItem'
+
+class InvestmentTransactItem(AccReceivableTransactItem):
+  # static variable
+  pobject_classname = 'AccReceivableTransactItem'
+
+  def SetMutation(self, MutationType, PrincipalAmount, ShareAmount, Rate):
+    AccReceivableTransactItem.SetMutation(self, MutationType, PrincipalAmount, Rate)
+    
+    Amount = PrincipalAmount + ShareAmount
+    self.Amount = Amount
+    self.Rate = Rate
+    self.EkuivalenAmount = Amount * Rate
+
+    self.PrincipalAmount = PrincipalAmount
+    self.ShareAmount = ShareAmount
+    self.InvestmentTIType = 'P'
+  
+  def SetApproval(self):
+    oAccount = self.LInvestment
+    if self.IsUpdateBalance != 'F' :
+      oAccount.UpdateBalance(self.MutationType, self.PrincipalAmount)
+
+  def CancelTransaction(self):
+    AccountTransactionItem.CancelTransaction(self)
+    oAccount = self.Investment
+    if self.LTransaction.AuthStatus == 'T' and self.IsUpdateBalance != 'F' :
+      isBalanceIgnored = 0
+      if self.LTransaction.TransactionCode == 'TB' :
+        isBalanceIgnored = 1
+      oAccount.UpdateBalance(self.MutationType, self.PrincipalAmount,isBalanceIgnored)
 
 class CATransactItem(CashAdvanceTransactItem):
   # static variable
   pobject_classname = 'CATransactItem'
-  
+
 class CAReturnTransactItem(CashAdvanceTransactItem):
   # static variable
   pobject_classname = 'CAReturnTransactItem'

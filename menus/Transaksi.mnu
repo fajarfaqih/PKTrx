@@ -355,6 +355,10 @@ document <
               Name='TR0024'
               Caption='Pengembalian Investasi'
               OnClick='InvestmentReturnClick'
+            >, object:rmn::MenuItem<
+              Name='TR0024'
+              Caption='Daftar Transaksi Investasi'
+              OnClick='InvestmentTransListClick'
             >}AllowedGroups='ADM;SPV;KEU'
         >, object:rmn::MenuItem<
           Caption='Transaksi RAK'

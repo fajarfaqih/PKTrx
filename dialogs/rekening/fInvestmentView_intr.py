@@ -23,7 +23,8 @@ class fInvestmentView:
 
   def ViewHistTransaction(self,mode,filename=None):
     uipData = self.uipInvestment
-
+    uipTran = self.uipHistoriTransaksi
+    
     if uipData.BeginDate > uipData.EndDate :
        raise 'PERINGATAN','Tanggal Awal tidak boleh lebih besar dari tanggal akhir'
 
@@ -43,8 +44,10 @@ class fInvestmentView:
       return
 
     if mode == 1 :
+
+      uipData.Edit()
       uipData.BeginningBalance = ph.FirstRecord.BeginningBalance
-      uipTran = self.uipHistoriTransaksi
+
       uipTran.ClearData()
 
       i = 0

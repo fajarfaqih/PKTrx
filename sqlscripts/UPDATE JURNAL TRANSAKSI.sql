@@ -91,3 +91,4 @@ where a.transactionitemid = b.transactionitemid
   and accounttitype='D'
 
 select * from transaction.transactionitem where parameterjournalid='C10I' order by transactionitemid desc limit 1
+

@@ -4969,6 +4969,65 @@ document <
           DataType=$TYPEDECLS['VARCHAR']
           DataLength=20
         >}ClassID='{2C9CC566-0FD3-425F-8F1D-245C1ED1555D}'
+    >, object:ClassTypeDecl<
+      TypeName='AccReceivableTransactItem'
+      PTableName='ACCRECEIVABLETRANSACTITEM'
+      Members={object:FieldMember<
+          MemberName='TransactionItemId'
+          PhysicalName='TRANSACTIONITEMID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:LinkMember<
+          MemberName='LAccountReceivable'
+          LinkedClass=$TYPEDECLS['AccountReceivable']
+          SharedLink=$TYPEDECLS['AccountTransactionItem'].MEMBERS['LFinancialAccount']
+        >, object:FieldMember<
+          MemberName='ARTransactItemType'
+          PhysicalName='ARTRANSACTITEMTYPE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          IsClassifierField=true
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='R'
+          AncestorClass=$TYPEDECLS['AccountTransactionItem']
+          InhLinks={object:InheritanceLink<
+              ThisPKey=$TYPEDECLS['AccReceivableTransactItem'].MEMBERS['TransactionItemId']
+              OriginPKey=$TYPEDECLS['AccountTransactionItem'].MEMBERS['TransactionItemId']
+            >}>}ClassID='{AD182580-92E1-450D-9F13-56F16ED3899C}'
+      AutoPrimaryKey=$TYPEDECLS['AccReceivableTransactItem'].MEMBERS['TransactionItemId']
+    >, object:ClassTypeDecl<
+      TypeName='InvestmentTransactItem'
+      PTableName='ACCRECEIVABLETRANSACTITEM'
+      Members={object:FieldMember<
+          MemberName='TransactionItemId'
+          PhysicalName='TRANSACTIONITEMID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='PrincipalAmount'
+          PhysicalName='PRINCIPALAMOUNT'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='ShareAmount'
+          PhysicalName='SHAREAMOUNT'
+          DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='InvestmentTIType'
+          PhysicalName='INVESTMENTTITYPE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+        >, object:LinkMember<
+          MemberName='LInvestment'
+          LinkedClass=$TYPEDECLS['Investment']
+          SharedLink=$TYPEDECLS['AccountTransactionItem'].MEMBERS['LFinancialAccount']
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='I'
+          AncestorClass=$TYPEDECLS['AccReceivableTransactItem']
+          InhLinks={object:InheritanceLink<
+              ThisPKey=$TYPEDECLS['InvestmentTransactItem'].MEMBERS['TransactionItemId']
+              OriginPKey=$TYPEDECLS['AccReceivableTransactItem'].MEMBERS['TransactionItemId']
+            >}>}ClassID='{FA36488B-FE26-4177-9E9F-3C688C12EBDB}'
+      AutoPrimaryKey=$TYPEDECLS['InvestmentTransactItem'].MEMBERS['TransactionItemId']
     >}PhysicalDB=object:ODLDatabase<
   >LastMethodID=6
 >
