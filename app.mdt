@@ -1566,8 +1566,8 @@ document <
           LinkedClass=$TYPEDECLS['FinancialAccount']
           AutoForeignKey=true
         >, object:FieldMember<
-          MemberName='AccountTIType '
-          PhysicalName='ACCOUNTTITYPE '
+          MemberName='AccountTIType'
+          PhysicalName='ACCOUNTTITYPE'
           DataType=$TYPEDECLS['VARCHAR']
           DataLength=1
           IsClassifierField=true

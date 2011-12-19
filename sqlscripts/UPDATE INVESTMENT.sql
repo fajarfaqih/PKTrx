@@ -19,6 +19,23 @@ create table transaction.accreceivabletransactitem(
 );
 alter table transaction.accreceivabletransactitem owner to transaction;
 
+update transaction.transactiontype set description='PENANAMAN INVESTASI' where transactioncode='INVS';
+
+update transaction.accounttransactionitem c set accounttitype='R' where exists 
+( select 1 from transaction.transaction a , transaction.transactionitem b
+  where a.transactionid = b.transactionid and b.transactionitemid=c.transactionitemid
+    and a.transactioncode='INVS' ) and fundentity is not null  ;
+
+
+
+insert into transaction.accreceivabletransactitem 
+select c.transactionitemid, 'I', 'P', b.amount, 0.0
+from transaction.transaction a , 
+  transaction.transactionitem b, 
+  transaction.accounttransactionitem c 
+where a.transactionid = b.transactionid and b.transactionitemid=c.transactionitemid
+    and a.transactioncode='INVS' and fundentity is not null and isupdatebalance='T';
+
 update transaction.accounttransactionitem c set accounttitype='R' where exists 
 ( select 1 from transaction.transaction a , transaction.transactionitem b
   where a.transactionid = b.transactionid and b.transactionitemid=c.transactionitemid
@@ -59,11 +76,6 @@ select * from transaction.accounttransactionitem c where exists
   where a.transactionid = b.transactionid 
     and a.transactioncode='INVSR'  and mutationtype='C' and parameterjournalid='PAK-A'
 
-
-update transaction.accounttransactionitem c set parameterjournalid='PI-A' where exists 
-( select 1 from transaction.transaction a , transaction.transactionitem b
-  where a.transactionid = b.transactionid and b.transactionitemid=c.transactionitemid
-    and a.transactioncode='INVSR' and parameterjournalid='PAK-A') and fundentity is not null  ;
 
 update transaction.transactionitem b set parameterjournalid='PI-A' where exists(
   select 1 from transaction.transaction a

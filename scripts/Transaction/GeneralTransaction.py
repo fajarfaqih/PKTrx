@@ -804,7 +804,7 @@ def Investment(helper,oTran,oBatch,request,params):
    
   #oItemInv = oTran.CreateAccountTransactionItem(oAccount)
   #oItemInv.SetMutation('D', request[u'Amount'], 1.0)
-  oItemInv = oTran.CreateInvestmentTransactItem(oAccount)  
+  oItemInv = oTran.CreateInvestmentTransactItem(oAccount)
   oItemInv.SetMutation('D', request[u'Amount'], 0.0, 1.0)
   oItemInv.Description = request[u'Description']
   oItemInv.SetFundEntity(request[u'FundEntity'])

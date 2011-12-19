@@ -336,7 +336,7 @@ class Transaction(pobject.PObject):
       ).CastToLowestDescendant()
 
       oItem.SetApproval()
-
+      
       #oItems.Next()
       oRes.Next()
     #-- while
@@ -1126,7 +1126,7 @@ class AccReceivableTransactItem(AccountTransactionItem):
 
 class InvestmentTransactItem(AccReceivableTransactItem):
   # static variable
-  pobject_classname = 'AccReceivableTransactItem'
+  pobject_classname = 'InvestmentTransactItem'
 
   def SetMutation(self, MutationType, PrincipalAmount, ShareAmount, Rate):
     AccReceivableTransactItem.SetMutation(self, MutationType, PrincipalAmount, Rate)
