@@ -310,7 +310,7 @@ def InternalTransfer(helper,oTran,oBatch,request,params):
 
 ### -------  INTERFUND TRANSFER -----------------------------------  
 def InterFundTransfer(helper,oTran,oBatch,request,params):
-  FundEntityMap = {1 : 'PADZ', 2 : 'PADI', 3 : 'PADW', 4 : 'PADA' , 5 : 'PADN'}
+  JournalCode = {1 : 'PADZ', 2 : 'PADI', 3 : 'PADW', 4 : 'PADA' , 5 : 'PADN'}
   oTran.ReferenceNo = request[u'ReferenceNo']
   oTran.Description = request[u'Description']
   oTran.Inputer     = request[u'Inputer']
@@ -330,10 +330,10 @@ def InterFundTransfer(helper,oTran,oBatch,request,params):
   oItemSA = oTran.CreateAccountTransactionItem(oSrcAccount)
   oItemSA.SetMutation('D', request[u'Amount'], request[u'Rate'])
   oItemSA.Description = request[u'Description']
-  #raise '',oSrcAccount.GetDistributionInterface(request[u'FundEntitySource'])
+  
   #oItemSA.AccountCode = oSrcAccount.GetDistributionInterface(request[u'FundEntitySource'])  
   oItemSA.SetDistributionEntity(request[u'FundEntitySource'])
-  oItemSA.SetJournalParameter(FundEntityMap[request[u'FundEntitySource']])
+  oItemSA.SetJournalParameter(JournalCode[request[u'FundEntitySource']])
 
   # Destination Transaction
   oDstAccount = helper.GetObject('ProductAccount',
@@ -347,7 +347,7 @@ def InterFundTransfer(helper,oTran,oBatch,request,params):
 
   oItemDA.AccountCode = oDstAccount.GetCollectionInterface(request[u'FundEntityDestination'])
   oItemDA.SetCollectionEntity(request[u'FundEntityDestination'])
-  oItemDA.SetJournalParameter(FundEntityMap[request[u'FundEntityDestination']])
+  oItemDA.SetJournalParameter(JournalCode[request[u'FundEntityDestination']])
   
   oTran.GenerateTransactionNumber('000')
   oTran.SaveInbox(params)
@@ -415,7 +415,7 @@ def EmployeeAR(helper,oTran,oBatch,request,params):
     oItemAR.SetFundEntity(request[u'FundEntity'])
     oItemAR.SetJournalParameter(FundEntityMap[request[u'FundEntity']])
     
-    # Destination Transaction
+    # Cash Account Transaction
     oCashAccount = helper.GetObject('CashAccount',
       str(request[u'CashAccountNo'])).CastToLowestDescendant()
       
@@ -499,7 +499,7 @@ def PayEmployeeAR(helper,oTran,oBatch,request,params):
 
 ### ------- CASH ADVANCE  -----------------------------------
 def CashAdvance(helper,oTran,oBatch,request,params):
-  FundEntityMap = {1 : 'AK-Z', 2 : 'AK-I', 3 : 'AK-W', 4 : 'AK-A'}
+  JournalCode = {1 : 'AK-Z', 2 : 'AK-I', 3 : 'AK-W', 4 : 'AK-A', 5 : 'AK-N'}
   
   oTran.ReferenceNo = request[u'ReferenceNo']
   oTran.Description = request[u'Description']
@@ -537,7 +537,7 @@ def CashAdvance(helper,oTran,oBatch,request,params):
   oItemCAD.Description = request[u'Description']
   #oItemCA.Description = 'Uang Muka'
   oItemCAD.SetFundEntity(request[u'FundEntity'])
-  oItemCAD.SetJournalParameter(FundEntityMap[request[u'FundEntity']])
+  oItemCAD.SetJournalParameter(JournalCode[request[u'FundEntity']])
   
   if request[u'DistributionTransferId'] != 0 :
     oItemCAD.DistributionTransferId = request[u'DistributionTransferId']
@@ -799,9 +799,7 @@ def Investment(helper,oTran,oBatch,request,params):
   oAccount.InvestmentCatId = request[u'InvestmentCatId']
   oAccount.StartDate = request[u'StartDate']
   oAccount.InvestmentNisbah = request[u'Nisbah'] 
-  
-  
-   
+ 
   #oItemInv = oTran.CreateAccountTransactionItem(oAccount)
   #oItemInv.SetMutation('D', request[u'Amount'], 1.0)
   oItemInv = oTran.CreateInvestmentTransactItem(oAccount)

@@ -48,8 +48,8 @@ document <
       PostLinkValues=true
     >}Containers={object:rtf::DualSplit<
       Name='dsMain'
-      Width=641
-      Height=600
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dualsplit1']
       InversedAlign=true
@@ -197,8 +197,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=641
-      Height=569
+      Width=240
+      Height=96
       Container1=$CONTAINERS['dualsplit2']
       Container2=$CONTAINERS['pRAKInfo']
     >, object:rtf::Panel<
@@ -343,7 +343,8 @@ document <
           EnumeratedValues=['1=Zakat'#13#10,
             '2=Infaq'#13#10,
             '3=Wakaf'#13#10,
-            '4=Amil'#13#10]
+            '4=Amil'#13#10,
+            '5=Non Halal'#13#10]
         >, object:rtf::FieldUIElmtSetting<
           Name='ReferenceNo'
           ControlCaption='Nomor referensi'
@@ -634,7 +635,7 @@ document <
       ControlCharCase=ecUpperCase
     >, object:rtf::DualSplit<
       Name='dualsplit2'
-      Width=641
+      Width=240
       Height=465
       Container1=$CONTAINERS['pTransaction']
       Container2=$CONTAINERS['pTransaction2']
