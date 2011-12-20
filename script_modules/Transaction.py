@@ -1147,7 +1147,7 @@ class InvestmentTransactItem(AccReceivableTransactItem):
 
   def CancelTransaction(self):
     AccountTransactionItem.CancelTransaction(self)
-    oAccount = self.Investment
+    oAccount = self.LInvestment
     if self.LTransaction.AuthStatus == 'T' and self.IsUpdateBalance != 'F' :
       isBalanceIgnored = 0
       if self.LTransaction.TransactionCode == 'TB' :
