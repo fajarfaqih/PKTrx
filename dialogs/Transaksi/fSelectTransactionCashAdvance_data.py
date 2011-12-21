@@ -19,7 +19,7 @@ def OnSetData(sender):
   oCATrans = helper.GetObjectByInstance('CATransactItem', sender.ActiveInstance)
 
   rec.TransactionNo = oCATrans.LTransaction.TransactionNo
-  rec.TransactionDate = oCATrans.LTransaction.GetAsTDateTime('TransactionDate')
+  rec.TransactionDate = oCATrans.LTransaction.GetAsTDateTime('ActualDate')
   rec.Description = oCATrans.LTransaction.Description
   
   oCAReturnInfo = helper.GetObjectByNames('CashAdvanceReturnInfo',
