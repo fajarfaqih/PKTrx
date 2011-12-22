@@ -68,6 +68,8 @@ def SimpanData(config, params, returns):
     
     sRequest = simplejson.dumps(request)
 
+    oService = helper.LoadScript('Transaction.FixedAsset')
+    
     TransactionCode = 'FAIP'
     if oTransaction.ShowMode == 1:
       response = oService.CreateFixedAssetTransaction(TransactionCode, config, sRequest, params)

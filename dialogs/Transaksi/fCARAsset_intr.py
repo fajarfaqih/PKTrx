@@ -15,8 +15,8 @@ class fCARAsset :
       uipData.SetFieldValue('LAssetCategory.AssetCategoryName',data.AssetCatName)
       uipData.SetFieldValue('LAssetCategory.AssetCategoryId',data.AssetCatId)
       if data.AssetType == 'T' :
-        uipData.SetFieldValue('LProduct.ProductCode',data.AccountId)
-        uipData.SetFieldValue('LProduct.ProductName',data.AccountName)
+        uipData.SetFieldValue('LProduct.ProductCode',data.AssetProductAccountNo)
+        uipData.SetFieldValue('LProduct.ProductName',data.AssetProductAccountName)
 
       uipData.AssetName = data.AssetName
       uipData.Description = data.Description
@@ -138,3 +138,30 @@ class fCARAsset :
     uipTran.Edit()
     uipTran.TotalAmount = (uipTran.Qty or 0.0 ) * (uipTran.Amount or 0.0)
 
+  def CheckRequiredData(self):
+    uipData = self.uipData
+
+    if uipData.GetFieldValue('LAssetCategory.AssetCategoryCode') in ['',None] :
+      raise 'PERINGATAN','Kategori Aset belum dipilih'
+
+    if (uipData.AssetType == 'T') and (uipData.GetFieldValue('LProduct.ProductCode') in ['',None]) :
+      raise 'PERINGATAN','Nama Produk/Program belum dipilih'
+
+    if uipData.AssetName in ['',None] :
+      raise 'PERINGATAN','Nama Aset Belum Diinputkan'
+
+    if (uipData.Amount or 0.0) <= 0.0:
+      raise 'PERINGATAN','Nilai asset tidak boleh <= 0.0'
+
+    if uipData.PaymentType == 'T' :
+      uipData.PaymentAmount = uipData.Amount
+
+    if (uipData.PaymentAmount or 0.0) <= 0.0:
+      raise 'PERINGATAN','Nilai pembayaran tidak boleh <= 0.0'
+
+    if (uipData.PaymentAmount or 0.0) > (uipData.Amount or 0.0):
+      raise 'PERINGATAN','Nominal pembayaran / angsuran awal lebih besar daripada nilai asset'
+
+  def bSaveClick(self,sender):
+    self.CheckRequiredData()
+    sender.ExitAction = 1

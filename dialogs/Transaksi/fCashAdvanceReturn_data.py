@@ -152,6 +152,8 @@ def SimpanData(config, params, returns):
       item['AssetAmount'] = oItem.AssetAmount or 0.0
       item['AssetPaymentType'] = oItem.AssetPaymentType or ''
       item['AssetAccountNo'] = oItem.AssetAccountNo or ''
+      item['AssetProductAccountNo'] = oItem.AssetProductAccountNo or ''
+      item['AssetProductAccountName'] = oItem.AssetProductAccountName or ''
       item['CPIAAccountNo'] = oItem.CPIAAccountNo or ''
       item['CPIACatId'] = oItem.CPIACatId or ''
       item['CPIACatCode'] = oItem.CPIACatCode or ''

@@ -11,7 +11,7 @@ document <
   Left=50
   Top=50
   Width=793
-  Height=449
+  Height=481
   UIParts={object:rtf::PClassUI<
       Elements={object:rtf::FieldUIElmtSetting<
           Name='BranchCode'
@@ -204,7 +204,9 @@ document <
           DataTypeName='varchar'
           DataLength=1
           EnumeratedValues=['D=Penyaluran'#13#10,
-            'G=Amil'#13#10]
+            'G=Amil'#13#10,
+            'A=Asset'#13#10,
+            'B=Biaya Dibayar Dimuka'#13#10]
         >, object:rtf::FieldUIElmtSetting<
           Name='AccountName'
           Hidden=true
@@ -215,6 +217,100 @@ document <
           Hidden=true
           DataTypeName='varchar'
           DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AssetPaymentType'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=1
+          EnumeratedValues=['T=Lunas'#13#10,
+            'D=Cicilan Awal'#13#10]
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AssetType'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=1
+          EnumeratedValues=['T=Terikat'#13#10,
+            'N=Tidak Terikat'#13#10]
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AssetName'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AssetAccountNo'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AssetQty'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AssetCatCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AssetCatName'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AssetCatId'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AssetAmount'
+          Hidden=true
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AssetProductAccountName'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AssetProductAccountNo'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='CPIACatCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='CPIACatName'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=100
+        >, object:rtf::FieldUIElmtSetting<
+          Name='CPIAHasContract'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=1
+        >, object:rtf::FieldUIElmtSetting<
+          Name='CPIAContractNo'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=100
+        >, object:rtf::FieldUIElmtSetting<
+          Name='CPIAContractEndDate'
+          Hidden=true
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='CPIAAccountNo'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='CPIACatId'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
         >}Name='uipTransactionItem'
       MultiLine=true
       FillInDefaultValues=true
@@ -761,7 +857,7 @@ document <
     >, object:rtf::Grid<
       Name='gItem'
       Width=617
-      Height=53
+      Height=85
       UIPart=$UIPARTS['uipTransactionItem']
       ControlLeftMargin=8
       ControlTopMargin=8
@@ -842,7 +938,9 @@ document <
           Name='ItemType'
           InputStyle=cisEnumerated
           EnumeratedValues=['D=Penyaluran'#13#10,
-            'G=Amil'#13#10]
+            'G=Amil'#13#10,
+            'A=Aset'#13#10,
+            'B=Biaya Dibayar Dimuka']
           Index=6
           FieldName='ItemType'
           DisplayFormat=''
@@ -856,7 +954,7 @@ document <
           TitleCaption='Account No'
           Width=80
         >, object:rtf::GridColumn<
-          Name='GridColumn'
+          Name='AccountName'
           InputStyle=cisNormal
           EnumeratedValues=''
           FieldName='AccountName'
@@ -870,7 +968,7 @@ document <
     >, object:rtf::DualSplit<
       Name='dualsplit2'
       Width=793
-      Height=53
+      Height=85
       Container1=$CONTAINERS['pButton']
       Container2=$CONTAINERS['gItem']
       SplitDirection=sdrSplitLeftRight
@@ -879,7 +977,7 @@ document <
       Width=175
       Height=240
       Controls={object:rtf::Button<
-          Name='button1'
+          Name='bDistributionNew'
           Layout=clNewLine
           Top=8
           Left=8
@@ -890,7 +988,7 @@ document <
           Caption='&1. Input Tran. Penyaluran'
           OnClick='InsertProductClick'
         >, object:rtf::Button<
-          Name='button2'
+          Name='bGLNew'
           Layout=clNewLine
           Top=40
           Left=8
@@ -901,7 +999,7 @@ document <
           Caption='&2. Input Tran. Amil           '
           OnClick='InsertGLClick'
         >, object:rtf::Button<
-          Name='button3'
+          Name='bAssetNew'
           Layout=clNewLine
           Top=72
           Left=8
@@ -909,10 +1007,10 @@ document <
           Height=25
           Color=0
           ControlCaption=''
-          Caption='&3. Koreksi Transaksi        '
-          OnClick='EditTransClick'
+          Caption='&3. Input Tran. Asset          '
+          OnClick='InsertAssetClick'
         >, object:rtf::Button<
-          Name='button4'
+          Name='bBDDNew'
           Layout=clNewLine
           Top=104
           Left=8
@@ -920,12 +1018,34 @@ document <
           Height=25
           Color=0
           ControlCaption=''
-          Caption='&4. Hapus Transaksi          '
+          Caption='&4. Input Biaya Di Muka       '
+          OnClick='InsertCPIAClick'
+        >, object:rtf::Button<
+          Name='bEdit'
+          Layout=clNewLine
+          Top=136
+          Left=8
+          Width=145
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='&5. Koreksi Transaksi        '
+          OnClick='EditTransClick'
+        >, object:rtf::Button<
+          Name='button4'
+          Layout=clNewLine
+          Top=168
+          Left=8
+          Width=145
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='&6. Hapus Transaksi          '
           OnClick='DeleteTransClick'
         >}ControlLeftMargin=8
       ControlTopMargin=8
       DefaultControlHeight=21
       HorizontalControlGap=4
       RowControlGap=7
-    >}FormClassName='fCashAdvanceReturn'
+    >}FormClassName='fBranchDistReturn'
 >

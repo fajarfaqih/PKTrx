@@ -473,12 +473,15 @@ class fCashAdvanceReturn :
     
   def SetAssetItem(self,uipTranItem,uipData):
     uipTranItem.Edit()
+
+    uipTranItem.AccountId = uipData.GetFieldValue('LAssetCategory.AssetCategoryCode')
+    uipTranItem.AccountName = uipData.AssetName
+
     if uipData.AssetType == 'T' :
-      uipTranItem.AccountId = uipData.GetFieldValue('LProduct.ProductCode')
-      uipTranItem.AccountName = uipData.GetFieldValue('LProduct.ProductName')
-    else : # uipData.AssetType == 'N'
-      uipTranItem.AccountId = uipData.GetFieldValue('LAssetCategory.AssetCategoryCode')
-      uipTranItem.AccountName = uipData.GetFieldValue('LAssetCategory.AssetCategoryName')
+      uipTranItem.AssetProductAccountNo = uipData.GetFieldValue('LProduct.AccountNo')
+      uipTranItem.AssetProductAccountName = uipData.GetFieldValue('LProduct.ProductName')
+
+
     #uipTranItem.BudgetCode = uipData.BudgetCode
     uipTranItem.Amount = uipData.PaymentAmount
     uipTranItem.AssetAmount = uipData.Amount

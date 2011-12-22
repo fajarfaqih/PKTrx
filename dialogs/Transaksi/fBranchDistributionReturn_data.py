@@ -134,7 +134,24 @@ def SimpanData(config, params, returns):
       item['DistItemAccount'] = oItem.DistItemCode
       item['BudgetId'] = oItem.BudgetId or 0
       item['ItemType'] = oItem.ItemType or 0
+      item['AssetName'] = oItem.AssetName or ''
+      item['AssetQty'] = oItem.AssetQty or 0
+      item['AssetCatId'] = oItem.AssetCatId or 0
+      item['AssetAmount'] = oItem.AssetAmount or 0.0
+      item['AssetPaymentType'] = oItem.AssetPaymentType or ''
+      item['AssetAccountNo'] = oItem.AssetAccountNo or ''
+      item['AssetProductAccountNo'] = oItem.AssetProductAccountNo or ''
+      item['AssetProductAccountName'] = oItem.AssetProductAccountName or ''
+      item['CPIAAccountNo'] = oItem.CPIAAccountNo or ''
+      item['CPIACatId'] = oItem.CPIACatId or ''
+      item['CPIACatCode'] = oItem.CPIACatCode or ''
+      item['CPIACatName'] = oItem.CPIACatName or ''
+      item['CPIAHasContract'] = oItem.CPIAHasContract or 'F'
+      item['CPIAContractNo'] = oItem.CPIAContractNo or ''
+      item['CPIAContractEndDate'] = oItem.CPIAContractEndDate or 0.0
 
+      item['RecordIdx'] = i
+      
       items.append(item)
     #-- for
 

@@ -1,6 +1,6 @@
 MAPEntity = {'Z': 1, 'I': 2, 'W': 3}
 
-class fCashAdvanceReturn :
+class fBranchDistReturn :
   def __init__(self, formObj, parentForm) :
     self.app = formObj.ClientApplication
     self.form = formObj
@@ -8,10 +8,13 @@ class fCashAdvanceReturn :
     self.RefTransactionNo = None
     
   def InitValues(self):
+    self.IdxCounter = 0
     self.fSearchCATrans = None
     self.fSelectProduct = None
     self.fSelectGL = None
     self.fSelectBudget = None
+    self.fSelectAsset = None
+    self.fSelectCPIA = None
 
     if self.uipTransaction.ShowMode == 1 : # insert mode
       self.AmountList = {}
@@ -19,17 +22,44 @@ class fCashAdvanceReturn :
     else: # edit mode
       self.AmountList = {}
 
-      idx = 1
       uipItem = self.uipTransactionItem
-      uipItem.First()
+      
+      TotalAmount = 0.0
       TotalItemRow = uipItem.RecordCount
+      
+      Idx = 1
+      uipItem.First()
       for i in range(TotalItemRow):
+        uipItem.Edit()
+        # Assign Ulang Index Grid
+        uipItem.ItemIdx = Idx
+
+        # Simpan Nilai Amount Sebagai Helper
         self.AmountList[uipItem.ItemIdx] = uipItem.Amount #uipItem.Ekuivalen
-        idx +=1
+
+        # Hitung Ulang Total Penyaluran
+        TotalAmount += uipItem.Amount
+        
+        Idx +=1
+        uipItem.Next()
       # end for
       self.IdxCounter = TotalItemRow + 1
 
+      # Hitung Ulang Total Penyaluran & Pengembalian
+      uipTran = self.uipTransaction
+      uipTran.Edit()
+      uipTran.TotalAmount = TotalAmount
+      #uipTran.Amount = uipTran.RefAmount - TotalAmount
+      self.CalculateAmount()
 
+  def CalculateAmount(self):
+    uipTran = self.uipTransaction
+    uipTran.Edit()
+    if uipTran.TotalAmount > uipTran.RefAmount :
+      uipTran.Amount = 0.0
+    else :
+      uipTran.Amount = uipTran.RefAmount - uipTran.TotalAmount
+      
   def CreateReturnTrans(self,TransactionNo):
     self.GetRefTransactionByNo(TransactionNo)
     
@@ -214,6 +244,8 @@ class fCashAdvanceReturn :
       raise 'PERINGATAN','Pilih / Isi Dahulu Ref. Transaksi Penyerahan'
 
 
+  # --- INPUT TRANSAKSI PRODUCT -----------
+
   def InsertProductClick(self,sender) :
     self.CheckRefTransaction()
     self.OpenFormProduct()
@@ -249,7 +281,9 @@ class fCashAdvanceReturn :
       uipTranItem.Append()
       self.SetProductItem(uipTranItem,uipData)
       uipTranItem.Post()
+  # ---------------------------------
 
+  # --- INPUT TRANSAKSI GL -----------
   def InsertGLClick(self,sender):
     self.CheckRefTransaction()
     self.OpenFormGL()
@@ -290,7 +324,107 @@ class fCashAdvanceReturn :
 #      uipTranItem.Description = uipData.Description
 #      uipTranItem.ItemType = 'G'
       uipTranItem.Post()
+  # --------------------------------------------
 
+  # --- INPUT TRANSAKSI ASSET -----------------------
+  def GetFormAsset(self):
+    app = self.app
+    if self.fSelectAsset == None:
+      form = app.CreateForm('Transaksi/fCARAsset','Transaksi/fCARAsset',0,None,None)
+      self.fSelectAsset = form
+    else :
+      form = self.fSelectAsset
+
+    return form
+    
+  def InsertAssetClick(self,sender):
+    self.CheckRefTransaction()
+    self.OpenFormAsset()
+
+  def OpenFormAsset(self):
+    app = self.app
+
+    form = self.GetFormAsset()
+    if form.GetData():
+      uipData = form.uipData
+      uipTranItem = self.uipTransactionItem
+      uipTranItem.Append()
+      self.SetAssetItem(uipTranItem,uipData)
+      uipTranItem.Post()
+    
+  def SetAssetItem(self,uipTranItem,uipData):
+    uipTranItem.Edit()
+
+    uipTranItem.AccountId = uipData.GetFieldValue('LAssetCategory.AssetCategoryCode')
+    uipTranItem.AccountName = uipData.AssetName
+
+    if uipData.AssetType == 'T' :
+      uipTranItem.AssetProductAccountNo = uipData.GetFieldValue('LProduct.AccountNo')
+      uipTranItem.AssetProductAccountName = uipData.GetFieldValue('LProduct.ProductName')
+      
+    #uipTranItem.BudgetCode = uipData.BudgetCode
+    uipTranItem.Amount = uipData.PaymentAmount
+    uipTranItem.AssetAmount = uipData.Amount
+    uipTranItem.Description = uipData.Description
+    uipTranItem.BudgetCode = uipData.BudgetCode
+    uipTranItem.BudgetOwner = uipData.BudgetOwner
+    uipTranItem.AssetPaymentType = uipData.PaymentType
+    uipTranItem.AssetName = uipData.AssetName
+    uipTranItem.AssetQty = uipData.Qty
+    uipTranItem.AssetCatCode = uipData.GetFieldValue('LAssetCategory.AssetCategoryCode')
+    uipTranItem.AssetCatName = uipData.GetFieldValue('LAssetCategory.AssetCategoryName')
+    uipTranItem.AssetCatId = uipData.GetFieldValue('LAssetCategory.AssetCategoryId')
+    uipTranItem.AssetType = uipData.AssetType
+    uipTranItem.ItemType = 'A'
+    
+  # ---------------------------------------------------
+  
+  # --- INPUT TRANSAKSI BIAYA DI MUKA -----------
+  def InsertCPIAClick(self,sender):
+    self.CheckRefTransaction()
+    self.OpenFormCPIA()
+    
+  def GetFormCPIA(self):
+    app = self.app
+    if self.fSelectCPIA == None:
+      form = app.CreateForm('Transaksi/fCARCPIA','Transaksi/fCARCPIA',0,None,None)
+      self.fSelectCPIA = form
+    else :
+      form = self.fSelectCPIA
+
+    return form
+    
+  def OpenFormCPIA(self):
+    app = self.app
+
+    form = self.GetFormCPIA()
+    if form.GetData():
+      uipData = form.uipData
+      uipTranItem = self.uipTransactionItem
+      uipTranItem.Append()
+      self.SetCPIAItem(uipTranItem,uipData)
+      uipTranItem.Post()
+
+  def SetCPIAItem(self,uipTranItem,uipData):
+    uipTranItem.Edit()
+    uipTranItem.CPIACatCode = uipData.GetFieldValue('LCPIACategory.CPIACatCode')
+    uipTranItem.CPIACatName = uipData.GetFieldValue('LCPIACategory.CPIACatName')
+    uipTranItem.CPIACatId = uipData.GetFieldValue('LCPIACategory.CPIACatId')
+    uipTranItem.CPIAContractEndDate = uipData.ContractEndDate
+    uipTranItem.CPIAHasContract = uipData.HasContract
+    uipTranItem.CPIAContractNo = uipData.ContractNo
+
+    
+    uipTranItem.AccountId = uipData.GetFieldValue('LCostAccount.Account_Code')
+    uipTranItem.AccountName = uipData.GetFieldValue('LCostAccount.Account_Name')
+    #uipTranItem.BudgetCode = uipData.BudgetCode
+    uipTranItem.Amount = uipData.Amount
+    uipTranItem.Description = uipData.Description
+    uipTranItem.BudgetCode = uipData.BudgetCode
+    uipTranItem.BudgetOwner = uipData.BudgetOwner
+    uipTranItem.ItemType = 'B'
+    
+  # ---------------------------------------------
   def CheckDetail(self):
     if self.uipTransactionItem.ItemType in ['',None] :
       raise 'PERINGATAN','Tidak ada data yang dipilih'
@@ -305,16 +439,29 @@ class fCashAdvanceReturn :
     uipItem = self.uipTransactionItem
     if uipItem.ItemType == 'D':
       form = self.GetFormProduct()
-    else : # uipItem.ItemType == 'G'
+    elif uipItem.ItemType == 'G' :
       form = self.GetFormGL()
+    elif uipItem.ItemType == 'A' :
+      form = self.GetFormAsset()
+    elif uipItem.ItemType == 'B' :
+      form = self.GetFormCPIA()
+    else:
+      raise 'PERINGATAN','Tipe Transaksi Tidak Terdefinisi'
 
     if form.GetData(1,uipItem):
       uipData = form.uipData
       uipItem.Edit()
       if uipItem.ItemType == 'D':
         self.SetProductItem(uipItem,uipData)
-      else : # uipItem.ItemType == 'G'
+      elif uipItem.ItemType == 'G' :
         self.SetGLItem(uipItem,uipData)
+      elif uipItem.ItemType == 'A' :
+        form = self.SetAssetItem(uipItem,uipData)
+      elif uipItem.ItemType == 'B' :
+        form = self.SetCPIAItem(uipItem,uipData)
+      else:
+        raise 'PERINGATAN','Tipe Transaksi Tidak Terdefinisi'
+
       # if else
       uipItem.Post()
       

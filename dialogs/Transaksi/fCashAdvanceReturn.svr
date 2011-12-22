@@ -288,6 +288,14 @@ document <
           DataTypeName='integer'
           DataLength=20
         >, object:rpclass::TCustomLoadedField<
+          Name='AssetProductAccountNo'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='AssetProductAccountName'
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rpclass::TCustomLoadedField<
           Name='AssetAmount'
           DataTypeName='double'
           DataLength=20

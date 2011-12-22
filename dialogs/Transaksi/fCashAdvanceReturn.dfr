@@ -230,6 +230,14 @@ document <
           DataTypeName='integer'
           DataLength=20
         >, object:rtf::FieldUIElmtSetting<
+          Name='AssetProductAccountNo'
+          Hidden=true
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AssetProductAccountName'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rtf::FieldUIElmtSetting<
           Name='AssetAmount'
           Hidden=true
           DataTypeName='double'

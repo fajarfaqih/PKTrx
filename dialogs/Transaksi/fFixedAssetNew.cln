@@ -536,7 +536,7 @@ document <
           Height=17
           Color=0
           ControlCaption=''
-          Caption='Pembayaran Tunai/Uang Muka'
+          Caption='Pembayaran Tunai/Angsuran Awal'
           AutoSize=true
           FontName='Tahoma'
           FontColor=-2147483640

@@ -75,7 +75,7 @@ document <
           ControlCaption=''
           Caption='&Simpan'
           Default=true
-          ExitAction=eaQuitOK
+          OnClick='bSaveClick'
         >, object:rtf::Button<
           Name='bCancel'
           Layout=clAbsolute
