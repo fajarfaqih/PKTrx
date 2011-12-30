@@ -126,10 +126,12 @@ class fInvoiceList:
 
     BeginDate = uipFilter.BeginDate or 0
     EndDate = uipFilter.EndDate or 0
-
+    IsShowPaidInvoice = uipFilter.IsShowPaidInvoice or 'F'
+    
     ph = self.app.CreateValues(
        ['BeginDate',BeginDate],
-       ['EndDate',EndDate]
+       ['EndDate',EndDate],
+       ['IsShowPaidInvoice',IsShowPaidInvoice]
        )
 
     resp = self.form.CallServerMethod('GetExcelInvoice',ph)
@@ -151,6 +153,23 @@ class fInvoiceList:
     
   #---- OTHER METHOD ------
 
+  def GenerateParams(self):
+
+    uipFilter = self.uipFilter
+    BeginDate = uipFilter.BeginDate or 0
+    EndDate = uipFilter.EndDate or 0
+    IsShowPaidInvoice = uipFilter.IsShowPaidInvoice or 'F'
+
+    if BeginDate == 0 or EndDate == 0 :
+      raise '','Masukkan periode transaksi terlebih dahulu'
+
+    params = self.app.CreateValues(
+       ['BeginDate',BeginDate],
+       ['EndDate',EndDate],
+       ['IsShowPaidInvoice',IsShowPaidInvoice]
+       )
+
+    return params
   def Show(self):
     self.uipFilter.Edit()
     self.uipFilter.IsShowPaidInvoice = 'F'
