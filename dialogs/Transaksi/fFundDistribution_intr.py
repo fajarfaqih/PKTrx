@@ -93,6 +93,8 @@ class fFundDistribution :
       # Hitung Ulang Total Penyaluran
       uipTran.Edit()
       uipTran.TotalAmount = TotalAmount
+    # end if
+    self.CheckRateEnabled()
 
   # mode
   # 1 : input mode
@@ -122,11 +124,17 @@ class fFundDistribution :
       
     return self.FormContainer.Show()
 
+  def CheckRateEnabled(self):
+    uipTran = self.uipTransaction
+    self.pCashTransaction_RateCash.Enabled = uipTran.GetFieldValue('LCurrency.Currency_Code') != '000'
+    self.pBankTransaction_RateBank.Enabled = uipTran.GetFieldValue('LBank.CurrencyCode') != '000'
+    self.pAssetTransaction_RateAsset.Enabled = uipTran.GetFieldValue('LValuta.Currency_Code') != '000'
+
   def CashCurrAfterLookup(self, sender, linkui):
     uipItem = self.uipTransactionItem
     uipItem.Edit()
     uipItem.Rate = uipItem.GetFieldValue('LCurrency.Kurs_Tengah_BI')
-
+    
   def ProductBeforeLookup(self, sender, linkui):
     if self.fSelectProduct == None:
       fData = self.app.CreateForm('Transaksi/fSelectProgram', 'Transaksi/fSelectProgram', 0, None, None)
@@ -176,8 +184,15 @@ class fFundDistribution :
     if uipTransaction.GetFieldValue('LCurrency.Currency_Code') != None :
        uipTransaction.Edit()
        uipTransaction.Rate = uipTransaction.GetFieldValue('LCurrency.Kurs_Tengah_BI')
+    self.CheckRateEnabled()
 
-
+  def ValutaAfterLookup(self, sender, linkui):
+    uipTransaction = self.uipTransaction
+    if uipTransaction.GetFieldValue('LValuta.Currency_Code') != None :
+       uipTransaction.Edit()
+       uipTransaction.Rate = uipTransaction.GetFieldValue('LValuta.Kurs_Tengah_BI')
+    self.CheckRateEnabled()
+    
   def BankAfterLookup(self,sender,linkui):
     app = self.app
     uipTran = self.uipTransaction
@@ -194,6 +209,8 @@ class fFundDistribution :
     self.DefaultValues['LBank.AccountNo'] = uipTran.GetFieldValue('LBank.AccountNo')
     self.DefaultValues['LBank.BankName'] = uipTran.GetFieldValue('LBank.BankName')
     self.DefaultValues['LBank.CurrencyCode'] = uipTran.GetFieldValue('LBank.CurrencyCode')
+
+    self.CheckRateEnabled()
 
   def BudgetBeforeLookUp(self,sender,linkui):
     if self.fSelectBudget == None :

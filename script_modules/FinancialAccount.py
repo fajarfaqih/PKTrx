@@ -690,8 +690,11 @@ class FixedAsset(DepreciableAsset):
   def GetLiabilityAccount(self):
     return self.LAssetCategory.LGLIContainer.GetAccountInterface('ASSET_LIAB').AccountCode  
     
-  def GetAssetFromAmilAccount(self):
-    return self.LAssetCategory.LGLIContainer.GetAccountInterface('ASSETFROMAMIL').AccountCode
+  #def GetAssetFromAmilAccount(self):
+  #  return self.LAssetCategory.LGLIContainer.GetAccountInterface('ASSETFROMAMIL').AccountCode
+
+  def GetAmilCostForAssetAccount(self):
+    return self.LAssetCategory.LGLIContainer.GetAccountInterface('AMILCOSTFORASSET').AccountCode
 
   def GetAssetKelolaanPlusAccount(self,aFundEntity):
     ENTITY_MAP = {

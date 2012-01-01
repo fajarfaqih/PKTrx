@@ -1189,6 +1189,7 @@ class FixedAssetTransactItem(DeprAssetTransactItem):
     if aFundEntity == 4 :
       # Account Code Amil diambil dari GL Interface Kategori Asset
       AccountCode = oAsset.GetAssetFromAmilAccount() #self.Helper.GetObject('ParameterGlobal', 'GLIASSETFROMAMIL').Get()
+      
     else:
       # Account Code Selain diambil dari Produk
       AccountCode = oAsset.GetAssetKelolaanPlusAccount(aFundEntity)

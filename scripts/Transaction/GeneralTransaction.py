@@ -363,7 +363,7 @@ def InterFundTransfer(helper,oTran,oBatch,request,params):
 
 ### ------- EMPLOYEE ACCOUNT RECEIVABLE -----------------------------------  
 def EmployeeAR(helper,oTran,oBatch,request,params):
-    FundEntityMap = {1 : 'AK-Z', 2 : 'AK-I', 3 : 'AK-W', 4 : 'AK-A'}
+    FundEntityMap = { 1 : 'AK-Z', 2 : 'AK-I', 3 : 'AK-W', 4 : 'AK-A1'}
     
     oTran.ReferenceNo = request[u'ReferenceNo']
     oTran.Description = request[u'Description']
@@ -417,11 +417,12 @@ def EmployeeAR(helper,oTran,oBatch,request,params):
     oItemAR.SetFundEntity(request[u'FundEntity'])
     oItemAR.SetJournalParameter(FundEntityMap[request[u'FundEntity']])
     
+    
     # Cash Account Transaction
     oCashAccount = helper.GetObject('CashAccount',
       str(request[u'CashAccountNo'])).CastToLowestDescendant()
       
-    if oCashAccount.isnull:
+    if oCashAccount.isnull: 
       raise 'Cash/Bank', 'Rekening %s tidak ditemukan' % request[u'CashAccountNo']
 
     oItemCA = oTran.CreateAccountTransactionItem(oCashAccount)
@@ -501,7 +502,7 @@ def PayEmployeeAR(helper,oTran,oBatch,request,params):
 
 ### ------- CASH ADVANCE  -----------------------------------
 def CashAdvance(helper,oTran,oBatch,request,params):
-  JournalCode = {1 : 'AK-Z', 2 : 'AK-I', 3 : 'AK-W', 4 : 'AK-A', 5 : 'AK-N'}
+  JournalCode = {1 : 'AK-Z', 2 : 'AK-I', 3 : 'AK-W', 4 : 'AK-A2', 5 : 'AK-N'}
   
   oTran.ReferenceNo = request[u'ReferenceNo']
   oTran.Description = request[u'Description']
@@ -766,7 +767,7 @@ def CashAdvanceReturn(helper,oTran,oBatch,request,params):
 
 ### ------- INVESTMENT -----------------------------------
 def Investment(helper,oTran,oBatch,request,params):
-  FundEntityMap = {1 : 'AK-Z', 2 : 'AK-I', 3 : 'AK-W', 4 : 'AK-A'}
+  FundEntityMap = {1 : 'AK-Z', 2 : 'AK-I', 3 : 'AK-W', 4 : 'AK-A3'}
   
   oTran.ReferenceNo = request[u'ReferenceNo']
   oTran.Description = request[u'Description']

@@ -110,9 +110,9 @@ def CreateAssetPaymentTransaction(oTran,oAsset,Amount,FundEntity,Description):
     oItemFA.SetJournalParameter('DA02A')
     oItemFA.SetDistributionEntity(FundEntity)
   else:
-    AccountCode = oAsset.GetAssetFromAmilAccount()
+    AccountCode = oAsset.GetAmilCostForAssetAccount()
     oItemFA = oTran.CreateGLTransactionItem(AccountCode, '000')
-    oItemFA.RefAccountName = 'Penyaluran Infaq/ Shodaqoh Tidak Terikat'
+    oItemFA.RefAccountName = 'Beban Aset Kelolaan Amil Atas Aktiva Tetap'
     oItemFA.SetMutation('D',Amount,1.0)
     oItemFA.Description = Description
     oItemFA.SetJournalParameter('DA02B')

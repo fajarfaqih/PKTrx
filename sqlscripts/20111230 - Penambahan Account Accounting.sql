@@ -34,23 +34,6 @@ SELECT nextval('accounting.SEQ_ACCOUNTHIERARCHY')
 INSERT INTO accounting.ACCOUNTHIERARCHY(ACCOUNTHIERARCHY_ID, FL_PARENTACCOUNTCODE, FL_CHILDACCOUNTCODE) VALUES (6786, '4', '4510701')
 select * from accounting.accounthierarchy;
 
-select * from transaction.parameterglobal where kode_parameter like 'GL%'
-update transaction.parameterglobal set nilai_parameter_string='' where kode_parameter='GLIASSETFROMAMIL'
-
-insert into transaction.glinterfacemember values(67,'ASSETFROMAMIL','5530102',null,'BEBAN BIAYA AMIL ATAS ASSET',1); -- BANGUNAN
-insert into transaction.glinterfacemember values(68,'ASSETFROMAMIL','5530102',null,'BEBAN BIAYA AMIL ATAS ASSET',3); -- BANGUNAN
-insert into transaction.glinterfacemember values(69,'ASSETFROMAMIL','5530101',null,'BEBAN BIAYA AMIL ATAS ASSET',2); -- TANAH
-insert into transaction.glinterfacemember values(70,'ASSETFROMAMIL','5530101',null,'BEBAN BIAYA AMIL ATAS ASSET',8); -- TANAH
-insert into transaction.glinterfacemember values(71,'ASSETFROMAMIL','5530103',null,'BEBAN BIAYA AMIL ATAS ASSET',4); -- KENDARAAN
-insert into transaction.glinterfacemember values(72,'ASSETFROMAMIL','5530103',null,'BEBAN BIAYA AMIL ATAS ASSET',5); -- KENDARAAN
-insert into transaction.glinterfacemember values(73,'ASSETFROMAMIL','5530104',null,'BEBAN BIAYA AMIL ATAS ASSET',6); -- PERALATAN
-insert into transaction.glinterfacemember values(74,'ASSETFROMAMIL','5530104',null,'BEBAN BIAYA AMIL ATAS ASSET',7); -- PERALATAN
-
-select * from transaction.glinterfacemember where glicontainerid=1 and gli
-delete from transaction.glinterfacemember where glimemberid > 66
-select * from transaction.id_gen where id_code='GLINTERFACEMEMBER';
-update transaction.id_gen set last_id=(select max(glimemberid) from transaction.glinterfacemember)+1  where id_code='GLINTERFACEMEMBER';
-
 select * from accounting.account where account_code='5530103'
 select * from accounting.accountinstance where account_code ='5530102'
 select * from accounting.accountinstance where account_code ='3150101' and branch_code='115' and currency_code='000'

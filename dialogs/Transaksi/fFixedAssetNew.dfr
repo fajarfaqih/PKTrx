@@ -72,8 +72,8 @@ document <
       PostLinkValues=true
     >}Containers={object:rtf::DualSplit<
       Name='dsMain'
-      Width=240
-      Height=96
+      Width=617
+      Height=592
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dualsplit1']
       InversedAlign=true
@@ -172,8 +172,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=240
-      Height=96
+      Width=617
+      Height=556
       Container1=$CONTAINERS['pTransactionInfo']
       Container2=$CONTAINERS['dualsplit2']
     >, object:rtf::Panel<
@@ -708,14 +708,14 @@ document <
       ControlCharCase=ecUpperCase
     >, object:rtf::DualSplit<
       Name='dualsplit2'
-      Width=240
-      Height=96
+      Width=617
+      Height=490
       Container1=$CONTAINERS['pTransaction']
       Container2=$CONTAINERS['mpSourceInfo']
     >, object:rtf::MultiPages<
       Name='mpSourceInfo'
-      Width=320
-      Height=320
+      Width=617
+      Height=208
       Pages={object:rtf::Page<
           PageName='mpPaymentSourceInfo'
           PageTitle='Data Pembelian'

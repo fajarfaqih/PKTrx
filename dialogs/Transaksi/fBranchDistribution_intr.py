@@ -50,19 +50,21 @@ class fBranchDistribution:
   def bSearchBudgetClick(self, sender):
     uipTran = self.uipTransaction
     if self.fSearchBudget == None:
-      formname = 'Transaksi/fSelectBudgetYear'
+      formname = 'Transaksi/fSelectBudgetCode'
       form = self.app.CreateForm(formname,formname,0,None,None)
       self.fSearchBudget = form
     else:
       form = self.fSearchBudget
     # end if
 
-    BranchCode = uipTran.BranchCode
-    PeriodId = uipTran.PeriodId
-    if form.GetBudgetCode(BranchCode,PeriodId):
+    ActualDate = self.uipTransaction.ActualDate or 0
+    if ActualDate == 0 :
+      raise 'Peringatan','Tanggal transaksi belum diinput. Silahkan input tanggal transaksi lebih dahulu'
+
+    if form.GetBudget(ActualDate) == 1:
       uipTran.Edit()
       uipTran.BudgetCode = form.BudgetCode
-      uipTran.BudgetOwner = form.OwnerName
+      uipTran.BudgetOwner = form.BudgetOwner
       uipTran.BudgetId = form.BudgetId
     # end if
 

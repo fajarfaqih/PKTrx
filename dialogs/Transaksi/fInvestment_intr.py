@@ -4,9 +4,6 @@ DefaultItems = [ 'Inputer',
                  'BranchCode',
                  'TransactionDate',
                  'FloatTransactionDate',
-                 #'LBatch.BatchId',
-                 #'LBatch.BatchNo',
-                 #'LBatch.Description',
                  'ActualDate',
                  'LCashAccount.AccountNo',
                  'LCashAccount.AccountName',
@@ -51,17 +48,9 @@ class fInvestment :
     for item in DefaultItems :
       uipTran.SetFieldValue(item,self.DefaultValues[item])
 
-    #self.pTransaction_LBatch.SetFocus()
     self.pTransaction_ActualDate.SetFocus()
 
   # --- FORM EVENT ---
-  def BatchAfterLookup(self, sender, linkui):
-    uipTran = self.uipTransaction
-    uipTran.Edit()
-    self.DefaultValues['LBatch.BatchId'] = uipTran.GetFieldValue('LBatch.BatchId')
-    self.DefaultValues['LBatch.BatchNo'] = uipTran.GetFieldValue('LBatch.BatchNo')
-    self.DefaultValues['LBatch.Description'] = uipTran.GetFieldValue('LBatch.Description')
-
   def EmployeeAfterLookup (self, sender, linkui):
     self.uipTransaction.EmployeeName = self.uipTransaction.GetFieldValue('LEmployee.Nama_Lengkap')
 
@@ -91,19 +80,21 @@ class fInvestment :
   def bSearchBudgetClick(self, sender):
     uipTran = self.uipTransaction
     if self.fSearchBudget == None:
-      formname = 'Transaksi/fSelectBudgetYear'
+      formname = 'Transaksi/fSelectBudgetCode'
       form = self.app.CreateForm(formname,formname,0,None,None)
       self.fSearchBudget = form
     else:
       form = self.fSearchBudget
     # end if
 
-    BranchCode = uipTran.BranchCode
-    PeriodId = uipTran.PeriodId
-    if form.GetBudgetCode(BranchCode,PeriodId):
+    ActualDate = self.uipTransaction.ActualDate or 0
+    if ActualDate == 0 :
+      raise 'Peringatan','Tanggal transaksi belum diinput. Silahkan input tanggal transaksi lebih dahulu'
+
+    if form.GetBudget(ActualDate) == 1:
       uipTran.Edit()
       uipTran.BudgetCode = form.BudgetCode
-      uipTran.BudgetOwner = form.OwnerName
+      uipTran.BudgetOwner = form.BudgetOwner
       uipTran.BudgetId = form.BudgetId
     # end if
 

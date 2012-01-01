@@ -57,8 +57,8 @@ document <
       PostLinkValues=true
     >}Containers={object:rtf::DualSplit<
       Name='dsMain'
-      Width=240
-      Height=96
+      Width=641
+      Height=600
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dualsplit1']
       InversedAlign=true
@@ -206,8 +206,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=240
-      Height=96
+      Width=641
+      Height=569
       Container1=$CONTAINERS['dualsplit2']
       Container2=$CONTAINERS['pRAKInfo']
     >, object:rtf::Panel<
@@ -559,7 +559,7 @@ document <
       ControlCharCase=ecUpperCase
     >, object:rtf::DualSplit<
       Name='dualsplit2'
-      Width=240
+      Width=641
       Height=465
       Container1=$CONTAINERS['pTransaction']
       Container2=$CONTAINERS['pTransaction2']

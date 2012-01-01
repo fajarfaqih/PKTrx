@@ -66,14 +66,6 @@ def FormSetDataEx(uideflist, params) :
   Now = config.Now()
   bulan = int(config.FormatDateTime('m',Now))
   tahun = int(config.FormatDateTime('yyyy',Now))
-#  rsPeriod = config.CreateSQL(' \
-#     select a.periodid from budgetperiod a , budgetperiod b \
-#     where a.parentperiodid=b.periodid \
-#         and a.periodvalue=%d and b.periodvalue=%d' % (bulan,tahun)).RawResult
-#
-#  recT.PeriodId =  rsPeriod.GetFieldValueAt(0) or 0
-  oBudgetPeriod = helper.GetObjectByNames('BudgetPeriod', {'PeriodValue': tahun})
-  recT.PeriodId = oBudgetPeriod.PeriodId
 
 def GenerateTransactionNumber(config,helper):
   oService = helper.LoadScript('Transaction.TransactionHelper')

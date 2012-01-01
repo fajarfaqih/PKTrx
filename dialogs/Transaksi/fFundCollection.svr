@@ -69,10 +69,6 @@ document <
           DataTypeName='double'
           DataLength=20
         >, object:rpclass::TCustomLoadedField<
-          Name='Inputer'
-          DataTypeName='varchar'
-          DataLength=30
-        >, object:rpclass::TCustomLoadedField<
           Name='PaymentType'
           DataTypeName='varchar'
           DataLength=1
@@ -170,6 +166,10 @@ document <
           DataLength=20
         >, object:rpclass::TCustomLoadedField<
           Name='TransactionNo'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='Inputer'
           DataTypeName='varchar'
           DataLength=30
         >, object:rpclass::TCustomLoadedField<

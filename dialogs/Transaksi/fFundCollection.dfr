@@ -60,12 +60,6 @@ document <
           DataTypeName='double'
           DataLength=20
         >, object:rtf::FieldUIElmtSetting<
-          Name='Inputer'
-          Hidden=true
-          ReadOnlyControl=true
-          DataTypeName='varchar'
-          DataLength=30
-        >, object:rtf::FieldUIElmtSetting<
           Name='PaymentType'
           Hidden=true
           DataTypeName='varchar'
@@ -207,8 +201,8 @@ document <
       BeforeDelete='ItemBeforeDelete'
     >}Containers={object:rtf::MultiSplit<
       Name='msMain'
-      Width=800
-      Height=550
+      Width=320
+      Height=320
       Side1Containers={$CONTAINERS['dualsplit1']
       }Side2Containers={$CONTAINERS['pAction']
       }SpaceContainer=$CONTAINERS['dsTransaction']
@@ -279,8 +273,8 @@ document <
           LookupOption=loCustomOQL
           FieldBaseName='LBank'
         >}Name='pBankTransaction'
-      Width=801
-      Height=120
+      Width=750
+      Height=153
       UIPart=$UIPARTS['uipTransaction']
       Controls={*object:rtf::DBLookupEdit<
           Name='LBank'
@@ -307,7 +301,7 @@ document <
           DisplayFormat=''
         >, object:rtf::DBEdit<
           Name='RateBank'
-          Layout=clAbsolute
+          Layout=clNewLine
           Top=36
           Left=8
           Width=73
@@ -320,7 +314,7 @@ document <
           DisplayFormat=',0.00'
         >, object:rtf::DBEdit<
           Name='RefBank'
-          Layout=clAbsolute
+          Layout=clNewLine
           Top=64
           Left=8
           Width=217
@@ -333,7 +327,7 @@ document <
           DisplayFormat=''
         >, object:rtf::DBEdit<
           Name='DescBank'
-          Layout=clAbsolute
+          Layout=clNewLine
           Top=92
           Left=8
           Width=217
@@ -346,29 +340,16 @@ document <
           DisplayFormat=''
         >, object:rtf::DBEdit<
           Name='edAmount'
-          Layout=clAbsolute
-          Top=64
-          Left=440
+          Layout=clNewLine
+          Top=120
+          Left=8
           Enabled=false
           ForceUseEqualCaptionWidth=true
           Color=-2147483624
-          ControlCaption='Total Amount'
+          ControlCaption='Total Transaksi'
           CaptionWidth=100
           FieldName='TotalAmount'
           DisplayFormat=',0.00'
-          ReadOnly=true
-        >, object:rtf::DBEdit<
-          Name='inputerBank'
-          Layout=clAbsolute
-          Top=92
-          Left=440
-          Enabled=false
-          ForceUseEqualCaptionWidth=true
-          Color=-2147483624
-          ControlCaption='Inputer'
-          CaptionWidth=100
-          FieldName='Inputer'
-          DisplayFormat=''
           ReadOnly=true
         >}EqualCaptionWidth=100
       ControlLeftMargin=8
@@ -428,8 +409,8 @@ document <
           LookupOption=loCustomOQL
           FieldBaseName='LCurrency'
         >}Name='pCashTransaction'
-      Width=745
-      Height=145
+      Width=750
+      Height=153
       UIPart=$UIPARTS['uipTransaction']
       Controls={*object:rtf::DBLookupEdit<
           Name='LCurrency'
@@ -480,29 +461,16 @@ document <
           DisplayFormat=''
         >, object:rtf::DBEdit<
           Name='edAmount'
-          Layout=clAbsolute
-          Top=64
-          Left=392
+          Layout=clNewLine
+          Top=120
+          Left=8
           Enabled=false
           ForceUseEqualCaptionWidth=true
           Color=-2147483624
-          ControlCaption='Total Amount'
+          ControlCaption='Total Transaksi'
           CaptionWidth=100
           FieldName='TotalAmount'
           DisplayFormat=',0.00'
-          ReadOnly=true
-        >, object:rtf::DBEdit<
-          Name='inputerCash'
-          Layout=clAbsolute
-          Top=92
-          Left=392
-          Enabled=false
-          ForceUseEqualCaptionWidth=true
-          Color=-2147483624
-          ControlCaption='Inputer'
-          CaptionWidth=100
-          FieldName='Inputer'
-          DisplayFormat=''
           ReadOnly=true
         >}EqualCaptionWidth=100
       ControlLeftMargin=8
@@ -513,8 +481,8 @@ document <
       ControlCharCase=ecUpperCase
     >, object:rtf::Grid<
       Name='gBankTransactionItem'
-      Width=240
-      Height=240
+      Width=792
+      Height=105
       UIPart=$UIPARTS['uipTransactionItem']
       ControlLeftMargin=8
       ControlTopMargin=8
@@ -605,7 +573,7 @@ document <
     >, object:rtf::MultiPages<
       Name='mpBayar'
       Width=800
-      Height=264
+      Height=290
       Pages={object:rtf::Page<
           PageName='pgCash'
           PageTitle='Kas'
@@ -684,7 +652,7 @@ document <
           FieldBaseName='LValuta'
         >}Name='pAssetTransaction'
       Width=769
-      Height=150
+      Height=177
       UIPart=$UIPARTS['uipTransaction']
       Controls={*object:rtf::DBLookupEdit<
           Name='LAsset'
@@ -695,7 +663,6 @@ document <
           DisplayLookupField=true
         >, *object:rtf::DBLookupEdit<
           Name='LValuta'
-          Layout=clAbsolute
           Top=36
           Left=8
           ForceUseEqualCaptionWidth=true
@@ -709,7 +676,7 @@ document <
           DisplayLookupWidth=160
         >, object:rtf::DBEdit<
           Name='RateAsset'
-          Layout=clAbsolute
+          Layout=clNewLine
           Top=64
           Left=8
           Width=73
@@ -722,7 +689,7 @@ document <
           DisplayFormat=',0.00'
         >, object:rtf::DBEdit<
           Name='RefAsset'
-          Layout=clAbsolute
+          Layout=clNewLine
           Top=92
           Left=8
           Width=217
@@ -735,7 +702,7 @@ document <
           DisplayFormat=''
         >, object:rtf::DBEdit<
           Name='DescAsset'
-          Layout=clAbsolute
+          Layout=clNewLine
           Top=120
           Left=8
           Width=217
@@ -748,29 +715,16 @@ document <
           DisplayFormat=''
         >, object:rtf::DBEdit<
           Name='edAmount'
-          Layout=clAbsolute
-          Top=64
-          Left=392
+          Layout=clNewLine
+          Top=148
+          Left=8
           Enabled=false
           ForceUseEqualCaptionWidth=true
           Color=-2147483624
-          ControlCaption='Total Amount'
+          ControlCaption='Total Transaksi'
           CaptionWidth=100
           FieldName='TotalAmount'
           DisplayFormat=',0.00'
-          ReadOnly=true
-        >, object:rtf::DBEdit<
-          Name='inputerAsset'
-          Layout=clAbsolute
-          Top=92
-          Left=392
-          Enabled=false
-          ForceUseEqualCaptionWidth=true
-          Color=-2147483624
-          ControlCaption='Inputer'
-          CaptionWidth=100
-          FieldName='Inputer'
-          DisplayFormat=''
           ReadOnly=true
         >}EqualCaptionWidth=100
       ControlLeftMargin=8
@@ -781,32 +735,32 @@ document <
       ControlCharCase=ecUpperCase
     >, object:rtf::DualSplit<
       Name='dsTransaction'
-      Width=800
-      Height=285
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pPaymentType']
       Container2=$CONTAINERS['mpBayar']
     >, object:rtf::DualSplit<
       Name='dsBank'
       Width=792
-      Height=236
+      Height=259
       Container1=$CONTAINERS['pBankTransaction']
       Container2=$CONTAINERS['gBankTransactionItem']
     >, object:rtf::DualSplit<
       Name='dsAsset'
       Width=792
-      Height=236
+      Height=259
       Container1=$CONTAINERS['pAssetTransaction']
       Container2=$CONTAINERS['gAssetTransactionItem']
     >, object:rtf::DualSplit<
       Name='dsCash'
       Width=792
-      Height=233
+      Height=259
       Container1=$CONTAINERS['pCashTransaction']
       Container2=$CONTAINERS['gCashTransactionItem']
     >, object:rtf::Grid<
       Name='gAssetTransactionItem'
-      Width=240
-      Height=240
+      Width=792
+      Height=81
       UIPart=$UIPARTS['uipTransactionItem']
       ControlLeftMargin=8
       ControlTopMargin=8
@@ -871,7 +825,7 @@ document <
         >}>, object:rtf::Grid<
       Name='gCashTransactionItem'
       Width=792
-      Height=87
+      Height=105
       UIPart=$UIPARTS['uipTransactionItem']
       ControlLeftMargin=8
       ControlTopMargin=8
@@ -936,7 +890,7 @@ document <
         >}>, object:rtf::DualSplit<
       Name='dualsplit1'
       Width=800
-      Height=227
+      Height=201
       Container1=$CONTAINERS['pDonor']
       Container2=$CONTAINERS['pBatch']
     >, object:rtf::Panel<
@@ -981,7 +935,7 @@ document <
           FieldBaseName='LMarketer'
         >}Name='pDonor'
       Width=801
-      Height=113
+      Height=105
       Bordered=true
       UIPart=$UIPARTS['uipDonor']
       Controls={*object:rtf::DBEdit<
@@ -1040,8 +994,8 @@ document <
           Layout=clAbsolute
           Top=32
           Left=376
-          Width=213
-          Height=72
+          Width=216
+          Height=65
           Enabled=false
           Color=-2147483624
           ControlCaption='Alamat'
@@ -1072,6 +1026,12 @@ document <
           Name='TransactionNo'
           ReadOnlyControl=true
           ControlCaption='Nomor Transaksi'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Inputer'
+          ReadOnlyControl=true
+          ControlCaption='Inputer'
           DataTypeName='varchar'
           DataLength=30
         >, object:rtf::FieldUIElmtSetting<
@@ -1164,7 +1124,7 @@ document <
           FieldBaseName='LProductBranch'
         >}Name='pBatch'
       Width=785
-      Height=113
+      Height=89
       Bordered=true
       UIPart=$UIPARTS['uipTransaction']
       Controls={*object:rtf::DBEdit<
@@ -1176,6 +1136,17 @@ document <
           Enabled=false
           Color=-2147483624
           ControlCaption='Nomor Transaksi'
+        >, *object:rtf::DBEdit<
+          Name='Inputer'
+          Layout=clAbsolute
+          Top=12
+          Left=352
+          Width=251
+          Height=21
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Inputer'
+          CaptionWidth=50
         >, *object:rtf::DBDateEdit<
           Name='ActualDate'
           Top=36

@@ -46,12 +46,6 @@ document <
           DataTypeName='double'
           DataLength=20
         >, object:rtf::FieldUIElmtSetting<
-          Name='Inputer'
-          Hidden=true
-          ReadOnlyControl=true
-          DataTypeName='varchar'
-          DataLength=30
-        >, object:rtf::FieldUIElmtSetting<
           Name='PaymentType'
           Hidden=true
           DataTypeName='varchar'
@@ -242,16 +236,20 @@ document <
           FieldBaseName='LBank'
         >}Name='pBankTransaction'
       Width=801
-      Height=120
+      Height=153
       UIPart=$UIPARTS['uipTransaction']
       Controls={*object:rtf::DBLookupEdit<
           Name='LBank'
           Top=8
           Left=8
           ControlCaption='Rekening Bank'
+          FieldName='LBank.AccountNo'
+          DisplayFormat=''
           LookupField='LBank.BankName'
           DisplayLookupField=true
           OnAfterLookup='BankAfterLookup'
+          DisplayLookupColor=-2147483624
+          DisplayLookupWidth=145
         >, object:rtf::DBText<
           Name='dbBankCurrency'
           Layout=clAbsolute
@@ -266,7 +264,7 @@ document <
           DisplayFormat=''
         >, object:rtf::DBEdit<
           Name='RateBank'
-          Layout=clAbsolute
+          Layout=clNewLine
           Top=36
           Left=8
           Width=73
@@ -279,7 +277,7 @@ document <
           DisplayFormat=',0.00'
         >, object:rtf::DBEdit<
           Name='RefBank'
-          Layout=clAbsolute
+          Layout=clNewLine
           Top=64
           Left=8
           Width=217
@@ -292,7 +290,7 @@ document <
           DisplayFormat=''
         >, object:rtf::DBEdit<
           Name='DescBank'
-          Layout=clAbsolute
+          Layout=clNewLine
           Top=92
           Left=8
           Width=217
@@ -305,27 +303,15 @@ document <
           DisplayFormat=''
         >, object:rtf::DBEdit<
           Name='edAmount'
-          Layout=clAbsolute
-          Top=36
-          Left=392
+          Layout=clNewLine
+          Top=120
+          Left=8
           ForceUseEqualCaptionWidth=true
           Color=-2147483624
-          ControlCaption='Total Amount'
+          ControlCaption='Total Transaksi'
           CaptionWidth=100
           FieldName='TotalAmount'
           DisplayFormat=',0.00'
-          ReadOnly=true
-        >, object:rtf::DBEdit<
-          Name='inputerBank'
-          Layout=clAbsolute
-          Top=64
-          Left=392
-          ForceUseEqualCaptionWidth=true
-          Color=-2147483624
-          ControlCaption='Inputer'
-          CaptionWidth=100
-          FieldName='Inputer'
-          DisplayFormat=''
           ReadOnly=true
         >}EqualCaptionWidth=100
       ControlLeftMargin=8
@@ -393,9 +379,13 @@ document <
           Top=8
           Left=8
           ControlCaption='Kode Valuta'
+          FieldName='LCurrency.Currency_Code'
+          DisplayFormat=''
           LookupField='LCurrency.Full_Name'
           DisplayLookupField=true
           OnAfterLookup='CurrencyAfterLookup'
+          DisplayLookupColor=-2147483624
+          DisplayLookupWidth=145
         >, object:rtf::DBEdit<
           Name='RateCash'
           Layout=clNewLine
@@ -437,27 +427,15 @@ document <
           DisplayFormat=''
         >, object:rtf::DBEdit<
           Name='edAmount'
-          Layout=clAbsolute
-          Top=36
-          Left=392
+          Layout=clNewLine
+          Top=120
+          Left=8
           ForceUseEqualCaptionWidth=true
           Color=-2147483624
-          ControlCaption='Total Amount'
+          ControlCaption='Total Transaksi'
           CaptionWidth=100
           FieldName='TotalAmount'
           DisplayFormat=',0.00'
-          ReadOnly=true
-        >, object:rtf::DBEdit<
-          Name='inputerCash'
-          Layout=clAbsolute
-          Top=64
-          Left=392
-          ForceUseEqualCaptionWidth=true
-          Color=-2147483624
-          ControlCaption='Inputer'
-          CaptionWidth=100
-          FieldName='Inputer'
-          DisplayFormat=''
           ReadOnly=true
         >}EqualCaptionWidth=100
       ControlLeftMargin=8
@@ -587,8 +565,8 @@ document <
       RowControlGap=7
     >, object:rtf::MultiPages<
       Name='mpBayar'
-      Width=800
-      Height=317
+      Width=320
+      Height=320
       Pages={object:rtf::Page<
           PageName='pgCash'
           PageTitle='Kas'
@@ -674,18 +652,21 @@ document <
           FieldBaseName='LValuta'
         >}Name='pAssetTransaction'
       Width=769
-      Height=150
+      Height=177
       UIPart=$UIPARTS['uipTransaction']
       Controls={*object:rtf::DBLookupEdit<
           Name='LAsset'
           Top=8
           Left=8
           ControlCaption='Rekening Aktiva'
+          FieldName='LAsset.Account_Code'
+          DisplayFormat=''
           LookupField='LAsset.Account_Name'
           DisplayLookupField=true
+          DisplayLookupColor=-2147483624
+          DisplayLookupWidth=145
         >, *object:rtf::DBLookupEdit<
           Name='LValuta'
-          Layout=clAbsolute
           Top=36
           Left=8
           ForceUseEqualCaptionWidth=true
@@ -695,10 +676,10 @@ document <
           LookupField='LValuta.Full_Name'
           DisplayLookupField=true
           DisplayLookupColor=-2147483624
-          DisplayLookupWidth=160
+          DisplayLookupWidth=145
         >, object:rtf::DBEdit<
           Name='RateAsset'
-          Layout=clAbsolute
+          Layout=clNewLine
           Top=64
           Left=8
           Width=73
@@ -711,7 +692,7 @@ document <
           DisplayFormat=',0.00'
         >, object:rtf::DBEdit<
           Name='RefAsset'
-          Layout=clAbsolute
+          Layout=clNewLine
           Top=92
           Left=8
           Width=217
@@ -724,7 +705,7 @@ document <
           DisplayFormat=''
         >, object:rtf::DBEdit<
           Name='DescAsset'
-          Layout=clAbsolute
+          Layout=clNewLine
           Top=120
           Left=8
           Width=217
@@ -737,27 +718,15 @@ document <
           DisplayFormat=''
         >, object:rtf::DBEdit<
           Name='edAmount'
-          Layout=clAbsolute
-          Top=36
-          Left=392
+          Layout=clNewLine
+          Top=148
+          Left=8
           ForceUseEqualCaptionWidth=true
           Color=-2147483624
-          ControlCaption='Total Amount'
+          ControlCaption='Total Transaksi'
           CaptionWidth=100
           FieldName='TotalAmount'
           DisplayFormat=',0.00'
-          ReadOnly=true
-        >, object:rtf::DBEdit<
-          Name='inputerAsset'
-          Layout=clAbsolute
-          Top=64
-          Left=392
-          ForceUseEqualCaptionWidth=true
-          Color=-2147483624
-          ControlCaption='Inputer'
-          CaptionWidth=100
-          FieldName='Inputer'
-          DisplayFormat=''
           ReadOnly=true
         >}EqualCaptionWidth=100
       ControlLeftMargin=8
@@ -1023,21 +992,21 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dsMain'
-      Width=800
-      Height=505
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dsBatch']
       InversedAlign=true
     >, object:rtf::DualSplit<
       Name='dsBatch'
-      Width=800
-      Height=468
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pBatch']
       Container2=$CONTAINERS['dsTransaction']
     >, object:rtf::DualSplit<
       Name='dsTransaction'
-      Width=800
-      Height=338
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pSourceOfFund']
       Container2=$CONTAINERS['mpBayar']
     >, object:rtf::Panel<
@@ -1067,6 +1036,12 @@ document <
           ControlCaption='Tanggal Input'
           DataTypeName='timestamp'
           DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Inputer'
+          ReadOnlyControl=true
+          ControlCaption='Inputer'
+          DataTypeName='varchar'
+          DataLength=30
         >, object:rtf::FieldUIElmtSetting<
           Name='ActualDate'
           ControlCaption='Tanggal Transaksi'
@@ -1157,7 +1132,7 @@ document <
       Controls={*object:rtf::DBEdit<
           Name='TransactionNo'
           Layout=clAbsolute
-          Top=8
+          Top=12
           Left=381
           Width=222
           Height=21
@@ -1169,21 +1144,32 @@ document <
           ReadOnly=true
         >, *object:rtf::DBDateEdit<
           Name='TransactionDate'
-          Top=8
+          Top=12
           Left=8
           Enabled=false
           Color=-2147483624
           ControlCaption='Tanggal Input'
+        >, *object:rtf::DBEdit<
+          Name='Inputer'
+          Layout=clAbsolute
+          Top=40
+          Left=381
+          Width=222
+          Height=21
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Inputer'
+          CaptionWidth=90
         >, *object:rtf::DBDateEdit<
           Name='ActualDate'
-          Top=36
+          Top=40
           Left=8
           Color=0
           ControlCaption='Tanggal Transaksi'
         >, *object:rtf::DBLookupEdit<
           Name='LVolunteer'
           Layout=clAbsolute
-          Top=64
+          Top=96
           Left=381
           ControlCaption='Mitra'
           LayoutOrder=7
@@ -1192,7 +1178,7 @@ document <
           DisplayLookupField=true
         >, *object:rtf::DBEdit<
           Name='PaidTo'
-          Top=64
+          Top=68
           Left=8
           Width=221
           Height=21
@@ -1201,7 +1187,7 @@ document <
           LayoutOrder=3
         >, *object:rtf::DBEdit<
           Name='ReceivedFrom'
-          Top=92
+          Top=96
           Left=8
           Width=221
           Height=21
@@ -1210,7 +1196,7 @@ document <
         >, *object:rtf::DBEdit<
           Name='DonorNo'
           Layout=clAbsolute
-          Top=36
+          Top=68
           Left=381
           Width=70
           Height=21
@@ -1221,7 +1207,7 @@ document <
         >, *object:rtf::DBEdit<
           Name='DonorName'
           Layout=clAbsolute
-          Top=36
+          Top=68
           Left=552
           Width=140
           Height=21
@@ -1234,7 +1220,7 @@ document <
         >, object:rtf::Button<
           Name='button1'
           Layout=clAbsolute
-          Top=36
+          Top=68
           Left=704
           Color=0
           ControlCaption=''
@@ -1243,7 +1229,7 @@ document <
           OnClick='SponsorClick'
         >}EqualCaptionWidth=120
       ControlLeftMargin=8
-      ControlTopMargin=8
+      ControlTopMargin=12
       DefaultControlHeight=21
       HorizontalControlGap=4
       RowControlGap=7

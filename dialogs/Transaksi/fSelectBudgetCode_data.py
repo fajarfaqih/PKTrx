@@ -12,6 +12,8 @@ def FormSetDataEx(uideflist, parameter):
     tahun = int(config.FormatDateTime('yyyy',ActualDate))
 
     oBudgetPeriod = helper.GetObjectByNames('BudgetPeriod', {'PeriodValue': tahun})
+    if oBudgetPeriod.isnull : return
+    
     PeriodId = oBudgetPeriod.PeriodId
     
     FilterCategory = rec.FilterCategory

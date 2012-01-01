@@ -46,11 +46,6 @@ def FormSetDataEx(uideflist, params) :
   rec.SetFieldByName('LValuta.Full_Name', 'Indonesia Rupiah')
   rec.SetFieldByName('LValuta.Kurs_Tengah_BI', 1.0)
   
-  bulan = int(config.FormatDateTime('m',Now))
-  tahun = int(config.FormatDateTime('yyyy',Now))
-
-  oBudgetPeriod = helper.GetObjectByNames('BudgetPeriod', {'PeriodValue': tahun})
-  rec.PeriodId = oBudgetPeriod.PeriodId
 
 def GenerateTransactionNumber(config,helper):
   oService = helper.LoadScript('Transaction.TransactionHelper')

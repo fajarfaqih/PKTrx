@@ -38,6 +38,7 @@ class fSelectBudgetCode :
       ['FilterCategory', uipFilter.FilterCategory or ''],
       ['FilterText', uipFilter.FilterText or '']
     )
+    self.uipBudget.ClearData()
     self.FormObject.SetDataWithParameters(ph)
     
   def FilterCategoryChange(self,sender):
