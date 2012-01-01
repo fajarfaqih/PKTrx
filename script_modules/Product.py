@@ -27,7 +27,15 @@ class Product(pobject.PObject):
       'PDG_WAKAF' : 'Account Penyaluran Wakaf',
       'PDG_AMIL' : 'Biaya Operasional Cabang',
       'PHP_NONHALAL' : 'Infaq Dana Fasilitas Umum',
-      'PDG_NONHALAL' : 'Penyaluran Dana Fasilitas Umum',   
+      'PDG_NONHALAL' : 'Penyaluran Dana Fasilitas Umum',
+      'ASSET_FROM_ZAKAT' : 'Penambahan Aset Dari Zakat',
+      'ASSET_FROM_INFAQ' : 'Penambahan Aset Dari Infaq',
+      'ASSET_FROM_WAKAF' : 'Penambahan Aset Dari Wakaf',
+      'ASSET_FROM_NONHALAL' : 'Penambahan Aset Dari Non Halal',
+      'ASSET_TO_ZAKAT' : 'Pengurangan Aset Kelolaan Zakat',
+      'ASSET_TO_INFAQ' : 'Pengurangan Aset Kelolaan Infaq',
+      'ASSET_TO_WAKAF' : 'Pengurangan Aset Kelolaan Wakaf',
+      'ASSET_TO_NONHALAL' : 'Pengurangan Aset Kelolaan Non Halal',
     }
     self.gltag='PRODUCT'
     

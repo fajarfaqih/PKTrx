@@ -50,5 +50,10 @@ document <
       Name='webviewer'
       Width=521
       Height=379
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
     >}FormClassName='fWebViewer'
 >

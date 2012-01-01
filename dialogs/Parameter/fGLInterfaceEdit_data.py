@@ -13,7 +13,7 @@ def CheckGLInterface(config,oProduct):
   helper = phelper.PObjectHelper(config)
   
   oProduct = helper.GetObjectByInstance(oProduct.classname,oProduct)
-  if oProduct.GLInterfaceExist(): return
+  #if oProduct.GLInterfaceExist(): return
 
   config.BeginTransaction()
   try:

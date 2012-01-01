@@ -399,11 +399,18 @@ class InvestmentCategory(pobject.PObject):
     # endif      
       
     for kode,item in DefaultGL.items():
-      oGLIMember = self.Helper.CreatePObject('GLInterfaceMember')
-      oGLIMember.GLIContainerId = self.GLIContainerId
-      oGLIMember.GLIMemberCode = kode
-      oGLIMember.Description = item[0]
-      oGLIMember.AccountCode = item[1]
+      oGLIMember = self.Helper.GetObjectByNames(
+        'GLInterfaceMember',
+        { 'GLIMemberCode' : kode ,
+          'GLIContainerId' : self.GLIContainerId
+        }
+      )
+      if oGLIMember.isnull :
+        oGLIMember = self.Helper.CreatePObject('GLInterfaceMember')
+        oGLIMember.GLIContainerId = self.GLIContainerId
+        oGLIMember.GLIMemberCode = kode
+        oGLIMember.Description = item[0]
+        oGLIMember.AccountCode = item[1]
     
         
 class Investment(AccountReceivable):
@@ -683,6 +690,25 @@ class FixedAsset(DepreciableAsset):
   def GetLiabilityAccount(self):
     return self.LAssetCategory.LGLIContainer.GetAccountInterface('ASSET_LIAB').AccountCode  
     
+  def GetAssetFromAmilAccount(self):
+    return self.LAssetCategory.LGLIContainer.GetAccountInterface('ASSETFROMAMIL').AccountCode
+
+  def GetAssetKelolaanPlusAccount(self,aFundEntity):
+    ENTITY_MAP = {
+      1: 'ASSET_FROM_ZAKAT', 2: 'ASSET_FROM_INFAQ', 3: 'ASSET_FROM_WAKAF', 5: 'ASSET_FROM_NONHALAL'
+    }
+    aIntfCode = ENTITY_MAP[aFundEntity]
+
+    return self.LProductAccount.LProduct.GetAccountInterface(aIntfCode).AccountCode
+
+  def GetAssetKelolaanMinusAccount(self,FundEntity):
+    ENTITY_MAP = {
+      1: 'ASSET_TO_ZAKAT', 2: 'ASSET_TO_INFAQ', 3: 'ASSET_TO_WAKAF', 5: 'ASSET_TO_NONHALAL'
+    }
+    aIntfCode = ENTITY_MAP[aFundEntity]
+
+    return self.LProductAccount.LProduct.GetAccountInterface(aIntfCode).AccountCode        
+
   def CreateSellTransactInfo(self,oTransactItem,SellAmount):
     self.HargaJual = SellAmount
     
@@ -727,11 +753,18 @@ class CPIACategory(pobject.PObject):
     }           
       
     for kode,item in DefaultGL.items():
-      oGLIMember = self.Helper.CreatePObject('GLInterfaceMember')
-      oGLIMember.GLIContainerId = self.GLIContainerId
-      oGLIMember.GLIMemberCode = kode
-      oGLIMember.Description = item[0]
-      oGLIMember.AccountCode = item[1]
+      oGLIMember = self.Helper.GetObjectByNames(
+        'GLInterfaceMember',
+        { 'GLIMemberCode' : kode ,
+          'GLIContainerId' : self.GLIContainerId
+        }
+      )
+      if oGLIMember.isnull :
+        oGLIMember = self.Helper.CreatePObject('GLInterfaceMember')
+        oGLIMember.GLIContainerId = self.GLIContainerId
+        oGLIMember.GLIMemberCode = kode
+        oGLIMember.Description = item[0]
+        oGLIMember.AccountCode = item[1]
         
 class CostPaidInAdvance(AmortizedCost):
   # static variable
@@ -826,49 +859,64 @@ class AssetCategory(pobject.PObject):
       DefaultGL['DEPR_ACC'] = ('AKUN PENYUSUTAN','1220401')
       DefaultGL['COST_ACC'] = ('AKUN BIAYA','5520801')
       DefaultGL['ASSET_LIAB'] = ('AKUN ASSET HUTANG YAD','2130302')
+      DefaultGL['ASSETFROMAMIL'] = ('BEBAN BIAYA AMIL ATAS ASSET','5530102')
     elif self.AssetCategoryCode == 'BTT' :
       DefaultGL['ASSET_ACC'] = ('AKUN ASSET','1220102')
       DefaultGL['DEPR_ACC'] = ('AKUN PENYUSUTAN','1220301')
       DefaultGL['COST_ACC'] = ('AKUN BIAYA','5520801')
-      DefaultGL['ASSET_LIAB'] = ('AKUN ASSET HUTANG YAD','2130302')    
+      DefaultGL['ASSET_LIAB'] = ('AKUN ASSET HUTANG YAD','2130302')
+      DefaultGL['ASSETFROMAMIL'] = ('BEBAN BIAYA AMIL ATAS ASSET','5530102')
     elif self.AssetCategoryCode == 'KT' :
       DefaultGL['ASSET_ACC'] = ('AKUN ASSET','1220203')
       DefaultGL['DEPR_ACC'] = ('AKUN PENYUSUTAN','1220402')
       DefaultGL['COST_ACC'] = ('AKUN BIAYA','5520802')
-      DefaultGL['ASSET_LIAB'] = ('AKUN ASSET HUTANG YAD','2130303')    
+      DefaultGL['ASSET_LIAB'] = ('AKUN ASSET HUTANG YAD','2130303')
+      DefaultGL['ASSETFROMAMIL'] = ('BEBAN BIAYA AMIL ATAS ASSET','5530103')
     elif self.AssetCategoryCode == 'KTT' :
       DefaultGL['ASSET_ACC'] = ('AKUN ASSET','1220103')
       DefaultGL['DEPR_ACC'] = ('AKUN PENYUSUTAN','1220302')
       DefaultGL['COST_ACC'] = ('AKUN BIAYA','5520802')
-      DefaultGL['ASSET_LIAB'] = ('AKUN ASSET HUTANG YAD','2130303')    
+      DefaultGL['ASSET_LIAB'] = ('AKUN ASSET HUTANG YAD','2130303')
+      DefaultGL['ASSETFROMAMIL'] = ('BEBAN BIAYA AMIL ATAS ASSET','5530103')
     elif self.AssetCategoryCode == 'PT' :
       DefaultGL['ASSET_ACC'] = ('AKUN ASSET','1220204')
       DefaultGL['DEPR_ACC'] = ('AKUN PENYUSUTAN','1220403')
       DefaultGL['COST_ACC'] = ('AKUN BIAYA','5520803')
-      DefaultGL['ASSET_LIAB'] = ('AKUN ASSET HUTANG YAD','2130304')    
+      DefaultGL['ASSET_LIAB'] = ('AKUN ASSET HUTANG YAD','2130304')
+      DefaultGL['ASSETFROMAMIL'] = ('BEBAN BIAYA AMIL ATAS ASSET','5530104')
     elif self.AssetCategoryCode == 'PTT' :
       DefaultGL['ASSET_ACC'] = ('AKUN ASSET','1220104')
       DefaultGL['DEPR_ACC'] = ('AKUN PENYUSUTAN','1220303')
       DefaultGL['COST_ACC'] = ('AKUN BIAYA','5520803')
       DefaultGL['ASSET_LIAB'] = ('AKUN ASSET HUTANG YAD','2130304')
+      DefaultGL['ASSETFROMAMIL'] = ('BEBAN BIAYA AMIL ATAS ASSET','5530104')
     elif self.AssetCategoryCode == 'TT' :
       DefaultGL['ASSET_ACC'] = ('AKUN ASSET','1220201')
       DefaultGL['DEPR_ACC'] = ('AKUN PENYUSUTAN','')
       DefaultGL['COST_ACC'] = ('AKUN BIAYA','')
-      DefaultGL['ASSET_LIAB'] = ('AKUN ASSET HUTANG YAD','2130302')    
+      DefaultGL['ASSET_LIAB'] = ('AKUN ASSET HUTANG YAD','2130302')
+      DefaultGL['ASSETFROMAMIL'] = ('BEBAN BIAYA AMIL ATAS ASSET','5530101')
     elif self.AssetCategoryCode == 'TTT' :
       DefaultGL['ASSET_ACC'] = ('AKUN ASSET','1220101')
       DefaultGL['DEPR_ACC'] = ('AKUN PENYUSUTAN','')
       DefaultGL['COST_ACC'] = ('AKUN BIAYA','')
-      DefaultGL['ASSET_LIAB'] = ('AKUN ASSET HUTANG YAD','2130302')      
-    # endif      
-      
+      DefaultGL['ASSET_LIAB'] = ('AKUN ASSET HUTANG YAD','2130302')
+      DefaultGL['ASSETFROMAMIL'] = ('BEBAN BIAYA AMIL ATAS ASSET','5530101')
+    # endif
+
     for kode,item in DefaultGL.items():
-      oGLIMember = self.Helper.CreatePObject('GLInterfaceMember')
-      oGLIMember.GLIContainerId = self.GLIContainerId
-      oGLIMember.GLIMemberCode = kode
-      oGLIMember.Description = item[0]
-      oGLIMember.AccountCode = item[1]
+      oGLIMember = self.Helper.GetObjectByNames(
+        'GLInterfaceMember',
+        { 'GLIMemberCode' : kode ,
+          'GLIContainerId' : self.GLIContainerId
+        }
+      )
+      if oGLIMember.isnull :
+        oGLIMember = self.Helper.CreatePObject('GLInterfaceMember')
+        oGLIMember.GLIContainerId = self.GLIContainerId
+        oGLIMember.GLIMemberCode = kode
+        oGLIMember.Description = item[0]
+        oGLIMember.AccountCode = item[1]
 #       oAccount = self.Helper.GetObject('Account',oGLInt.item[1])
 #       if oAccount.isnull : '','Account Code %s Tidak Ditemukan' % oGLIMember.AccountCode
 #       oGLIMember.AccountName = oAccount.Account_Name

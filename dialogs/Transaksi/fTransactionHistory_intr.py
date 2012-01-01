@@ -16,7 +16,7 @@ class fTransactionHistory:
     uipData.SearchCategory = 0
     uipData.IsSPV = SPVMode
     uipData.RangeAmountFrom = 0.0
-    uipData.RangeAmountTo = 10000000
+    uipData.RangeAmountTo = 100000000
     uipData.LimitData = 50
     self.pBatch_SearchText.enabled = 0
     self.pBatch_SearchText.Color=-2147483624

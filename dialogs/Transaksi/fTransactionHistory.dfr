@@ -64,8 +64,8 @@ document <
       SetMasterDetailRelationship=true
     >}Containers={object:rtf::DualSplit<
       Name='dsMain'
-      Width=240
-      Height=96
+      Width=785
+      Height=505
       Container1=$CONTAINERS['pMainAction']
       Container2=$CONTAINERS['dsTop']
       InversedAlign=true
@@ -376,8 +376,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dsTop'
-      Width=240
-      Height=96
+      Width=785
+      Height=463
       Container1=$CONTAINERS['pBatch']
       Container2=$CONTAINERS['dsTopOne']
     >, object:rtf::Panel<

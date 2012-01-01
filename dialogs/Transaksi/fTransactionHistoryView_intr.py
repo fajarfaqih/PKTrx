@@ -10,6 +10,9 @@ class fTransactionHistoryView:
     params = self.app.CreateValues(['TransactionId',TransactionId])
   
     self.FormObject.SetDataWithParameters(params)
+
+    # Set Button untuk kebutuhan maintenance
+    self.pTransaction_bReJournal.visible = (self.uipData.user_id == 'OP001')
     return self.FormContainer.Show()
 
 
@@ -87,4 +90,23 @@ class fTransactionHistoryView:
       # Print Slip Transaksi
       #self.app.ShowMessage("Masukkan Kertas Kwitansi ke Printer")
       self.oPrint.doProcessByStreamName(self.app,ph.packet,st.Stream_Name)
+    #--if
+
+  def bReJournalClick(self,sender):
+    transactionId = self.uipTransaction.TransactionId
+    if transactionId != None:
+
+      ph = self.app.CreateValues(
+        ['TransactionId', transactionId])
+
+      ph = self.form.CallServerMethod('JurnalUlangTransaksi', ph)
+
+      st = ph.FirstRecord
+      if st.Is_Err in [1,2]:
+        raise 'PERINGATAN', st.Err_Message
+
+      self.uipTransaction.Edit()
+      self.uipTransaction.IsPostedMir = 'T'
+      self.app.ShowMessage('Transaksi Berhasil di Posting')
+      #-- if
     #--if

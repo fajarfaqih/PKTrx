@@ -141,6 +141,9 @@ document <
         >}Elements={*object:rtf::FieldUIElmtSetting<
           Name='ParameterJournalItemId'
           Hidden=true
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='AccountBase'
+          ControlCaption='Sumber Account'
         >}Name='pJournalItem'
       Width=240
       Height=240
@@ -161,13 +164,6 @@ document <
           Width=200
         >, *object:rtf::GridColumn<
           Name='AccountBase'
-          InputStyle=cisEnumerated
-          EnumeratedValues=['T=Transaction'#13#10,
-            'P=Parameter'#13#10,
-            'R=Product'#13#10,
-            'I=GLInterface'#13#10]
-          FieldName='AccountBase'
-          DisplayFormat=''
           TitleCaption='Sumber Account'
           Width=100
         >, *object:rtf::GridColumn<

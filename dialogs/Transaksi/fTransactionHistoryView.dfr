@@ -399,6 +399,17 @@ document <
           LayoutOrder=7
           Caption='&Lihat Jurnal Accounting'
           OnClick='bViewJournalClick'
+        >, object:rtf::Button<
+          Name='bReJournal'
+          Layout=clAbsolute
+          Top=152
+          Left=392
+          Width=121
+          Height=25
+          Color=0
+          ControlCaption=''
+          Caption='Jurnal Ulang Transaksi'
+          OnClick='bReJournalClick'
         >}EqualCaptionWidth=120
       ControlLeftMargin=10
       ControlTopMargin=10

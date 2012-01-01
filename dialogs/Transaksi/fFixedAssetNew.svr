@@ -36,6 +36,105 @@ document <
           DataTypeName='varchar'
           DataLength=30
         >, object:rpclass::TCustomLoadedField<
+          Name='PaidTo'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='BranchId'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='TransactionDate'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='TransactionNo'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='ActualDate'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBatch.BatchId'
+          DataTypeName='INTEGER'
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBatch.BatchId'
+          DataTypeName='INTEGER'
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBatch.BatchNo'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBatch.BatchDate'
+          DataTypeName='TIMESTAMP'
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBatch.Description'
+          DataTypeName='VARCHAR'
+          DataLength=100
+        >, object:rpclass::TCustomLoadedField<
+          Name='DonorId'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='DonorNo'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='DonorName'
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rpclass::TCustomLoadedField<
+          Name='PhoneNumber'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='Address'
+          DataTypeName='varchar'
+          DataLength=200
+        >, object:rpclass::TCustomLoadedField<
+          Name='DonorType'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LMarketer.MarketerId'
+          DataTypeName='INTEGER'
+        >, object:rpclass::TCustomLoadedField<
+          Name='LMarketer.Full_Name'
+          DataTypeName='VARCHAR'
+          DataLength=150
+        >, object:rpclass::TCustomLoadedField<
+          Name='LMarketer.MarketerId'
+          DataTypeName='INTEGER'
+        >, object:rpclass::TCustomLoadedField<
+          Name='PaymentType'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LCashAccount.AccountNo'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='LCashAccount.AccountNo'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='LCashAccount.AccountName'
+          DataTypeName='VARCHAR'
+          DataLength=50
+        >, object:rpclass::TCustomLoadedField<
+          Name='CashAdvance'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='BudgetCode'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='BudgetOwner'
+          DataTypeName='varchar'
+          DataLength=100
+        >, object:rpclass::TCustomLoadedField<
           Name='ReceivedFrom'
           DataTypeName='varchar'
           DataLength=30
@@ -126,6 +225,10 @@ document <
           DataTypeName='double'
           DataLength=20
         >, object:rpclass::TCustomLoadedField<
+          Name='FundEntity'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
           Name='ReferenceNo'
           DataTypeName='varchar'
           DataLength=30
@@ -134,63 +237,22 @@ document <
           DataTypeName='varchar'
           DataLength=100
         >, object:rpclass::TCustomLoadedField<
-          Name='BudgetCode'
+          Name='SourceAssetType'
           DataTypeName='varchar'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='BudgetOwner'
-          DataTypeName='varchar'
-          DataLength=100
-        >, object:rpclass::TCustomLoadedField<
-          Name='PaymentType'
-          DataTypeName='varchar'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='LCashAccount.AccountNo'
-          DataTypeName='VARCHAR'
-          DataLength=30
-        >, object:rpclass::TCustomLoadedField<
-          Name='LCashAccount.AccountNo'
-          DataTypeName='VARCHAR'
-          DataLength=30
-        >, object:rpclass::TCustomLoadedField<
-          Name='LCashAccount.AccountName'
-          DataTypeName='VARCHAR'
-          DataLength=50
-        >, object:rpclass::TCustomLoadedField<
-          Name='CashAdvance'
-          DataTypeName='double'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='TransactionNo'
-          DataTypeName='varchar'
-          DataLength=30
-        >, object:rpclass::TCustomLoadedField<
-          Name='TransactionDate'
-          DataTypeName='timestamp'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='ActualDate'
-          DataTypeName='timestamp'
-          DataLength=20
-        >, object:rpclass::TCustomLoadedField<
-          Name='LBatch.BatchId'
-          DataTypeName='INTEGER'
-        >, object:rpclass::TCustomLoadedField<
-          Name='LBatch.BatchId'
-          DataTypeName='INTEGER'
-        >, object:rpclass::TCustomLoadedField<
-          Name='LBatch.BatchNo'
-          DataTypeName='VARCHAR'
-          DataLength=30
-        >, object:rpclass::TCustomLoadedField<
-          Name='LBatch.BatchDate'
-          DataTypeName='TIMESTAMP'
-        >, object:rpclass::TCustomLoadedField<
-          Name='LBatch.Description'
-          DataTypeName='VARCHAR'
-          DataLength=100
+          DataLength=1
         >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
+          Name='LBatch'
+          ClassTypeName='TransactionBatch'
+          FieldNames='BatchId;BatchId;BatchNo;BatchDate;Description'
+        >, object:rpclass::TCustomLoadedLink<
+          Name='LMarketer'
+          ClassTypeName='Marketer'
+          FieldNames='MarketerId;Full_Name;MarketerId'
+        >, object:rpclass::TCustomLoadedLink<
+          Name='LCashAccount'
+          ClassTypeName='CashAccount'
+          FieldNames='AccountNo;AccountNo;AccountName'
+        >, object:rpclass::TCustomLoadedLink<
           Name='LAssetCategory'
           ClassTypeName='AssetCategory'
           FieldNames='AssetCategoryId;AssetCategoryId;AssetCategoryCode;AssetCategoryName;AssetType'
@@ -198,14 +260,6 @@ document <
           Name='LProduct'
           ClassTypeName='VProduct'
           FieldNames='AccountNo;ProductCode;ProductName;AccountNo;AccountName;ProductType'
-        >, object:rpclass::TCustomLoadedLink<
-          Name='LCashAccount'
-          ClassTypeName='CashAccount'
-          FieldNames='AccountNo;AccountNo;AccountName'
-        >, object:rpclass::TCustomLoadedLink<
-          Name='LBatch'
-          ClassTypeName='TransactionBatch'
-          FieldNames='BatchId;BatchId;BatchNo;BatchDate;Description'
         >}Mode=imSingleRow
     >}OnSetDataEx='FormSetDataEx'
 >

@@ -6,7 +6,7 @@ document <
   MinorVersion='0'
 >object:rtf::Form<
   MainContainer=$CONTAINERS['dsMain']
-  Caption='(Bayar) Piutang Karyawan'
+  Caption='(Pinjam/Bayar) Piutang'
   Left=50
   Top=50
   Width=529
@@ -37,8 +37,8 @@ document <
       PostLinkValues=true
     >}Containers={object:rtf::DualSplit<
       Name='dsMain'
-      Width=529
-      Height=393
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['pTransaction']
       InversedAlign=true

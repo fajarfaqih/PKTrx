@@ -15,7 +15,7 @@ def CheckGLInterface(config,oParameter):
   helper = phelper.PObjectHelper(config)
   
   oParameter = helper.GetObjectByInstance(oParameter.classname,oParameter)
-  if oParameter.GLInterfaceExist(): return
+  #if oParameter.GLInterfaceExist(): return
 
   config.BeginTransaction()
   try:

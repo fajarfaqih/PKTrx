@@ -18,6 +18,9 @@ def FormSetDataEx(uideflist, parameter):
     uideflist.SetData('uipTransaction','PObj:Transaction#TransactionId=%d ' % TransactionId)
     rec = uideflist.uipTransaction.Dataset.GetRecord(0)
     rec.IsPostedMir = rec.IsPosted
+    
+    recData = uideflist.uipData.Dataset.AddRecord()
+    recData.user_id = config.SecurityContext.InitUser
 
 def JurnalTransaksi(config, params, returns):
   helper = phelper.PObjectHelper(config)
@@ -35,6 +38,26 @@ def JurnalTransaksi(config, params, returns):
       st, errmsg = oTran.CreateJournal()
       status.Is_Err = st
       status.Err_Message = errmsg
+  except:
+    status.Is_Err = 1
+    status.Err_Message = str(sys.exc_info()[1])
+    
+def JurnalUlangTransaksi(config, params, returns):
+  helper = phelper.PObjectHelper(config)
+  status = returns.CreateValues(
+    ["Is_Err",0],
+    ["Err_Message",""])
+
+  data = params.FirstRecord
+
+  try :
+    oTran = helper.GetObject('Transaction', data.TransactionId)
+    TranHelper = helper.LoadScript('Transaction.TransactionHelper')
+    TranHelper.DeleteTransactionJournal(oTran)
+    
+    st, errmsg = oTran.CreateJournal()
+    status.Is_Err = st
+    status.Err_Message = errmsg
   except:
     status.Is_Err = 1
     status.Err_Message = str(sys.exc_info()[1])

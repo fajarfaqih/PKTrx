@@ -133,11 +133,14 @@ document <
           DataLength=50
         >, object:rtf::FieldUIElmtSetting<
           Name='AccountBase'
+          ControlCaption='Sumber Account'
           DataTypeName='VARCHAR'
           DataLength=1
           EnumeratedValues=['P=Parameter'#13#10,
             'R=Product'#13#10,
-            'T=Transaction'#13#10]
+            'T=Transaction'#13#10,
+            'I=GL Interface'#13#10,
+            'G=Transaction GL Interface'#13#10]
         >, object:rtf::FieldUIElmtSetting<
           Name='AccountCode'
           DataTypeName='VARCHAR'
@@ -191,10 +194,11 @@ document <
         >, *object:rtf::GridColumn<
           Name='AccountBase'
           InputStyle=cisEnumerated
-          EnumeratedValues=['T=Transaction'#13#10,
-            'P=Parameter'#13#10,
+          EnumeratedValues=['P=Parameter'#13#10,
             'R=Product'#13#10,
-            'I=GLInterface'#13#10]
+            'T=Transaction'#13#10,
+            'I=GL Interface'#13#10,
+            'G=Transaction GL Interface'#13#10]
           FieldName='AccountBase'
           DisplayFormat=''
           TitleCaption='Sumber Account'

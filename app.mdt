@@ -1476,6 +1476,9 @@ document <
               ThisField=$TYPEDECLS['TransactionItem'].MEMBERS['CurrencyCode']
               OriginPKey=$TYPEDECLS['Currency'].MEMBERS['Currency_Code']
             >}LinkedClass=$TYPEDECLS['Currency']
+        >, object:ListMember<
+          MemberName='LsGLInterface'
+          UsedLink=$TYPEDECLS['TransItemGLInterface'].MEMBERS['LTransactionItem']
         >}ClassID='{87D3E9B6-DCB2-4400-ADA5-CB2B94D2BAE9}'
       AutoPrimaryKey=$TYPEDECLS['TransactionItem'].MEMBERS['TransactionItemId']
     >, object:ClassTypeDecl<
@@ -1705,6 +1708,12 @@ document <
         >, object:EnumMember<
           StringValue='T'
           DescriptiveName='Transaction'
+        >, object:EnumMember<
+          StringValue='I'
+          DescriptiveName='GL Interface'
+        >, object:EnumMember<
+          StringValue='G'
+          DescriptiveName='Transaction GL Interface'
         >}>, object:EnumTypeDecl<
       TypeName='eBranchBase'
       EnumType=etString
@@ -1854,7 +1863,7 @@ document <
           MemberName='kode_parameter'
           PhysicalName='KODE_PARAMETER'
           DataType=$TYPEDECLS['VARCHAR']
-          DataLength=10
+          DataLength=25
           IsPrimaryKey=true
         >, object:FieldMember<
           MemberName='tipe_parameter'
@@ -3994,6 +4003,15 @@ document <
           MemberName='HargaJual'
           PhysicalName='HARGAJUAL'
           DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='DonorId'
+          PhysicalName='DONORID'
+          DataType=$TYPEDECLS['INTEGER']
+        >, object:FieldMember<
+          MemberName='FundEntity'
+          PhysicalName='FUNDENTITY'
+          DataType=$TYPEDECLS['INTEGER']
+          Enumerator=$TYPEDECLS['eFundEntity']
         >}Ancestors={object:Inheritance<
           ClassifierStringValue='F'
           AncestorClass=$TYPEDECLS['DepreciableAsset']
@@ -5028,6 +5046,93 @@ document <
               OriginPKey=$TYPEDECLS['AccReceivableTransactItem'].MEMBERS['TransactionItemId']
             >}>}ClassID='{FA36488B-FE26-4177-9E9F-3C688C12EBDB}'
       AutoPrimaryKey=$TYPEDECLS['InvestmentTransactItem'].MEMBERS['TransactionItemId']
+    >, object:ClassTypeDecl<
+      TypeName='FixedAssetTransactItem'
+      PTableName='FIXEDASSETTRANSACTITEM'
+      Members={object:FieldMember<
+          MemberName='TransactionItemId'
+          PhysicalName='TRANSACTIONITEMID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='FATransactItemType'
+          PhysicalName='FATRANSACTITEMTYPE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          IsClassifierField=true
+        >, object:LinkMember<
+          MemberName='LFixedAsset'
+          LinkedClass=$TYPEDECLS['FixedAsset']
+          SharedLink=$TYPEDECLS['AccountTransactionItem'].MEMBERS['LFinancialAccount']
+        >, object:FieldMember<
+          MemberName='DonorId'
+          PhysicalName='DONORID'
+          DataType=$TYPEDECLS['INTEGER']
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='F'
+          AncestorClass=$TYPEDECLS['DeprAssetTransactitem']
+          InhLinks={object:InheritanceLink<
+              ThisPKey=$TYPEDECLS['FixedAssetTransactItem'].MEMBERS['TransactionItemId']
+              OriginPKey=$TYPEDECLS['DeprAssetTransactitem'].MEMBERS['TransactionItemId']
+            >}>}ClassID='{A9F4AE0F-A0D0-4BBC-935B-DEFF11BD695B}'
+      AutoPrimaryKey=$TYPEDECLS['FixedAssetTransactItem'].MEMBERS['TransactionItemId']
+    >, object:ClassTypeDecl<
+      TypeName='DeprAssetTransactitem'
+      PTableName='DEPRASSETTRANSACTITEM'
+      Members={object:FieldMember<
+          MemberName='TransactionItemId'
+          PhysicalName='TRANSACTIONITEMID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='DeprAssetTIType'
+          PhysicalName='DEPRASSETTITYPE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          IsClassifierField=true
+        >, object:LinkMember<
+          MemberName='LDepreciableAsset'
+          LinkedClass=$TYPEDECLS['DepreciableAsset']
+          SharedLink=$TYPEDECLS['AccountTransactionItem'].MEMBERS['LFinancialAccount']
+        >}Ancestors={object:Inheritance<
+          ClassifierStringValue='A'
+          AncestorClass=$TYPEDECLS['AccountTransactionItem']
+          InhLinks={object:InheritanceLink<
+              ThisPKey=$TYPEDECLS['DeprAssetTransactitem'].MEMBERS['TransactionItemId']
+              OriginPKey=$TYPEDECLS['AccountTransactionItem'].MEMBERS['TransactionItemId']
+            >}>}ClassID='{8CF30E34-35EF-4BC3-B661-1176562D1987}'
+      AutoPrimaryKey=$TYPEDECLS['DeprAssetTransactitem'].MEMBERS['TransactionItemId']
+    >, object:ClassTypeDecl<
+      TypeName='TransItemGLInterface'
+      PTableName='TRANSITEMGLINTERFACE'
+      Members={object:FieldMember<
+          MemberName='TransactionItemId'
+          PhysicalName='TRANSACTIONITEMID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:LinkMember<
+          MemberName='LTransactionItem'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['TransItemGLInterface'].MEMBERS['TransactionItemId']
+              OriginPKey=$TYPEDECLS['TransactionItem'].MEMBERS['TransactionItemId']
+            >}LinkedClass=$TYPEDECLS['TransactionItem']
+        >, object:FieldMember<
+          MemberName='GLInterfaceCode'
+          PhysicalName='GLINTERFACECODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='AccountCode'
+          PhysicalName='ACCOUNTCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=10
+        >, object:FieldMember<
+          MemberName='Description'
+          PhysicalName='DESCRIPTION'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=200
+        >}ClassID='{32B19F88-FB12-4220-8211-E4D60C6E2A75}'
     >}PhysicalDB=object:ODLDatabase<
   >LastMethodID=6
 >

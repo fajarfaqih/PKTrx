@@ -392,7 +392,7 @@ document <
           Caption='Transaksi Aset Tetap'
           MenuItems={object:rmn::MenuItem<
               Name='TR0020'
-              Caption='Pembelian Aset Tetap...'
+              Caption='Pembelian/Penambahan Aset Tetap...'
               OnClick='FixedAssetClick'
               AllowedGroups='ADM;SPV;KEU'
             >, object:rmn::MenuItem<

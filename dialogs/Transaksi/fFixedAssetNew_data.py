@@ -18,6 +18,23 @@ def FormSetDataEx(uideflist, params) :
     oTran = helper.GetObjectByNames('Transaction',{'TransactionNo':rec.TransactionNo})
 
     rec.ActualDate = oTran.GetAsTDateTime('ActualDate')
+
+    if rec.SourceAssetType in [None,''] :
+      rec.SourceAssetType = 'B'
+    # end if
+
+    if rec.FundEntity in [None,'',0] :
+      if rec.AssetType == 'N' :
+        rec.FundEntity = 4
+      else:
+        oProductAccount = helper.GetObject('FinancialAccount', rec.GetFieldByName('LProduct.AccountNo')).CastToLowestDescendant()
+        if oProductAccount.isnull :
+          rec.FundEntity = 3
+        else:
+          MapFundEntity = {'Z': 1, 'I': 2, 'W': 3}
+          rec.FundEntity = MapFundEntity[oProductAccount.LProduct.FundCategory or 'I' ]
+      # end if else
+    # end if
     
     # Search Object Fixed Asset
     TransactionId = params.FirstRecord.TransactionId
@@ -53,6 +70,7 @@ def FormSetDataEx(uideflist, params) :
   rec.ActualDate = int(Now)
   rec.Amount = 0.0
   rec.ReceivedFrom = rec.Inputer
+  rec.BranchId = int(config.SecurityContext.GetUserInfo()[2])
   
   # Set Transaction Number
   oService = helper.LoadScript('Transaction.TransactionHelper')
@@ -94,21 +112,37 @@ def SimpanData(config, params, returns):
     request['BudgetId'] = oTransaction.BudgetId or 0
     request['Qty'] = oTransaction.Qty or 0
     request['FixAssetAccountNo'] = oTransaction.FixAssetAccountNo or ''
+    request['FundEntity'] = oTransaction.FundEntity or ''
+    request['PaidTo'] = oTransaction.PaidTo or ''
+    
+    request['SourceAssetType'] = oTransaction.SourceAssetType or ''
     
     request['PaymentType'] = oTransaction.PaymentType
     request['CashAccountNo'] = oTransaction.GetFieldByName('LCashAccount.AccountNo')
     request['CashAdvance'] = oTransaction.CashAdvance
     request['AssetType'] = oTransaction.AssetType
     
+    request['DonorId'] = oTransaction.DonorId
+    request['DonorNo'] = oTransaction.DonorNo
+    request['DonorName'] = oTransaction.DonorName
+    request['DonorType'] = oTransaction.DonorType
+    
     sRequest = simplejson.dumps(request)
 
     oService = helper.LoadScript('Transaction.FixedAsset')
       
-    TransactionCode = 'FA'
+    SourceAssetType = oTransaction.SourceAssetType or ''
+    if SourceAssetType == 'B' :
+      TransactionCode = 'FA'
+    elif SourceAssetType == 'D' :
+      TransactionCode = 'FAD'
+    # end if
+    
     if oTransaction.ShowMode == 1:
       response = oService.CreateFixedAssetTransaction(TransactionCode, config, sRequest, params)
     else:
       response = oService.UpdateFixedAssetTransaction(TransactionCode, config,sRequest,params)
+    # end if
     
     response = simplejson.loads(response)
     TransactionNo = response[u'TransactionNo']

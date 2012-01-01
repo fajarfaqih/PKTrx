@@ -299,6 +299,16 @@ class Transaction(pobject.PObject):
 
     return oItem
 
+  def CreateAssetTransactionItem(self, oAccount,IsUpdateBalance='T'):
+    param = {'Owner': self, 'Account': oAccount}
+    oItem = self.Helper.CreatePObject('FixedAssetTransactItem', param)
+    oItem.IsUpdateBalance = IsUpdateBalance
+        
+    if self.ChannelAccountNo in ['',None,0] and oAccount.IsA('CashAccount'):
+      self.ChannelAccountNo = oAccount.AccountNo
+
+    return oItem
+
   def CreateGLTransactionItem(self, GLAccount, aCurrency):
     param = {'Owner': self, 'GLAccount': GLAccount, 'CurrencyCode': aCurrency}
     oItem = self.Helper.CreatePObject('GLTransactionItem', param)
@@ -616,6 +626,18 @@ class Transaction(pobject.PObject):
           oContainer  = helper.GetObject('GLInterfaceContainer', aContId)
           aSSL        = oContainer.GetAccountInterface(aKode).AccountCode
           aItem.Kode_Account = aSSL
+
+        elif oTCode.AccountBase == 'G' :
+          aKode       = oTCode.AccountCode
+
+          oTranGLInterface =  oItem.GetGLInterface(aKode)
+          if oTranGLInterface.isnull :
+            raise '', 'GL Interface Transaksi dengan kode %s tidak ditemukan ' % aKode
+          aSSL        = oTranGLInterface.AccountCode
+          aItem.Kode_Account = aSSL
+
+
+        # end if elif  
           
         #-- if
         if aItem.Kode_Account == '':
@@ -708,6 +730,7 @@ class Transaction(pobject.PObject):
   def GetDonor(self):
     DonorId = self.GetDonorId()
     oDonor = self.Helper.CreateObject('ExtDonor')
+
     if not oDonor.GetData(DonorId): raise 'PERINGATAN','Data Donor tidak ditemukan'
     
     return oDonor
@@ -724,7 +747,7 @@ class Transaction(pobject.PObject):
       return (self.ReceivedFrom or ''),'' 
 
   def GetDonorId(self):
-    if self.TransactionCode not in ['SD001'] : return 0
+    if self.TransactionCode not in ['SD001'] : return self.DonorId
     oItems = self.Ls_DonorTransactionItem
     oItems.First()
     itemElmt = oItems.CurrentElement
@@ -842,6 +865,8 @@ class Transaction(pobject.PObject):
     
     if self.TransactionCode in ['SD001'] :
       return Voucher.GetKwitansiDonor(self)
+    elif self.TransactionCode in ['FAD'] :
+      return Voucher.GetKwitansiAssetDonor(self)
     elif self.TransactionCode in ['CI','INVP'] :
       return Voucher.GetKwitansiPenerimaanNew(self)
     elif self.TransactionCode in ['DD001','CO','PAD','FA','FAI','FAIP','CPIA','GT','CA','DT','INVS'] :
@@ -949,6 +974,9 @@ class TransactionItem(pobject.PObject):
 
   def SetReject(self):
     pass
+  
+  def OnDelete(self):
+    self.LsGLInterface.DeleteAllPObjs()
 
   def CancelTransaction(self):
     helper = self.Helper
@@ -1027,7 +1055,28 @@ class TransactionItem(pobject.PObject):
 
   def SetAccountInterface(self,AccountInterface):
     self.AccountCode = AccountInterface
-       
+  
+  def AddGLInterface(self, aCode, aAccountCode, aDescription):
+    oGLInterface = self.Helper.CreatePObject('TransItemGLInterface')
+    oGLInterface.TransactionItemId = self.TransactionItemId
+    oGLInterface.GLInterfaceCode = aCode
+    oGLInterface.AccountCode = aAccountCode
+    oGLInterface.Description = aDescription
+
+  def GetGLInterface(self, aCode) :
+    oTranItemGLInterface  = self.Helper.GetObjectByNames('TransItemGLInterface', 
+             { 'TransactionItemId' : self.TransactionItemId ,
+               'GLInterfaceCode' : aCode
+             }
+          )
+    return oTranItemGLInterface
+
+class TransItemGLInterface(pobject.PObject):
+  # static variable
+  pobject_classname = 'TransItemGLInterface'
+  pobject_keys = ['GLInterfaceId']
+
+
 class AccountTransactionItem(TransactionItem):
   # static variable
   pobject_classname = 'AccountTransactionItem'
@@ -1123,6 +1172,28 @@ class CashAdvanceTransactItem(AccountTransactionItem):
 class AccReceivableTransactItem(AccountTransactionItem):
   # static variable
   pobject_classname = 'AccReceivableTransactItem'
+
+class DeprAssetTransactItem(AccountTransactionItem):
+  # static variable
+  pobject_classname = 'DeprAssetTransactItem'
+
+class FixedAssetTransactItem(DeprAssetTransactItem):
+  # static variable
+  pobject_classname = 'FixedAssetTransactItem'
+
+  def SetFundEntity(self, aFundEntity) :
+    self.FundEntity = aFundEntity
+    oAsset = self.LFixedAsset
+    #if oAsset.LAssetCategory.AssetType == 'T' :
+
+    if aFundEntity == 4 :
+      # Account Code Amil diambil dari GL Interface Kategori Asset
+      AccountCode = oAsset.GetAssetFromAmilAccount() #self.Helper.GetObject('ParameterGlobal', 'GLIASSETFROMAMIL').Get()
+    else:
+      # Account Code Selain diambil dari Produk
+      AccountCode = oAsset.GetAssetKelolaanPlusAccount(aFundEntity)
+
+    self.AddGLInterface('ASET_KELOLA', AccountCode,'Penambahaan Aset Kelolaan')
 
 class InvestmentTransactItem(AccReceivableTransactItem):
   # static variable
