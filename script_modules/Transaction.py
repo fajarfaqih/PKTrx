@@ -214,10 +214,13 @@ class Transaction(pobject.PObject):
 
   def GenerateTransactionNumber(self,CashCode,IsChangeTransNo = 0):
     
-    # Cek apakah perlu generate nomor baru atau ada perubahan cashcode    
+    #y = config.ModLibUtils.DecodeDate(config.Now())[0]
+    TransactionYear = self.ActualDate[0]
+
+    # Cek apakah perlu generate nomor baru atau ada perubahan cashcode
     if (self.TransactionNo or '') != '' and not IsChangeTransNo: 
       splitNumber = self.TransactionNo.split('-')      
-      if splitNumber[3] == CashCode : # Cek jika cashcode masih sama
+      if splitNumber[3] == CashCode and splitNumber[1] == TransactionYear : # Cek jika cashcode masih sama
         return
 
     # Proses generate number
@@ -231,7 +234,7 @@ class Transaction(pobject.PObject):
     if CashCode == '' :
       raise 'GenerateTransactionNumber','CashCode tidak ditemukan.'
 
-    y = config.ModLibUtils.DecodeDate(config.Now())[0]
+    #y = config.ModLibUtils.DecodeDate(config.Now())[0]
     #branchCode = config.SecurityContext.GetUserInfo()[4]
     branchCode = self.BranchCode
     
@@ -239,7 +242,7 @@ class Transaction(pobject.PObject):
 
     prefixNumber = "%s-%s-%s-%s" % (
               self.LTransactionType.VoucherCode ,
-              str(y),
+              str(TransactionYear),
               branchCode,
               CashCode)
 
@@ -1189,7 +1192,7 @@ class FixedAssetTransactItem(DeprAssetTransactItem):
     if aFundEntity == 4 :
       # Account Code Amil diambil dari GL Interface Kategori Asset
       AccountCode = oAsset.GetAssetFromAmilAccount() #self.Helper.GetObject('ParameterGlobal', 'GLIASSETFROMAMIL').Get()
-      
+
     else:
       # Account Code Selain diambil dari Produk
       AccountCode = oAsset.GetAssetKelolaanPlusAccount(aFundEntity)
