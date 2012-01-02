@@ -54,7 +54,7 @@ def SimpanData(config, params, returns):
     request['EmployeeId'] = oTransaction.EmployeeId #oTransaction.GetFieldByName('LEmployee.Nomor_Karyawan')
     request['EmployeeName'] = oTransaction.EmployeeName
     request['CashAccountNo'] = oTransaction.GetFieldByName('LCashAccount.AccountNo')
-    request['CurrencyCode'] = oTransaction.GetFieldByName('LCashAccount.CurrencyCode')
+    request['CurrencyCode'] = oTransaction.CurrencyCode #GetFieldByName('LCashAccount.CurrencyCode')
     request['Amount'] = oTransaction.Amount
     request['ReferenceNo'] = oTransaction.ReferenceNo
     request['Description'] = oTransaction.Description

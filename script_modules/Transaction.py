@@ -219,8 +219,8 @@ class Transaction(pobject.PObject):
 
     # Cek apakah perlu generate nomor baru atau ada perubahan cashcode
     if (self.TransactionNo or '') != '' and not IsChangeTransNo: 
-      splitNumber = self.TransactionNo.split('-')      
-      if splitNumber[3] == CashCode and splitNumber[1] == TransactionYear : # Cek jika cashcode masih sama
+      splitNumber = self.TransactionNo.split('-')
+      if splitNumber[3] == CashCode and splitNumber[1] == str(TransactionYear) : # Cek jika cashcode masih sama
         return
 
     # Proses generate number
