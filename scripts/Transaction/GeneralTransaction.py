@@ -1245,11 +1245,11 @@ def BranchDistributionReturn(helper,oTran,oBatch,request,params):
       oItemFA.SetMutation('D', item[u'Amount'], aRate)
       oItemFA.Description = item[u'Description']
       oItemFA.SetJournalParameter(JournalCode)
-      oItemFA.AccountCode = oFAAccount.GetAssetAccount()  
+      oItemFA.AccountCode = oFAAccount.GetAssetAccount()
       
       # simpan nomor akun pada dataset
       recItem = params.uipTransactionItem.GetRecord(item[u'RecordIdx'])
-      recItem.AssetAccountNo = oFAAccount.AccountNo      
+      recItem.AssetAccountNo = oFAAccount.AccountNo
 
     elif item[u'ItemType'] == 'B':
       # 1. Create CostPaidInAdvance
