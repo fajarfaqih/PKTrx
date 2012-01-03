@@ -55,9 +55,11 @@ def FormOnSetDataEx(uideflist,parameters):
     recInvoice.InvoiceNo = oInvoice.InvoiceNo
     recInvoice.InvoiceDate = oInvoice.GetAsTDateTime('InvoiceDate')
     recInvoice.TermDate = oInvoice.GetAsTDateTime('InvoiceTermDate')
-    recInvoice.SponsorId = oInvoice.SponsorId
-    recInvoice.SponsorName = oInvoice.LSponsor.full_name
-    recInvoice.SponsorAddress = oInvoice.LSponsor.address
+    if oInvoice.SponsorId not in [0,None]:
+      recInvoice.SponsorId = oInvoice.SponsorId
+      recInvoice.SponsorName = oInvoice.LSponsor.full_name
+      recInvoice.SponsorAddress = oInvoice.LSponsor.address
+    # end if
     recInvoice.ProgramName = oInvoice.LProductAccount.AccountName
     recInvoice.Amount = oInvoice.InvoiceAmount
     recInvoice.Description = oInvoice.Description
