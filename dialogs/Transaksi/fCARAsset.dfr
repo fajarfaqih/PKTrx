@@ -57,8 +57,8 @@ document <
       PostLinkValues=true
     >}Containers={object:rtf::DualSplit<
       Name='dsMain'
-      Width=609
-      Height=409
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['pTransaction']
       InversedAlign=true
@@ -207,6 +207,16 @@ document <
           DataTypeName='varchar'
           DataLength=50
         >, object:rtf::FieldUIElmtSetting<
+          Name='FundEntity'
+          ControlCaption='Sumber Dana'
+          DataTypeName='integer'
+          DataLength=20
+          EnumeratedValues=['1=Zakat'#13#10,
+            '2=Infaq'#13#10,
+            '3=Wakaf'#13#10,
+            '4=Amil'#13#10,
+            '5=Non Halal'#13#10]
+        >, object:rtf::FieldUIElmtSetting<
           Name='Amount'
           ControlCaption='Nilai Asset (Per Satuan)'
           DataTypeName='double'
@@ -313,9 +323,15 @@ document <
           Color=0
           ControlCaption='Nama Asset'
           CharCase=ecUpperCase
+        >, *object:rtf::DBComboBox<
+          Name='FundEntity'
+          Top=142
+          Left=8
+          Color=0
+          ControlCaption='Sumber Dana'
         >, *object:rtf::DBEdit<
           Name='Amount'
-          Top=142
+          Top=170
           Left=8
           Width=121
           Height=21
@@ -326,7 +342,7 @@ document <
           OnExit='AmountOnExit'
         >, *object:rtf::DBEdit<
           Name='Qty'
-          Top=170
+          Top=198
           Left=8
           Enabled=false
           Color=0
@@ -334,7 +350,7 @@ document <
           OnExit='QtyOnExit'
         >, *object:rtf::DBEdit<
           Name='TotalAmount'
-          Top=198
+          Top=226
           Left=8
           Enabled=false
           Color=-2147483624
@@ -343,7 +359,7 @@ document <
           DisplayFormat=',0.00'
         >, *object:rtf::DBEdit<
           Name='Description'
-          Top=226
+          Top=254
           Left=8
           Width=313
           Height=21
@@ -353,7 +369,7 @@ document <
         >, *object:rtf::DBComboBox<
           Name='PaymentType'
           Layout=clAbsolute
-          Top=290
+          Top=314
           Left=8
           Color=0
           ControlCaption='Status Bayar'
@@ -362,7 +378,7 @@ document <
         >, *object:rtf::DBEdit<
           Name='PaymentAmount'
           Layout=clAbsolute
-          Top=318
+          Top=342
           Left=8
           Color=0
           ControlCaption='Nominal'
@@ -387,7 +403,7 @@ document <
         >, object:rtf::Label<
           Name='label3'
           Layout=clAbsolute
-          Top=264
+          Top=288
           Left=8
           Width=26
           Height=17

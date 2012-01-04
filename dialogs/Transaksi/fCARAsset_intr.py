@@ -28,7 +28,10 @@ class fCARAsset :
       uipData.Qty = data.AssetQty
       uipData.TotalAmount = uipData.Amount * uipData.Qty
       uipData.PaymentAmount = data.Amount
-      
+      uipData.FundEntity = data.FundEntity
+      if data.FundEntity in [0,None] :
+        uipData.FundEntity = 4
+
     else :
       uipData.SetFieldValue('LAssetCategory.AssetCategoryCode','')
       uipData.SetFieldValue('LAssetCategory.AssetCategoryName','')
@@ -47,6 +50,8 @@ class fCARAsset :
       uipData.Qty = 1
       uipData.TotalAmount = 0.0
       uipData.PaymentAmount = 0.0
+      uipData.FundEntity = 4
+      self.PaymentTypeOnChange(self.pTransaction_PaymentType)
     # end if
 
     st = self.FormContainer.Show()
@@ -115,8 +120,12 @@ class fCARAsset :
 
   def SetPaymentAmount(self):
     uipTran = self.uipData
-    uipTran.Edit()
-    uipTran.PaymentAmount = uipTran.Qty * uipTran.Amount
+    if self.pTransaction_PaymentType.ItemIndex == 0 : # Pembayaran Lunas
+      uipTran.Edit()
+      uipTran.PaymentAmount = uipTran.Qty * uipTran.Amount
+    else:
+      if uipTran.PaymentAmount > uipTran.Amount :
+        uipTran.PaymentAmount = uipTran.Amount
 
   def CheckInput(self):
     app = self.app
@@ -130,13 +139,21 @@ class fCARAsset :
     if uipTran.PaymentType == 'T' :
       self.SetPaymentAmount()
 
+    if uipTran.PaymentType == 'D' and (uipTran.PaymentAmount or 0.0) <= 0.0:
+      raise 'PERINGATAN','Jumlah Pembayaran Belum Diinputkan'
+
     if (uipTran.PaymentAmount or 0.0) > (uipTran.Amount or 0.0):
       raise 'PERINGATAN','Nominal uang muka lebih besar daripada nilai asset'
+
+    if (uipTran.PaymentAmount or 0.0) == (uipTran.Amount or 0.0):
+      uipTran.Edit()
+      uipTran.PaymentType ='T'
 
   def SetTotalAmount(self):
     uipTran = self.uipData
     uipTran.Edit()
     uipTran.TotalAmount = (uipTran.Qty or 0.0 ) * (uipTran.Amount or 0.0)
+    self.SetPaymentAmount()
 
   def CheckRequiredData(self):
     uipData = self.uipData

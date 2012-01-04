@@ -37,3 +37,4 @@ select * from accounting.accounthierarchy;
 select * from accounting.account where account_code='5530103'
 select * from accounting.accountinstance where account_code ='5530102'
 select * from accounting.accountinstance where account_code ='3150101' and branch_code='115' and currency_code='000'
+

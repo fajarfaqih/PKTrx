@@ -1,6 +1,7 @@
 class fScriptTest :
     def __init__(self, formObj, parentForm):
         self.app = formObj.ClientApplication
+        self.oPrint = self.app.GetClientClass('PrintLib','PrintLib')()
 
     def RunClick(self,sender):
         app = self.app
@@ -13,7 +14,11 @@ class fScriptTest :
         
         resp = response.FirstRecord
         
+        if response.packet.StreamWrapperCount > 0:
+          self.oPrint.doProcess(self.app,response.packet,1)
+
         if resp.Is_Error :
            raise 'ERROR',resp.Error_Message
            
         app.ShowMessage('Script Finish')
+        

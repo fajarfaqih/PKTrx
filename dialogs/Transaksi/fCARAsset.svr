@@ -110,6 +110,10 @@ document <
           DataTypeName='varchar'
           DataLength=50
         >, object:rpclass::TCustomLoadedField<
+          Name='FundEntity'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
           Name='Amount'
           DataTypeName='double'
           DataLength=20

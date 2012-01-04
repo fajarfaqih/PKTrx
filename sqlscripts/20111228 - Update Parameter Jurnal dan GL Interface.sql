@@ -14,10 +14,6 @@ alter table transaction.parameterglobal alter column kode_parameter type varchar
 insert into transaction.parameterglobal (kode_parameter, deskripsi, nilai_parameter_string) values('GLIASSETFROMAMIL','PENAMBAHAN ASET KELOLAAN DARI AMIL','4610401');
 insert into transaction.parameterglobal (kode_parameter, deskripsi, nilai_parameter_string) values('GLIAMILFORACCRECEIV','AMIL - BEBAN ASET KELOLAAN ATAS PIUTAN','5330201');
 
-
-select * from transaction.parameterglobal where kode_parameter like 'GL%'
-update transaction.parameterglobal set nilai_parameter_string='' where kode_parameter='GLIASSETFROMAMIL'
-
 insert into transaction.glinterfacemember values(67,'AMILCOSTFORASSET','5530102',null,'BEBAN BIAYA AMIL ATAS ASSET',1); -- BANGUNAN
 insert into transaction.glinterfacemember values(68,'AMILCOSTFORASSET','5530102',null,'BEBAN BIAYA AMIL ATAS ASSET',3); -- BANGUNAN
 insert into transaction.glinterfacemember values(69,'AMILCOSTFORASSET','5530101',null,'BEBAN BIAYA AMIL ATAS ASSET',2); -- TANAH
@@ -31,25 +27,6 @@ select * from transaction.glinterfacemember where glicontainerid=1 and gli
 delete from transaction.glinterfacemember where glimemberid > 66
 select * from transaction.id_gen where id_code='GLINTERFACEMEMBER';
 update transaction.id_gen set last_id=(select max(glimemberid) from transaction.glinterfacemember)+1  where id_code='GLINTERFACEMEMBER';
-
--- ## TEST
-update transaction.transactionitem set parameterjournalid='DA01D' where transactionid=120654
-
-select * from transaction.transitemglinterface 
-insert into transaction.transitemglinterface values('ASET_KELOLA','4610201','286422','PENAMBAHAN ASET KELOLAAN');
-
-select * from accounting.account where account_code like '461%'
-
-select * from transaction.glinterface where productid=229 and interfacecode='PHP_MANF_INFAQ'
-update transaction.glinterface set interfacecode='ASSET_FROM_INFAQ' where productid=229 and interfacecode='PHP_MANF_INFAQ'
-
-select * from transaction.product where productid=229
-select * from transaction.parameterglobal
-
-select * from accounting.accountingday where fl_accountingyear='2011' and periode_status = 'O'
-update accounting.accountingday set periode_status = 'O' where fl_accountingyear='2012';
-
-select * from transaction.transitemglinterface
 
 update transaction.transactionitem b set parameterjournalid='AK-A1' where parameterjournalid='AK-A' and exists(
 select 1 from transaction.transaction a
@@ -67,6 +44,19 @@ where a.transactionid=b.transactionid and a.transactioncode='INVS' );
 select * from transaction.transactionitem b where parameterjournalid='AK-A' and exists(
 select 1 from transaction.transaction a
 where a.transactionid=b.transactionid and a.transactioncode='INVS' )
+
+
+-- ## TEST
+
+select * from accounting.account where account_code like '461%'
+
+select * from transaction.glinterface where productid=229 and interfacecode='PHP_MANF_INFAQ'
+update transaction.glinterface set interfacecode='ASSET_FROM_INFAQ' where productid=229 and interfacecode='PHP_MANF_INFAQ'
+
+select * from accounting.accountingday where fl_accountingyear='2011' and periode_status = 'O'
+update accounting.accountingday set periode_status = 'O' where fl_accountingyear='2012';
+
+select * from transaction.transitemglinterface
 
 /*
 select * from transaction.transitemglinterface where glinterfacecode=''

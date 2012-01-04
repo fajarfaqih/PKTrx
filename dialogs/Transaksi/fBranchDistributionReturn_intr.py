@@ -375,6 +375,7 @@ class fBranchDistReturn :
     uipTranItem.AssetCatName = uipData.GetFieldValue('LAssetCategory.AssetCategoryName')
     uipTranItem.AssetCatId = uipData.GetFieldValue('LAssetCategory.AssetCategoryId')
     uipTranItem.AssetType = uipData.AssetType
+    uipTranItem.FundEntity = uipData.FundEntity
     uipTranItem.ItemType = 'A'
     
   # ---------------------------------------------------

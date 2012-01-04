@@ -56,3 +56,6 @@ update transaction.transitemglinterface a set accountcode = '4610401' where exis
 and exists
 (select 1 from transaction.accounttransactionitem b where a.transactionitemid = b.transactionitemid and fundentity = 4) 
 
+select * from transaction.userapp where upper(id_user) like '%ACENG%'
+
+select * from transaction.transaction where transactionno='KK-2011-101-KBD01-0001354'

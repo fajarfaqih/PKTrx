@@ -162,7 +162,6 @@ def SimpanData(config, params, returns):
       item['CPIAContractNo'] = oItem.CPIAContractNo or ''
       item['CPIAContractEndDate'] = oItem.CPIAContractEndDate or 0.0
 
-
       item['RecordIdx'] = i
 
       items.append(item)

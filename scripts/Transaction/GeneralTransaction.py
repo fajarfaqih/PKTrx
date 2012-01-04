@@ -149,7 +149,7 @@ dictJournalCodeDonor = {
   5 : '10'
 }
 
-def GeneralTransaction(helper,oTran,oBatch,request,params):
+def GeneralTransaction( helper, oTran, oBatch, request, params):
   aInputer    = request[u'Inputer']
   aBranchCode = request[u'BranchCode']
 
@@ -519,7 +519,7 @@ def CashAdvance(helper,oTran,oBatch,request,params):
   aRate = request[u'Rate']
   # EmployeeAR Account
   employeeId = request[u'EmployeeId']
-  
+
   oAccount = helper.GetObjectByNames('EmployeeCashAdvance',
     {
       'EmployeeIdNumber': employeeId,
@@ -576,6 +576,109 @@ def CashAdvance(helper,oTran,oBatch,request,params):
 ### ------- End CASH ADVANCE  -------------------------------------------
 
 ### ------- Begin CASH ADVANCE RETURN -----------------------------------
+def CreateFixAssetTransactionItem(helper, oTran, params, request, item):
+  aAmount = item[u'Amount']
+  aRate = request[u'Rate']
+  aCurrencyCode = request[u'CurrencyCode']
+  aCashAdvance =  item[u'Amount'] * aRate
+  aFundEntity = item[u'FundEntity']
+  aDescription = item[u'Description']
+
+  # 1. Create Data FixedAsset
+  AccountNoFA = str(item[u'AssetAccountNo'])
+  if AccountNoFA == '' :
+    oFAAccount = helper.CreatePObject('FixedAsset')
+  else:
+    oFAAccount = helper.GetObject('FixedAsset',AccountNoFA)
+  # end if
+    
+  oFAAccount.BranchCode = request[u'BranchCode']
+  oFAAccount.CurrencyCode = '000'
+  oFAAccount.AccountName  = item[u'AssetName']
+  oFAAccount.Qty = item[u'AssetQty']
+  oFAAccount.SetAssetCategory(item[u'AssetCatId'])
+  oFAAccount.SetInitialValue(item[u'AssetAmount'] * aRate)
+  oFAAccount.SetInitialProcessDate()
+  oFAAccount.UangMuka = aCashAdvance
+
+  if oFAAccount.LAssetCategory.AssetType == 'T' :
+    oFAAccount.AccountNoProduct = item[u'AssetProductAccountNo']
+  
+  # 2. Buat transaksi pembelian asset
+  # Set Journal Code berdasarkan PaymentType
+  if item[u'AssetPaymentType'] == 'T' :
+    JournalCode = 'DA01B'
+  else :
+    if aCashAdvance > 0.0 :
+      JournalCode = 'DA01A'
+    else:
+      JournalCode = 'DA01C'
+    # endif
+  # endif
+             
+  # Buat Transaksi pembelian
+
+  oItemFA = oTran.CreateAccountTransactionItem(oFAAccount)
+  oItemFA.SetMutation('D', aAmount, aRate)
+  oItemFA.Description = aDescription
+  oItemFA.SetJournalParameter(JournalCode)
+  oItemFA.AccountCode = oFAAccount.GetAssetAccount()  
+  
+  if oFAAccount.LAssetCategory.AssetType == 'T' :
+    oProduct = oFAAccount.LProductAccount
+    
+    oItemFA = oTran.CreateAccountTransactionItem(oProduct)
+    oItemFA.SetMutation('D',aAmount,aRate)
+    oItemFA.Description = aDescription
+    oItemFA.SetJournalParameter('DA02A')
+    oItemFA.SetDistributionEntity(aFundEntity)
+  else:
+    AccountCode = oFAAccount.GetAmilCostForAssetAccount()
+    oItemFA = oTran.CreateGLTransactionItem(AccountCode, '000')
+    oItemFA.RefAccountName = 'Beban Aset Kelolaan Amil Atas Aktiva Tetap'
+    oItemFA.SetMutation('D',aAmount,aRate)
+    oItemFA.Description = aDescription
+    oItemFA.SetJournalParameter('DA02B')
+  
+  # simpan nomor akun pada dataset
+  recItem = params.uipTransactionItem.GetRecord(item[u'RecordIdx'])
+  recItem.AssetAccountNo = oFAAccount.AccountNo  
+
+def CreateCPIATransactionItem(helper, oTran, params, request, item):
+  aAmount = item[u'Amount']
+  aRate = request[u'Rate']
+  aCurrencyCode = request[u'CurrencyCode']
+  aCashAdvance =  item[u'Amount'] * aRate
+  aFundEntity = item[u'FundEntity']
+  aDescription = item[u'Description']
+
+  # 1. Create CostPaidInAdvance
+  CPIAAccountNo = str(item[u'CPIAAccountNo'])
+  if CPIAAccountNo == '' :
+    oCPIAAccount = helper.CreatePObject('CostPaidInAdvance')
+  else :
+    oCPIAAccount = helper.GetObject('CostPaidInAdvance',CPIAAccountNo)
+
+  oCPIAAccount.BranchCode = request[u'BranchCode']
+  if item[u'CPIAHasContract'] == 'T':
+    oCPIAAccount.SetContract(item[u'CPIAContractNo'], item[u'CPIAContractEndDate'])
+  else:
+    oCPIAAccount.SetNoContract()
+  #-- if.else
+  oCPIAAccount.SetInitialValue(aAmount)
+  oCPIAAccount.Description = item[u'Description']
+  oCPIAAccount.CostAccountNo = item[u'AccountId']
+  oCPIAAccount.CPIACatId = item[u'CPIACatId']
+
+  oItem = oTran.CreateAccountTransactionItem(oCPIAAccount)
+  oItem.SetMutation('D', aAmount, aRate)
+  oItem.Description = aDescription
+  oItem.SetJournalParameter('BDD01')
+
+  # simpan nomor akun pada dataset
+  recItem = params.uipTransactionItem.GetRecord(item[u'RecordIdx'])
+  recItem.CPIAAccountNo = oCPIAAccount.AccountNo
+
 def CashAdvanceReturn(helper,oTran,oBatch,request,params):
   FundEntityMap = {1 : 'PAK-Z', 2 : 'PAK-I', 3 : 'PAK-W', 4 : 'PAK-A'}
     
@@ -679,76 +782,10 @@ def CashAdvanceReturn(helper,oTran,oBatch,request,params):
       oItemBudget = oItemGL
                 
     elif item[u'ItemType'] == 'A':
-      # 1. Create Data FixedAsset
-      AccountNoFA = str(item[u'AssetAccountNo'])
-      if AccountNoFA == '' :
-        oFAAccount = helper.CreatePObject('FixedAsset')
-      else:
-        oFAAccount = helper.GetObject('FixedAsset',AccountNoFA)
-      # end if
-        
-      oFAAccount.BranchCode = request[u'BranchCode']
-      oFAAccount.CurrencyCode = '000'
-      oFAAccount.AccountName  = item[u'AssetName']
-      oFAAccount.Qty = item[u'AssetQty']
-      oFAAccount.SetAssetCategory(item[u'AssetCatId'])
-      oFAAccount.SetInitialValue(item[u'AssetAmount'] * aRate)
-      oFAAccount.SetInitialProcessDate()
-      oFAAccount.UangMuka = item[u'Amount'] * aRate
-
-      if oFAAccount.LAssetCategory.AssetType == 'T' :
-        oFAAccount.AccountNoProduct = item[u'AssetProductAccountNo']
-      
-      # 2. Buat transaksi pembelian asset
-      # Set Journal Code berdasarkan PaymentType
-      if item[u'AssetPaymentType'] == 'T' :
-        JournalCode = 'DA01B'
-      else :
-        if CashAdvance > 0.0 :
-          JournalCode = 'DA01A'
-        else:
-          JournalCode = 'DA01C'
-        # endif
-      # endif
-                 
-      # Buat Transaksi pembelian
-      oItemFA = oTran.CreateAccountTransactionItem(oFAAccount)
-      oItemFA.SetMutation('D', item[u'Amount'], aRate)
-      oItemFA.Description = item[u'Description']
-      oItemFA.SetJournalParameter(JournalCode)
-      oItemFA.AccountCode = oFAAccount.GetAssetAccount()  
-      
-      # simpan nomor akun pada dataset
-      recItem = params.uipTransactionItem.GetRecord(item[u'RecordIdx'])
-      recItem.AssetAccountNo = oFAAccount.AccountNo      
+      CreateFixAssetTransactionItem( helper, oTran, params, request, item)
 
     elif item[u'ItemType'] == 'B':
-      # 1. Create CostPaidInAdvance
-      CPIAAccountNo = str(item[u'CPIAAccountNo'])
-      if CPIAAccountNo == '' :
-        oCPIAAccount = helper.CreatePObject('CostPaidInAdvance')
-      else :
-        oCPIAAccount = helper.GetObject('CostPaidInAdvance',CPIAAccountNo)
-
-      oCPIAAccount.BranchCode = request[u'BranchCode']
-      if item[u'CPIAHasContract'] == 'T':
-        oCPIAAccount.SetContract(item[u'CPIAContractNo'], item[u'CPIAContractEndDate'])
-      else:
-        oCPIAAccount.SetNoContract()
-      #-- if.else
-      oCPIAAccount.SetInitialValue(item[u'Amount'])
-      oCPIAAccount.Description = item[u'Description']
-      oCPIAAccount.CostAccountNo = item[u'AccountId']
-      oCPIAAccount.CPIACatId = item[u'CPIACatId']
-
-      oItem = oTran.CreateAccountTransactionItem(oCPIAAccount)
-      oItem.SetMutation('D', item[u'Amount'], aRate)
-      oItem.Description = item[u'Description']
-      oItem.SetJournalParameter('BDD01')
-
-      # simpan nomor akun pada dataset
-      recItem = params.uipTransactionItem.GetRecord(item[u'RecordIdx'])
-      recItem.CPIAAccountNo = oCPIAAccount.AccountNo
+      CreateCPIATransactionItem( helper, oTran, params, request, item)
 
     else:
       raise '','Kode Item Tidak Dikenal'
@@ -841,13 +878,13 @@ def Investment(helper,oTran,oBatch,request,params):
 
 ### ------- Begin INVESTMENT RETURN  -----------------------------------  
 def InvestmentReturn(helper,oTran,oBatch,request,params):
-  FundEntityMap = {1 : 'PAK-Z', 2 : 'PAK-I', 3 : 'PAK-W', 4 : 'PAK-A'}
+  FundEntityMap = {1 : 'PI-Z', 2 : 'PI-I', 3 : 'PI-W', 4 : 'PI-A'}
   
   oTran.ReferenceNo = request[u'ReferenceNo']
   oTran.Description = request[u'Description']
   oTran.Inputer     = request[u'Inputer']
   oTran.BranchCode  = request[u'BranchCode']
-  oTran.Amount = request[u'Amount'] + request[u'Share'] 
+  oTran.Amount = request[u'Amount'] + request[u'Share']
   oTran.CurrencyCode = '000'
   oTran.PaidTo = request[u'PaidTo']
   oTran.ActualDate = oBatch.GetAsTDateTime('BatchDate')
@@ -1181,6 +1218,8 @@ def BranchDistributionReturn(helper,oTran,oBatch,request,params):
   items = request[u'Items']
   
   for item in items:
+    FundEntity = item[u'FundEntity']
+    Amount = item[u'Amount']
     if item[u'ItemType'] == 'D':        
       # Create Item for ProductAccount
       aAccountNo  = item[u'AccountId']
@@ -1208,77 +1247,11 @@ def BranchDistributionReturn(helper,oTran,oBatch,request,params):
       oItemBudget = oItemGL
                 
     elif item[u'ItemType'] == 'A':
-      # 1. Create Data FixedAsset
-      AccountNoFA = str(item[u'AssetAccountNo'])
-      if AccountNoFA == '' :
-        oFAAccount = helper.CreatePObject('FixedAsset')
-      else:
-        oFAAccount = helper.GetObject('FixedAsset',AccountNoFA)
-      # end if
-        
-      oFAAccount.BranchCode = request[u'BranchCode']
-      oFAAccount.CurrencyCode = '000'
-      oFAAccount.AccountName  = item[u'AssetName']
-      oFAAccount.Qty = item[u'AssetQty']
-      oFAAccount.SetAssetCategory(item[u'AssetCatId'])
-      oFAAccount.SetInitialValue(item[u'AssetAmount'] * aRate)
-      oFAAccount.SetInitialProcessDate()
-      oFAAccount.UangMuka = item[u'Amount'] * aRate
-
-      if oFAAccount.LAssetCategory.AssetType == 'T' :
-        oFAAccount.AccountNoProduct = item[u'AssetProductAccountNo']
-
-      # 2. Buat transaksi pembelian asset
-      # Set Journal Code berdasarkan PaymentType
-      if item[u'AssetPaymentType'] == 'T' :
-        JournalCode = 'DA01B'
-      else :
-        if CashAdvance > 0.0 :
-          JournalCode = 'DA01A'
-        else:
-          JournalCode = 'DA01C'
-        # endif
-      # endif
-                 
-      # Buat Transaksi pembelian
-      oItemFA = oTran.CreateAccountTransactionItem(oFAAccount)
-      oItemFA.SetMutation('D', item[u'Amount'], aRate)
-      oItemFA.Description = item[u'Description']
-      oItemFA.SetJournalParameter(JournalCode)
-      oItemFA.AccountCode = oFAAccount.GetAssetAccount()
+      CreateFixAssetTransactionItem( helper, oTran, params, request, item)
       
-      # simpan nomor akun pada dataset
-      recItem = params.uipTransactionItem.GetRecord(item[u'RecordIdx'])
-      recItem.AssetAccountNo = oFAAccount.AccountNo
-
     elif item[u'ItemType'] == 'B':
-      # 1. Create CostPaidInAdvance
-      CPIAAccountNo = str(item[u'CPIAAccountNo'])
-      if CPIAAccountNo == '' :
-        oCPIAAccount = helper.CreatePObject('CostPaidInAdvance')
-      else :
-        oCPIAAccount = helper.GetObject('CostPaidInAdvance',CPIAAccountNo)
-
-      oCPIAAccount.BranchCode = request[u'BranchCode']
-      if item[u'CPIAHasContract'] == 'T':
-        oCPIAAccount.SetContract(item[u'CPIAContractNo'], item[u'CPIAContractEndDate'])
-      else:
-        oCPIAAccount.SetNoContract()
-      #-- if.else
-      oCPIAAccount.SetInitialValue(item[u'Amount'])
-      oCPIAAccount.Description = item[u'Description']
-      oCPIAAccount.CostAccountNo = item[u'AccountId']
-      oCPIAAccount.CPIACatId = item[u'CPIACatId']
-
-      oItem = oTran.CreateAccountTransactionItem(oCPIAAccount)
-      oItem.SetMutation('D', item[u'Amount'], aRate)
-      oItem.Description = item[u'Description']
-      oItem.SetJournalParameter('BDD01')
-
-      # simpan nomor akun pada dataset
-      recItem = params.uipTransactionItem.GetRecord(item[u'RecordIdx'])
-      recItem.CPIAAccountNo = oCPIAAccount.AccountNo
-
+      CreateCPIATransactionItem( helper, oTran, params, request, item)
+      
     else:
       raise '','Kode Item Tidak Dikenal'
     
