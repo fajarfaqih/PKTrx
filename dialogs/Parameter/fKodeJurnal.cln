@@ -57,7 +57,7 @@ document <
           DataTypeName='VARCHAR'
           DataLength=30
         >}Name='pJournal'
-      Width=240
+      Width=769
       Height=332
       UIPart=$UIPARTS['uipJournal']
       ControlLeftMargin=8
@@ -174,8 +174,8 @@ document <
           DataTypeName='VARCHAR'
           DataLength=30
         >}Name='pJournalItem'
-      Width=240
-      Height=240
+      Width=769
+      Height=72
       UIPart=$UIPARTS['uipJournalItem']
       ControlLeftMargin=8
       ControlTopMargin=8

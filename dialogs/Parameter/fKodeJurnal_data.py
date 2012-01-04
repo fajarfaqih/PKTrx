@@ -42,5 +42,5 @@ def Form_SetDataEx(uideflist, param):
 
 def Form_BeforeDeleteRow(aData):
     if aData.IsA('ParameterJournal'):
-        aData.Ls_Item.DeleteAllPObjs()
+        aData.Ls_ParameterJournalItem.DeleteAllPObjs()
 
