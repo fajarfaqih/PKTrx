@@ -16,6 +16,7 @@ def FormSetDataEx(uideflist, params) :
     # Set Field For Old Transaction Compatible
     oTran = helper.GetObjectByNames('Transaction',{'TransactionNo' : rec.TransactionNo})
     rec.ActualDate = oTran.GetAsTDateTime('ActualDate')
+    rec.TransactionDate = oTran.GetAsTDateTime('TransactionDate')
     
     if rec.CurrencyCode in ['',None]:
       rec.CurrencyCode = '000'
