@@ -700,9 +700,13 @@ class FixedAsset(DepreciableAsset):
     ENTITY_MAP = {
       1: 'ASSET_FROM_ZAKAT', 2: 'ASSET_FROM_INFAQ', 3: 'ASSET_FROM_WAKAF', 5: 'ASSET_FROM_NONHALAL'
     }
-    aIntfCode = ENTITY_MAP[aFundEntity]
 
-    return self.LProductAccount.LProduct.GetAccountInterface(aIntfCode).AccountCode
+    if aFundEntity == 4 :
+      AccountCode = self.GetAmilCostForAssetAccount() 
+    else :
+      aIntfCode = ENTITY_MAP[aFundEntity]
+      AccountCode = self.LProductAccount.LProduct.GetAccountInterface(aIntfCode).AccountCode
+    return AccountCode
 
   def GetAssetKelolaanMinusAccount(self,FundEntity):
     ENTITY_MAP = {

@@ -109,6 +109,9 @@ def CreateAssetPaymentTransaction(oTran,oAsset,Amount,FundEntity,Description):
     oItemFA.Description = Description
     oItemFA.SetJournalParameter('DA02A')
     oItemFA.SetDistributionEntity(FundEntity)
+
+    AccountCode = oAsset.GetAssetKelolaanPlusAccount(FundEntity)
+    oItemFA.AddGLInterface('ASET_KELOLA', AccountCode,'Penambahaan Aset Kelolaan')
   else:
     AccountCode = oAsset.GetAmilCostForAssetAccount()
     oItemFA = oTran.CreateGLTransactionItem(AccountCode, '000')

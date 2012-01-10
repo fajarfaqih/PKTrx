@@ -329,7 +329,7 @@ class Transaction(pobject.PObject):
 
   def Approval(self):
     self.SetAuth('A')
-        
+
     oItems = self.Ls_TransactionItem
     aSQLText = " select transactionitemid from transactionitem \
                      where transactionid=%d " % self.TransactionId        
@@ -1189,13 +1189,13 @@ class FixedAssetTransactItem(DeprAssetTransactItem):
     oAsset = self.LFixedAsset
     #if oAsset.LAssetCategory.AssetType == 'T' :
 
-    if aFundEntity == 4 :
+    #if aFundEntity == 4 :
       # Account Code Amil diambil dari GL Interface Kategori Asset
-      AccountCode = oAsset.GetAssetFromAmilAccount() #self.Helper.GetObject('ParameterGlobal', 'GLIASSETFROMAMIL').Get()
+    #  AccountCode = oAsset.GetAmilCostForAssetAccount() #self.Helper.GetObject('ParameterGlobal', 'GLIASSETFROMAMIL').Get()
 
-    else:
+    #else:
       # Account Code Selain diambil dari Produk
-      AccountCode = oAsset.GetAssetKelolaanPlusAccount(aFundEntity)
+    AccountCode = oAsset.GetAssetKelolaanPlusAccount(aFundEntity)
 
     self.AddGLInterface('ASET_KELOLA', AccountCode,'Penambahaan Aset Kelolaan')
 
@@ -1232,6 +1232,12 @@ class InvestmentTransactItem(AccReceivableTransactItem):
 class CATransactItem(CashAdvanceTransactItem):
   # static variable
   pobject_classname = 'CATransactItem'
+
+  def OnDelete(self) :
+    CashAdvanceTransactItem.OnDelete()
+    if self.DistributionTransferId not in [0,None]:
+      oTransferInfo = helper.GetObject('DistributionTransferInfo',self.DistributionTransferId)
+      oTransferInfo.Delete()
 
 class CAReturnTransactItem(CashAdvanceTransactItem):
   # static variable
@@ -1633,6 +1639,16 @@ class DistributionTransferInfo(pobject.PObject):
       self.ReportStatus = 'F'
       self.ReportTransactionId = 0
       
+    def BalanceDecrease(self, aAmount):
+      self.Balance -= aAmount
+
+    def OnDelete(self):
+      #sqlCheck = 'select count(transactionitemid) from accounttransaction where '
+      oqlCheck = "select from CATransactItem \
+         [DistributionTransferId = :Id ] \
+         (self)  \
+         "
+
 class FixedAssetTransactInfo(pobject.PObject):
     # static variable
     pobject_classname = 'FixedAssetTransactInfo'
