@@ -36,25 +36,6 @@ class fFixedAssetDisposal:
       uipTran.EmployeeId = form.uipEmployee.EmployeeId
     # end if
     
-  def bSearchBudgetClick(self, sender):
-    uipTran = self.uipTransaction
-    if self.fSearchBudget == None:
-      formname = 'Transaksi/fSelectBudgetYear'
-      form = self.app.CreateForm(formname,formname,0,None,None)
-      self.fSearchBudget = form
-    else:
-      form = self.fSearchBudget
-    # end if
-
-    BranchCode = uipTran.BranchCode
-    PeriodId = uipTran.PeriodId
-    if form.GetBudgetCode(BranchCode,PeriodId):
-      uipTran.Edit()
-      uipTran.BudgetCode = form.BudgetCode
-      uipTran.BudgetOwner = form.OwnerName
-      uipTran.BudgetId = form.BudgetId
-    # end if
-
   def CheckRequired(self):
     app = self.app
     uipTran = self.uipTransaction
