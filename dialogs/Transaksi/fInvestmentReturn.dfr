@@ -133,6 +133,7 @@ document <
           Name='InvesteeName'
           Top=35
           Left=8
+          Enabled=false
           Color=-2147483624
           ControlCaption='Nama Investee'
         >, *object:rtf::DBEdit<

@@ -146,6 +146,7 @@ document <
         >, object:rtf::FieldUIElmtSetting<
           Name='OpeningDate'
           AccessOption=aoReadOnly
+          ControlCaption='Tanggal Awal Investasi'
           DataTypeName='TIMESTAMP'
           DataLength=0
         >, object:rtf::FieldUIElmtSetting<
@@ -196,7 +197,7 @@ document <
           EnumeratedValues=''
           FieldName='LInvestee.InvesteeName'
           DisplayFormat=''
-          TitleCaption='Nama Pengelola'
+          TitleCaption='Nama Investee'
           Width=150
           ReadOnly=true
         >, *object:rtf::GridColumn<
@@ -214,6 +215,7 @@ document <
           EnumeratedValues=''
           FieldName='OpeningDate'
           DisplayFormat=''
+          TitleCaption='Tanggal Awal Investasi'
           Hidden=true
           ReadOnly=true
         >, *object:rtf::GridColumn<
@@ -240,8 +242,8 @@ document <
       SuppressHelpLine=true
     >, object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=681
-      Height=401
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['mpInvestment']
       InversedAlign=true
@@ -253,8 +255,8 @@ document <
       Container2=$CONTAINERS['gInvestmentNE']
     >, object:rtf::MultiPages<
       Name='mpInvestment'
-      Width=681
-      Height=341
+      Width=320
+      Height=320
       Pages={object:rtf::Page<
           PageName='mpInvestmentNE'
           PageTitle='Non Karyawan'
@@ -272,7 +274,7 @@ document <
           DataLength=100
         >}Name='pFilterEmployee'
       Width=320
-      Height=81
+      Height=73
       UIPart=$UIPARTS['uipFilter']
       Controls={*object:rtf::DBEdit<
           Name='EmployeeName'
@@ -280,11 +282,14 @@ document <
           Left=10
           Color=0
           ControlCaption='Nama Karyawan'
+          CharCase=ecUpperCase
         >, object:rtf::Button<
           Name='bFilterEmployee'
           Layout=clAbsolute
-          Top=48
+          Top=40
           Left=8
+          Width=81
+          Height=25
           Color=0
           ControlCaption=''
           Caption='&Filter'
@@ -295,11 +300,13 @@ document <
       DefaultControlHeight=21
       HorizontalControlGap=4
       RowControlGap=7
+      ControlCharCase=ecUpperCase
     >, object:rtf::Grid<
       Elements={object:rtf::LinkUIElmtSetting<
           Name='LEmployee'
           RequiredOption=roAlwaysRequired
           AccessOption=aoReadOnly
+          ControlCaption='Nama Karyawan'
           ClassTypeName='VEmployee'
           KeyFields={object:rtf::FieldUIElmtSetting<
               Name='LEmployee.EmployeeId'
@@ -327,16 +334,27 @@ document <
         >, object:rtf::FieldUIElmtSetting<
           Name='AccountName'
           AccessOption=aoReadOnly
+          ControlCaption='Nama Investasi'
           DataTypeName='VARCHAR'
           DataLength=50
         >, object:rtf::FieldUIElmtSetting<
+          Name='OpeningDate'
+          AccessOption=aoReadOnly
+          Hidden=true
+          ControlCaption='Tanggal Awal Investasi'
+          DataTypeName='TIMESTAMP'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
           Name='InvestmentAmount'
           AccessOption=aoReadOnly
+          ControlCaption='Nilai Investasi'
           DataTypeName='DOUBLE'
           DataLength=0
         >, object:rtf::FieldUIElmtSetting<
           Name='AccountNo'
           AccessOption=aoReadOnly
+          Hidden=true
+          ControlCaption='Nomor Investasi'
           DataTypeName='VARCHAR'
           DataLength=30
         >, object:rtf::FieldUIElmtSetting<
@@ -347,11 +365,12 @@ document <
         >, object:rtf::FieldUIElmtSetting<
           Name='FundEntity'
           AccessOption=aoReadOnly
+          Hidden=true
           DataTypeName='INTEGER'
           DataLength=0
         >}Name='gInvestmentE'
       Width=673
-      Height=231
+      Height=239
       UIPart=$UIPARTS['uipInvestmentE']
       ControlLeftMargin=8
       ControlTopMargin=8
@@ -364,6 +383,7 @@ document <
           EnumeratedValues=''
           FieldName='LEmployee.EmployeeId'
           DisplayFormat=''
+          TitleCaption='Nama Karyawan'
           Hidden=true
           ReadOnly=true
         >, *object:rtf::GridColumn<
@@ -372,6 +392,7 @@ document <
           EnumeratedValues=''
           FieldName='LEmployee.EmployeeName'
           DisplayFormat=''
+          TitleCaption='Nama Karyawan'
           Width=150
           ReadOnly=true
         >, *object:rtf::GridColumn<
@@ -380,6 +401,7 @@ document <
           EnumeratedValues=''
           FieldName='AccountName'
           DisplayFormat=''
+          TitleCaption='Nama Investasi'
           Width=150
           ReadOnly=true
         >, *object:rtf::GridColumn<
@@ -387,30 +409,18 @@ document <
           InputStyle=cisNormal
           EnumeratedValues=''
           FieldName='InvestmentAmount'
-          DisplayFormat=''
+          DisplayFormat=',0.00'
+          TitleCaption='Nilai Investasi'
           Width=120
-          ReadOnly=true
-        >, *object:rtf::GridColumn<
-          Name='AccountNo'
-          InputStyle=cisNormal
-          EnumeratedValues=''
-          FieldName='AccountNo'
-          DisplayFormat=''
           ReadOnly=true
         >, *object:rtf::GridColumn<
           Name='Balance'
           InputStyle=cisNormal
           EnumeratedValues=''
           FieldName='Balance'
-          DisplayFormat=''
+          DisplayFormat=',0.00'
+          TitleCaption='Sisa Pokok'
           Width=120
-          ReadOnly=true
-        >, *object:rtf::GridColumn<
-          Name='FundEntity'
-          InputStyle=cisNormal
-          EnumeratedValues=''
-          FieldName='FundEntity'
-          DisplayFormat=''
           ReadOnly=true
         >}ReadOnly=true
       RowSelect=true

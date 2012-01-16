@@ -3756,6 +3756,10 @@ document <
               ThisField=$TYPEDECLS['DistributionTransferInfo'].MEMBERS['CashAccountNoDest']
               OriginPKey=$TYPEDECLS['CashAccount'].MEMBERS['AccountNo']
             >}LinkedClass=$TYPEDECLS['CashAccount']
+        >, object:FieldMember<
+          MemberName='Balance'
+          PhysicalName='BALANCE'
+          DataType=$TYPEDECLS['DOUBLE']
         >}ClassID='{31EBA381-7CFF-49F2-B5F7-D41B80260C28}'
       AutoPrimaryKey=$TYPEDECLS['DistributionTransferInfo'].MEMBERS['DistributionId']
     >, object:ClassTypeDecl<

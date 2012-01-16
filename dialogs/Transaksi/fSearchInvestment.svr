@@ -40,7 +40,7 @@ document <
     >, object:rpclass::TPClassUIDef<
       Name='uipInvestmentE'
       PClassName='InvestmentEmployee'
-      LoadedFieldList='LEmployee.EmployeeId;LEmployee.EmployeeId;LEmployee.EmployeeName;AccountName;InvestmentAmount;AccountNo;Balance;FundEntity'
+      LoadedFieldList='LEmployee.EmployeeId;LEmployee.EmployeeId;LEmployee.EmployeeName;AccountName;OpeningDate;InvestmentAmount;AccountNo;Balance;FundEntity'
       CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
           Name='LEmployee'
           ClassTypeName='VEmployee'

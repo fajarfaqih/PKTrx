@@ -33,15 +33,23 @@ class fSearchInvestment:
     app = self.app
     uipFilter = self.uipFilter
 
-    lsParam = []
+    #lsParam = []
 
-    Name = uipFilter.InvesteeName or ''
-    if Name != '' :
-      lsParam.append(" LInvestee.InvesteeName LLIKE '%s' " % (Name))
+    FilterName = uipFilter.InvesteeName or ''
+    #if Name != '' :
+    #  lsParam.append(" LInvestee.InvesteeName LLIKE '%s' " % (Name))
 
-    strParam = ' and '.join(lsParam)
+    #strParam = ' and '.join(lsParam)
 
-    self.form.SetDataFromQuery('uipInvestmentNE',strParam, '')
+    #self.form.SetDataFromQuery('uipInvestmentNE',strParam, '')
+    params = app.CreateValues(
+      ['FilterName',FilterName],
+      ['InvestmentType','X']
+    )
+
+    self.uipInvestmentNE.ClearData()
+    self.FormObject.SetDataWithParameters(params)
+    
 
   def GetDataInvestmentE(self):
     app = self.app
@@ -49,10 +57,18 @@ class fSearchInvestment:
 
     lsParam = []
 
-    Name = uipFilter.EmployeeName or ''
-    if Name != '' :
-      lsParam.append(" LEmployee.EmployeeName LLIKE '%s' " % (Name))
+    FilterName = uipFilter.EmployeeName or ''
+    #if Name != '' :
+    #  lsParam.append(" LEmployee.EmployeeName LLIKE '%s' " % (Name))
 
-    strParam = ' and '.join(lsParam)
+    #strParam = ' and '.join(lsParam)
 
-    self.form.SetDataFromQuery('uipInvestmentE',strParam, '')
+    #self.form.SetDataFromQuery('uipInvestmentE',strParam, '')
+    
+    params = app.CreateValues(
+      ['FilterName',FilterName],
+      ['InvestmentType','E']
+    )
+
+    self.uipInvestmentE.ClearData()
+    self.FormObject.SetDataWithParameters(params)
