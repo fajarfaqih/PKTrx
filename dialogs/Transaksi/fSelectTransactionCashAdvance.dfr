@@ -39,6 +39,11 @@ document <
           Hidden=true
           DataTypeName='integer'
           DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='IsRAKReturn'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
         >}Name='uipFilter'
     >, object:rtf::PClassUI<
       Name='uipCATransactItem'
@@ -48,8 +53,8 @@ document <
       OnSetData='OnSetData'
     >}Containers={object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=489
-      Height=329
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dualsplit2']
       InversedAlign=true
@@ -134,8 +139,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit2'
-      Width=489
-      Height=294
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pFilter']
       Container2=$CONTAINERS['gCATrans']
     >, object:rtf::Grid<
@@ -146,7 +151,8 @@ document <
             'Amount'#13#10,
             'LCurrency'#13#10,
             'Rate'#13#10,
-            'CurrencyCode'#13#10]
+            'CurrencyCode'#13#10,
+            'DistributionTransferId'#13#10]
         >}Elements={*object:rtf::LinkUIElmtSetting<
           Name='LFinancialAccount'
           DisplayFields='AccountNo;AccountName'
@@ -165,6 +171,9 @@ document <
           Hidden=true
         >, *object:rtf::FieldUIElmtSetting<
           Name='CurrencyCode'
+          Hidden=true
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='DistributionTransferId'
           Hidden=true
         >, object:rtf::FieldUIElmtSetting<
           Name='AmountEkuivalen'

@@ -40,6 +40,7 @@ def FormSetDataEx(uideflist,params):
       recDisb.ReportStatus = res.ReportStatus
       recDisb.TransactionId = res.TransactionId
       recDisb.DistributionId = res.DistributionId
+      recDisb.BalanceUsed = res.Amount - res.Balance
       res.Next()
     # end while
   # end if
@@ -70,6 +71,7 @@ def GetDataDistribution(config,BranchCode,BeginDate,EndDate,FilterSource,FilterD
      LTransaction.Amount , \
      LTransaction.TransactionNo, \
      LTransaction.Description, \
+     Balance, \
      ReportStatus, \
      TransactionId , \
      self) then order by ActualDate,TransactionId ; \

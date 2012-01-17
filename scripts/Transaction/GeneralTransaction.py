@@ -542,8 +542,18 @@ def CashAdvance(helper,oTran,oBatch,request,params):
   oItemCAD.SetFundEntity(request[u'FundEntity'])
   oItemCAD.SetJournalParameter(JournalCode[request[u'FundEntity']])
   
-  if request[u'DistributionTransferId'] != 0 :
-    oItemCAD.DistributionTransferId = request[u'DistributionTransferId']
+  DistributionTransferId = request[u'DistributionTransferId'] or 0
+  if DistributionTransferId != 0 :
+    oDistTransferInfo = helper.GetObject('DistributionTransferInfo', DistributionTransferId)
+    if oDistTransferInfo.isnull :
+      raise '', 'Data RAK tidak ditemukan'
+    
+    oDistTransferInfo.UpdateBalance( '-', request[u'Amount'])
+    
+    if oDistTransferInfo.Balance < 0.0 :
+      raise '', 'Saldo RAK tidak mencukupi untuk melakukan transaksi'
+
+    oItemCAD.DistributionTransferId = DistributionTransferId
 
   # Create BudgetTransaction
   aBudgetId = request[u'BudgetId'] 
@@ -576,7 +586,7 @@ def CashAdvance(helper,oTran,oBatch,request,params):
 ### ------- End CASH ADVANCE  -------------------------------------------
 
 ### ------- Begin CASH ADVANCE RETURN -----------------------------------
-def CreateFixAssetTransactionItem(helper, oTran, params, request, item):
+def CreateFixAssetTransactionItem(helper, oTran, params, request, item, isCreateRAK = 0):
   aAmount = item[u'Amount']
   aRate = request[u'Rate']
   aCurrencyCode = request[u'CurrencyCode']
@@ -618,11 +628,12 @@ def CreateFixAssetTransactionItem(helper, oTran, params, request, item):
              
   # Buat Transaksi pembelian
 
-  oItemFA = oTran.CreateAccountTransactionItem(oFAAccount)
+  oItemFA = oTran.CreateAssetTransactionItem(oFAAccount)
   oItemFA.SetMutation('D', aAmount, aRate)
   oItemFA.Description = aDescription
   oItemFA.SetJournalParameter(JournalCode)
-  oItemFA.AccountCode = oFAAccount.GetAssetAccount()  
+  oItemFA.AccountCode = oFAAccount.GetAssetAccount()
+  oItemFA.SetFundEntity(aFundEntity)
   
   if oFAAccount.LAssetCategory.AssetType == 'T' :
     oProduct = oFAAccount.LProductAccount
@@ -632,6 +643,10 @@ def CreateFixAssetTransactionItem(helper, oTran, params, request, item):
     oItemFA.Description = aDescription
     oItemFA.SetJournalParameter('DA02A')
     oItemFA.SetDistributionEntity(aFundEntity)
+
+    AccountCode = oFAAccount.GetAssetKelolaanPlusAccount(aFundEntity)
+    oItemFA.AddGLInterface('ASET_KELOLA', AccountCode,'Penambahaan Aset Kelolaan')
+
   else:
     AccountCode = oFAAccount.GetAmilCostForAssetAccount()
     oItemFA = oTran.CreateGLTransactionItem(AccountCode, '000')
@@ -643,8 +658,18 @@ def CreateFixAssetTransactionItem(helper, oTran, params, request, item):
   # simpan nomor akun pada dataset
   recItem = params.uipTransactionItem.GetRecord(item[u'RecordIdx'])
   recItem.AssetAccountNo = oFAAccount.AccountNo  
-
-def CreateCPIATransactionItem(helper, oTran, params, request, item):
+  
+  # Buat RAK jika status RAK true
+  if isCreateRAK:
+    AccountRAK = helper.GetObject('ParameterGlobal', 'GLIRAKOTO').Get()
+    oItemGL = oTran.CreateGLTransactionItem(AccountRAK, '000')
+    oItemGL.RefAccountName = 'RAK Otomatis'
+    oItemGL.SetMutation('C', aAmount, aRate)
+    oItemGL.Description = 'Akun RAK Otomatis'
+    oItemGL.SetJournalParameter('10')
+  # end if
+  
+def CreateCPIATransactionItem(helper, oTran, params, request, item, isCreateRAK = 0 ):
   aAmount = item[u'Amount']
   aRate = request[u'Rate']
   aCurrencyCode = request[u'CurrencyCode']
@@ -679,9 +704,20 @@ def CreateCPIATransactionItem(helper, oTran, params, request, item):
   recItem = params.uipTransactionItem.GetRecord(item[u'RecordIdx'])
   recItem.CPIAAccountNo = oCPIAAccount.AccountNo
 
+  # Buat RAK jika status RAK true
+  if isCreateRAK:
+    AccountRAK = helper.GetObject('ParameterGlobal', 'GLIRAKOTO').Get()
+    oItemGL = oTran.CreateGLTransactionItem(AccountRAK, '000')
+    oItemGL.RefAccountName = 'RAK Otomatis'
+    oItemGL.SetMutation('C', aAmount, aRate)
+    oItemGL.Description = 'Akun RAK Otomatis'
+    oItemGL.SetJournalParameter('10')
+  # end if
+
 def CashAdvanceReturn(helper,oTran,oBatch,request,params):
   FundEntityMap = {1 : 'PAK-Z', 2 : 'PAK-I', 3 : 'PAK-W', 4 : 'PAK-A'}
-    
+  
+  # Set Transaction Data  
   oTran.ReferenceNo = request[u'ReferenceNo']
   oTran.Description = request[u'Description']
   oTran.Inputer     = request[u'Inputer']
@@ -695,8 +731,10 @@ def CashAdvanceReturn(helper,oTran,oBatch,request,params):
   oTran.Rate = request[u'Rate']
   oTran.ChannelAccountNo = str(request[u'CashAccountNo'])
   
+  # Set Support Variable 
   aRate = request[u'Rate']
   aCurrencyCode = request[u'CurrencyCode']
+  
   # Get Source Transaction Item Id Using TransactionNo
   oRefItemCA = helper.GetObjectByNames(
         'CATransactItem',
@@ -727,7 +765,7 @@ def CashAdvanceReturn(helper,oTran,oBatch,request,params):
   aJournalCode = 10
   oCashAccount = helper.GetObject('CashAccount',
     str(request[u'CashAccountNo'])).CastToLowestDescendant()
-  if oCashAccount.isnull:
+  if oCashAccount.isnull :
     raise 'Cash/Bank', 'Rekening %s tidak ditemukan' % request[u'CashAccountNo']
 
   if request[u'Amount'] > 0.0 or request[u'ReimburseAmount'] > 0.0 :
@@ -782,10 +820,10 @@ def CashAdvanceReturn(helper,oTran,oBatch,request,params):
       oItemBudget = oItemGL
                 
     elif item[u'ItemType'] == 'A':
-      CreateFixAssetTransactionItem( helper, oTran, params, request, item)
+      CreateFixAssetTransactionItem( helper, oTran, params, request, item, isCreateRAK=0)
 
     elif item[u'ItemType'] == 'B':
-      CreateCPIATransactionItem( helper, oTran, params, request, item)
+      CreateCPIATransactionItem( helper, oTran, params, request, item, isCreateRAK=0)
 
     else:
       raise '','Kode Item Tidak Dikenal'
@@ -938,7 +976,9 @@ def InvestmentReturn(helper,oTran,oBatch,request,params):
 
 ### ------- Begin CashAdvance RETURN  -----------------------------------
 def CashAdvanceReturnRAK(helper,oTran,oBatch,request,params):
+  FundEntityMap = {1 : 'PAK-Z', 2 : 'PAK-I', 3 : 'PAK-W', 4 : 'PAK-A'}
   
+  #--- Set Transaction Data
   oTran.ReferenceNo = request[u'ReferenceNo']
   oTran.Description = request[u'Description']
   oTran.Inputer     = request[u'Inputer']
@@ -950,7 +990,8 @@ def CashAdvanceReturnRAK(helper,oTran,oBatch,request,params):
   oTran.PaidTo = request[u'PaidTo']
   oTran.ActualDate = oBatch.GetAsTDateTime('BatchDate')
   
-  # EmployeeAR Account
+  
+  #--- EmployeeAR Account
   employeeId = request[u'EmployeeId']
   
   oAccount = helper.GetObjectByNames('EmployeeCashAdvance',
@@ -962,22 +1003,32 @@ def CashAdvanceReturnRAK(helper,oTran,oBatch,request,params):
   if oAccount.isnull:
     raise '','Karyawan Belum Memiliki Rekening Uang Muka'    
   
+  # Get Source Transaction Item Id Using TransactionNo
+  oRefItemCA = helper.GetObject('CATransactItem',request[u'RefTransactionItemId'])
+  oDTransferInfo = oRefItemCA.LDistributionTransfer
+  
+  if request[u'Amount'] > 0.0 :
+    oDTransferInfo.UpdateBalance( '+', request[u'Amount'])
+
+  # Create Employee AR Transaction Item
   oItemCAR = oTran.CreateCAReturnTransactItem(oAccount)
   oItemCAR.SetMutation('C', request[u'RefAmount'], 1.0)
   oItemCAR.Description = request[u'Description']
-  oItemCAR.SetJournalParameter('10')
-
-  oRefItemCA = helper.GetObject('CATransactItem',request[u'RefTransactionItemId'])
+  oItemCAR.SetFundEntity(oRefItemCA.FundEntity)
+  #oItemCAR.SetJournalParameter('10')
+  oItemCAR.SetJournalParameter(FundEntityMap[oRefItemCA.FundEntity or 4] )
+  
+  # Set Return Transaction Item
   oRefItemCA.ReturnTransactionItemId = oItemCAR.TransactionItemId
 
-  # Destination Transaction
-  aJournalCode = 10
+  #--- Destination (Cash) Transaction
   oCashAccount = helper.GetObject('CashAccount',
     str(request[u'CashAccountNo'])).CastToLowestDescendant()
   if oCashAccount.isnull:
     raise 'Cash/Bank', 'Rekening %s tidak ditemukan' % request[u'CashAccountNo']
-
+  
   if request[u'Amount'] > 0.0 :
+    # Create Cash Transaction Item
     oItemCA = oTran.CreateAccountTransactionItem(oCashAccount)
     oItemCA.SetMutation('D', request[u'Amount'], 1.0)
     oItemCA.Description = oCashAccount.AccountName #request[u'Description']
@@ -1150,16 +1201,21 @@ def BranchDistribution(helper,oTran,oBatch,request,params):
   
   oTran.GenerateTransactionNumber(oSCashAccount.CashCode)
   oTran.SaveInbox(params)
-
-  oTransferInfo = helper.GetObjectByNames('DistributionTransferInfo',{'TransactionId' : oTran.TransactionId}) 
+  
+  
+  oTransferInfo = helper.GetObjectByNames( 
+     'DistributionTransferInfo',
+     { 'TransactionId' : oTran.TransactionId }
+  ) 
   
   if oTransferInfo.isnull: 
     oTransferInfo = helper.CreatePObject('DistributionTransferInfo')
     oTransferInfo.TransactionId = oTran.TransactionId
     #oTransferInfo.TransactionItemId = oItemCA.TransactionItemId
-    oTransferInfo.CashAccountNoDest = aDestAccountNo
-    oTransferInfo.CashAccountNoSource = aSourceAccountNo
-
+  
+  oTransferInfo.CashAccountNoDest = aDestAccountNo
+  oTransferInfo.CashAccountNoSource = aSourceAccountNo    
+  oTransferInfo.SetBalance(request[u'Amount'])
   oTransferInfo.AccountNo = request[u'AccountNo']
   oTransferInfo.BranchSource = aBranchCode
   oTransferInfo.BranchDestination = aDestBranchCode
@@ -1213,7 +1269,7 @@ def BranchDistributionReturn(helper,oTran,oBatch,request,params):
     oItemDCA.SetJournalParameter('15')
 
   aBranchCode = request[u'BranchCode']
-  aValuta = oCashAccount.CurrencyCode    
+  aValuta = oCashAccount.CurrencyCode
   totalAmount = 0.0
   items = request[u'Items']
   
@@ -1247,10 +1303,10 @@ def BranchDistributionReturn(helper,oTran,oBatch,request,params):
       oItemBudget = oItemGL
                 
     elif item[u'ItemType'] == 'A':
-      CreateFixAssetTransactionItem( helper, oTran, params, request, item)
+      CreateFixAssetTransactionItem( helper, oTran, params, request, item, isCreateRAK = 1)
       
     elif item[u'ItemType'] == 'B':
-      CreateCPIATransactionItem( helper, oTran, params, request, item)
+      CreateCPIATransactionItem( helper, oTran, params, request, item, isCreateRAK = 1)
       
     else:
       raise '','Kode Item Tidak Dikenal'

@@ -28,6 +28,11 @@ document <
           Hidden=true
           DataTypeName='integer'
           DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='IsRAKReturn'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
         >}Name='uipFilter'
     >, object:rtf::PClassUI<
       Name='uipCATransactItem'
@@ -37,8 +42,8 @@ document <
       OnSetData='OnSetData'
     >}Containers={object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=489
-      Height=329
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dualsplit2']
       InversedAlign=true
@@ -123,8 +128,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit2'
-      Width=489
-      Height=294
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pFilter']
       Container2=$CONTAINERS['gCATrans']
     >, object:rtf::Grid<
@@ -200,6 +205,12 @@ document <
           Hidden=true
           DataTypeName='VARCHAR'
           DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='DistributionTransferId'
+          AccessOption=aoReadOnly
+          Hidden=true
+          DataTypeName='INTEGER'
+          DataLength=0
         >, object:rtf::FieldUIElmtSetting<
           Name='AmountEkuivalen'
           ControlCaption='Nilai Ekuivalen(Rp)'

@@ -12,7 +12,7 @@ class fTransactionHistoryView:
     self.FormObject.SetDataWithParameters(params)
 
     # Set Button untuk kebutuhan maintenance
-    self.pTransaction_bReJournal.visible = (self.uipData.user_id == 'OP001')
+    self.pTransaction_bReJournal.visible = (self.uipData.user_id in ['OP001','OP101'])
     return self.FormContainer.Show()
 
 

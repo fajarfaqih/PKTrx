@@ -49,8 +49,8 @@ document <
       Name='uipDistributionList'
     >}Containers={object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=240
-      Height=96
+      Width=489
+      Height=329
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dualsplit2']
       InversedAlign=true
@@ -190,8 +190,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit2'
-      Width=240
-      Height=96
+      Width=489
+      Height=294
       Container1=$CONTAINERS['pFilter']
       Container2=$CONTAINERS['dualsplit3']
     >, object:rtf::Panel<

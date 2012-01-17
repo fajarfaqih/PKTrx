@@ -104,6 +104,7 @@ def SimpanData(config, params, returns):
     request['Amount'] = oTransaction.Amount
     request['ReferenceNo'] = oTransaction.ReferenceNo
     request['Description'] = oTransaction.Description
+    request['CurrencyCode'] = '000'
     request['Rate'] = 1.0
     request['Inputer'] = config.SecurityContext.InitUser
     request['BranchCode'] = config.SecurityContext.GetUserInfo()[4]

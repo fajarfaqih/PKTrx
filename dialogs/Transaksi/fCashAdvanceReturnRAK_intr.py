@@ -131,7 +131,7 @@ class fCashAdvanceReturn :
     else :
       fTrans = self.fSelectTransaction
       
-    if fTrans.GetTransaction(EmployeeId):
+    if fTrans.GetTransaction(EmployeeId, IsRAKReturn = 1):
       uipCA = fTrans.uipCATransactItem
       
       uipTran = self.uipTransaction

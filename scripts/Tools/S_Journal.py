@@ -14,13 +14,18 @@ def RegenerateJournal(config, parameters, returnpacket):
     fh = open(filename,'w')
     try:
       TranHelper = helper.LoadScript('Transaction.TransactionHelper')
+      
+      AddParam = " and actualdate between '2011-01-01' and '2011-01-31' "      
 
       sSQL = "select TransactionId \
               from transaction \
               where branchcode='%s' \
                   and AuthStatus='T' \
-                  order by TransactionId" % config.SecurityContext.GetUserInfo()[4]
-      
+                  %s \
+                  order by TransactionId " % ( 
+                   config.SecurityContext.GetUserInfo()[4],
+                   AddParam )
+
       oRes = config.CreateSQL(sSQL).RawResult
       logProcess = ''
       oRes.First()

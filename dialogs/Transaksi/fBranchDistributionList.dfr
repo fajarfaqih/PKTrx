@@ -65,8 +65,8 @@ document <
       Name='uipDistributionList'
     >}Containers={object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=240
-      Height=96
+      Width=545
+      Height=369
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dualsplit2']
       InversedAlign=true
@@ -214,8 +214,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit2'
-      Width=240
-      Height=96
+      Width=545
+      Height=334
       Container1=$CONTAINERS['pFilter']
       Container2=$CONTAINERS['dualsplit3']
     >, object:rtf::Panel<
@@ -285,6 +285,11 @@ document <
           DataTypeName='double'
           DataLength=20
         >, object:rtf::FieldUIElmtSetting<
+          Name='BalanceUsed'
+          ControlCaption='Jumlah Yg Telah Digunakan'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
           Name='TransactionNo'
           ControlCaption='No. Transaksi'
           DataTypeName='varchar'
@@ -351,6 +356,14 @@ document <
           FieldName='Amount'
           DisplayFormat=',0.00'
           TitleCaption='Nilai Transaksi'
+          Width=120
+        >, *object:rtf::GridColumn<
+          Name='BalanceUsed'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='BalanceUsed'
+          DisplayFormat=',0.00'
+          TitleCaption='Jumlah Yg Telah Digunakan'
           Width=120
         >, *object:rtf::GridColumn<
           Name='TransactionNo'

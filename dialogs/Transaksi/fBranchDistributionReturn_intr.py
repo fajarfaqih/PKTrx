@@ -375,8 +375,9 @@ class fBranchDistReturn :
     uipTranItem.AssetCatName = uipData.GetFieldValue('LAssetCategory.AssetCategoryName')
     uipTranItem.AssetCatId = uipData.GetFieldValue('LAssetCategory.AssetCategoryId')
     uipTranItem.AssetType = uipData.AssetType
-    uipTranItem.FundEntity = uipData.FundEntity
     uipTranItem.ItemType = 'A'
+    uipTranItem.FundEntity = uipData.FundEntity
+
     
   # ---------------------------------------------------
   
@@ -457,7 +458,7 @@ class fBranchDistReturn :
       elif uipItem.ItemType == 'G' :
         self.SetGLItem(uipItem,uipData)
       elif uipItem.ItemType == 'A' :
-        form = self.SetAssetItem(uipItem,uipData)
+        form = self.l(uipItem,uipData)
       elif uipItem.ItemType == 'B' :
         form = self.SetCPIAItem(uipItem,uipData)
       else:
@@ -494,7 +495,7 @@ class fBranchDistReturn :
     #fundCategory = self.uipTransactionItem.GetFieldValue('LProduct.FundCategory')
     fundEntity = self.uipTransactionItem.FundEntity
     #if fundCategory == 'Z' and sender.Ashnaf == 'L':
-    if sender.ItemType == 'D' :
+    if sender.ItemType in ['D','A'] :
       pass
       #if fundEntity == 1 and sender.Ashnaf == 'L':
       #  raise 'Ashnaf', 'Ashnaf zakat harus diisi'

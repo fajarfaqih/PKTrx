@@ -20,6 +20,10 @@ document <
           DataTypeName='integer'
           DataLength=30
         >, object:rpclass::TCustomLoadedField<
+          Name='IsRAKReturn'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
           Name='UserId'
           DataTypeName='varchar'
           DataLength=50
@@ -35,7 +39,7 @@ document <
     >, object:rpclass::TPClassUIDef<
       Name='uipCATransactItem'
       PClassName='CATransactItem'
-      LoadedFieldList='LFinancialAccount.AccountNo;LFinancialAccount.AccountNo;LFinancialAccount.AccountName;TransactionItemId;Amount;LCurrency.Currency_Code;LCurrency.Short_Name;Rate;CurrencyCode'
+      LoadedFieldList='LFinancialAccount.AccountNo;LFinancialAccount.AccountNo;LFinancialAccount.AccountName;TransactionItemId;Amount;LCurrency.Currency_Code;LCurrency.Short_Name;Rate;CurrencyCode;DistributionTransferId'
       CustomLoadedFields={object:rpclass::TCustomLoadedField<
           Name='AmountEkuivalen'
           DataTypeName='double'

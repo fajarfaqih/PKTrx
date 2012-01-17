@@ -376,6 +376,13 @@ class Transaction(pobject.PObject):
     helper = self.Helper
     # Sementara Dinonaktifkan karena belum bisa menangkap message raise dari database
     
+    # Cek Transaksi RAK Antar Cabang
+    oDistributionInfo = helper.GetObjectByNames('DistributionTransferInfo',
+      {'TransactionId' : self.TransactionId}
+    )
+    if not oDistributionInfo.isnull :
+      oDistributionInfo.Delete()
+
     # Delete Inbox Transaction
     if self.SubSystemCode in ['',None] :
       oInbox = helper.GetObjectByNames('InboxTransaction',{'TransactionId':self.TransactionId})    
@@ -1017,11 +1024,11 @@ class TransactionItem(pobject.PObject):
     # end if
     
     # Cek Transaksi RAK Antar Cabang
-    oDistributionInfo = helper.GetObjectByNames('DistributionTransferInfo',
-      {'TransactionId' : self.TransactionId}
-    )
-    if not oDistributionInfo.isnull :
-      oDistributionInfo.Delete()
+    # oDistributionInfo = helper.GetObjectByNames('DistributionTransferInfo',
+    #   {'TransactionId' : self.TransactionId}
+    # )
+    # if not oDistributionInfo.isnull :
+    #   oDistributionInfo.Delete()
 
     # Cek Transaksi Invoice
     oInvoice = helper.GetObjectByNames('InvoiceProduct',
@@ -1236,8 +1243,8 @@ class CATransactItem(CashAdvanceTransactItem):
   def OnDelete(self) :
     CashAdvanceTransactItem.OnDelete()
     if self.DistributionTransferId not in [0,None]:
-      oTransferInfo = helper.GetObject('DistributionTransferInfo',self.DistributionTransferId)
-      oTransferInfo.Delete()
+      oTransferInfo = helper.GetObject( 'DistributionTransferInfo', self.DistributionTransferId)
+      oTransferInfo.UpdateBalance( '+', request[u'Amount'])
 
 class CAReturnTransactItem(CashAdvanceTransactItem):
   # static variable
@@ -1633,21 +1640,42 @@ class InboxHistory(pobject.PObject):
     
 class DistributionTransferInfo(pobject.PObject):
     pobject_classname = 'DistributionTransferInfo'
-    pobject_keys = ['TransactionId']
+    pobject_keys = ['DistributionId']
     
     def OnCreate(self):
       self.ReportStatus = 'F'
       self.ReportTransactionId = 0
       
-    def BalanceDecrease(self, aAmount):
-      self.Balance -= aAmount
-
+    def UpdateBalance( self, aType, aAmount):
+      if aType == '+' :
+        self.Balance += aAmount
+      else : # aType == '-'
+        self.Balance -= aAmount
+    
     def OnDelete(self):
       #sqlCheck = 'select count(transactionitemid) from accounttransaction where '
       oqlCheck = "select from CATransactItem \
          [DistributionTransferId = :Id ] \
          (self)  \
          "
+    
+    def SetBalance(self,aAmount) :
+      self.Balance = aAmount
+
+      # Hitung RAK yang sudah dipakai oleh cabang
+      # ( untuk mengcover proses ubah transaksi )
+      SQLSum = "select sum(amount)  as TotalUsed \
+          from transaction.TransactionItem a, \
+              transaction.AccountTransactionItem b \
+          where a.TransactionItemId = b.TransactionItemId \
+            and AccountTIType='C' \
+            and DistributionTransferId = %d " % self.DistributionId
+
+      oRes = self.Config.CreateSQL(SQLSum).RawResult
+      TotalUsed = oRes.TotalUsed or 0.0
+
+      if TotalUsed > 0.0:
+        self.Balance -= TotalUsed
 
 class FixedAssetTransactInfo(pobject.PObject):
     # static variable

@@ -22,7 +22,7 @@ def FormSetDataEx(uideflist, params) :
         })
     rec.SourceRate = oCTran.Rate
     rec.SourceAmount = oCTran.Amount
-    rec.ActualDate = oCTran.LTransaction.ActualDate
+    rec.ActualDate = oCTran.LTransaction.GetAsTDateTime('ActualDate')
     
     oDTran = helper.GetObjectByNames('AccountTransactionItem',
       { 'MutationType' : 'D',
