@@ -45,7 +45,7 @@ class fBranchDistributionList:
     app = self.app
     uipFilter = self.uipFilter
 
-    resp = self.form.CallServerMethod('GetExcelData',self.GenerateParamFromFilter())
+    resp = self.form.CallServerMethod('GetExcelData', self.GenerateParamFromFilter())
 
     status = resp.FirstRecord
 

@@ -40,7 +40,8 @@ def FormSetDataEx(uideflist,params):
       recDisb.ReportStatus = res.ReportStatus
       recDisb.TransactionId = res.TransactionId
       recDisb.DistributionId = res.DistributionId
-      recDisb.BalanceUsed = res.Amount - res.Balance
+      recDisb.BalanceUsed = res.Amount - (res.Balance or 0.0)
+      recDisb.Balance = res.Balance
       res.Next()
     # end while
   # end if
