@@ -14,6 +14,11 @@ def FormSetDataEx(uideflist, parameter) :
   rec.EndDate = int(Now)
 
 
+def AsDateTime(config,tdate):
+  utils = config.ModLibUtils
+  return utils.EncodeDate(tdate[0], tdate[1], tdate[2])
+
+
 def SummaryEmpCA(config,params,returns):
   status = returns.CreateValues(
      ['Is_Err',0],['Err_Message',''],
@@ -23,6 +28,8 @@ def SummaryEmpCA(config,params,returns):
      ['TotalDebet',0.0],
      ['TotalCredit',0.0],
      ['EndBalance',0.0],
+     ['TotalDebetHist',0.0],
+     ['TotalCreditHist',0.0],
   )
   
   BranchCode = params.FirstRecord.BranchCode
@@ -64,6 +71,13 @@ def SummaryEmpCA(config,params,returns):
     
     strSQL = " \
               select b.employeeidnumber, a.accountno, a.accountname, a.currencycode, c.short_name, \
+              ( select sum(case when d.mutationtype='D' then d.Amount \
+                           else -d.Amount \
+                      end) \
+              from transactionitem d, transaction e, accounttransactionitem f\
+              where d.transactionid=e.transactionid \
+                 and d.transactionitemid=f.transactionitemid \
+                 and f.accountno = a.accountno and e.actualdate < '%(BEGINDATE)s' ) as BeginBalance, \
                  (select sum(d.Amount) \
                      from transaction.transaction c, \
                           transaction.transactionitem d, \
@@ -102,8 +116,9 @@ def SummaryEmpCA(config,params,returns):
       recSum.Kredit = res.Kredit or 0.0
       recSum.TotalMutasi = (res.Debet or 0.0 ) - ( res.Kredit or 0.0)
       
-      AccountR = helper.GetObject('AccountReceivable',res.AccountNo)
-      SaldoAwal = AccountR.GetBalanceByDate(BeginDate)
+      #AccountR = helper.GetObject('AccountReceivable',res.AccountNo)
+      SaldoAwal = res.BeginBalance or 0.0 #AccountR.GetBalanceByDate(BeginDate)
+
       recSum.SaldoAwal = SaldoAwal
       recSum.SaldoAkhir = SaldoAwal + recSum.TotalMutasi
       
@@ -115,6 +130,123 @@ def SummaryEmpCA(config,params,returns):
       res.Next()
       
     # end while
+    
+    
+    #--- GET HISTORI TRANSAKSI
+    dsHist = returns.AddNewDatasetEx(
+      'historitransaksi',
+      ';'.join([
+        'TransactionItemId: integer',
+        'TransactionDate: datetime',
+        'TransactionDateStr: string',
+        'TransactionCode: string',
+        'MutationType: string',
+        'Amount: float',
+        'AmountEkuivalen: float',
+        'CurrencyName: string',
+        'Rate: float',
+        'Debet: float',
+        'Kredit: float',
+        'ReferenceNo: string',
+        'Description: string',
+        'Inputer: string',
+        'TransactionNo:string',
+        'Total:float',
+        'AuthStatus:string',
+        'AccountName:string',
+      ])
+    )
+
+    s = ' \
+      SELECT FROM CashAdvanceTransactItem \
+      [ \
+        LTransaction.ActualDate >= :BeginDate and \
+        LTransaction.ActualDate < :EndDate and \
+        BranchCode = :BranchCode \
+      ] \
+      ( \
+        TransactionItemId, \
+        LTransaction.TransactionDate , \
+        LTransaction.TransactionCode , \
+        LTransaction.ActualDate , \
+        MutationType , \
+        Amount , \
+        EkuivalenAmount , \
+        LTransaction.ReferenceNo , \
+        LTransaction.Description , \
+        LTransaction.Inputer , \
+        LTransaction.TransactionNo ,\
+        LTransaction.AuthStatus ,\
+        CurrencyCode , \
+        Rate , \
+        LCurrency.Short_Name , \
+        LTransaction.CurrencyCode as TransCurrencyCode , \
+        LTransaction.Rate as TransRate , \
+        LTransaction.LCurrency.Short_Name as TransCurrencyName , \
+        LCashAdvanceAccount.AccountName, \
+        Self \
+      ) \
+      THEN ORDER BY ASC ActualDate, ASC TransactionItemId;'
+
+    oql = config.OQLEngine.CreateOQL(s)
+    oql.SetParameterValueByName('BeginDate', BeginDate)
+    oql.SetParameterValueByName('EndDate', EndDate + 1)
+    oql.SetParameterValueByName('BranchCode', BranchCode)
+    oql.ApplyParamValues()
+
+    oql.active = 1
+    ds  = oql.rawresult
+
+    stAuth = {'T':'Sudah Otorisasi','F':'Belum Otorisasi'}
+    while not ds.Eof:
+      recHist = dsHist.AddRecord()
+      recHist.TransactionItemId = ds.TransactionItemId
+      recHist.TransactionDate = AsDateTime(config, ds.ActualDate)
+      recHist.TransactionDateStr = config.FormatDateTime('dd-mmm-yyyy',recHist.TransactionDate)
+      recHist.TransactionCode = ds.TransactionCode
+      recHist.MutationType = ds.MutationType
+
+      TranCurrencyCode = ds.CurrencyCode_1
+      TranCurrencyName = ds.Short_Name_1
+      TransRate        = ds.Rate_1
+
+      if ds.CurrencyCode != TranCurrencyCode and ds.CurrencyCode == '000':
+        CurrencyCode = TranCurrencyCode
+        CurrencyName = TranCurrencyName
+        Rate = TransRate
+        Amount      = ds.Amount / Rate
+      else :
+        CurrencyCode = ds.CurrencyCode
+        CurrencyName = ds.Short_Name
+        Rate = ds.Rate
+        Amount = ds.Amount
+      # end if
+
+      recHist.Amount = Amount
+      recHist.AmountEkuivalen = ds.EkuivalenAmount
+      recHist.Rate = Rate
+      recHist.CurrencyName = TranCurrencyName
+
+      if ds.MutationType == 'D' :
+        recHist.Debet = ds.EkuivalenAmount
+        #recSaldo.TotalBalance += ds.EkuivalenAmount
+        status.TotalDebetHist += ds.EkuivalenAmount
+      else:
+        recHist.Kredit = ds.EkuivalenAmount
+        #recSaldo.TotalBalance -= ds.EkuivalenAmount
+        status.TotalCreditHist += ds.EkuivalenAmount
+      # endif
+
+      recHist.ReferenceNo = ds.ReferenceNo
+      recHist.Description = ds.Description
+      recHist.Inputer = ds.Inputer
+      recHist.TransactionNo = ds.TransactionNo
+      recHist.AccountName = ds.AccountName
+      recHist.AuthStatus = stAuth[ds.AuthStatus]
+
+      ds.Next()
+    #-- while
+    
   except:
     status.Is_Err = 1
     status.Err_Message = str(sys.exc_info()[1])

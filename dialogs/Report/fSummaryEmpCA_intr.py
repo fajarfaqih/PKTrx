@@ -27,8 +27,8 @@ class fSummaryCashAdvance:
       return
       
     workbook = self.oPrint.OpenExcelTemplate(self.app,'tplSumEmployeeCA.xls')
-    workbook.ActivateWorksheet('data')
     try:
+      workbook.ActivateWorksheet('DataRekap')
       BranchCode = self.uipData.BranchCode
       BranchName = status.BranchName
       PeriodStr = status.PeriodStr
@@ -62,6 +62,33 @@ class fSummaryCashAdvance:
         i += 1
       # end of while
 
+
+      # ---- Data Histori
+      dsHistTrans = ph.packet.historitransaksi
+      workbook.ActivateWorksheet('DetilTransaksi')
+
+      workbook.SetCellValue(1, 2, status.TotalDebetHist)
+      workbook.SetCellValue(2, 2, status.TotalCreditHist)
+
+      i = 0
+      TotalTransaksi = dsHistTrans.RecordCount
+      while i < TotalTransaksi:
+        rec = dsHistTrans.GetRecord(i)
+        row = i + 5
+
+        workbook.SetCellValue(row, 1, rec.TransactionDateStr)
+        workbook.SetCellValue(row, 2, rec.TransactionNo)
+        workbook.SetCellValue(row, 3, rec.AccountName)
+        workbook.SetCellValue(row, 4, rec.MutationType)
+        workbook.SetCellValue(row, 5, rec.Amount)
+        workbook.SetCellValue(row, 6, rec.CurrencyName)
+        workbook.SetCellValue(row, 7, rec.AmountEkuivalen)
+        workbook.SetCellValue(row, 8, rec.ReferenceNo)
+        workbook.SetCellValue(row, 9, rec.Description)
+        workbook.SetCellValue(row, 10, rec.Inputer)
+
+        i += 1
+      # end while
 
       workbook.SaveAs(filename)
       self.app.ShellExecuteFile(filename)
