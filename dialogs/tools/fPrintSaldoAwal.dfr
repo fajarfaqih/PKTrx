@@ -1,0 +1,122 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dualsplit1']
+  Caption='Saldo Awal'
+  Left=50
+  Top=50
+  Width=425
+  Height=145
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx='FormSetDataEx'
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Name='uipData'
+    >}Containers={object:rtf::Panel<
+      Name='pAction'
+      Width=297
+      Height=50
+      Controls={object:rtf::Button<
+          Name='bClose'
+          Layout=clNextSide
+          Top=8
+          Left=87
+          Color=0
+          ControlCaption=''
+          LayoutOrder=2
+          Caption='&Tutup'
+          ExitAction=eaQuitCancel
+        >, object:rtf::Button<
+          Name='bPrint'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Cetak'
+          OnClick='bRekapClick'
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=240
+      Height=96
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['pOption']
+      InversedAlign=true
+    >, object:rtf::Panel<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='AccountType'
+          Hidden=true
+          ControlCaption='Jenis Rekening'
+          DataTypeName='integer'
+          DataLength=20
+          EnumeratedValues=['1=Kas\bank'#13#10,
+            '2=Program'#13#10,
+            '3=Project'#13#10,
+            '4=Piutang Karyawan'#13#10,
+            '5=Piutang Eksternal'#13#10,
+            '6=Investasi Karyawan'#13#10,
+            '7=Investasi Non Karyawan'#13#10]
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LBranch'
+          ControlCaption='Cabang'
+          ClassTypeName='Branch'
+          DisplayFields='BranchCode;BranchName'
+          Restrictions=''
+          OQLText=['select from Branch'#13#10,
+            '( BranchCode,BranchName,self'#13#10,
+            ') then order by BranchName;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LBranch'
+        >}Name='pOption'
+      Width=449
+      Height=97
+      UIPart=$UIPARTS['uipData']
+      Controls={*object:rtf::DBLookupEdit<
+          Name='LBranch'
+          Top=50
+          Left=8
+          Enabled=false
+          Color=0
+          ControlCaption='Cabang'
+          LookupField='LBranch.BranchName'
+          DisplayLookupField=true
+        >, object:rtf::Label<
+          Name='label1'
+          Layout=clAbsolute
+          Top=8
+          Left=8
+          Width=281
+          Height=33
+          Color=65535
+          ControlCaption=''
+          Caption='Form ini akan menghasilkan file excel yang berisi data seluruh saldo awal yang telah diinputkan'
+          WordWrap=true
+          FontName='Tahoma'
+          FontColor=-2147483640
+          FontSize=8
+          FontStyleBold=true
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=50
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >}FormClassName='fPrintSaldoAwal'
+>

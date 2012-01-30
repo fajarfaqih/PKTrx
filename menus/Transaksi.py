@@ -381,6 +381,12 @@ def SaldoAwalClick(menu, app):
   dlg = app.CreateForm('Tools/fSaldoAwal', 'Tools/fSaldoAwal', 0, None, None)
   dlg.Show()
 
+def PrintSaldoAwalClick(menu, app):
+  GetAccess(app, menu.Name)
+  ph = app.CreateValues()
+  dlg = app.CreateForm('Tools/fPrintSaldoAwal', 'Tools/fPrintSaldoAwal', 0, None, None)
+  dlg.Show()
+  
 def MergeCashAdvanceClick(menu,app):
   dlg = app.CreateForm('Tools/fMergeEmployeeCA', 'Tools/fMergeEmployeeCA', 0, None, None)
   dlg.Show()

@@ -581,8 +581,13 @@ document <
       Caption='Tools'
       MenuItems={object:rmn::MenuItem<
           Name='TR0037B'
-          Caption='Saldo Awal'
+          Caption='Input Saldo Awal'
           OnClick='SaldoAwalClick'
+          AllowedGroups='ADM;SPV'
+        >, object:rmn::MenuItem<
+          Name='TR0037B'
+          Caption='Cetak Data Saldo Awal'
+          OnClick='PrintSaldoAwalClick'
           AllowedGroups='ADM;SPV'
         >, object:rmn::MenuItem<
           Caption='-'
