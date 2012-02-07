@@ -1,5 +1,7 @@
 import com.ihsan.foundation.pobjecthelper as phelper
 import sys
+import pyFlexcel
+import os
 
 def UploadData(config,params,returns):
   status = returns.CreateValues(
@@ -11,19 +13,22 @@ def UploadData(config,params,returns):
     header = params.HeaderData.GetRecord(0)
     oService = helper.LoadScript('Transaction.BeginningBalance')
     if header.AccountType == 1 :
-      is_err,err_message = oService.CashAccount(config,params)
+      is_err,err_message = oService.CashAccount(config ,params)
     elif header.AccountType == 2 :
-      is_err,err_message = oService.Program(config,params)
+      is_err,err_message = oService.Program(config ,params)
     elif header.AccountType == 3 :
-      is_err,err_message = oService.Project(config,params)
+      is_err,err_message = oService.Project(config ,params)
     elif header.AccountType == 4 :
-      is_err,err_message = oService.EmployeeAR(config,params)
+      is_err,err_message = oService.EmployeeAR(config ,params)
     elif header.AccountType == 5 :
-      is_err,err_message = oService.ExternalAR(config,params)
+      is_err,err_message = oService.ExternalAR(config ,params)
     elif header.AccountType == 6 :
-      is_err,err_message = oService.EmployeeInvestment(config,params)
+      is_err,err_message = oService.EmployeeInvestment(config ,params)
     elif header.AccountType == 7 :
-      is_err,err_message = oService.ExternalInvestment(config,params)
+      is_err,err_message = oService.ExternalInvestment(config ,params)
+    elif header.AccountType == 8 :
+      is_err,err_message = oService.FixedAsset(config ,params)
+
     # end if elif
 
     if is_err == 1 : raise '',err_message
@@ -52,6 +57,8 @@ def GetTemplate(config,params,returns):
       GetListEmployeeInvestment(config,returns)
     elif param.AccountType == 7:
       GetListInvestee(config,returns)
+    elif param.AccountType == 8:
+      GetListFixedAsset(config,returns)
 
   except:
     status.Is_Err = 1
@@ -331,3 +338,6 @@ def GetListInvestee(config,returns):
 
     ds.Next()
   # end while
+
+def GetListFixedAsset(config,returns):
+  return

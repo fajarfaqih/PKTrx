@@ -43,8 +43,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=240
-      Height=96
+      Width=425
+      Height=145
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['pOption']
       InversedAlign=true
@@ -101,7 +101,6 @@ document <
           Name='LBranch'
           Top=50
           Left=8
-          Enabled=false
           Color=0
           ControlCaption='Cabang'
           LookupField='LBranch.BranchName'

@@ -53,6 +53,8 @@ class fSaldoAwal:
       param = self.ConvertFileToPacket6(ph,filename)
     elif AccountType == 7 :
       param = self.ConvertFileToPacket6(ph,filename)
+    elif AccountType == 8 :
+      param = self.ConvertFileToPacket6(ph,filename)
 
     # end if
 
@@ -95,8 +97,9 @@ class fSaldoAwal:
       self.ShowTemplateEmployeeInvestment(resp,filename)
     elif AccountType == 7 :
       self.ShowTemplateExternalInvestment(resp,filename)
+    elif AccountType == 8 :
+      self.ShowTemplateFixedAsset(resp,filename)
     # end if
-    
     
     app.ShellExecuteFile(filename)
     
@@ -318,6 +321,16 @@ class fSaldoAwal:
       # close
       workbook = None
       
+  def ShowTemplateFixedAsset(self,resp,filename):
+    app = self.app
+    workbook = self.oPrint.OpenExcelTemplate(app,'tplBBalanceFixAsset.xls')
+    workbook.ActivateWorksheet('data')
+    try:
+      workbook.SaveAs(filename)
+    finally:
+      # close
+      workbook = None
+      
   # ------------------ FUNCTION FOR CONVERT TO DATAPACKET
   def ConvertFileToPacket1(self,ph,filename):
     app = self.app
@@ -503,6 +516,40 @@ class fSaldoAwal:
 
         recBalance.Nisbah = workbook.GetCellValue(row, 10)
         if recBalance.Nisbah <= 0 : raise 'PERINGATAN','Data Nisbah Untuk Data No %d belum diinputkan ' % (row - 5)
+
+        row += 1
+      # end while
+    finally:
+      workbook = None
+
+    return ph
+    
+  def ConvertFileToPacket8(self,ph,filename):
+    app = self.app
+    dsBalance = ph.Packet.AddNewDatasetEx(
+      'BalanceData',
+      ';'.join([
+        'AssetName:string',
+        'AssetCategoryId: integer',
+        'StartDate: datetime',
+        'Amount: float',
+        'DeprAmount: float',
+        'AccumDeprAmount: float',
+      ])
+    )
+
+    workbook = pyFlexcel.Open(filename)
+    workbook.ActivateWorksheet('data')
+    try:
+      row = 5
+      while workbook.GetCellValue(row, 1) not in ['',None]:
+        recBalance = dsBalance.AddRecord()
+        recBalance.AssetName = str(workbook.GetCellValue(row, 2))
+        recBalance.AssetCategoryId = int(workbook.GetCellValue(row, 3))
+        recBalance.StartDate = workbook.GetCellValue(row, 4)
+        recBalance.Amount = workbook.GetCellValue(row, 5)
+        recBalance.DeprAmount = workbook.GetCellValue(row, 6)
+        recBalance.AccumDeprAmount = workbook.GetCellValue(row, 7)
 
         row += 1
       # end while

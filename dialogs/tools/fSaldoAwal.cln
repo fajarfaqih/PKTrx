@@ -43,7 +43,9 @@ document <
             '4=Piutang Karyawan'#13#10,
             '5=Piutang Eksternal'#13#10,
             '6=Investasi Karyawan'#13#10,
-            '7=Investasi Non Karyawan'#13#10]
+            '7=Investasi Non Karyawan'#13#10,
+            '8=Aset Tetap'#13#10,
+            '9=Biaya Dibayar Dimuka'#13#10]
         >}Name='pOption'
       Width=425
       Height=59
@@ -52,8 +54,6 @@ document <
           Name='AccountType'
           Top=8
           Left=8
-          Width=170
-          Height=21
           Color=0
           ControlCaption='Jenis Rekening'
         >}EqualCaptionWidth=100
@@ -160,21 +160,21 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=569
-      Height=257
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dualsplit2']
       InversedAlign=true
     >, object:rtf::DualSplit<
       Name='dualsplit2'
-      Width=569
-      Height=205
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pOption']
       Container2=$CONTAINERS['multipages1']
     >, object:rtf::MultiPages<
       Name='multipages1'
-      Width=569
-      Height=145
+      Width=320
+      Height=320
       Pages={object:rtf::Page<
           PageName='mpUpload'
           PageTitle='Upload Data'

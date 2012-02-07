@@ -456,7 +456,7 @@ def EmployeeInvestment(config,params):
       oAccount.SetLifeTime(recBalance.LifeTime)
       oAccount.InvestmentCatId = 3
       oAccount.StartDate = recBalance.StartDate
-      oAccount.InvestmentNisbah = recBalance.Nisbah        
+      oAccount.InvestmentNisbah = recBalance.Nisbah
         
       oItem = helper.GetObjectByNames('AccountTransactionItem',
           {'TransactionId' : oTran.TransactionId,
@@ -520,7 +520,7 @@ def ExternalInvestment(config,params):
     app.ConWriteln('Get Batch','TB')
     oBatch = GetBatch(helper)
     app.ConWriteln('Get Transaction','TB')
-    oTran = GetTransaction(helper,oBatch,'BB-EXTINVS','Saldo Awal Investasi Non Karyawan')
+    oTran = GetTransaction(helper, oBatch, 'BB-EXTINVS', 'Saldo Awal Investasi Non Karyawan')
     
     aBranchCode = config.SecurityContext.GetUserInfo()[4]
         
@@ -561,6 +561,123 @@ def ExternalInvestment(config,params):
       oItem.SetMutation('D', BeginningBalance, 1.0)
       oItem.Description = 'Saldo Awal'
       oItem.SetJournalParameter('10')
+            
+      TotalAmount += BeginningBalance
+    # end for
+    
+    oTran.Amount = TotalAmount
+    
+    app.ConWriteln('Proses approval data ','TB')
+    oTran.AuthStatus = 'F'
+    #-----------
+    aSQLText = " select transactionitemid from transactionitem \
+                     where transactionid=%d " % oTran.TransactionId        
+
+    oRes = config.CreateSQL(aSQLText).RawResult
+    
+    while not oRes.Eof:
+      oItem = helper.GetObject(
+           'TransactionItem',oRes.transactionitemid
+      ).CastToLowestDescendant()
+      app.ConWriteln('Proses item account %s' % oItem.AccountNo,'TB')
+      oItem.SetApproval()
+
+      #oItems.Next()
+      oRes.Next()
+    #-- while
+    #----------
+    oTran.AutoApproval()
+      
+    config.Commit() 
+  except:
+    config.Rollback()
+    status = 1
+    err_message = str(sys.exc_info()[1])
+  
+  return status,err_message
+
+def FixedAsset(config,params):
+  LsAssetCategory = {
+    1 : 1,
+    2 : 2,
+    3 : 3,
+    4 : 4,
+    5 : 8,
+    6 : 5,
+    7 : 6
+    8 : 7,
+  }
+  app = config.AppObject  
+  app.ConCreate('TB')
+  helper = phelper.PObjectHelper(config)
+  
+  status = 0
+  err_message = ''
+  config.BeginTransaction()
+  try:
+    app.ConWriteln('Get Batch','TB')
+    oBatch = GetBatch(helper)
+    app.ConWriteln('Get Transaction','TB')
+    aCurrencyCode = '000'
+    PrefTransactionNo = "BB-FA-%s" % aCurrencyCode
+    oTran = GetTransaction(helper, oBatch, PrefTransactionNo, 'Saldo Awal Aset Tetap')
+    
+    aBranchCode = config.SecurityContext.GetUserInfo()[4]
+        
+    BalanceData = params.BalanceData
+    TotalAmount = 0.0
+    TotalData = BalanceData.RecordCount
+    for i in range(TotalData):
+      recBalance = BalanceData.GetRecord(i)
+      app.ConWriteln('Proses data ke-%s , %s' %(str(i+1),recBalance.AssetName),'TB')
+
+      ## Create Akun Aset Tetap
+      oFAAccount = config.CreatePObject('FixedAsset')
+      oFAAccount.Status = 'A'
+      oFAAccount.OpeningDate = recBalance.StartDate
+      
+      # Create AccountNo 
+      res = config.CreateSQL("select nextval('seq_deprassetid')").RawResult
+      seq = str(res.GetFieldValueAt(0)).zfill(8)
+      oFAAccount.AccountNo = '%s.%s' % ('AK', seq)
+      oFAAccount.AccountName  = recBalance.AssetName
+      oFAAccount.BranchCode = aBranchCode
+      oFAAccount.CurrencyCode = aCurrencyCode
+      oFAAccount.Qty = 1
+      oFAAccount.UangMuka = 0
+
+      # Set Kategori Aset
+      oFAAccount.AssetCategoryId = LsAssetCategory[recBalance.AssetCategoryId]
+      oFAAccount.LifeTime = oFAAccount.LAssetCategory.DefaultLifeTime
+
+      NilaiAwal = recBalance.Amount
+
+      if AssetCategoryId in (1,8) :
+        oFAAccount.DeprState = 'I'
+        
+        # Set Nilai Awal 
+        oFAAccount.NilaiAwal = NilaiAwal
+        oFAAccount.NominalPenyusutan = 0
+        oFAAccount.PenyusutanKe = 0
+        oFAAccount.TotalDibayar = NilaiAwal
+        oFAAccount.Balance = NilaiAwal
+
+      else :  
+        oFAAccount.DeprState = 'A'
+
+        # Set Nilai Awal 
+        NominalPenyusutan = recBalance.DeprAmount #round( NilaiAwal / oFAAccount.LifeTime, 2)
+        AkumulasiPenyusutan = recBalance.AccumDeprAmount
+
+        oFAAccount.NilaiAwal = NilaiAwal
+        oFAAccount.NominalPenyusutan = NominalPenyusutan
+        oFAAccount.PenyusutanKe = 0
+        oFAAccount.TotalDibayar = NilaiAwal
+        oFAAccount.Balance = NilaiAwal - AkumulasiPenyusutan 
+
+        # Set Tanggal Proses Depresiasi    
+        y, m, d = oFAAccount.OpeningDate[:3]
+        oFAAccount.TanggalProsesBerikut = libUtils.EncodeDate(2011, 1, 25)
             
       TotalAmount += BeginningBalance
     # end for

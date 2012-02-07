@@ -37,7 +37,7 @@ def GetSummaryBeginBalance(config,params,returns):
     workbook.ActivateWorksheet('PiutangKaryawan')
 
     sOQL = "select from AccountTransactionItem \
-        [ LTransaction.TransactionNo LLIKE 'BB-EMP' \
+        [ LTransaction.TransactionNo LLIKE 'BB-EMP-' \
           and BranchCode = :BranchCode \
         ] \
         ( \
@@ -263,11 +263,11 @@ def GetSummaryBeginBalance(config,params,returns):
     workbook.SetCellValue(2, 3, oBranch.BranchName)
     workbook.SetCellValue(3, 3, TotalSaldo)
     
-    # -- PIUTANG KARYAWAN ----
+    # -- PIUTANG EKSTER ----
     workbook.ActivateWorksheet('PiutangEksternal')
 
     sOQL = "select from AccountTransactionItem \
-        [ LTransaction.TransactionNo LLIKE 'BB-EXT' \
+        [ LTransaction.TransactionNo LLIKE 'BB-EXT-' \
           and BranchCode = :BranchCode \
         ] \
         ( \
