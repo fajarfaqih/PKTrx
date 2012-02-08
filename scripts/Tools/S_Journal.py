@@ -77,15 +77,15 @@ def RegenerateJournalItem(config, parameters, returnpacket):
     try:
       TranHelper = helper.LoadScript('Transaction.TransactionHelper')
       
-      AddParam = " and branchcode='%s' "
-      AddParam = " and actualdate between '2011-01-01' and '2011-01-31' "      
+      #AddParam = " and branchcode='%s' " % config.SecurityContext.GetUserInfo()[4]
+      #AddParam = " and actualdate between '2011-01-01' and '2011-01-31' "
+      AddParam = " and transactionid in (3525,3656,3276,3667,3546,3528,3719) "
 
       sSQL = "select TransactionId \
               from transaction \
               where Transactionid is not null \
                   %s \
-                  order by TransactionId " % ( 
-                   config.SecurityContext.GetUserInfo()[4],
+                  order by TransactionId " % (
                    AddParam )
 
       oRes = config.CreateSQL(sSQL).RawResult
