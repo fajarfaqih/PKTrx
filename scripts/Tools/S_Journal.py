@@ -155,6 +155,7 @@ def GenerateJournalItem(config, parameters, returnpacket):
       AddParam = " TransactionId is not null "
       #AddParam += " and branchcode='%s' " % config.SecurityContext.GetUserInfo()[4]
       AddParam += " and actualdate between '2011-01-01' and '2011-01-31' "
+      AddParam += " and isposted='F"
 
       sSQL = "select TransactionId \
               from transaction \
