@@ -1,6 +1,68 @@
 import sys
 import com.ihsan.foundation.pobjecthelper as phelper
 
+def SyncBatchTransActualDate(config, parameters, returnpacket):
+  status = returnpacket.CreateValues(["Is_Error", 0], ["Error_Message", ""])
+  app = config.GetAppObject()
+  app.ConCreate('DMessage')
+  helper = phelper.PObjectHelper(config)
+  corporate = helper.CreateObject('Corporate')
+      
+  filename = corporate.GetUserHomeDir() + "/RepairActualDateLog.txt"
+  try:
+    fh = open(filename,'w')
+    
+    # Sinkronisai Tanggal Transaksi dan Tanggal Batch
+    logmessage = "Proses Sinkronisasi Tanggal Transaksi dan Tanggal Batch"
+    app.ConWriteln(logmessage ,'DMessage')
+    fh.write(logmessage + '\n')
+    
+    sSQL = "\
+      select b.TransactionId \
+      from transaction.transactionbatch a, \
+          transaction.transaction b \
+      where a.batchid=b.batchid \
+         and (a.inputer <> b.inputer or a.batchdate <> b.actualdate) \
+         and transactioncode <> 'TB' "
+         
+    oRes = config.CreateSQL(sSQL).RawResult
+    
+    oBatchHelper = helper.CreateObject('BatchHelper')
+    oRes.First()
+    while not oRes.Eof:
+      oTran = helper.GetObject('Transaction', oRes.TransactionId)
+       
+      logmessage = "Proses Transaksi %s ( Id %d ) : " % (oTran.TransactionNo, oTran.TransactionId)
+      app.ConWriteln(logmessage ,'DMessage')
+      fh.write(logmessage+ '\n')
+      
+      oBatch = oBatchHelper.GetBatchUser( oTran.LBatch.GetAsTDateTime('BatchDate'), oTran.Inputer, oTran.BranchCode)
+
+      config.BeginTransaction()
+      try:
+        oTran.ActualDate = oBatch.GetAsTDateTime('BatchDate')
+        logmessage = 'Berhasil'
+        config.Commit()  
+      except :
+        config.Rollback()
+        status.Is_Error = 1
+        status.Error_Message = str(sys.exc_info()[1])
+        logmessage = 'Gagal ' + str(sys.exc_info()[1])
+      # end try except
+      
+      app.ConWriteln(logmessage ,'DMessage')
+      fh.write(logmessage + '\n')
+      
+      oRes.Next()
+    # end while 
+
+  finally:
+    fh.close()
+  
+  sw = returnpacket.AddStreamWrapper()
+  sw.LoadFromFile(filename)
+  sw.MIMEType = config.AppObject.GetMIMETypeFromExtension(filename)
+
 def RegenerateJournal(config, parameters, returnpacket):
   status = returnpacket.CreateValues(["Is_Error", 0], ["Error_Message", ""])
   app = config.GetAppObject()
@@ -79,7 +141,11 @@ def RegenerateJournalItem(config, parameters, returnpacket):
       
       #AddParam = " and branchcode='%s' " % config.SecurityContext.GetUserInfo()[4]
       #AddParam = " and actualdate between '2011-01-01' and '2011-01-31' "
-      AddParam = " and transactionid in (3525,3656,3276,3667,3546,3528,3719) "
+      AddParam = " and transactionid in (select distinct c.transactionid \
+             from accounting.journalitem a ,transaction.transaction c where \
+             c.journalblockid = a.id_journalblock and \
+               not exists( \
+                  select accountinstance_id from accounting.accountinstance b where a.accountinstance_id=b.accountinstance_id) ) "
 
       sSQL = "select TransactionId \
               from transaction \
@@ -155,7 +221,7 @@ def GenerateJournalItem(config, parameters, returnpacket):
       AddParam = " TransactionId is not null "
       #AddParam += " and branchcode='%s' " % config.SecurityContext.GetUserInfo()[4]
       AddParam += " and actualdate between '2011-01-01' and '2011-01-31' "
-      AddParam += " and isposted='F"
+      AddParam += " and isposted='F' "
 
       sSQL = "select TransactionId \
               from transaction \

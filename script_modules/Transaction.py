@@ -64,7 +64,7 @@ class BatchHelper(mobject.MObject):
       
     return oBatch
     
-  def GetBatchUser(self,aDate):  
+  def GetBatchUser(self, aDate, aUserId=None, aBranchCode=None):
     helper = self.Helper
     config = self.Config
     
@@ -73,8 +73,15 @@ class BatchHelper(mobject.MObject):
     # Karena dalam fungsi ini sudah terdapat baris kode pemanggilan 
     # database transaction (config.BeginTransaction())
     SecContext = config.SecurityContext
-    aUserId = SecContext.UserID
-    aBranchCode = SecContext.GetUserInfo()[4]     
+    
+    if aUserId == None :
+      aUserId = SecContext.UserID
+    # end if 
+    
+    if aBranchCode == None :
+      aBranchCode = SecContext.GetUserInfo()[4]     
+    # end if
+      
     aDescription = '%s_%s' % (aUserId,config.FormatDateTime('dd/mm/yyyy',aDate)) 
     
     oBatch = helper.GetObjectByNames(
@@ -143,8 +150,10 @@ class TransactionBatch(pobject.PObject):
     #-- send to accounting interface
     sMessage = simplejson.dumps(request)
     app = config.AppObject
-    acc_host = helper.GetObject('ParameterGlobal', 'GLSVCHST').Get()
-    acc_port = helper.GetObject('ParameterGlobal', 'GLSVCPRT').GetInt()
+    #acc_host = helper.GetObject('ParameterGlobal', 'GLSVCHST').Get()
+    #acc_port = helper.GetObject('ParameterGlobal', 'GLSVCPRT').GetInt()
+    acc_host = config.GetGlobalSetting('GLSVCHOST')
+    acc_port = int(config.GetGlobalSetting('GLSVCPORT'))
     conn = app.UseCachedTCPConn(acc_host, acc_port)
 
     try:
@@ -455,8 +464,10 @@ class Transaction(pobject.PObject):
       sMessage = simplejson.dumps(dMsg)
       
       app = config.AppObject
-      acc_host = helper.GetObject('ParameterGlobal', 'GLSVCHST').Get()
-      acc_port = helper.GetObject('ParameterGlobal', 'GLSVCPRT').GetInt()
+      #acc_host = helper.GetObject('ParameterGlobal', 'GLSVCHST').Get()
+      #acc_port = helper.GetObject('ParameterGlobal', 'GLSVCPRT').GetInt()
+      acc_host = config.GetGlobalSetting('GLSVCHOST')
+      acc_port = int(config.GetGlobalSetting('GLSVCPORT'))
 
       conn = app.UseCachedTCPConn(acc_host, acc_port)
       #conn = socketclient.TCPClient_STX_ETX((acc_host, acc_port))
@@ -521,8 +532,10 @@ class Transaction(pobject.PObject):
       sMessage = oJData.GetJSON(self.LBatch.BatchNo, edit_mode)
       
       app = config.AppObject
-      acc_host = helper.GetObject('ParameterGlobal', 'GLSVCHST').Get()
-      acc_port = helper.GetObject('ParameterGlobal', 'GLSVCPRT').GetInt()
+      #acc_host = helper.GetObject('ParameterGlobal', 'GLSVCHST').Get()
+      #acc_port = helper.GetObject('ParameterGlobal', 'GLSVCPRT').GetInt()
+      acc_host = config.GetGlobalSetting('GLSVCHOST')
+      acc_port = int(config.GetGlobalSetting('GLSVCPORT'))
 
       conn = app.UseCachedTCPConn(acc_host, acc_port)
       #conn = socketclient.TCPClient_STX_ETX((acc_host, acc_port))
@@ -651,7 +664,7 @@ class Transaction(pobject.PObject):
           
         #-- if
         if aItem.Kode_Account == '':
-          raise '',"%d %s %s" % (self.TransactionId,oTCode.AccountBase,aJournalCode)  
+          raise '',"%d %s %s" % (self.TransactionId, oTCode.AccountBase, aJournalCode)
   
         # cabang
         aSC = oTCode.BranchBase
