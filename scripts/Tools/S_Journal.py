@@ -41,6 +41,7 @@ def SyncBatchTransActualDate(config, parameters, returnpacket):
       config.BeginTransaction()
       try:
         oTran.ActualDate = oBatch.GetAsTDateTime('BatchDate')
+        oTran.BatchId = oBatch.BatchId
         logmessage = 'Berhasil'
         config.Commit()  
       except :
