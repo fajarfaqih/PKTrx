@@ -35,7 +35,7 @@ def DoProcess(config, App, Params) :
         and a.actualdate <= %s \
         and a.authstatus='F' \
         and a.transactioncode <> 'TB' \
-      group by b.branchname " % (config.FormatDateTimeForQuery(ProcessDate))
+      group by b.branchname " % (config.FormatDateTime('yyyy-mm-dd', ProcessDate))
     
     resSQLBranch = config.CreateSQL(sqlCheckBranch).rawresult
 
