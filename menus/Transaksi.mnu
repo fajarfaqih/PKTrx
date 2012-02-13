@@ -581,7 +581,7 @@ document <
       Caption='Tools'
       MenuItems={object:rmn::MenuItem<
           Name='TR0037B'
-          Caption='Input Saldo Awal'
+          Caption='Input / Update Saldo Awal'
           OnClick='SaldoAwalClick'
           AllowedGroups='ADM;SPV'
         >, object:rmn::MenuItem<
