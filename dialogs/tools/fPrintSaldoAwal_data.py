@@ -29,6 +29,7 @@ def GetSummaryBeginBalance(config,params,returns):
     
     rec = params.FirstRecord
     BranchCode = rec.BranchCode
+    intDate = config.ModLibUtils.EncodeDate(2011, 1, 1)
     
     oBranch = helper.GetObject('Branch', BranchCode)
 
@@ -323,6 +324,7 @@ def GetSummaryBeginBalance(config,params,returns):
          Amount, \
          EkuivalenAmount, \
          CurrencyCode, \
+         Rate, \
          LCurrency.Short_Name, \
          self \
         ) then order by AccountNo;"
@@ -338,14 +340,15 @@ def GetSummaryBeginBalance(config,params,returns):
     i = 0
 
     while not ds.Eof:
-      row = i + 6
+      row = i + 7
 
       workbook.SetCellValue(row, 1, str(i+1))
       workbook.SetCellValue(row, 2, ds.AccountNo)
       workbook.SetCellValue(row, 3, ds.AccountName)
       workbook.SetCellValue(row, 4, "%s - %s" % (ds.CurrencyCode, ds.Short_Name))
       workbook.SetCellValue(row, 5, ds.Amount)
-      workbook.SetCellValue(row, 6, ds.EkuivalenAmount)
+      workbook.SetCellValue(row, 6, ds.Rate)
+      workbook.SetCellValue(row, 7, ds.EkuivalenAmount)
 
       TotalSaldo += ds.EkuivalenAmount
 
@@ -357,6 +360,12 @@ def GetSummaryBeginBalance(config,params,returns):
     workbook.SetCellValue(2, 3, oBranch.BranchName)
     workbook.SetCellValue(3, 3, TotalSaldo)
     
+    CashBalance = GetAccountBalance(config, '1110101', BranchCode, '000', intDate)
+    BankBalance = GetAccountBalance(config, '1110201', BranchCode, '000', intDate)
+
+    workbook.SetCellValue(4, 3, CashBalance + BankBalance)
+    
+
     #--- SAVE FILE TO RESULT DIR
     FileName = 'BeginBalanceSummary.xls'
 
@@ -374,3 +383,16 @@ def GetSummaryBeginBalance(config,params,returns):
     status.Is_Err = 1
     status.Err_Message = str(sys.exc_info()[1])
 
+def GetAccountBalance(config, AccountCode, BranchCode, CurrencyCode, intDate):
+  app = config.AppObject
+  params = app.CreateValues(
+    ['AccountCode', AccountCode],
+    ['intDate', intDate],
+    ['BranchCode', BranchCode],
+    ['CurrencyCode', CurrencyCode],
+  )
+  res = app.rexecscript('accounting','appinterface/Balance.GetAccountBalance',params)
+  rec = res.FirstRecord
+
+  if rec.Is_Err : raise '',rec.Err_Message
+  return rec.Balance

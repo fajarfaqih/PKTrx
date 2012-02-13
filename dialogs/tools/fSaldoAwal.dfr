@@ -6,11 +6,11 @@ document <
   MinorVersion='0'
 >object:rtf::Form<
   MainContainer=$CONTAINERS['dualsplit1']
-  Caption='Saldo Awal'
+  Caption='Input / Update Saldo Awal'
   Left=50
   Top=50
-  Width=569
-  Height=257
+  Width=577
+  Height=273
   BeforeDeleteRow=''
   BeforeResultSent=''
   OnGeneralSetData=''
@@ -19,11 +19,33 @@ document <
   OnProcessRawData=''
   OnBeginSetData=''
   OnEndSetData=''
-  OnSetDataEx=''
+  OnSetDataEx='FormSetDataEx'
   OnBeginProcessData=''
   OnEndProcessData=''
   UIParts={object:rtf::PClassUI<
-      Name='uipData'
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='HeadOfficeCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=5
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=5
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BranchName'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='MasterBranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=5
+        >}Name='uipData'
+      AlwaysPostToServer=true
+      PostLinkValues=true
     >}Containers={object:rtf::Panel<
       Name='pAction'
       Width=320
@@ -43,7 +65,18 @@ document <
       HorizontalControlGap=4
       RowControlGap=7
     >, object:rtf::Panel<
-      Elements={object:rtf::FieldUIElmtSetting<
+      Elements={object:rtf::LinkUIElmtSetting<
+          Name='LBranch'
+          ControlCaption='Cabang'
+          ClassTypeName='Branch'
+          DisplayFields='BranchCode;BranchName'
+          Restrictions=''
+          OQLText=['select from Branch'#13#10,
+            '( BranchCode,BranchName,self'#13#10,
+            ') then order by BranchName;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LBranch'
+        >, object:rtf::FieldUIElmtSetting<
           Name='AccountType'
           ControlCaption='Jenis Rekening'
           DataTypeName='integer'
@@ -59,11 +92,18 @@ document <
             '9=Biaya Dibayar Dimuka'#13#10]
         >}Name='pOption'
       Width=425
-      Height=59
+      Height=73
       UIPart=$UIPARTS['uipData']
-      Controls={*object:rtf::DBComboBox<
-          Name='AccountType'
+      Controls={*object:rtf::DBLookupEdit<
+          Name='LBranch'
           Top=8
+          Left=8
+          ControlCaption='Cabang'
+          LookupField='LBranch.BranchName'
+          DisplayLookupField=true
+        >, *object:rtf::DBComboBox<
+          Name='AccountType'
+          Top=36
           Left=8
           Color=0
           ControlCaption='Jenis Rekening'
@@ -82,21 +122,22 @@ document <
           DataLength=300
         >}Name='pUpload'
       Width=569
-      Height=120
+      Height=129
       UIPart=$UIPARTS['uipData']
       Controls={*object:rtf::DBEdit<
           Name='FileName'
-          Layout=clAbsolute
           Top=40
           Left=8
+          Width=225
+          Height=21
           Color=-2147483624
           ControlCaption='Nama File'
           ReadOnly=true
         >, object:rtf::Button<
           Name='button1'
-          Layout=clAbsolute
+          Layout=clNextSide
           Top=40
-          Left=272
+          Left=341
           Width=81
           Height=25
           Color=0
@@ -106,9 +147,9 @@ document <
         >, object:rtf::Button<
           Name='button2'
           Layout=clAbsolute
-          Top=40
-          Left=360
-          Width=81
+          Top=68
+          Left=112
+          Width=89
           Height=25
           Color=0
           ControlCaption=''
@@ -129,8 +170,9 @@ document <
           FontColor=-2147483640
           FontSize=8
           FontStyleBold=true
-        >}ControlLeftMargin=8
-      ControlTopMargin=8
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
+      ControlTopMargin=40
       DefaultControlHeight=21
       HorizontalControlGap=4
       RowControlGap=7
@@ -184,8 +226,8 @@ document <
       Container2=$CONTAINERS['multipages1']
     >, object:rtf::MultiPages<
       Name='multipages1'
-      Width=320
-      Height=320
+      Width=577
+      Height=147
       Pages={object:rtf::Page<
           PageName='mpUpload'
           PageTitle='Upload Data'

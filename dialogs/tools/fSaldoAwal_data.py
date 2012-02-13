@@ -3,6 +3,17 @@ import sys
 import pyFlexcel
 import os
 
+def FormSetDataEx(uideflist,params):
+  config = uideflist.config
+
+  rec = uideflist.uipData.Dataset.AddRecord()
+
+  # Set Default Branch Info
+  UserInfo = config.SecurityContext.GetUserInfo()
+  rec.BranchCode = str(UserInfo[4])
+  rec.BranchName = str(UserInfo[5])
+  rec.HeadOfficeCode = config.SysVarIntf.GetStringSysVar('OPTION','HeadOfficeCode')
+
 def UploadData(config,params,returns):
   status = returns.CreateValues(
     ['Is_Err',0],['Err_Message','']
@@ -11,7 +22,9 @@ def UploadData(config,params,returns):
   try :
     helper = phelper.PObjectHelper(config)
     header = params.HeaderData.GetRecord(0)
+    
     oService = helper.LoadScript('Transaction.BeginningBalance')
+    
     if header.AccountType == 1 :
       is_err,err_message = oService.CashAccount(config ,params)
     elif header.AccountType == 2 :
@@ -38,36 +51,40 @@ def UploadData(config,params,returns):
     
 def GetTemplate(config,params,returns):
   status = returns.CreateValues(
-    ['Is_Err',0],['Err_Message',''],['BranchName','']
+    ['Is_Err',0],
+    ['Err_Message',''],
+    ['BranchName','']
   )
   param = params.FirstRecord
   try :
-    status.BranchName = config.SecurityContext.GetUserInfo()[5]
+    status.BranchName = param.GetFieldByName('LBranch.BranchName') #config.SecurityContext.GetUserInfo()[5]
+    BranchCode = param.GetFieldByName('LBranch.BranchCode')
     if param.AccountType == 1 :
-      GetTemplateCashAccount(config,returns)
+      GetTemplateCashAccount(config, BranchCode, returns)
     elif param.AccountType == 2 :
-      GetTemplateProgram(config,returns)
+      GetTemplateProgram(config, returns)
     elif param.AccountType == 3 :
-      GetTemplateProject(config,returns)
+      GetTemplateProject(config, returns)
     elif param.AccountType == 4 :
-      GetListEmployee(config,returns)
+      GetListEmployee(config, returns)
     elif param.AccountType == 5:
-      GetListExternalDebtor(config,returns)
+      GetListExternalDebtor(config, returns)
     elif param.AccountType == 6:
-      GetListEmployeeInvestment(config,returns)
+      GetListEmployeeInvestment(config, returns)
     elif param.AccountType == 7:
-      GetListInvestee(config,returns)
+      GetListInvestee(config, returns)
     elif param.AccountType == 8:
-      GetListFixedAsset(config,returns)
+      GetListFixedAsset(config, returns)
 
   except:
     status.Is_Err = 1
     status.Err_Message = str(sys.exc_info()[1])
     
-def GetTemplateCashAccount(config,returns):
+def GetTemplateCashAccount( config, BranchCode, returns):
   helper = phelper.PObjectHelper(config)
   
-  BranchCode = config.SecurityContext.GetUserInfo()[4]
+  #BranchCode = config.SecurityContext.GetUserInfo()[4]
+  
   dsListAccount = returns.AddNewDatasetEx(
       'ListAccount',
     ';'.join([
@@ -75,6 +92,7 @@ def GetTemplateCashAccount(config,returns):
       'AccountName: string',
       'Currency:string',
       'Balance: float',
+      'Rate: float',
     ])
   )
   
@@ -100,22 +118,27 @@ def GetTemplateCashAccount(config,returns):
     recAccount.AccountNo = ds.AccountNo
     recAccount.AccountName = ds.AccountName
     recAccount.Currency = '%s - %s' % (ds.CurrencyCode,ds.Short_Name)
+
+    # Cek jika sudah pernah ada saldo awal
     TransactionNo = 'BB-CB-%s-%s' % (ds.CurrencyCode,BranchCode)
     oTranItem = helper.GetObjectByNames('AccountTransactionItem',
         {'AccountNo' : ds.AccountNo ,
          'LTransaction.TransactionNo' : TransactionNo ,
          'LTransaction.TransactionCode' : 'TB' }
      )
+     
     if oTranItem.isnull :
       recAccount.Balance = 0.0
+      recAccount.Rate = 1.0
     else :
       recAccount.Balance = oTranItem.Amount
+      recAccount.Rate = oTranItem.Rate
     # end if
     
     ds.Next()
   # end while
   
-def GetTemplateProgram(config,returns):
+def GetTemplateProgram( config, returns):
   BranchCode = config.SecurityContext.GetUserInfo()[4]
   dsListAccount = returns.AddNewDatasetEx(
       'ListAccount',
@@ -153,7 +176,7 @@ def GetTemplateProgram(config,returns):
     ds.Next()
   # end while
   
-def GetTemplateProject(config,returns):
+def GetTemplateProject( config, returns):
   BranchCode = config.SecurityContext.GetUserInfo()[4]
   dsListAccount = returns.AddNewDatasetEx(
       'ListAccount',
@@ -202,7 +225,7 @@ def GetTemplateProject(config,returns):
     ds.Next()
   # end while
   
-def GetListEmployee(config,returns):
+def GetListEmployee( config, returns):
   BranchCode = config.SecurityContext.GetUserInfo()[4]
   BranchId = int(config.SecurityContext.GetUserInfo()[2])
   dsListAccount = returns.AddNewDatasetEx(
@@ -226,7 +249,7 @@ def GetListEmployee(config,returns):
     ds.Next()
   # end while
   
-def GetListExternalDebtor(config,returns):
+def GetListExternalDebtor( config, returns):
   BranchCode = config.SecurityContext.GetUserInfo()[4]
   BranchId = int(config.SecurityContext.GetUserInfo()[2])
   dsListAccount = returns.AddNewDatasetEx(
@@ -261,7 +284,7 @@ def GetListInvestmentCategory(config):
 
   return ListInvestmentCat
 
-def GetListEmployeeInvestment(config,returns):
+def GetListEmployeeInvestment( config, returns):
 
   BranchCode = config.SecurityContext.GetUserInfo()[4]
   BranchId = int(config.SecurityContext.GetUserInfo()[2])
@@ -300,7 +323,7 @@ def GetListEmployeeInvestment(config,returns):
     ds.Next()
   # end while
   
-def GetListInvestee(config,returns):
+def GetListInvestee( config, returns):
 
   BranchCode = config.SecurityContext.GetUserInfo()[4]
   BranchId = int(config.SecurityContext.GetUserInfo()[2])
@@ -339,5 +362,5 @@ def GetListInvestee(config,returns):
     ds.Next()
   # end while
 
-def GetListFixedAsset(config,returns):
+def GetListFixedAsset( config, returns):
   return

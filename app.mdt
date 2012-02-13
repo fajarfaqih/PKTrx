@@ -1364,6 +1364,15 @@ document <
               OriginPKey=$TYPEDECLS['SubSystemInteraction'].MEMBERS['SubSystemCode']
             >}IsWeak=true
           LinkedClass=$TYPEDECLS['SubSystemInteraction']
+        >, object:FieldMember<
+          MemberName='UpdatedDate'
+          PhysicalName='UPDATEDDATE'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >, object:FieldMember<
+          MemberName='UpdatedUserId'
+          PhysicalName='UPDATEDUSERID'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
         >}ClassID='{9E0C9A6E-AAB9-4950-8D93-3AAE12F4660B}'
       AutoPrimaryKey=$TYPEDECLS['Transaction'].MEMBERS['TransactionId']
     >, object:EnumTypeDecl<

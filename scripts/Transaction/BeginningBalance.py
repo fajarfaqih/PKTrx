@@ -7,25 +7,36 @@ status = 0
 msg = ''
 FileKwitansi = ''
 
-def GetBatch(helper):
+# *** Beginning Balance Date Variable ***
+year = 2010
+month = 12
+date = 31
+
+# *** RULES
+# - Setiap cabang memiliki 1 batch saldo awal dengan batch no = 'SYS-BALANCE-{KODECABANG}'
+# - User System / Admin / Pusat boleh membuatkan batch milik cabang 
+# - Transaksi dibuat per jenis saldo awal per cabang per valuta
+
+def GetBatch( helper, BranchCode = None):
   config = helper.Config
   
-  BranchCode = config.SecurityContext.GetUserInfo()[4]
+  if BranchCode == None :
+    BranchCode = config.SecurityContext.GetUserInfo()[4]
   BatchNo = 'SYS-BALANCE-%s' % BranchCode
   
   oBatch = helper.GetObjectByNames(
        'TransactionBatch', 
-         {'BatchNo' : BatchNo,
-          'BranchCode' : BranchCode,
+         { 'BatchNo' : BatchNo,
+           'BranchCode' : BranchCode,
          })
   if oBatch.isnull:
     oBatch = helper.CreatePObject('TransactionBatch')
     oBatch.BatchNo = BatchNo
     oBatch.BranchCode = BranchCode 
-    oBatch.BatchDate = config.ModLibUtils.EncodeDate(2010,12,31)
+    oBatch.BatchDate = config.ModLibUtils.EncodeDate(year, month, date)
     oBatch.Inputer = config.SecurityContext.InitUser
     oBatch.Description = 'Saldo Awal'
-    oBatch.IsPosted = 'T'     
+    oBatch.IsPosted = 'T'
     oBatch.BatchTag = 'SYS'
   # end if
     
@@ -33,7 +44,7 @@ def GetBatch(helper):
 
 def GetTransaction(helper, oBatch, PrefTransactionNo, Description, CurrencyCode = '000', Rate = 1.0):
   config = helper.Config     
-  BranchCode = config.SecurityContext.GetUserInfo()[4]
+  BranchCode = oBatch.BranchCode #config.SecurityContext.GetUserInfo()[4]
   TransactionNo = '%s-%s' % (PrefTransactionNo,BranchCode)
   
   oTran = helper.GetObjectByNames(
@@ -50,8 +61,8 @@ def GetTransaction(helper, oBatch, PrefTransactionNo, Description, CurrencyCode 
     oTran.BranchCode  = BranchCode
     oTran.ReferenceNo = PrefTransactionNo
     oTran.Description = Description
-    oTran.TransactionDate  = config.ModLibUtils.EncodeDate(2010,12,31)
-    oTran.ActualDate  = config.ModLibUtils.EncodeDate(2010,12,31)
+    oTran.TransactionDate = config.ModLibUtils.EncodeDate(year, month, date)
+    oTran.ActualDate  = config.ModLibUtils.EncodeDate(year, month, date)
     oTran.IsPosted = 'T'
     oTran.TransactionNo = TransactionNo
     oTran.CurrencyCode = CurrencyCode
@@ -70,9 +81,11 @@ def CashAccount(config,params):
   err_message = ''
   config.BeginTransaction()
   try:
-    app.ConWriteln('Get Batch','TB')
-    oBatch = GetBatch(helper)
-    app.ConWriteln('Get Transaction','TB')
+    recHeader = params.HeaderData.GetRecord(0)
+
+    app.ConWriteln( 'Get Batch', 'TB')
+    oBatch = GetBatch( helper, recHeader.BranchCode)
+    app.ConWriteln( 'Get Transaction', 'TB')
     
     #oTran = GetTransaction(helper,oBatch,PrefTransactionNo,'Saldo Awal Kas')
     
@@ -92,11 +105,12 @@ def CashAccount(config,params):
       
       # Get Rate  
       aCurrencyCode = oAccount.CurrencyCode
-      if LsRate.has_key(aCurrencyCode):
-        aRate = LsRate[aCurrencyCode]
-      else:
-        aRate = oAccount.LCurrency.Kurs_Tengah_BI
-        LsRate[aCurrencyCode] = aRate
+      aRate = recBalance.Rate
+      #if LsRate.has_key(aCurrencyCode):
+      #  aRate = LsRate[aCurrencyCode]
+      #else:
+      #  aRate = oAccount.LCurrency.Kurs_Tengah_BI
+      #  LsRate[aCurrencyCode] = aRate
       # end if  
 
       # Get Transaction  
@@ -106,8 +120,11 @@ def CashAccount(config,params):
       else:
         oTran = GetTransaction(helper, oBatch, PrefTransactionNo, 'Saldo Awal Kas', aCurrencyCode, aRate)
         LsTran[PrefTransactionNo] = oTran
+        oTran.Amount = 0.0
+        oTran.UpdatedDate = int(config.Now())
+        oTran.UpdatedUserId =  config.SecurityContext.InitUser
+      # end if
 
-      
       oItem = helper.GetObjectByNames('AccountTransactionItem',
           {'TransactionId' : oTran.TransactionId,
            'AccountNo' : recBalance.AccountNo
@@ -123,11 +140,10 @@ def CashAccount(config,params):
       oItem.Description = 'Saldo Awal'
       oItem.SetJournalParameter('10')
             
-      TotalAmount += BeginningBalance
+      #TotalAmount += BeginningBalance
+      oTran.Amount += BeginningBalance      
     # end for
-    
-    oTran.Amount = TotalAmount
-    
+
     app.ConWriteln('Proses approval data ','TB')
     oTran.AuthStatus = 'F'
     oTran.AutoApproval()
@@ -604,7 +620,7 @@ def FixedAsset(config,params):
     4 : 4,
     5 : 8,
     6 : 5,
-    7 : 6
+    7 : 6,
     8 : 7,
   }
   app = config.AppObject  

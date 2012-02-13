@@ -32,11 +32,16 @@ class fSaldoAwal:
     ph = app.CreatePacket()
     dsHeader = ph.Packet.AddNewDatasetEx(
       'HeaderData',
-      ';'.join(['AccountType:integer'])
+      ';'.join(
+        ['AccountType:integer',
+         'BranchCode:string'
+        ]
+      )
     )
     
     recHeader = dsHeader.AddRecord()
     recHeader.AccountType = AccountType
+    recHeader.BranchCode = uipData.GetFieldValue('LBranch.BranchCode')
 
     filename = uipData.FileName
     if AccountType == 1 :
@@ -54,8 +59,7 @@ class fSaldoAwal:
     elif AccountType == 7 :
       param = self.ConvertFileToPacket6(ph,filename)
     elif AccountType == 8 :
-      param = self.ConvertFileToPacket6(ph,filename)
-
+      param = self.ConvertFileToPacket8(ph,filename)
     # end if
 
     resp = form.CallServerMethod('UploadData',param)
@@ -76,7 +80,7 @@ class fSaldoAwal:
       raise 'Peringatan','Silahkan pilih jenis rekening'
     
     filename = self.oPrint.ConfirmDestinationPath(app,'xls')
-    if filename == '' : return
+    if filename in ['',None] : return
 
     resp = form.CallServerMethod('GetTemplate',form.GetDataPacket())
     
@@ -106,6 +110,19 @@ class fSaldoAwal:
   # -- USER DEFINE METHOD --
 
   def Show(self):
+    uipData = self.uipData
+    uipData.Edit()
+    
+    IsHeadOffice = (uipData.BranchCode == uipData.HeadOfficeCode)
+    self.pOption_LBranch.Enabled = IsHeadOffice
+    self.MasterBranchCode = ''
+
+    if not IsHeadOffice :
+      uipData.MasterBranchCode = uipData.BranchCode
+
+    uipData.SetFieldValue('LBranch.BranchCode', uipData.BranchCode)
+    uipData.SetFieldValue('LBranch.BranchName', uipData.BranchName)
+    
     self.FormContainer.Show()
 
   # ------------------ FUNCTION FOR SHOW FILE DATA
@@ -128,7 +145,8 @@ class fSaldoAwal:
         workbook.SetCellValue(row, 2, rec.AccountNo)
         workbook.SetCellValue(row, 3, rec.AccountName)
         workbook.SetCellValue(row, 4, rec.Currency)
-        workbook.SetCellValue(row, 5, rec.Balance)
+        workbook.SetCellValue(row, 5, rec.Rate)
+        workbook.SetCellValue(row, 6, rec.Balance)
 
         i += 1
       # end of while
@@ -340,6 +358,7 @@ class fSaldoAwal:
         'AccountNo:string',
         'AccountName:string',
         'Balance:float',
+        'Rate:float',
       ])
     )
     
@@ -351,7 +370,8 @@ class fSaldoAwal:
         recBalance = dsBalance.AddRecord()
         recBalance.AccountNo = str(workbook.GetCellValue(row, 2))
         recBalance.AccountName = str(workbook.GetCellValue(row, 3))
-        recBalance.Balance = workbook.GetCellValue(row, 5)
+        recBalance.Rate = workbook.GetCellValue(row, 5)
+        recBalance.Balance = workbook.GetCellValue(row, 6)
         
         row += 1
       # end while
