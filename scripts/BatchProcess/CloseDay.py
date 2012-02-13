@@ -32,7 +32,7 @@ def DoProcess(config, App, Params) :
      select b.branchname, count(*) as TotalTrans \
      from transaction a, branch b \
      where a.branchcode = b.branchcode \
-        and a.actualdate <= %s \
+        and a.actualdate <= '%s' \
         and a.authstatus='F' \
         and a.transactioncode <> 'TB' \
       group by b.branchname " % (config.FormatDateTime('yyyy-mm-dd', ProcessDate))
