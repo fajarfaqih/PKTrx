@@ -339,7 +339,7 @@ class fCashAdvanceReturn :
     uipTranItem.Edit()
     uipTranItem.AccountId = uipData.GetFieldValue('LProductAccount.AccountNo')
     uipTranItem.AccountName = uipData.GetFieldValue('LProductAccount.AccountName')
-    uipTranItem.FundEntity = uipData.FundEntity or 'I'
+    uipTranItem.FundEntity = uipData.FundEntity or 2
     #uipTranItem.BudgetCode = uipData.BudgetCode
     uipTranItem.BudgetCode = uipData.GetFieldValue('LBudget.BudgetCode')
     uipTranItem.BudgetOwner = uipData.GetFieldValue('LBudget.LOwner.OwnerName')
@@ -568,13 +568,7 @@ class fCashAdvanceReturn :
     #fundCategory = self.uipTransactionItem.GetFieldValue('LProduct.FundCategory')
     fundEntity = self.uipTransactionItem.FundEntity
     #if fundCategory == 'Z' and sender.Ashnaf == 'L':
-    if sender.ItemType == 'D' :
-      pass
-      #if fundEntity == 1 and sender.Ashnaf == 'L':
-      #  raise 'Ashnaf', 'Ashnaf zakat harus diisi'
-      #elif fundEntity != 1: # fundCategory != 'Z'
-      #  sender.Ashnaf = 'L'
-    else:
+    if sender.ItemType == 'G' :
       sender.Ashnaf = 'N'
       sender.FundEntity = 0
 
