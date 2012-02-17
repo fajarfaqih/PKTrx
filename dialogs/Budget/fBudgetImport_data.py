@@ -42,6 +42,10 @@ def ExecuteImport(config,params,returns):
   
   config.BeginTransaction()
   try:
+    app = config.AppObject
+    app.ConCreate('BUDGET')
+    app.ConWriteln('Proses Uploda Data Budget','BUDGET')
+    
     helper = phelper.PObjectHelper(config)
 
     uipBudgetDetail = params.uipBudgetDetail
@@ -54,7 +58,10 @@ def ExecuteImport(config,params,returns):
     PeriodList = {}
     message = ''
     PrevItemGroup = ''
+
+    app.ConWriteln('Total Data %d ' % totaldata ,'BUDGET')
     for rowdata in range(totaldata):
+      app.ConWriteln('Proses data ke-%d dari %d ' % (rowdata + 1, totaldata) ,'BUDGET')
       recBudget = uipBudgetDetail.GetRecord(rowdata)
       if OwnerList.has_key(recBudget.OwnerCode) :
         OwnerId = OwnerList[recBudget.OwnerCode]
