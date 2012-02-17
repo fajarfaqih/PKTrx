@@ -14,7 +14,7 @@ def FormSetDataEx(uideflist, params) :
     uipTran = uideflist.uipTransaction.Dataset.GetRecord(0)
     oTran = helper.GetObjectByNames('Transaction',{'TransactionNo' : uipTran.TransactionNo})
 
-    uipTran.ActualDate = oTran.ActualDate
+    uipTran.ActualDate = oTran.GetAsTDateTime('ActualDate')
     
     if uipTran.RefCurrencyCode in ['',None]:
       uipTran.RefCurrencyCode = oTran.CurrencyCode
