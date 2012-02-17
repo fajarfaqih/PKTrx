@@ -154,7 +154,7 @@ def ExecuteImport(config,params,returns):
       oBudgetYear.Amount = TotalAmount
       
     if message != '' :
-      message = 'Berdasarkan Kode Anggaran. Data dengan nomor di bawah ini telah ada dalam database \n' + message
+      message = 'Berdasarkan Kode Anggaran. Data pada file dengan nomor di bawah ini terjadi duplikasi kode anggaran \n' + message
       raise '',message
       
     config.Commit()
