@@ -1107,12 +1107,16 @@ def InvoicePayment(helper,oTran,oBatch,request,params):
   oTran.ReceivedFrom = request[u'EmployeeName']
   oTran.PaidTo = request[u'PaidTo']
   oTran.ActualDate = oBatch.GetAsTDateTime('BatchDate')
+
   aRate = request[u'Rate']
   
   # Get Object Invoice 
   oInvoice = helper.GetObject('InvoiceProduct', request[u'InvoiceId'])
   
   oSponsor = helper.GetObject('Sponsor', oInvoice.SponsorId)
+
+  # Set Transaksi donor id
+  oTran.DonorId = oInvoice.SponsorId
   
   # Product Account
   oProductAccount = helper.GetObjectByNames('ProductAccount',

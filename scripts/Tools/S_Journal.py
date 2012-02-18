@@ -141,12 +141,14 @@ def RegenerateJournalItem(config, parameters, returnpacket):
       TranHelper = helper.LoadScript('Transaction.TransactionHelper')
       
       #AddParam = " and branchcode='%s' " % config.SecurityContext.GetUserInfo()[4]
-      #AddParam = " and actualdate between '2011-01-01' and '2011-01-31' "
-      AddParam = " and transactionid in (select distinct c.transactionid \
-             from accounting.journalitem a ,transaction.transaction c where \
-             c.journalblockid = a.id_journalblock and \
-               not exists( \
-                  select accountinstance_id from accounting.accountinstance b where a.accountinstance_id=b.accountinstance_id) ) "
+      AddParam = " and actualdate between '2011-01-01' and '2011-01-10' "
+      AddParam = " and transactioncode <> 'TB' "
+      #AddParam = " and transactionno = 'KM-2011-001-BNI07-0000009' "
+      # AddParam = " and transactionid in (select distinct c.transactionid \
+      #        from accounting.journalitem a ,transaction.transaction c where \
+      #        c.journalblockid = a.id_journalblock and \
+      #          not exists( \
+      #             select accountinstance_id from accounting.accountinstance b where a.accountinstance_id=b.accountinstance_id) ) "
 
       sSQL = "select TransactionId \
               from transaction \
@@ -221,7 +223,7 @@ def GenerateJournalItem(config, parameters, returnpacket):
       
       AddParam = " TransactionId is not null "
       #AddParam += " and branchcode='%s' " % config.SecurityContext.GetUserInfo()[4]
-      AddParam += " and actualdate between '2011-01-01' and '2011-01-31' "
+      AddParam += " and actualdate between '2011-01-01' and '2011-01-10' "
       AddParam += " and isposted='F' "
 
       sSQL = "select TransactionId \
@@ -329,3 +331,62 @@ def GenerateAll(config, parameters, returnpacket):
   sw = returnpacket.AddStreamWrapper()
   sw.LoadFromFile(filename)
   sw.MIMEType = config.AppObject.GetMIMETypeFromExtension(filename)        
+
+def DeleteTransaction(config, parameters, returnpacket):
+  status = returnpacket.CreateValues(["Is_Error", 0], ["Err_Message", ""])
+  app = config.GetAppObject()
+  app.ConCreate('DJournal')
+  helper = phelper.PObjectHelper(config)
+  corporate = helper.CreateObject('Corporate')
+      
+  filename = corporate.GetUserHomeDir() + "DeleteTransactionLog.txt"
+  
+  try:
+    fh = open(filename,'w')
+    try:
+                  
+      AddParam = " TransactionId is not null "
+      AddParam += " and transactioncode = 'INVC'"
+
+      sSQL = "select TransactionId \
+              from transaction \
+              where %s order by TransactionId " % ( AddParam )
+      
+      oRes = config.CreateSQL(sSQL).RawResult
+      
+      oRes.First()
+      while not oRes.Eof:
+        oTran = helper.GetObject('Transaction', oRes.TransactionId)
+        
+        logmessage = "\nProses Delete TransactionId %d No Trans %s : " % ( oRes.TransactionId, oTran.TransactionNo)
+        app.ConWrite(logmessage ,'DJournal')
+        fh.write(logmessage)
+        
+        if oTran.isnull : raise '','Data Transaksi Tidak Ditemukan'
+        oTran.DeleteJournal()
+
+        config.BeginTransaction()
+        try :
+          oTran.Delete()
+          config.Commit()
+          logmessage = "Proses Hapus Transaksi Berhasil"           
+        except :
+          config.Rollback()
+          logmessage = 'Proses Hapus Transaksi Gagal'
+
+        app.ConWrite(logmessage ,'DJournal')
+        fh.write(logmessage)
+
+        oRes.Next()
+      # end while
+                
+    except:
+      status.Is_Error = 1
+      status.Error_Message = str(sys.exc_info()[1])
+  
+  finally:
+    fh.close()
+  
+  sw = returnpacket.AddStreamWrapper()
+  sw.LoadFromFile(filename)
+  sw.MIMEType = config.AppObject.GetMIMETypeFromExtension(filename)
