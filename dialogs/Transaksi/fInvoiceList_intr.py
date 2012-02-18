@@ -178,23 +178,25 @@ class fInvoiceList:
 
   def __PrintVoucher(self):
     uipInvoice = self.uipInvoice
-    transactionId = uipInvoice.TransactionId or 0
+    InvoiceId = uipInvoice.InvoiceId or 0
+    
+    #ph = self.app.CreateValues(
+    #  ['TransactionId', transactionId])
 
-    if transactionId != 0:
-      ph = self.app.CreateValues(
-        ['TransactionId', transactionId])
+    #rph = self.app.ExecuteScript('Transaction/S_Kwitansi.Print', ph)
 
-      ph = self.app.ExecuteScript('Transaction/S_Kwitansi.Print', ph)
+    ph = self.app.CreateValues(['InvoiceId', InvoiceId])
 
-      st = ph.FirstRecord
-      if st.Is_Err == 1:
-        raise 'PERINGATAN', st.Err_Message
-      #-- if
+    rph = self.form.CallServerMethod('PrintVoucher', ph)
 
-      # Print Slip Transaksi
-      #self.app.ShowMessage("Masukkan Kertas Kwitansi ke Printer")
-      self.oPrint.doProcessByStreamName(self.app,ph.packet,st.Stream_Name)
-    #--if
+    st = rph.FirstRecord
+    if st.Is_Err == 1:
+      raise 'PERINGATAN', st.Err_Message
+    #-- if
+
+    # Print Slip Transaksi
+    #self.app.ShowMessage("Masukkan Kertas Kwitansi ke Printer")
+    self.oPrint.doProcessByStreamName(self.app, rph.packet, st.Stream_Name)
   
   def __ViewList(self):
     self.form.CommitBuffer()

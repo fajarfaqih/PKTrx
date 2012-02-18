@@ -220,3 +220,27 @@ def PrintInvoice(config,parameters,returns):
   except:
     status.Is_Err = 1
     status.Err_Message =str(sys.exc_info()[1])
+    
+def PrintVoucher(config, params, returns):
+  helper = phelper.PObjectHelper(config)
+  status = returns.CreateValues(
+    ["Is_Err",0],
+    ["Err_Message",""],
+    ["Stream_Name",""])
+
+  data = params.FirstRecord
+  oInvoice = helper.GetObject('InvoiceProduct', data.InvoiceId)
+
+  try:
+    filename = oInvoice.GetVoucher()
+    sw = returns.AddStreamWrapper()
+    sw.Name = 'Kwitansi'
+    sw.LoadFromFile(filename)
+    #sw.MIMEType = config.AppObject.GetMIMETypeFromExtension(filename)
+    sw.MIMEType = 'application/msword'
+
+    status.Stream_Name = sw.Name
+
+  except:
+    status.Is_Err = 1
+    status.Err_Message = str(sys.exc_info()[1])

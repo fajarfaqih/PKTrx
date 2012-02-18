@@ -164,6 +164,7 @@ def GeneralTransaction( helper, oTran, oBatch, request, params):
   oTran.ActualDate = oBatch.GetAsTDateTime('BatchDate')
   
   items = request[u'Items']
+  
   for item in items:
     aValuta = item[u'Valuta']
     aAmount = item[u'Amount']
@@ -594,6 +595,7 @@ def CreateFixAssetTransactionItem(helper, oTran, params, request, item, isCreate
   aFundEntity = item[u'FundEntity']
   aDescription = item[u'Description']
 
+  
   # 1. Create Data FixedAsset
   AccountNoFA = str(item[u'AssetAccountNo'])
   if AccountNoFA == '' :
@@ -633,7 +635,7 @@ def CreateFixAssetTransactionItem(helper, oTran, params, request, item, isCreate
   oItemFA.Description = aDescription
   oItemFA.SetJournalParameter(JournalCode)
   oItemFA.AccountCode = oFAAccount.GetAssetAccount()
-  oItemFA.SetFundEntity(aFundEntity)
+  oItemFA.SetFundEntity(aFundEntity or 4)
   
   if oFAAccount.LAssetCategory.AssetType == 'T' :
     oProduct = oFAAccount.LProductAccount
@@ -792,6 +794,7 @@ def CashAdvanceReturn(helper,oTran,oBatch,request,params):
   totalAmount = 0.0
   items = request[u'Items']
   
+
   for item in items:
     if item[u'ItemType'] == 'D':        
       # Create Item for ProductAccount
@@ -1121,7 +1124,7 @@ def InvoicePayment(helper,oTran,oBatch,request,params):
   oItemPA = oTran.CreateDonorTransactionItem(oProductAccount, oInvoice.SponsorId)
   oItemPA.SetMutation(request[u'RefAmount'], aRate)
   oItemPA.Description = request[u'Description']
-  oItemPA.SetJournalParameter('INV02')
+  oItemPA.SetJournalParameter('10')
   oItemPA.SetCollectionEntity(FundEntityMAP['I'])
   
   #oItemPA.PercentageOfAmil = item['PercentageOfAmil']

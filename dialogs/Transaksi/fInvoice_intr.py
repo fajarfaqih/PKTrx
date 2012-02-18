@@ -134,6 +134,9 @@ class fInvoice:
     if uipInvoice.InvoiceDate in [0, None] :
       raise 'PERINGATAN','Tanggal Invoice belum diinputkan'
 
+    if uipInvoice.TermDate in [0, None] :
+      raise 'PERINGATAN','Tanggal Batas Akhir Invoice belum diinputkan'
+
     if uipInvoice.ProductAccountNo in [0, None] :
       raise 'PERINGATAN','Nama Program belum diinputkan'
 

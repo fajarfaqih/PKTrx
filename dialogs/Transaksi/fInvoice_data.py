@@ -142,16 +142,17 @@ def ProsesVoucherNew(config,parameters,returns):
     # Create Invoice
     oInvoice = helper.CreatePObject('InvoiceProduct')
 
-    # Create Transaction
-    #oBatch = helper.GetObject('TransactionBatch', param.GetFieldByName('LBatch.BatchId'))
-    oBatch = GetBatch(helper,param.ActualDate)
-    oTran = oBatch.NewTransaction('INVC')
+    # Create Transaction --
+    ### Proses create transaksi dihapuskan
+    #oBatch = GetBatch(helper,param.ActualDate)
+    #oTran = oBatch.NewTransaction('INVC')
+    
     param.InvoiceNo = GenerateInvoiceNo(config,helper)
 
-    InvoiceStream, VoucherStream = ProsesVoucher(config, param, oBatch, oTran, oInvoice, returns)
+    InvoiceStream, VoucherStream = ProsesVoucher(config, param, oInvoice, returns)
     
     # Auto Approve
-    oTran.AutoApproval()
+    #oTran.AutoApproval()
 
     status.InvoiceId = oInvoice.InvoiceId
     
@@ -185,17 +186,16 @@ def ProsesVoucherUpdate(config,parameters,returns):
     oInvoice = helper.GetObject('InvoiceProduct',param.InvoiceId)
 
     # Get Transaction
-    oBatch = GetBatch(helper,param.ActualDate)
-    #oBatch = helper.GetObject('TransactionBatch', param.GetFieldByName('LBatch.BatchId'))
+    ### Proses create transaksi dihapuskan
+    #oBatch = GetBatch(helper,param.ActualDate)
+    #oTran = oInvoice.LTransaction
+    #oTran.CancelTransaction()
+    #oTran.BatchId = oBatch.BatchId
 
-    oTran = oInvoice.LTransaction
-    oTran.CancelTransaction()
-    oTran.BatchId = oBatch.BatchId
-
-    InvoiceStream, VoucherStream = ProsesVoucher(config, param, oBatch, oTran, oInvoice, returns)
+    InvoiceStream, VoucherStream = ProsesVoucher(config, param, oInvoice, returns)
     
     # Auto Approve
-    oTran.AutoApprovalUpdate()
+    #oTran.AutoApprovalUpdate()
 
     status.InvoiceId = oInvoice.InvoiceId
 
@@ -209,7 +209,7 @@ def ProsesVoucherUpdate(config,parameters,returns):
     status.Is_Err = 1
     status.Err_Message = str(sys.exc_info()[1])
     
-def ProsesVoucher(config, param, oBatch, oTran, oInvoice, returns):
+def ProsesVoucher(config, param, oInvoice, returns):
   helper = phelper.PObjectHelper(config)
   
   aAmount = param.Amount
@@ -252,6 +252,8 @@ def ProsesVoucher(config, param, oBatch, oTran, oInvoice, returns):
   oDefaultData.InvoiceOfficerPosition = param.JobPosition
 
   # Proses Data Transaction
+  #~~ PROSES Pembuatan Transaksi Invoice di non aktifkan 18 Feb 2012 by Wisnu
+  """
   oTran.Inputer     = config.SecurityContext.UserId
   oTran.BranchCode  = BranchCode
   oTran.ReferenceNo = param.InvoiceNo
@@ -274,7 +276,9 @@ def ProsesVoucher(config, param, oBatch, oTran, oInvoice, returns):
   oItemGL.SetJournalParameter('INV01')
 
   oTran.GenerateTransactionNumber('000')
+  
   oInvoice.TransactionId = oTran.TransactionId
+  """
   
   #filename = GenerateInvoice(config,param)
   # Generate Invoice Data
@@ -296,7 +300,8 @@ def ProsesVoucher(config, param, oBatch, oTran, oInvoice, returns):
   InvoiceStream = sw.Name
 
   # Generate Kwitansi
-  voucherfile = oTran.GetKwitansi()
+  #voucherfile = oTran.GetKwitansi()
+  voucherfile = oInvoice.GetVoucher()
   sw = returns.AddStreamWrapper()
   sw.Name = 'Kwitansi'
   sw.LoadFromFile(voucherfile)
