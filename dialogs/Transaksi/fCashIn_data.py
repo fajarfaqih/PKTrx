@@ -13,6 +13,8 @@ def FormSetDataEx(uideflist, params) :
     uipTran = uideflist.uipTransaction.Dataset.GetRecord(0)
     oTran = helper.GetObjectByNames('Transaction',{'TransactionNo' : uipTran.TransactionNo})
 
+    uipTran.ActualDate = oTran.GetAsTDateTime('ActualDate')
+    
     if uipTran.PaymentType == 'B' :
       uipTran.RateBank = oTran.Rate
     elif uipTran.PaymentType == 'C':
