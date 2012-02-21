@@ -140,18 +140,58 @@ def RegenerateJournalItem(config, parameters, returnpacket):
     try:
       TranHelper = helper.LoadScript('Transaction.TransactionHelper')
       
+      AddParam = ''
       #AddParam = " and branchcode='%s' " % config.SecurityContext.GetUserInfo()[4]
-      AddParam = " and actualdate between '2011-01-01' and '2011-01-10' "
-      AddParam = " and transactioncode <> 'TB' "
-      #AddParam = " and transactionno = 'KM-2011-001-BNI07-0000009' "
+      AddParam += " and actualdate between '2011-01-01' and '2011-01-31' "
+      AddParam += " and transactioncode <> 'TB' "
+      #AddParam += " and transactionid in (140505, 140528)"
+      #AddParam += " and isposted = 'F' "
+      #AddParam += " and exists ( select 1 from transaction.transactionitem a , transaction.accounttransactionitem b \
+      #                where a.transactionitemid=b.transactionitemid and b.accountno='11901.001.000' and a.transactionid=t.transactionid )"
+      #AddParam = " and transactionno = 'KK-2011-221-KMD01-0000174' "
       # AddParam = " and transactionid in (select distinct c.transactionid \
       #        from accounting.journalitem a ,transaction.transaction c where \
       #        c.journalblockid = a.id_journalblock and \
       #          not exists( \
       #             select accountinstance_id from accounting.accountinstance b where a.accountinstance_id=b.accountinstance_id) ) "
+      
+      # AddParam += " and exists( \
+      #               select 1 from \
+      #                 transaction.transactionitem i , \
+      #                 transaction.accounttransactionitem a, \
+      #                 transaction.productaccount b, \
+      #                 transaction.product c \
+      #               where a.transactionitemid=i.transactionitemid \
+      #                 and a.accountno = b.accountno \
+      #                 and b.productid = c.productid \
+      #                 and (b.productid = 125 or productcode like '122%' ) \
+      #                 and t.transactionid=i.transactionid)"
 
+      # AddParam += " and not exists( \
+      #         select 1 \
+      #         from accounting.journalitem a ,transaction.transaction c,transaction.transactionitem b where \
+      #           c.transactionid = b.transactionid  \
+      #           and c.journalblockid = a.id_journalblock  \
+      #           and c.actualdate between '2011-01-01' and '2011-01-31' \
+      #           and a.fl_account in ('4210101','4210102','4210103','4220101') \
+      #           and b.branchcode='001' and c.transactionid=t.transactionid )"                
+      
+      AddParam += " and exists ( select 1 from transaction.transactionitem i where i.transactionid=t.transactionid )"
+      #AddParam += " and TransactionId > 35788 "
+
+      # Total Data
+      sSQLCount = "select count(TransactionId) \
+              from transaction t \
+              where Transactionid is not null \
+                  %s " % ( AddParam )
+      
+      oResCount = config.CreateSQL(sSQLCount).RawResult
+
+      TotalData = oResCount.GetFieldValueAt(0) or 0
+      
+      # Get Data
       sSQL = "select TransactionId \
-              from transaction \
+              from transaction t \
               where Transactionid is not null \
                   %s \
                   order by TransactionId " % (
@@ -159,9 +199,16 @@ def RegenerateJournalItem(config, parameters, returnpacket):
 
       oRes = config.CreateSQL(sSQL).RawResult
       logProcess = ''
+
+      idx = 1
       oRes.First()
       while not oRes.Eof:
         oTran = helper.GetObject('Transaction', oRes.TransactionId)
+        logmessage = "Proses Data ke %d dari %s data " % ( idx, TotalData)
+
+        app.ConWriteln(logmessage ,'DJournal')
+        fh.write(logmessage +  '\n')
+
         logmessage = "Proses TransactionId %d No Trans %s : " % ( oRes.TransactionId, oTran.TransactionNo)
 
         app.ConWrite(logmessage ,'DJournal')
@@ -193,6 +240,7 @@ def RegenerateJournalItem(config, parameters, returnpacket):
         fh.write(logmessage + '\n')
         logProcess += logmessage + '\n'
 
+        idx += 1
         oRes.Next()
       # end while
 
@@ -333,7 +381,7 @@ def GenerateAll(config, parameters, returnpacket):
   sw.MIMEType = config.AppObject.GetMIMETypeFromExtension(filename)        
 
 def DeleteTransaction(config, parameters, returnpacket):
-  status = returnpacket.CreateValues(["Is_Error", 0], ["Err_Message", ""])
+  status = returnpacket.CreateValues(["Is_Error", 0], ["Error_Message", ""])
   app = config.GetAppObject()
   app.ConCreate('DJournal')
   helper = phelper.PObjectHelper(config)
