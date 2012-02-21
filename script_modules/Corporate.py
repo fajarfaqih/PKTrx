@@ -334,6 +334,15 @@ class Corporate(mobject.MObject):
         
         return (nominal <= limit)
 
+    def GetLimitOtorisasi(self):
+        limits = self.LoginContext.Ls_LimitTransaksi
+        if not limits.has_key('O'):
+            return 0.0
+        else:
+            return limits['O'][0]    
+        
+        return limit    
+
     def CheckLimitOtorisasi(self, nominal):
         limits = self.LoginContext.Ls_LimitTransaksi
         if not limits.has_key('O'):

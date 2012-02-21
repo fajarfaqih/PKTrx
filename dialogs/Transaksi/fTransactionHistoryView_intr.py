@@ -37,7 +37,10 @@ class fTransactionHistoryView:
     transactionId = self.uipTransaction.TransactionId
     if transactionId != None:
       if self.uipTransaction.IsPosted == 'T':
-        raise 'PERINGATAN' , 'Transaksi sudah di posting'
+        #raise 'PERINGATAN' , 'Transaksi sudah di posting'
+        if not self.app.ConfirmDialog(
+          'Transaksi sudah di posting.\nApakah anda akan melakukan posting ulang?') :
+          return
 
       ph = self.app.CreateValues(
         ['TransactionId', transactionId])

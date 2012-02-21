@@ -38,6 +38,16 @@ document <
           Hidden=true
           DataTypeName='varchar'
           DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='LimitOtorisasi'
+          Hidden=true
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='LastCloseDate'
+          Hidden=true
+          DataTypeName='timestamp'
+          DataLength=20
         >}Name='uipData'
     >, object:rtf::PClassUI<
       Name='uipTransaction'

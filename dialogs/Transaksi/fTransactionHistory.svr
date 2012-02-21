@@ -28,6 +28,14 @@ document <
           DataTypeName='varchar'
           DataLength=30
         >, object:rpclass::TCustomLoadedField<
+          Name='LimitOtorisasi'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LastCloseDate'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
           Name='BeginItemNo'
           DataTypeName='integer'
           DataLength=20

@@ -212,18 +212,37 @@ class fTransactionHistory:
     dlg = app.CreateForm(formname,formname,0,None,None)
     dlg.Show(TransactionId)
 
-  def CheckSpecialTransaction(self):
+  def CheckIsProcessAllowed(self):
+    app = self.FormObject.ClientApplication
     uipTran = self.uipTransaction
+    uipData = self.uipData
 
     if uipTran.TransactionCode == 'INVC' :
       raise 'PERINGATAN','Transaksi pembuatan invoice tidak dapat diubah / dihapus menggunakan form ini.\n Silahkan gunakan form daftar Invoice'
 
     if uipTran.TransactionCode == 'SD002' :
-      raise 'PERINGATAN','Transaksi ini tidak dapat diubah / dihapus menggunakan form ini karena berasal dari eksternal aplikasi.\n Silahkan gunakan fungsi hapus / ubah dari eksternal aplikasi'
+      raise 'PERINGATAN','Transaksi ini tidak dapat diubah / dihapus menggunakan form ini,\n' \
+                        'karena berasal dari eksternal aplikasi.\n' \
+                        'Silahkan gunakan fungsi hapus / ubah dari eksternal aplikasi'
 
     if uipTran.TransactionCode == 'TB' :
-      raise 'PERINGATAN','Transaksi Saldo Awal tidak dapat diubah / dihapus menggunakan form ini .\n Silahkan gunakan form Saldo Awal'
+      raise 'PERINGATAN','Transaksi Saldo Awal tidak dapat diubah / dihapus menggunakan form ini.\n' \
+                         'Silahkan gunakan form Saldo Awal'
 
+    if uipTran.BranchCode != self.uipData.BranchCode :
+      raise 'PERINGATAN','Anda tidak dapat mengubah / menghapus transaksi milik cabang lain'
+
+    if uipTran.AuthStatus == 'T' and not self.uipData.IsSPV :
+      if uipTran.Amount > uipData.LimitOtorisasi :
+        raise 'PERINGATAN','Anda tidak dapat mengubah / menghapus transaksi.\n' \
+                'Karena  limit perubahan / penghapusan transaksi yang diijinkan untuk anda adalah %s.' % \
+               app.ModLibUtils.FormatFloat(',0.00',uipData.LimitOtorisasi)
+
+    if uipTran.ActualDate[:3]  <= uipData.LastCloseDate[:3] :
+      raise 'PERINGATAN','Anda tidak dapat mengubah / menghapus transaksi.\n' \
+                         'Karena tanggal transaksi telah ditutup buku'
+
+    
   def EditTransaction(self):
     app = self.app
     form = self.form
@@ -234,13 +253,13 @@ class fTransactionHistory:
     #if uipTran.AuthStatus == 'T' :
     #  raise 'PERINGATAN','Transaksi ini tidak dapat diubah karena telah di otorisasi'
       
-    self.CheckSpecialTransaction()
+    self.CheckIsProcessAllowed()
       
-    if uipTran.BranchCode != self.uipData.BranchCode :
-      raise 'PERINGATAN','Anda tidak dapat mengubah transaksi milik cabang lain'
+    #if uipTran.BranchCode != self.uipData.BranchCode :
+    #  raise 'PERINGATAN','Anda tidak dapat mengubah transaksi milik cabang lain'
 
-    if uipTran.AuthStatus == 'T' and not self.uipData.IsSPV:
-      raise 'PERINGATAN','Transaksi ini tidak dapat diubah karena telah di otorisasi.\nSilahkan hubungi supervisor cabang anda'
+    #if uipTran.AuthStatus == 'T' and not self.uipData.IsSPV:
+    #  raise 'PERINGATAN','Transaksi ini tidak dapat diubah karena telah di otorisasi.\nSilahkan hubungi supervisor cabang anda'
       
     TransactionId = uipTran.TransactionId or 0 #qTransaction.GetFieldValue('Transaction.TransactionId')
 
@@ -277,13 +296,13 @@ class fTransactionHistory:
     form = self.form
     uipTran = self.uipTransaction
 
-    self.CheckSpecialTransaction()
+    self.CheckIsProcessAllowed()
     
-    if uipTran.BranchCode != self.uipData.BranchCode :
-      raise 'PERINGATAN','Anda tidak dapat menghapus transaksi milik cabang lain'
+    #if uipTran.BranchCode != self.uipData.BranchCode :
+    #  raise 'PERINGATAN','Anda tidak dapat menghapus transaksi milik cabang lain'
       
-    if uipTran.AuthStatus == 'T' and not self.uipData.IsSPV:
-      raise 'PERINGATAN','Transaksi ini tidak dapat dihapus karena telah di otorisasi.\nSilahkan hubungi supervisor cabang anda'
+    #if uipTran.AuthStatus == 'T' and not self.uipData.IsSPV:
+    #  raise 'PERINGATAN','Transaksi ini tidak dapat dihapus karena telah di otorisasi.\nSilahkan hubungi supervisor cabang anda'
 
     if app.ConfirmDialog('Yakin Hapus Transaksi'):
       TransactionId = uipTran.TransactionId or 0

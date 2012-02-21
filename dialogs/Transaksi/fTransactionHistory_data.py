@@ -10,6 +10,9 @@ def FormSetDataEx(uideflist, parameter):
 
   if (parameter.DatasetCount == 0 or
     parameter.GetDataset(0).Structure.StructureName != 'data'):
+
+    helper = phelper.PObjectHelper(config)
+    
     #=== Routine Saat Form Ditampilkan
     rec = uideflist.uipData.Dataset.AddRecord()
     rec.UserId = config.securitycontext.InitUser
@@ -21,6 +24,22 @@ def FormSetDataEx(uideflist, parameter):
     rec.BranchCode = config.securitycontext.GetUserInfo()[4]
     rec.BranchName = config.securitycontext.GetUserInfo()[5]
     rec.HeadOfficeCode = config.SysVarIntf.GetStringSysVar('OPTION','HeadOfficeCode')
+    
+    # set Limit Otorisasi
+    corporate = helper.CreateObject('Corporate')
+    rec.LimitOtorisasi = corporate.GetLimitOtorisasi()
+
+
+    # set Tanggal Tutup Buku Terakhir
+    app = config.AppObject
+    res = app.rexecscript('accounting','appinterface/AccountingDay.GetLastCloseDate',app.CreateValues())
+
+    recAcc = res.FirstRecord
+    if recAcc.Is_Err : raise '',recAcc.Err_Message
+
+    rec.LastCloseDate = int(recAcc.LastCloseDate)
+    
+    
   else:
     #-- Routine untuk SetDataWithParameters
     

@@ -31,13 +31,13 @@ def JurnalTransaksi(config, params, returns):
   data = params.FirstRecord
   try :
     oTran = helper.GetObject('Transaction', data.TransactionId)
-    if oTran.IsPosted == 'T':
-      status.Is_Err = 1
-      status.Err_Message = 'Transaksi sudah diposting'
-    else:
-      st, errmsg = oTran.CreateJournal()
-      status.Is_Err = st
-      status.Err_Message = errmsg
+    #if oTran.IsPosted == 'T':
+    #  status.Is_Err = 1
+    #  status.Err_Message = 'Transaksi sudah diposting'
+    #else:
+    st, errmsg = oTran.CreateJournal()
+    status.Is_Err = st
+    status.Err_Message = errmsg
   except:
     status.Is_Err = 1
     status.Err_Message = str(sys.exc_info()[1])

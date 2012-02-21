@@ -408,6 +408,8 @@ class Transaction(pobject.PObject):
       oInvoice.PaymentTransactionId = None
       oInvoice.InvoicePaymentStatus = 'F'
     
+    self.Config.FlushUpdates()
+    
   def CancelTransaction(self):
     #self.AuthStatus = 'F'
     self.IsPosted = 'F'
@@ -1052,7 +1054,9 @@ class TransactionItem(pobject.PObject):
       oInvoice.PaymentTransactionId = None
       oInvoice.PaymentTransactionItemId = None
       oInvoice.InvoicePaymentStatus = 'F'
-      
+    
+    self.Config.FlushUpdates()
+
   def AddAmount(self, Amount):
     self.Amount += Amount
     self.EkuivalenAmount += (Amount * self.Rate)
