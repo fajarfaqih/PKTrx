@@ -119,7 +119,7 @@ document <
             >}DisplayedFields={object:rtf::FieldUIElmtSetting<
               Name='LAccount.Account_Name'
               DataTypeName='varchar'
-              DataLength=30
+              DataLength=100
               UsedAsDisplay=true
               KeyOrDisplayName='Account_Name'
               FinalDisplayFieldName='Account_Name'

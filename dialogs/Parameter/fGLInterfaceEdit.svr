@@ -23,7 +23,7 @@ document <
         >, object:rpclass::TCustomLoadedField<
           Name='LAccount.Account_Name'
           DataTypeName='varchar'
-          DataLength=30
+          DataLength=100
         >}CreateInstanceOnNew=true
       DeleteOnDel=true
       SetMasterDetailRelationship=true
