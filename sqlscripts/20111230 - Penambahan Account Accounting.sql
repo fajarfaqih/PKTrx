@@ -38,3 +38,9 @@ select * from accounting.account where account_code='5530103'
 select * from accounting.accountinstance where account_code ='5530102'
 select * from accounting.accountinstance where account_code ='3150101' and branch_code='115' and currency_code='000'
 
+select * from transaction.distributiontransferinfo
+
+update transaction.distributiontransferinfo c set balance = (
+select sum(amount) from transaction.transactionitem a, transaction.accounttransactionitem b
+where a.transactionitemid=b.transactionitemid and c.distributionid = b.distributiontransferid and distributiontransferid is not null)
+

@@ -201,8 +201,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=425
-      Height=201
+      Width=240
+      Height=96
       Container1=$CONTAINERS['PAction']
       Container2=$CONTAINERS['PData']
       InversedAlign=true

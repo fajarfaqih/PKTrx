@@ -274,7 +274,7 @@ def GenerateText(helper, config, param):
   global addFilter
    
   # Get Info Cabang     
-  corporate = helper.CreateObject('Corporate')             
+  corporate = helper.CreateObject('Corporate')
   reportdef = config.HomeDir + 'reports/collectionreport.mtr'
   oReport = textreport.TextReport(reportdef)  
   helper = phelper.PObjectHelper(config)

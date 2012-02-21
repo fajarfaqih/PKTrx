@@ -1,5 +1,5 @@
 
-def FormSetDataEx(uideflist,paremetes):
+def FormSetDataEx(uideflist,params):
   config = uideflist.config
 
   rec = uideflist.uipFilter.Dataset.AddRecord()

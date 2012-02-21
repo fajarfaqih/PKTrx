@@ -91,7 +91,7 @@ def BeforeRestoreSession(config, sessionName):
     
     elif sessionName == 'accounting':
         appObj.rlogin(
-            config.GetGlobalSetting('RLOGIN_ACC_HOST'), 
+            config.GetGlobalSetting('RLOGIN_ACC_HOST'),
             config.GetGlobalSetting('RLOGIN_ACC_APP'), 
             config.SecurityContext.UserId, 
             Password, 

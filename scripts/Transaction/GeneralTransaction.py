@@ -140,7 +140,10 @@ def UpdateTransaction(TranCode, config, srequest, params):
 
   status,msg = oTran.CreateJournal()      
   return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
+# end def 
 
+
+# DEFINE 
 dictJournalCodeDonor = {
   1 : 'C10Z',
   2 : 'C10I',
@@ -868,9 +871,19 @@ def Investment(helper,oTran,oBatch,request,params):
       oAccount = helper.CreatePObject('InvestmentEmployee', InvesteeId)
     # end if
   else :
-    oAccount = helper.GetObject('Investment',AccountNo).CastToLowestDescendant()  
+    oAccount = helper.GetObject('Investment',AccountNo).CastToLowestDescendant()
   # end if
   
+  if request[u'InvesteeCategory'] == 1 : # ==> Non Employee
+    oInvestee = helper.GetObject('Investee',InvesteeId)
+    InvesteeName = oInvestee.InvesteeName
+  else : # InvesteeCategory == 2  ==> Employee
+    oEmployee = helper.GetObject('Employee',InvesteeId)
+    InvesteeName = oEmployee.EmployeeName
+  # end if
+
+  oTran.PaidTo = InvesteeName
+
   oAccount.BranchCode = request[u'BranchCode']
   oAccount.CurrencyCode = '000'
   oAccount.AccountName  = request[u'Description']

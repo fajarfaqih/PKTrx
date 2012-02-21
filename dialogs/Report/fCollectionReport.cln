@@ -42,8 +42,8 @@ document <
       PostLinkValues=true
     >}Containers={object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=240
-      Height=96
+      Width=793
+      Height=329
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dualsplit2']
       InversedAlign=true
@@ -120,8 +120,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit2'
-      Width=240
-      Height=96
+      Width=793
+      Height=286
       Container1=$CONTAINERS['pFilter']
       Container2=$CONTAINERS['dualsplit3']
     >, object:rtf::Panel<
@@ -589,8 +589,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit3'
-      Width=240
-      Height=96
+      Width=793
+      Height=236
       Container1=$CONTAINERS['pFilter2']
       Container2=$CONTAINERS['pFilter3']
       SplitDirection=sdrSplitLeftRight

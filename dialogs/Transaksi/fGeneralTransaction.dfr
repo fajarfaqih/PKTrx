@@ -186,8 +186,9 @@ document <
           CharCase=ecUpperCase
         >, *object:rtf::DBEdit<
           Name='Description'
-          Top=96
-          Left=8
+          Layout=clAbsolute
+          Top=264
+          Left=184
           Color=0
           ControlCaption='Keterangan'
           LayoutOrder=6
