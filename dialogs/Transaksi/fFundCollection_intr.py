@@ -1,5 +1,5 @@
 # GLOBALs
-MAPEntity = {'Z': 1, 'I': 2, 'W': 3}
+MAPEntity = {'Z': 1, 'I': 2, 'W': 3, 'A' : 4 ,'N' : 5}
 
 DefaultItems = [ 'Inputer',
                  'BranchCode',
