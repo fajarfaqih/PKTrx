@@ -996,6 +996,7 @@ def GetKwitansiPengeluaranNew(oTran):
   #corporate = oTran.Helper.CreateObject('Corporate')
   #CabangInfo = corporate.GetCabangInfo(oTran.BranchCode)
   #Nama_Cabang = CabangInfo.Nama_Cabang
+  oBranch = oTran.Helper.GetObject('Branch',oTran.Config.SecurityContext.GetUserInfo()[4])
 
   # Get Template
   PrintHelper = oTran.Helper.CreateObject('PrintHelper')
@@ -1016,7 +1017,7 @@ def GetKwitansiPengeluaranNew(oTran):
   dataKwitansi['WAKTU_CETAK'] = config.FormatDateTime('dd-mm-yyyy hh:nn',config.Now())
   dataKwitansi['TGL_BAYAR'] = config.FormatDateTime('dd mmmm yyyy',oTran.GetAsTDateTime('ActualDate'))
   dataKwitansi['TOTAL'] = config.FormatFloat('#,##0.00',Total)
-  dataKwitansi['KOTA'] = oTran.Config.SecurityContext.GetUserInfo()[5]
+  dataKwitansi['KOTA'] = oBranch.Location
   dataKwitansi['KETERANGAN'] = oTran.Description
   dataKwitansi['CURRSYMBOL'] = Currency.Symbol
   
@@ -1196,7 +1197,12 @@ def GetKwitansiPiutang(oTran,EmpMutationType):
   
   # Get Template
   PrintHelper = oTran.Helper.CreateObject('PrintHelper')
-  templateKwitansi = PrintHelper.LoadRtfTemplate('KwitansiPiutangNew')
+  if EmpMutationType == 'D' :
+    templateFileName = 'KwitansiPiutangNew'
+  else:
+    templateFileName = 'KwitansiBayarPiutangNew'
+    
+  templateKwitansi = PrintHelper.LoadRtfTemplate(templateFileName)
   
   NamaLembaga = oTran.Helper.GetObject('ParameterGlobal', 'COMPNAME').Get()
   dataKwitansi = {}
