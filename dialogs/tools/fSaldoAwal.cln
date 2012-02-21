@@ -222,15 +222,15 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=240
-      Height=96
+      Width=577
+      Height=273
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dualsplit2']
       InversedAlign=true
     >, object:rtf::DualSplit<
       Name='dualsplit2'
-      Width=240
-      Height=96
+      Width=577
+      Height=221
       Container1=$CONTAINERS['pOption']
       Container2=$CONTAINERS['multipages1']
     >, object:rtf::MultiPages<

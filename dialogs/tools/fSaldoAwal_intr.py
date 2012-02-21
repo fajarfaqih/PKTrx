@@ -555,6 +555,7 @@ class fSaldoAwal:
         'Amount: float',
         'DeprAmount: float',
         'AccumDeprAmount: float',
+        'DeprSeq: integer',
       ])
     )
 
@@ -570,7 +571,8 @@ class fSaldoAwal:
         recBalance.Amount = workbook.GetCellValue(row, 5)
         recBalance.DeprAmount = workbook.GetCellValue(row, 6)
         recBalance.AccumDeprAmount = workbook.GetCellValue(row, 7)
-
+        recBalance.DeprSeq = workbook.GetCellValue(row, 8)
+        
         row += 1
       # end while
     finally:
