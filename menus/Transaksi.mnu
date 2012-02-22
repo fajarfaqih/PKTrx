@@ -478,6 +478,12 @@ document <
           StringTag='fSummaryEmpCA'
         >, object:rmn::MenuItem<
           Name='TR0030'
+          Caption='Rekapitulasi investasi'
+          OnClick='ShowReportClick'
+          AllowedGroups='ADM;SPV;KEU'
+          StringTag='fSummaryInvestment'
+        >, object:rmn::MenuItem<
+          Name='TR0030'
           Caption='Rekapitulasi transaksi mitra'
           OnClick='ShowReportClick'
           AllowedGroups='ADM;SPV;KEU'
