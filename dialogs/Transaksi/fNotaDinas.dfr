@@ -24,6 +24,7 @@ document <
   OnEndProcessData=''
   UIParts={object:rtf::PClassUI<
       Name='uipData'
+      AlwaysPostToServer=true
     >}Containers={object:rtf::Panel<
       Name='pAction'
       Width=320
