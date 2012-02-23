@@ -123,7 +123,6 @@ def PrintNotaDinas(config,params,returns):
               and a.TransactionCode in (select transactioncode from transactiontype where grouptag='EXPENSE') \
               and a.ActualDate = '%(DATE)s' \
               and a.BranchCode = '%(BRANCHCODE)s' \
-              and a.AuthStatus = 'F' \
               and b.TransactionItemId = c.TransactionItemId \
               and b.MutationType = 'D' \
             " % filter
@@ -134,7 +133,6 @@ def PrintNotaDinas(config,params,returns):
               and a.TransactionCode = 'CO' \
               and a.ActualDate = '%(DATE)s' \
               and a.BranchCode = '%(BRANCHCODE)s' \
-              and a.AuthStatus = 'F' \
               and b.MutationType = 'D' \
             " % filter
 
