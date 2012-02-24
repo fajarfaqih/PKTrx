@@ -46,7 +46,7 @@ class fSummaryCashAdvance:
       oldIdNumber = 0
       while i < ds.RecordCount:
         rec = ds.GetRecord(i)
-        row = i + 10
+        row = i + 11
 
         if oldIdNumber != rec.NomorKaryawan :
           workbook.SetCellValue(row, 1, rec.NomorKaryawan)
