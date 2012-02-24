@@ -54,6 +54,10 @@ def SummaryEmpCA(config,params,returns):
                  )
     # end if
     
+    # Set DATE SQL PARAM
+    sqlBeginDateParam = config.FormatDateTime('yyyy-mm-dd',BeginDate)
+    sqlEndDateParam = config.FormatDateTime('yyyy-mm-dd',EndDate + 1)
+    
     dsSummary = returns.AddNewDatasetEx(
      'summary',
      ';'.join([
@@ -100,8 +104,8 @@ def SummaryEmpCA(config,params,returns):
                  order by  a.accountname \
                 " % {
                   'BRANCHCODE' : BranchCode ,
-                  'BEGINDATE' : config.FormatDateTime('yyyy-mm-dd',BeginDate),
-                  'ENDDATE' : config.FormatDateTime('yyyy-mm-dd',EndDate)
+                  'BEGINDATE' : sqlBeginDateParam,
+                  'ENDDATE' : sqlEndDateParam
                }
 
     res = config.CreateSQL(strSQL).RawResult
@@ -154,9 +158,12 @@ def SummaryEmpCA(config,params,returns):
         'Total:float',
         'AuthStatus:string',
         'AccountName:string',
+        'ReturnStatus:string',
+        'ReturnTransactionNo:string',
       ])
     )
 
+    """
     s = ' \
       SELECT FROM CashAdvanceTransactItem \
       [ \
@@ -195,9 +202,48 @@ def SummaryEmpCA(config,params,returns):
     oql.ApplyParamValues()
 
     oql.active = 1
-    ds  = oql.rawresult
+    ds  = oql.rawresult """
+    
+    strSQL = "SELECT A.TRANSACTIONITEMID, C.TRANSACTIONDATE, C.TRANSACTIONCODE, C.ACTUALDATE, B.MUTATIONTYPE, \
+        B.AMOUNT, B.EKUIVALENAMOUNT, C.REFERENCENO, C.DESCRIPTION, C.INPUTER, C.TRANSACTIONNO, \
+        C.AUTHSTATUS, B.CURRENCYCODE, B.RATE, E.SHORT_NAME, C.CURRENCYCODE, C.RATE, D.SHORT_NAME, \
+        G.ACCOUNTNAME, A.TRANSACTIONITEMID,  a.returntransactionitemid, \
+          (select transactionno from \
+             transaction.transaction tr, transaction.transactionitem ti \
+             where tr.transactionid=ti.transactionid and ti.transactionitemid=a.returntransactionitemid) \
+           as return_transactionno \
+        FROM \
+        transaction.ACCOUNTTRANSACTIONITEM A, \
+        transaction.TRANSACTIONITEM B, \
+        transaction.TRANSACTION C, \
+        transaction.CURRENCY D, \
+        transaction.CURRENCY E, \
+        transaction.ACCOUNTRECEIVABLE F, \
+        transaction.FINANCIALACCOUNT G \
+        WHERE A.ACCOUNTTITYPE = 'C' AND \
+        A.TransactionItemId = B.TransactionItemId AND \
+        B.TRANSACTIONID = C.TRANSACTIONID AND \
+        C.CURRENCYCODE = D.CURRENCY_CODE AND \
+        B.CURRENCYCODE = E.CURRENCY_CODE AND \
+        A.ACCOUNTNO = F.ACCOUNTNO AND \
+        F.AccountNo = G.AccountNo AND \
+        ( C.ACTUALDATE BETWEEN '%(BEGINDATE)s' AND '%(ENDDATE)s' AND B.BRANCHCODE = '%(BRANCHCODE)s' ) \
+        ORDER BY C.ACTUALDATE ASC, A.TRANSACTIONITEMID ASC \
+        " % { 'BRANCHCODE' : BranchCode ,
+              'BEGINDATE' : sqlBeginDateParam,
+              'ENDDATE' : sqlEndDateParam
+        }
 
+    ds = config.CreateSQL(strSQL).RawResult
+
+    ds.First()
+
+    # dict untuk status otorisasi
     stAuth = {'T':'Sudah Otorisasi','F':'Belum Otorisasi'}
+
+    # dict untuk status pengembalian LPJ
+    stReturn = {0 : 'Belum ada LPJ', 1 : 'Sudah Ada LPJ' }
+    
     while not ds.Eof:
       recHist = dsHist.AddRecord()
       recHist.TransactionItemId = ds.TransactionItemId
@@ -243,6 +289,8 @@ def SummaryEmpCA(config,params,returns):
       recHist.TransactionNo = ds.TransactionNo
       recHist.AccountName = ds.AccountName
       recHist.AuthStatus = stAuth[ds.AuthStatus]
+      recHist.ReturnStatus = stReturn[ds.ReturnTransactionItemid not in [0,None,'']]
+      recHist.ReturnTransactionNo = ds.return_transactionno
 
       ds.Next()
     #-- while

@@ -85,11 +85,16 @@ class fSummaryCashAdvance:
         workbook.SetCellValue(row, 7, rec.AmountEkuivalen)
         workbook.SetCellValue(row, 8, rec.ReferenceNo)
         workbook.SetCellValue(row, 9, rec.Description)
-        workbook.SetCellValue(row, 10, rec.Inputer)
+        workbook.SetCellValue(row, 10, rec.ReturnStatus)
+        workbook.SetCellValue(row, 11, rec.ReturnTransactionNo)
+        workbook.SetCellValue(row, 12, rec.Inputer)
 
         i += 1
       # end while
 
+      # set sheet aktif
+      workbook.ActivateWorksheet('DataRekap')
+      
       workbook.SaveAs(filename)
       self.app.ShellExecuteFile(filename)
 
