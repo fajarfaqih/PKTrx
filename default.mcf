@@ -52,6 +52,7 @@ Investment=maccount
 InvestmentEmployee=maccount
 InvestmentNonEmployee=maccount
 InvestmentCategory=maccount
+Investee=maccount
 
 Donor=mdonor
 CorporateDonor=mdonor
@@ -93,6 +94,7 @@ BPHelper=mbprocess
 BPScenarioStep=mbprocess
 BPScript=mbprocess
 BPScenario=mbprocess
+
 
 Sponsor=msponsor
 SponsorTransaction=msponsor

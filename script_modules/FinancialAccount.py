@@ -412,7 +412,12 @@ class InvestmentCategory(pobject.PObject):
         oGLIMember.Description = item[0]
         oGLIMember.AccountCode = item[1]
     
-        
+class Investee(pobject.PObject):
+  # static variable
+  pobject_classname = 'Investee'
+  pobject_keys = ['InvesteeId']
+  
+
 class Investment(AccountReceivable):
   # static variable
   pobject_classname = 'Investment'
