@@ -13,7 +13,7 @@ def DAFScriptMain(config,parameters,returnpacket):
   try:
     
     strSQL = "select productid,productname,productcode from transaction.product \
-        where isdetail='T' and productcode='101' order by productcode"
+        where isdetail='T' order by productcode"
     oRes = config.CreateSQL(strSQL).RawResult
     
     while not oRes.Eof:

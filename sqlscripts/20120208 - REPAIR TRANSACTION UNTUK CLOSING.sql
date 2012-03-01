@@ -392,8 +392,8 @@ exists (
     and a.accounttitype='D'
     and c.productcode like '122%' );
 
-update transaction.product set  percentageofamilfunds =0 where productid = 125;
-update transaction.product set  percentageofamilfunds =0 where productcode like '122%';
+update transaction.product set  percentageofamilfunds =0 where productid = 125 and percentageofamilfunds > 0;
+update transaction.product set  percentageofamilfunds =0 where productcode like '122%' and percentageofamilfunds > 0;
 
 #******* Update Percentage Of Fund Collection
 
@@ -481,6 +481,289 @@ update enterprise.limittransaksi a set nilai_limit=10000000000,nilai_limit_akumu
 where exists(
 select 1 from enterprise. listperanuser b where id_peran in ('ADM','SPV') and a.id_user=b.id_user)
 
+
+#------------- Update Jurnal untuk uang muka
+select * from transaction.transactionitem ti
+where exists(
+select 1 
+from transaction.transactionitem i , transaction.transaction t, transaction.accounttransactionitem c
+where mutationtype='D'
+and t.transactionid=i.transactionid
+and i.transactionitemid=c.transactionitemid
+and t.transactioncode='CA'
+and t.branchcode='001'
+and ti.transactionitemid=i.transactionitemid)
+
+update transaction.accounttransactionitem ti set fundentity = 4
+where exists(
+select 1 
+from transaction.transactionitem i , transaction.transaction t, transaction.accounttransactionitem c
+where mutationtype='D'
+and t.transactionid=i.transactionid
+and i.transactionitemid=c.transactionitemid
+and t.transactioncode='CA'
+and t.branchcode='001'
+and fundentity is null
+and ti.transactionitemid=i.transactionitemid);
+
+update transaction.transactionitem ti set parameterjournalid = '10'
+where exists(
+select 1 
+from transaction.transactionitem i , transaction.transaction t, transaction.accounttransactionitem c
+where mutationtype='C'
+and t.transactionid=i.transactionid
+and i.transactionitemid=c.transactionitemid
+and t.transactioncode='CA'
+and t.branchcode='001'
+and ti.transactionitemid=i.transactionitemid);
+
+update transaction.transactionitem ti set parameterjournalid = 'AK-Z'
+where exists(
+select 1 
+from transaction.transactionitem i , transaction.transaction t, transaction.accounttransactionitem c
+where mutationtype='D'
+and t.transactionid=i.transactionid
+and i.transactionitemid=c.transactionitemid
+and t.transactioncode='CA'
+and t.branchcode='001'
+and fundentity=1
+and ti.transactionitemid=i.transactionitemid);
+
+update transaction.transactionitem ti set parameterjournalid = 'AK-I'
+where exists(
+select 1 
+from transaction.transactionitem i , transaction.transaction t, transaction.accounttransactionitem c
+where mutationtype='D'
+and t.transactionid=i.transactionid
+and i.transactionitemid=c.transactionitemid
+and t.transactioncode='CA'
+and t.branchcode='001'
+and fundentity=2
+and ti.transactionitemid=i.transactionitemid);
+
+update transaction.transactionitem ti set parameterjournalid = 'AK-A2'
+where exists(
+select 1 
+from transaction.transactionitem i , transaction.transaction t, transaction.accounttransactionitem c
+where mutationtype='D'
+and t.transactionid=i.transactionid
+and i.transactionitemid=c.transactionitemid
+and t.transactioncode='CA'
+and t.branchcode='001'
+and fundentity=4
+and ti.transactionitemid=i.transactionitemid);
+
+update transaction.transactionitem ti set parameterjournalid = 'AK-N'
+where exists(
+select 1 
+from transaction.transactionitem i , transaction.transaction t, transaction.accounttransactionitem c
+where mutationtype='D'
+and t.transactionid=i.transactionid
+and i.transactionitemid=c.transactionitemid
+and t.transactioncode='CA'
+and t.branchcode='001'
+and fundentity=5
+and ti.transactionitemid=i.transactionitemid);
+
+-- Update Parameter Jurnal
+update transaction.parameterjournalitem a set basesign = 'N'
+where exists(
+select 1 from transaction.parameterjournal b
+where (b.journalcode like 'AK%')
+and a.parameterjournalid =b.parameterjournalid
+) and accountcode like '4%';
+
+update transaction.parameterjournalitem a set basesign = 'P'
+where exists(
+select 1 from transaction.parameterjournal b
+where (b.journalcode like 'AK%' )
+and a.parameterjournalid =b.parameterjournalid
+) and accountcode like '5%';
+
+update transaction.parameterjournalitem a set basesign = 'P'
+where exists(
+select 1 from transaction.parameterjournal b
+where (b.journalcode like 'PAK%')
+and a.parameterjournalid =b.parameterjournalid
+) and accountcode like '4%';
+
+
+update transaction.parameterjournalitem a set basesign = 'N'
+where exists(
+select 1 from transaction.parameterjournal b
+where (b.journalcode like 'PAK%')
+and a.parameterjournalid =b.parameterjournalid
+) and accountcode like '5%';
+
+-- Tambah parameter corporate name di accounting
+insert into accounting.parameter values('CorporateName',null,'Nama Korporat','PKPU');
+  
+
+-- UPDATE 
+update transaction.transactionitem i  set accountcode = (select accountcode from 
+   transaction.glinterface g, 
+   transaction.accounttransactionitem a,
+    transaction.productaccount b,
+    transaction.product c
+    where  a.transactionitemid=i.transactionitemid
+    and a.accountno = b.accountno
+    and b.productid = c.productid
+    and g.productid = c.productid
+    and interfacecode='PHP_INFAQ') where 
+exists (
+  select 1 from transaction.accounttransactionitem a,
+    transaction.productaccount b,
+    transaction.product c
+  where a.transactionitemid=i.transactionitemid
+    and a.accountno = b.accountno
+    and b.productid = c.productid
+    and a.fundentity = 2
+    and a.accounttitype='D')
+    and exists (select accountcode from 
+   transaction.glinterface g, 
+   transaction.accounttransactionitem a,
+    transaction.productaccount b,
+    transaction.product c
+    where  a.transactionitemid=i.transactionitemid
+    and a.accountno = b.accountno
+    and b.productid = c.productid
+    and g.productid = c.productid
+    and g.accountcode <> i.accountcode 
+    and interfacecode='PHP_INFAQ');
+
+   update transaction.transactionitem i  set accountcode = (select accountcode from 
+   transaction.glinterface g, 
+   transaction.accounttransactionitem a,
+    transaction.productaccount b,
+    transaction.product c
+    where  a.transactionitemid=i.transactionitemid
+    and a.accountno = b.accountno
+    and b.productid = c.productid
+    and g.productid = c.productid
+    and interfacecode='PDG_INFAQ') where 
+exists (
+  select 1 from transaction.accounttransactionitem a,
+    transaction.productaccount b,
+    transaction.product c
+  where a.transactionitemid=i.transactionitemid
+    and a.accountno = b.accountno
+    and b.productid = c.productid
+    and a.fundentity = 2
+    and a.accounttitype='Z')
+    and exists (select accountcode from 
+   transaction.glinterface g, 
+   transaction.accounttransactionitem a,
+    transaction.productaccount b,
+    transaction.product c
+    where  a.transactionitemid=i.transactionitemid
+    and a.accountno = b.accountno
+    and b.productid = c.productid
+    and g.productid = c.productid
+    and g.accountcode <> i.accountcode 
+    and interfacecode='PDG_INFAQ');  
+
+
+-- UPDATE ACCOUNT HIERARCHY
+create sequence accounting.seq_hierarchy start with 6701;
+insert into accounting.accounthierarchy select nextval('accounting.seq_hierarchy'), account_code,account_code from accounting.account ac where
+is_detail='T' and
+not exists
+(select 1
+from accounting.accounthierarchy ah
+where ah.fl_parentaccountcode=ah.fl_childaccountcode and ah.fl_parentaccountcode=ac.account_code );
+drop sequence accounting.seq_hierarchy;
+update accounting.id_gen set last_id=(select max(accounthierarchy_id) from accounting.accounthierarchy) +1 where id_code='ACCOUNTHIERARCHY'
+
+-- DAFTAR TRANSAKSI BERDASARKAN CPA ACCOUNT 
+select A.FL_ACCOUNT,ac.account_name,sum(amount_debit * nilai_kurs),sum(amount_credit* nilai_kurs)
+FROM
+accounting.account ac,
+accounting.JOURNAL b,
+accounting.JOURNALITEM a
+left outer join transaction.transaction c
+on (c.journalblockid = a.id_journalblock)
+WHERE a.fl_account = ac.account_code and A.FL_JOURNAL = B.JOURNAL_NO AND 
+(B.JOURNAL_DATE >= '2011-01-01' AND B.JOURNAL_DATE < '2011-02-01' AND A.branch_code = '001')
+and fl_cpa_accountcode in ('3150101')
+group by A.FL_ACCOUNT, ac.account_name
+order by A.FL_ACCOUNT    
+
+-- Update Jurnal Piutang --> STATUS UPLOAD PRODUCTION = YES
+update transaction.accounttransactionitem ti set fundentity=4
+where fundentity is null and exists(
+select 1 
+from transaction.transactionitem i , transaction.transaction t, transaction.accounttransactionitem c
+where mutationtype='D'
+and t.transactionid=i.transactionid
+and i.transactionitemid=c.transactionitemid
+and i.parameterjournalid='10'
+and t.transactioncode='EAR'
+and ti.transactionitemid=i.transactionitemid);
+
+update transaction.transactionitem ti set parameterjournalid='AK-A1'
+where parameterjournalid='10' and exists(
+select 1 
+from transaction.transactionitem i , transaction.transaction t, transaction.accounttransactionitem c
+where mutationtype='D'
+and t.transactionid=i.transactionid
+and i.transactionitemid=c.transactionitemid
+and t.transactioncode='EAR'
+and c.fundentity = 4
+and ti.transactionitemid=i.transactionitemid)
+
+-- Update Saldo FinancialAccount --> STATUS UPLOAD PRODUCTION = YES
+
+update transaction.financialaccount fa 
+set balance=coalesce((select sum(case when mutationtype='D' then ti.amount else (-1 * ti.amount) end) 
+from transaction.transaction t, transaction.transactionitem ti,transaction.accounttransactionitem ac 
+where t.transactionid=ti.transactionid and ac.accountno=fa.accountno and ac.transactionitemid=ti.transactionitemid
+and authstatus='T'), 0)
+where financialaccounttype='R' and accountno like 'EXT%'
+
+-- DAFTAR TRANSAKSI ASET YANG BELUM MEMAKAI FORM ASET
+select c.transactionno,sum(amount_debit * nilai_kurs),sum(amount_credit* nilai_kurs)
+FROM
+accounting.account ac,
+accounting.JOURNAL b,
+accounting.JOURNALITEM a
+left outer join transaction.transaction c
+on (c.journalblockid = a.id_journalblock)
+WHERE a.fl_account = ac.account_code and A.FL_JOURNAL = B.JOURNAL_NO AND 
+(B.JOURNAL_DATE >= '2011-01-01' AND B.JOURNAL_DATE < '2011-02-01' AND A.branch_code = '001')
+and fl_account in ('1220104')
+and c.transactioncode='CO'
+group by c.transactionno 
+
+--Select journalitem group by transaction transactioncode
+
+select c.transactioncode, sum(amount_debit * nilai_kurs), sum(amount_credit * nilai_kurs)
+FROM
+accounting.account ac,
+accounting.accounthierarchy ah ,
+accounting.JOURNAL b,
+accounting.JOURNALITEM a
+left outer join transaction.transaction c
+on (c.journalblockid = a.id_journalblock)
+WHERE a.fl_account = ac.account_code and A.FL_JOURNAL = B.JOURNAL_NO 
+AND ah.fl_childaccountcode = a.fl_account
+and (B.JOURNAL_DATE >= '2011-01-01' AND B.JOURNAL_DATE < '2011-02-01' AND A.branch_code = '001')
+and ah.fl_parentaccountcode in ('111')
+group by c.transactioncode;
+
+select c.transactionno
+--, sum(amount_debit * nilai_kurs), sum(amount_credit * nilai_kurs)
+FROM
+accounting.account ac,
+accounting.accounthierarchy ah ,
+accounting.JOURNAL b,
+accounting.JOURNALITEM a
+left outer join transaction.transaction c
+on (c.journalblockid = a.id_journalblock)
+WHERE a.fl_account = ac.account_code and A.FL_JOURNAL = B.JOURNAL_NO 
+AND ah.fl_childaccountcode = a.fl_account
+and (B.JOURNAL_DATE >= '2011-01-01' AND B.JOURNAL_DATE < '2011-02-01' AND A.branch_code = '001')
+and ah.fl_parentaccountcode in ('111')
+and c.transactioncode='DT'
 
 -------------
 
