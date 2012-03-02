@@ -62,6 +62,10 @@ def GetHistTransaction(config, params, returns):
   BeginDate = int(rec.BeginDate)
   EndDate   = int(rec.EndDate)
 
+  sqlBeginDateParam = config.FormatDateTime('yyyy-mm-dd',BeginDate)
+  sqlEndDateParam = config.FormatDateTime('yyyy-mm-dd',EndDate + 1)
+
+
   # Preparing returns
   
   #AccountReceivable = helper.GetObject('EmployeeAccountReceivable',AccountNo)
@@ -107,9 +111,11 @@ def GetHistTransaction(config, params, returns):
       'TransactionNo:string',
       'Total:float',
       'AuthStatus:string',
+      'ReturnStatus:string',
+      'ReturnTransactionNo:string',
     ])
   )
-
+  """
   s = ' \
     SELECT FROM CashAdvanceTransactItem \
     [ \
@@ -139,7 +145,6 @@ def GetHistTransaction(config, params, returns):
       Self \
     ) \
     THEN ORDER BY ASC ActualDate, ASC TransactionItemId;'
-
   oql = config.OQLEngine.CreateOQL(s)
   oql.SetParameterValueByName('EmployeeId', EmployeeId)
   oql.SetParameterValueByName('BeginDate', BeginDate)
@@ -149,7 +154,46 @@ def GetHistTransaction(config, params, returns):
   oql.active = 1
   ds  = oql.rawresult
 
+  """
+  
+  strSQL = "SELECT A.TRANSACTIONITEMID, C.TRANSACTIONDATE, C.TRANSACTIONCODE, C.ACTUALDATE, B.MUTATIONTYPE, \
+    B.AMOUNT, B.EKUIVALENAMOUNT, C.REFERENCENO, C.DESCRIPTION, C.INPUTER, C.TRANSACTIONNO, \
+    C.AUTHSTATUS, B.CURRENCYCODE, B.RATE, E.SHORT_NAME, C.CURRENCYCODE, C.RATE, D.SHORT_NAME, \
+    G.ACCOUNTNAME, A.TRANSACTIONITEMID,  a.returntransactionitemid, \
+      (select transactionno from \
+         transaction.transaction tr, transaction.transactionitem ti \
+         where tr.transactionid=ti.transactionid and ti.transactionitemid=a.returntransactionitemid) \
+       as return_transactionno \
+    FROM \
+    transaction.ACCOUNTTRANSACTIONITEM A, \
+    transaction.TRANSACTIONITEM B, \
+    transaction.TRANSACTION C, \
+    transaction.CURRENCY D, \
+    transaction.CURRENCY E, \
+    transaction.ACCOUNTRECEIVABLE F, \
+    transaction.FINANCIALACCOUNT G \
+    WHERE A.ACCOUNTTITYPE = 'C' AND \
+    A.TransactionItemId = B.TransactionItemId AND \
+    B.TRANSACTIONID = C.TRANSACTIONID AND \
+    C.CURRENCYCODE = D.CURRENCY_CODE AND \
+    B.CURRENCYCODE = E.CURRENCY_CODE AND \
+    A.ACCOUNTNO = F.ACCOUNTNO AND \
+    F.AccountNo = G.AccountNo AND \
+    ( C.ACTUALDATE BETWEEN '%(BEGINDATE)s' AND '%(ENDDATE)s' AND F.EmployeeIdNumber = %(EmployeeId)d ) \
+    ORDER BY C.ACTUALDATE ASC, A.TRANSACTIONITEMID ASC \
+    " % { 'EmployeeId' : EmployeeId ,
+          'BEGINDATE' : sqlBeginDateParam,
+          'ENDDATE' : sqlEndDateParam
+    }
+
+  ds = config.CreateSQL(strSQL).RawResult
+
+  # dict untuk status otorisasi
   stAuth = {'T':'Sudah Otorisasi','F':'Belum Otorisasi'}
+
+  # dict untuk status pengembalian LPJ
+  stReturn = {0 : 'Belum ada LPJ', 1 : 'Sudah Ada LPJ' }
+
   while not ds.Eof:
     recHist = dsHist.AddRecord()
     recHist.TransactionItemId = ds.TransactionItemId
@@ -194,6 +238,8 @@ def GetHistTransaction(config, params, returns):
     recHist.Inputer = ds.Inputer
     recHist.TransactionNo = ds.TransactionNo
     recHist.AuthStatus = stAuth[ds.AuthStatus]
+    recHist.ReturnStatus = stReturn[ds.ReturnTransactionItemid not in [0,None,'']]
+    recHist.ReturnTransactionNo = ds.return_transactionno
 
     ds.Next()
   #-- while

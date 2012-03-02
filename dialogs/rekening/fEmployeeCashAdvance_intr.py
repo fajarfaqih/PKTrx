@@ -31,7 +31,7 @@ class fEmployeeCashAdvance:
     app = self.app
 
     filename = self.oPrint.ConfirmDestinationPath(app,'xls')
-    if filename == '' : return
+    if filename in ['',None] : return
 
     self.ViewHistTransaction(2,filename)
 
@@ -77,6 +77,8 @@ class fEmployeeCashAdvance:
         uipTran.CurrencyName      = rec.CurrencyName
         uipTran.Rate              = rec.Rate
         uipTran.AmountEkuivalen   = rec.AmountEkuivalen
+        uipTran.ReturnStatus      = rec.ReturnStatus
+        uipTran.ReturnTransactionNo = rec.ReturnTransactionNo
 
         i += 1
       # end of while
@@ -115,10 +117,13 @@ class fEmployeeCashAdvance:
           workbook.SetCellValue(row, 5, rec.CurrencyName)
           workbook.SetCellValue(row, 6, rec.AmountEkuivalen)
           workbook.SetCellValue(row, 7, rec.Description)
-          workbook.SetCellValue(row, 8, rec.Inputer)
-          workbook.SetCellValue(row, 9, rec.ReferenceNo)
-          workbook.SetCellValue(row, 10, rec.AuthStatus)
-          
+          workbook.SetCellValue(row, 8, rec.ReturnStatus)
+          workbook.SetCellValue(row, 9, rec.ReturnTransactionNo)
+          workbook.SetCellValue(row, 10, rec.Inputer)
+          workbook.SetCellValue(row, 11, rec.ReferenceNo)
+          workbook.SetCellValue(row, 12, rec.AuthStatus)
+
+
           i += 1
         # end of while
 

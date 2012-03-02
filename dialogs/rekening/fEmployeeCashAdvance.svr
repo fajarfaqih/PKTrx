@@ -77,13 +77,21 @@ document <
           DataTypeName='double'
           DataLength=20
         >, object:rpclass::TCustomLoadedField<
-          Name='ReferenceNo'
-          DataTypeName='varchar'
-          DataLength=30
-        >, object:rpclass::TCustomLoadedField<
           Name='Description'
           DataTypeName='varchar'
           DataLength=100
+        >, object:rpclass::TCustomLoadedField<
+          Name='ReturnStatus'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='ReturnTransactionNo'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='ReferenceNo'
+          DataTypeName='varchar'
+          DataLength=30
         >, object:rpclass::TCustomLoadedField<
           Name='Inputer'
           DataTypeName='varchar'

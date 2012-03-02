@@ -29,8 +29,8 @@ document <
       MultiLine=true
     >}Containers={object:rtf::DualSplit<
       Name='dsMain'
-      Width=700
-      Height=505
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pSelect']
       Container2=$CONTAINERS['dsAccount']
       InversedAlign=true
@@ -139,14 +139,25 @@ document <
           DataTypeName='double'
           DataLength=20
         >, object:rtf::FieldUIElmtSetting<
+          Name='Description'
+          ControlCaption='Deskripsi'
+          DataTypeName='varchar'
+          DataLength=100
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ReturnStatus'
+          ControlCaption='Status LPJ'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ReturnTransactionNo'
+          ControlCaption='No Transaksi LPJ'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
           Name='ReferenceNo'
           ControlCaption='No Referensi'
           DataTypeName='varchar'
           DataLength=30
-        >, object:rtf::FieldUIElmtSetting<
-          Name='Description'
-          DataTypeName='varchar'
-          DataLength=100
         >, object:rtf::FieldUIElmtSetting<
           Name='Inputer'
           ControlCaption='Inputer'
@@ -204,7 +215,7 @@ document <
           FieldName='Amount'
           DisplayFormat=',0.00'
           TitleCaption='Nilai'
-          Width=120
+          Width=100
         >, *object:rtf::GridColumn<
           Name='CurrencyName'
           InputStyle=cisNormal
@@ -212,7 +223,7 @@ document <
           FieldName='CurrencyName'
           DisplayFormat=''
           TitleCaption='Kd Valuta'
-          Width=80
+          Width=60
         >, *object:rtf::GridColumn<
           Name='AmountEkuivalen'
           InputStyle=cisNormal
@@ -222,6 +233,30 @@ document <
           TitleCaption='Nilai Ekuivalen'
           Width=120
         >, *object:rtf::GridColumn<
+          Name='Description'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Description'
+          DisplayFormat=''
+          TitleCaption='Deskripsi'
+          Width=200
+        >, *object:rtf::GridColumn<
+          Name='ReturnStatus'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='ReturnStatus'
+          DisplayFormat=''
+          TitleCaption='Status LPJ'
+          Width=90
+        >, *object:rtf::GridColumn<
+          Name='ReturnTransactionNo'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='ReturnTransactionNo'
+          DisplayFormat=''
+          TitleCaption='No Transaksi LPJ'
+          Width=150
+        >, *object:rtf::GridColumn<
           Name='ReferenceNo'
           InputStyle=cisNormal
           EnumeratedValues=''
@@ -229,9 +264,6 @@ document <
           DisplayFormat=''
           TitleCaption='No Referensi'
           Width=80
-        >, *object:rtf::GridColumn<
-          Name='Description'
-          Width=200
         >, *object:rtf::GridColumn<
           Name='Inputer'
           InputStyle=cisNormal
@@ -266,8 +298,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dsAccount'
-      Width=700
-      Height=463
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pEmployee']
       Container2=$CONTAINERS['dsTransaction']
     >, object:rtf::Panel<
@@ -342,8 +374,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dsTransaction'
-      Width=700
-      Height=389
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pSelectTransaction']
       Container2=$CONTAINERS['gTransaction']
     >}FormClassName='fEmployeeCashAdvance'
