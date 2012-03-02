@@ -107,7 +107,7 @@ class Product(pobject.PObject):
         oGLInt.AccountCode = resParamGlobal.nilai_parameter_string
         oAccount = self.Helper.GetObject('Account',oGLInt.AccountCode)
         if oAccount.isnull : '','Account Code %s Tidak Ditemukan' % oGLInt.AccountCode
-        oGLInt.AccountName = oAccount.Account_Name      
+        oGLInt.AccountName = oAccount.Account_Name
 
       resParamGlobal.Next()          
     # end while
@@ -122,6 +122,14 @@ class ZakahProduct(Product):
       'PHP_ZAKAT' : 'Account Penerimaan Zakat',
       'AMIL_ZAKAT' : 'Account Penerimaan Pengelola dari Zakat',
       'PDG_ZAKAT' : 'Account Penyaluran Zakat',   
+      'ASSET_FROM_ZAKAT' : 'Penambahan Aset Dari Zakat',
+      'ASSET_FROM_INFAQ' : 'Penambahan Aset Dari Infaq',
+      'ASSET_FROM_WAKAF' : 'Penambahan Aset Dari Wakaf',
+      'ASSET_FROM_NONHALAL' : 'Penambahan Aset Dari Non Halal',
+      'ASSET_TO_ZAKAT' : 'Pengurangan Aset Kelolaan Zakat',
+      'ASSET_TO_INFAQ' : 'Pengurangan Aset Kelolaan Infaq',
+      'ASSET_TO_WAKAF' : 'Pengurangan Aset Kelolaan Wakaf',
+      'ASSET_TO_NONHALAL' : 'Pengurangan Aset Kelolaan Non Halal',
     }
     self.gltag='GLI_ZAKAT'
   

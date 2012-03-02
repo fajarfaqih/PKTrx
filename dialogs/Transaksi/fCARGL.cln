@@ -60,7 +60,7 @@ document <
             '  Account_Name,'#13#10,
             '  Account_Type,'#13#10,
             '  self'#13#10,
-            ');']
+            ')then order by Account_Name;']
           OQLSystemContext='accounting'
           LookupOption=loCustomOQL
           FieldBaseName='LLedger'

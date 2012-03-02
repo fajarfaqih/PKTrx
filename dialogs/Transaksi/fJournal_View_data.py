@@ -40,8 +40,10 @@ def FormSetDataEx(uideflist, parameter):
 
   app = config.AppObject
 
-  acc_host = helper.GetObject('ParameterGlobal', 'GLSVCHST').Get()
-  acc_port = helper.GetObject('ParameterGlobal', 'GLSVCPRT').GetInt()
+  #acc_host = helper.GetObject('ParameterGlobal', 'GLSVCHST').Get()
+  #acc_port = helper.GetObject('ParameterGlobal', 'GLSVCPRT').GetInt()
+  acc_host = config.GetGlobalSetting('GLSVCHOST')
+  acc_port = int(config.GetGlobalSetting('GLSVCPORT'))
   conn = app.UseCachedTCPConn(acc_host, acc_port)
 
   try:

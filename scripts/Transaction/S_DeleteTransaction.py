@@ -13,14 +13,16 @@ def DAFScriptMain(config, parameter, returnpacket):
         ['Err_Message',''],
       )
 
+  param = parameter.FirstRecord
+    
+  oTran = helper.GetObject('Transaction',param.TransactionId)
+
+  if oTran.isnull : raise '','Data Transaksi Tidak Ditemukan'
+    
+  oTran.DeleteJournal()
+
   config.BeginTransaction()
   try:
-    param = parameter.FirstRecord
-    
-    oTran = helper.GetObject('Transaction',param.TransactionId)
-
-    if oTran.isnull : raise '','Data Transaksi Tidak Ditemukan'
-    
     # oInbox = helper.GetObjectByNames('InboxTransaction',{'TransactionId':oTran.TransactionId})
     # if not oInbox.isnull :      
     #   oInbox.Delete()

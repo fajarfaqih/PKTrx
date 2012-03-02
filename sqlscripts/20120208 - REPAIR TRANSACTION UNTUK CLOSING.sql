@@ -765,6 +765,61 @@ and (B.JOURNAL_DATE >= '2011-01-01' AND B.JOURNAL_DATE < '2011-02-01' AND A.bran
 and ah.fl_parentaccountcode in ('111')
 and c.transactioncode='DT'
 
+-- UPDATE GL INTERFACE ASET KELOLAAN DI PRODUK
+insert into transaction.parameterglobal (kode_parameter,deskripsi,nilai_parameter_string,tag,default_code)
+values('GLIZAK4','Account Penambahan Aset Dari Zakat','4610101','GLI_ZAKAT','ASSET_FROM_ZAKAT');
+insert into transaction.parameterglobal (kode_parameter,deskripsi,nilai_parameter_string,tag,default_code)
+values('GLIZAK5','Account Penambahan Aset Dari Infaq','4610201','GLI_ZAKAT','ASSET_FROM_INFAQ');
+insert into transaction.parameterglobal (kode_parameter,deskripsi,nilai_parameter_string,tag,default_code)
+values('GLIZAK6','Account Penambahan Aset Dari Wakaf','4610301','GLI_ZAKAT','ASSET_FROM_WAKAF');
+insert into transaction.parameterglobal (kode_parameter,deskripsi,nilai_parameter_string,tag,default_code)
+values('GLIZAK7','Account Penambahan Aset Dari Non Halal','4610501','GLI_ZAKAT','ASSET_FROM_NONHALAL');
+
+insert into transaction.parameterglobal (kode_parameter,deskripsi,nilai_parameter_string,tag,default_code)
+values('GLIZAK8','Account Pengurangan Aset Dari Zakat','5610101','GLI_ZAKAT','ASSET_TO_ZAKAT');
+insert into transaction.parameterglobal (kode_parameter,deskripsi,nilai_parameter_string,tag,default_code)
+values('GLIZAK9','Account Pengurangan Aset Dari Infaq','5610201','GLI_ZAKAT','ASSET_TO_INFAQ');
+insert into transaction.parameterglobal (kode_parameter,deskripsi,nilai_parameter_string,tag,default_code)
+values('GLIZAK10','Account Pengurangan Aset Dari Wakaf','5610301','GLI_ZAKAT','ASSET_TO_WAKAF');
+insert into transaction.parameterglobal (kode_parameter,deskripsi,nilai_parameter_string,tag,default_code)
+values('GLIZAK11','Account Pengurangan Aset Dari Non Halal','5610501','GLI_ZAKAT','ASSET_TO_NONHALAL');
+
+insert into transaction.parameterglobal (kode_parameter,deskripsi,nilai_parameter_string,tag,default_code)
+values('GLIPROG15','Account Penambahan Aset Dari Zakat','4610101','GLI_PROGRAM','ASSET_FROM_ZAKAT');
+insert into transaction.parameterglobal (kode_parameter,deskripsi,nilai_parameter_string,tag,default_code)
+values('GLIPROG16','Account Penambahan Aset Dari Infaq','4610201','GLI_PROGRAM','ASSET_FROM_INFAQ');
+insert into transaction.parameterglobal (kode_parameter,deskripsi,nilai_parameter_string,tag,default_code)
+values('GLIPROG17','Account Penambahan Aset Dari Wakaf','4610301','GLI_PROGRAM','ASSET_FROM_WAKAF');
+insert into transaction.parameterglobal (kode_parameter,deskripsi,nilai_parameter_string,tag,default_code)
+values('GLIPROG18','Account Penambahan Aset Dari Non Halal','4610501','GLI_PROGRAM','ASSET_FROM_NONHALAL');
+
+insert into transaction.parameterglobal (kode_parameter,deskripsi,nilai_parameter_string,tag,default_code)
+values('GLIPROG19','Account Pengurangan Aset Dari Zakat','5610101','GLI_PROGRAM','ASSET_TO_ZAKAT');
+insert into transaction.parameterglobal (kode_parameter,deskripsi,nilai_parameter_string,tag,default_code)
+values('GLIPROG20','Account Pengurangan Aset Dari Infaq','5610201','GLI_PROGRAM','ASSET_TO_INFAQ');
+insert into transaction.parameterglobal (kode_parameter,deskripsi,nilai_parameter_string,tag,default_code)
+values('GLIPROG21','Account Pengurangan Aset Dari Wakaf','5610301','GLI_PROGRAM','ASSET_TO_WAKAF');
+insert into transaction.parameterglobal (kode_parameter,deskripsi,nilai_parameter_string,tag,default_code)
+values('GLIPROG22','Account Pengurangan Aset Dari Non Halal','5610501','GLI_PROGRAM','ASSET_TO_NONHALAL');
+
+insert into transaction.parameterglobal (kode_parameter,deskripsi,nilai_parameter_string,tag,default_code)
+values('GLIPROJ15','Account Penambahan Aset Dari Zakat','4610101','GLI_PROJECT','ASSET_FROM_ZAKAT');
+insert into transaction.parameterglobal (kode_parameter,deskripsi,nilai_parameter_string,tag,default_code)
+values('GLIPROJ16','Account Penambahan Aset Dari Infaq','4610201','GLI_PROJECT','ASSET_FROM_INFAQ');
+insert into transaction.parameterglobal (kode_parameter,deskripsi,nilai_parameter_string,tag,default_code)
+values('GLIPROJ17','Account Penambahan Aset Dari Wakaf','4610301','GLI_PROJECT','ASSET_FROM_WAKAF');
+insert into transaction.parameterglobal (kode_parameter,deskripsi,nilai_parameter_string,tag,default_code)
+values('GLIPROJ18','Account Penambahan Aset Dari Non Halal','4610501','GLI_PROJECT','ASSET_FROM_NONHALAL');
+
+insert into transaction.parameterglobal (kode_parameter,deskripsi,nilai_parameter_string,tag,default_code)
+values('GLIPROJ19','Account Pengurangan Aset Dari Zakat','5610101','GLI_PROJECT','ASSET_TO_ZAKAT');
+insert into transaction.parameterglobal (kode_parameter,deskripsi,nilai_parameter_string,tag,default_code)
+values('GLIPROJ20','Account Pengurangan Aset Dari Infaq','5610201','GLI_PROJECT','ASSET_TO_INFAQ');
+insert into transaction.parameterglobal (kode_parameter,deskripsi,nilai_parameter_string,tag,default_code)
+values('GLIPROJ21','Account Pengurangan Aset Dari Wakaf','5610301','GLI_PROJECT','ASSET_TO_WAKAF');
+insert into transaction.parameterglobal (kode_parameter,deskripsi,nilai_parameter_string,tag,default_code)
+values('GLIPROJ22','Account Pengurangan Aset Dari Non Halal','5610501','GLI_PROJECT','ASSET_TO_NONHALAL');
+
 -------------
 
 
