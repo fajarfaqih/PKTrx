@@ -47,7 +47,7 @@ document <
         >, object:rtf::FieldUIElmtSetting<
           Name='JournalCode'
           DataTypeName='VARCHAR'
-          DataLength=5
+          DataLength=10
         >, object:rtf::FieldUIElmtSetting<
           Name='Description'
           DataTypeName='VARCHAR'

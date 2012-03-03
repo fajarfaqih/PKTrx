@@ -439,7 +439,7 @@ def EmployeeAR(helper,oTran,oBatch,request,params):
     return oTran.GetKwitansi()
 
 def PayEmployeeAR(helper,oTran,oBatch,request,params):
-  FundEntityMap = {1 : 'PAK-Z', 2 : 'PAK-I', 3 : 'PAK-W', 4 : 'PAK-A'}
+  FundEntityMap = {1 : 'PAK-Z', 2 : 'PAK-I', 3 : 'PAK-W', 4 : 'PAK-A1'}
 
   oTran.ReferenceNo = request[u'ReferenceNo']
   oTran.Description = request[u'Description']
@@ -720,7 +720,7 @@ def CreateCPIATransactionItem(helper, oTran, params, request, item, isCreateRAK 
   # end if
 
 def CashAdvanceReturn(helper,oTran,oBatch,request,params):
-  FundEntityMap = {1 : 'PAK-Z', 2 : 'PAK-I', 3 : 'PAK-W', 4 : 'PAK-A'}
+  FundEntityMap = {1 : 'PAK-Z', 2 : 'PAK-I', 3 : 'PAK-W', 4 : 'PAK-A2'}
   
   # Set Transaction Data  
   oTran.ReferenceNo = request[u'ReferenceNo']

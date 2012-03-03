@@ -1106,6 +1106,11 @@ document <
           PhysicalName='CASHCODE'
           DataType=$TYPEDECLS['VARCHAR']
           DataLength=10
+        >, object:FieldMember<
+          MemberName='AccountInterface'
+          PhysicalName='ACCOUNTINTERFACE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
         >}Ancestors={object:Inheritance<
           ClassifierStringValue='C'
           AncestorClass=$TYPEDECLS['FinancialAccount']
@@ -1137,11 +1142,6 @@ document <
           PhysicalName='ACCOUNTCURRENCY'
           DataType=$TYPEDECLS['VARCHAR']
           DataLength=5
-        >, object:FieldMember<
-          MemberName='AccountInterface'
-          PhysicalName='ACCOUNTINTERFACE'
-          DataType=$TYPEDECLS['VARCHAR']
-          DataLength=20
         >, object:LinkMember<
           MemberName='LBank'
           LinkedClass=$TYPEDECLS['Bank']
@@ -1516,7 +1516,7 @@ document <
           MemberName='JournalCode'
           PhysicalName='JOURNALCODE'
           DataType=$TYPEDECLS['VARCHAR']
-          DataLength=5
+          DataLength=10
         >}ClassID='{87517B94-FB67-42A7-8CE2-8BE59F6E3B44}'
       AutoPrimaryKey=$TYPEDECLS['ParameterJournal'].MEMBERS['ParameterJournalId']
     >, object:EnumTypeDecl<
