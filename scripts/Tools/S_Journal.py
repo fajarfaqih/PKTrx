@@ -144,6 +144,7 @@ def RegenerateJournalItem(config, parameters, returnpacket):
       #AddParam = " and branchcode='%s' " % config.SecurityContext.GetUserInfo()[4]
       AddParam += " and actualdate between '2011-01-01' and '2011-03-31' "
       AddParam += " and transactioncode <> 'TB' "
+      AddParam += " and amount <= 50000000 "
       #AddParam += " and transactioncode = 'EAR' "
       #AddParam += " and transactionid in (140505, 140528)"
       #AddParam += " and isposted = 'F' "
