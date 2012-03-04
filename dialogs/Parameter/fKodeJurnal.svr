@@ -17,8 +17,8 @@ document <
       Name='uipJournalItem'
       MasterUIName='uipJournal'
       ListName='Ls_ParameterJournalItem'
-      LoadedFieldList='ParameterJournalItemId;Description;AccountBase;AccountCode;BaseSign;BranchBase;CurrencyBase;AmountBase;RateBase'
-      StoredFieldList='Description;AccountBase;AccountCode;BaseSign;BranchBase;CurrencyBase;AmountBase;RateBase'
+      LoadedFieldList='ParameterJournalItemId;Description;AccountBase;AccountCode;BaseSign;BranchBase;CurrencyBase;AmountBase;RateBase;IsSendJournalDescription'
+      StoredFieldList='Description;AccountBase;AccountCode;BaseSign;BranchBase;CurrencyBase;AmountBase;RateBase;IsSendJournalDescription'
       CreateInstanceOnNew=true
       DeleteOnDel=true
       SetMasterDetailRelationship=true

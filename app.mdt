@@ -1703,6 +1703,12 @@ document <
           DataType=$TYPEDECLS['VARCHAR']
           DataLength=1
           Enumerator=$TYPEDECLS['eAccountBase']
+        >, object:FieldMember<
+          MemberName='IsSendJournalDescription'
+          PhysicalName='ISSENDJOURNALDESCRIPTION'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['FTBoolean']
         >}ClassID='{F87F4970-4AE6-4822-97D2-2B55578E44B9}'
       AutoPrimaryKey=$TYPEDECLS['ParameterJournalItem'].MEMBERS['ParameterJournalItemId']
     >, object:EnumTypeDecl<

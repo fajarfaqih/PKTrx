@@ -30,6 +30,7 @@ document <
       CreateInstanceOnNew=true
       DeleteInstanceOnDel=true
       SetMasterDetailRelationship=true
+      AfterNewRecord='ItemNewRecord'
     >}Containers={object:rtf::MultiSplit<
       Name='multisplit1'
       Width=769
@@ -57,7 +58,7 @@ document <
           DataTypeName='VARCHAR'
           DataLength=30
         >}Name='pJournal'
-      Width=769
+      Width=240
       Height=332
       UIPart=$UIPARTS['uipJournal']
       ControlLeftMargin=8
@@ -173,9 +174,16 @@ document <
           Name='RateBase'
           DataTypeName='VARCHAR'
           DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='IsSendJournalDescription'
+          ControlCaption='Kirim Keterangan Jurnal ?'
+          DataTypeName='VARCHAR'
+          DataLength=1
+          EnumeratedValues=['F=false'#13#10,
+            'T=true'#13#10]
         >}Name='pJournalItem'
-      Width=769
-      Height=72
+      Width=240
+      Height=240
       UIPart=$UIPARTS['uipJournalItem']
       ControlLeftMargin=8
       ControlTopMargin=8
@@ -243,5 +251,15 @@ document <
           FieldName='RateBase'
           DisplayFormat=''
           TitleCaption='Sumber Kurs'
+        >, *object:rtf::GridColumn<
+          Name='IsSendJournalDescription'
+          InputStyle=cisEnumerated
+          EnumeratedValues=['F=false'#13#10,
+            'T=true'#13#10]
+          Index=10
+          FieldName='IsSendJournalDescription'
+          DisplayFormat=''
+          TitleCaption='Kirim Deskripsi Jurnal Item ?'
+          Width=140
         >}>}FormClassName='fKodeJurnal'
 >

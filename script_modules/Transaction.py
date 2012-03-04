@@ -702,6 +702,11 @@ class Transaction(pobject.PObject):
           aItem.Nilai_Kurs   = oRes.GetFieldValue(oTCode.RateBase)
 
         aItem.Keterangan   = self.Description
+        if oTCode.IsSendJournalDescription == 'T' :
+          aItem.Keterangan_Jurnal = oTCode.Description
+        else:
+          aItem.Keterangan_Jurnal = ''
+
         oJData.InsertJournalItem(block, aItem)
         #-- if
       #-- for
@@ -1494,7 +1499,8 @@ class JournalData:
       'nama_rekening'  : aData.Nama_Rekening,
       'referensi'     : aData.Referensi,
       'source_class_id' : aData.Class_Name,
-      'source_key_id' : aData.Key_Id
+      'source_key_id' : aData.Key_Id,
+      'keterangan_jurnal' : aData.Keterangan_Jurnal
     }
 
     aBlock['details'].append(dData)

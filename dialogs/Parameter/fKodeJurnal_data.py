@@ -32,6 +32,7 @@ def Form_SetDataEx(uideflist, param):
             recItem.CurrencyBase   = resItem.CurrencyBase
             recItem.AmountBase     = resItem.AmountBase
             recItem.RateBase       = resItem.RateBase
+            recItem.IsSendJournalDescription = resItem.IsSendJournalDescription
             #recItem.__SYSFLAG = 'L'
 
             resItem.Next()

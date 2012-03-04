@@ -41,6 +41,7 @@ document <
       CreateInstanceOnNew=true
       DeleteInstanceOnDel=true
       SetMasterDetailRelationship=true
+      AfterNewRecord='ItemNewRecord'
     >}Containers={object:rtf::MultiSplit<
       Name='multisplit1'
       Width=769
@@ -61,7 +62,7 @@ document <
           Name='ParameterJournalId'
           Hidden=true
         >}Name='pJournal'
-      Width=769
+      Width=240
       Height=332
       UIPart=$UIPARTS['uipJournal']
       ControlLeftMargin=8
@@ -137,16 +138,20 @@ document <
             'BranchBase'#13#10,
             'CurrencyBase'#13#10,
             'AmountBase'#13#10,
-            'RateBase'#13#10]
+            'RateBase'#13#10,
+            'IsSendJournalDescription'#13#10]
         >}Elements={*object:rtf::FieldUIElmtSetting<
           Name='ParameterJournalItemId'
           Hidden=true
         >, *object:rtf::FieldUIElmtSetting<
           Name='AccountBase'
           ControlCaption='Sumber Account'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='IsSendJournalDescription'
+          ControlCaption='Kirim Keterangan Jurnal ?'
         >}Name='pJournalItem'
-      Width=769
-      Height=72
+      Width=240
+      Height=240
       UIPart=$UIPARTS['uipJournalItem']
       ControlLeftMargin=8
       ControlTopMargin=8
@@ -214,5 +219,15 @@ document <
           FieldName='RateBase'
           DisplayFormat=''
           TitleCaption='Sumber Kurs'
+        >, *object:rtf::GridColumn<
+          Name='IsSendJournalDescription'
+          InputStyle=cisEnumerated
+          EnumeratedValues=['F=false'#13#10,
+            'T=true'#13#10]
+          Index=10
+          FieldName='IsSendJournalDescription'
+          DisplayFormat=''
+          TitleCaption='Kirim Deskripsi Jurnal Item ?'
+          Width=140
         >}>}FormClassName='fKodeJurnal'
 >
