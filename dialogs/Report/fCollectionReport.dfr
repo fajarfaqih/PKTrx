@@ -9,7 +9,7 @@ document <
   Caption='Laporan Penghimpunan Dana'
   Left=50
   Top=50
-  Width=793
+  Width=849
   Height=329
   BeforeDeleteRow=''
   BeforeResultSent=''
@@ -53,8 +53,8 @@ document <
       PostLinkValues=true
     >}Containers={object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=793
-      Height=329
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dualsplit2']
       InversedAlign=true
@@ -131,8 +131,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit2'
-      Width=793
-      Height=286
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pFilter']
       Container2=$CONTAINERS['dualsplit3']
     >, object:rtf::Panel<
@@ -176,6 +176,32 @@ document <
             'R=Kas Cabang'#13#10,
             'A=Bank'#13#10,
             'G=Non Tunai (Aktiva)'#13#10]
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LPettyCash'
+          ControlCaption='Pilih Kas Kecil'
+          ClassTypeName='PettyCash'
+          DisplayFields='AccountNo;AccountName;Balance;CurrencyCode;LCurrency.Full_Name;LCurrency.Kurs_Tengah_BI'
+          Restrictions='BranchCode|BranchCode'
+          OQLText=['select from PettyCash'#13#10,
+            '[BranchCode = :BranchCode]'#13#10,
+            '( AccountNo,'#13#10,
+            '  AccountName,'#13#10,
+            '  Balance,'#13#10,
+            '  CurrencyCode,'#13#10,
+            '  LCurrency.Full_Name,'#13#10,
+            '  LCurrency.Kurs_Tengah_BI,'#13#10,
+            '  self) then order by AccountName;'#13#10,
+            ' ']
+          LookupOption=loCustomOQL
+          FieldBaseName='LPettyCash'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='IsAllPettyCash'
+          ControlCaption='Seluruh Kas Kecil'
+          DataTypeName='varchar'
+          DataLength=1
+          EnumeratedValues=['F=False'#13#10,
+            'T=True'#13#10]
+          GenerateCheckBoxForEnum=true
         >, object:rtf::FieldUIElmtSetting<
           Name='ProgramName'
           ReadOnlyControl=true
@@ -243,8 +269,8 @@ document <
           LookupOption=loCustomOQL
           FieldBaseName='LMarketer'
         >}Name='pFilter3'
-      Width=577
-      Height=225
+      Width=665
+      Height=257
       UIPart=$UIPARTS['uipFilter']
       Controls={*object:rtf::DBLookupEdit<
           Name='LBranch'
@@ -284,9 +310,32 @@ document <
           Name='ChannelCode'
           Top=66
           Left=8
+          Width=110
+          Height=21
           Color=0
           ControlCaption='Jenis Pembayaran'
           LayoutOrder=5
+          OnChange='ChannelCodeOnChange'
+        >, *object:rtf::DBLookupEdit<
+          Name='LPettyCash'
+          Layout=clAbsolute
+          Top=66
+          Left=232
+          ControlCaption='Pilih Kas Kecil'
+          LayoutOrder=5
+          LookupField='LPettyCash.AccountName'
+          DisplayLookupField=true
+        >, *object:rtf::DBCheckBox<
+          Name='IsAllPettyCash'
+          Layout=clAbsolute
+          Top=70
+          Left=528
+          Color=0
+          ControlCaption='Seluruh Kas Kecil'
+          LayoutOrder=5
+          ValueChecked='T'
+          ValueUnchecked='F'
+          OnClick='IsAllPettyCashClick'
         >, *object:rtf::DBEdit<
           Name='ProgramName'
           Top=94
@@ -514,8 +563,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit3'
-      Width=793
-      Height=236
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pFilter2']
       Container2=$CONTAINERS['pFilter3']
       SplitDirection=sdrSplitLeftRight

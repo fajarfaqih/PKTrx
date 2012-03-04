@@ -3,7 +3,7 @@ import simplejson
 import com.ihsan.foundation.pobjecthelper as phelper
 import sys
 
-def GenerateResponse(Status,ErrMessage,TransactionNo,FileKwitansi):
+def GenerateResponse(Status, ErrMessage, TransactionNo, FileKwitansi):
   response = {}
   response['Status'] = Status
   response['TransactionNo'] = TransactionNo
@@ -12,7 +12,7 @@ def GenerateResponse(Status,ErrMessage,TransactionNo,FileKwitansi):
 
   return simplejson.dumps(response)
 
-def SetTransactionData(oTran,request):
+def SetTransactionData(oTran, request):
 
   oTran.Inputer     = request[u'Inputer']
   oTran.BranchCode  = request[u'BranchCode']
@@ -28,7 +28,7 @@ def SetTransactionData(oTran,request):
   oTran.VolunteerId = request[u'VolunteerId']
   
 
-def GetDataDonor(helper,DonorId):
+def GetDataDonor(helper, DonorId):
   oDonor = helper.CreateObject('ExtDonor')
   oDonor.GetData(DonorId)
 
@@ -37,14 +37,28 @@ def GetDataDonor(helper,DonorId):
 #------------- COLLECTION -------------------
 # dictJournalCode = { FunEntity : JournalCode }
 dictJournalCode = {
-  1 : 'C10Z',
-  2 : 'C10I',
-  3 : 'C10W',
-  4 : '10',
+  1 : 'C10Z', 
+  2 : 'C10I', 
+  3 : 'C10W', 
+  4 : '10', 
   5 : '10'
 }
 
-def CollectionNew(config, srequest ,params):
+def ExecFunction(PaymentType, helper, oTran, oBatch, request, params):
+  if PaymentType == 'K' : 
+    FileKwitansi = PettyCashCollection(helper, oTran, oBatch, request, params)
+  elif PaymentType == 'C' : 
+    FileKwitansi = BranchCashCollection(helper, oTran, oBatch, request, params)
+  elif PaymentType == 'B' :  
+    FileKwitansi = BankCollection(helper, oTran, oBatch, request, params)
+  elif PaymentType == 'A' :
+    FileKwitansi = AssetCollection(helper, oTran, oBatch, request, params)
+  else :
+    raise '', 'Jenis Pembayaran Tidak Terdaftar'  
+
+  return FileKwitansi
+
+def CollectionNew(config, srequest , params):
   request = simplejson.loads(srequest)
   helper = phelper.PObjectHelper(config)
 
@@ -56,15 +70,8 @@ def CollectionNew(config, srequest ,params):
     #oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
     oTran = oBatch.NewTransaction('SD001')
     
-#     if request[u'PaymentType'] == 'K' : PettyCash 
-    if request[u'PaymentType'] == 'C' : 
-      FileKwitansi = BranchCashCollection(helper,oTran,oBatch,request,params)
-    elif request[u'PaymentType'] == 'B' :  
-      FileKwitansi = BankCollection(helper,oTran,oBatch,request,params)
-    elif request[u'PaymentType'] == 'A' :
-      FileKwitansi = AssetCollection(helper,oTran,oBatch,request,params)
-    else :
-      raise '','Jenis Pembayaran Tidak Terdaftar'  
+    PaymentType = request[u'PaymentType']
+    FileKwitansi = ExecFunction(PaymentType, helper, oTran, oBatch, request, params)
       
     # Check for auto approval
     corporate = helper.CreateObject('Corporate')
@@ -76,10 +83,10 @@ def CollectionNew(config, srequest ,params):
     config.Rollback()
     raise
   
-  status,msg = oTran.CreateJournal()
-  return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
+  status, msg = oTran.CreateJournal()
+  return GenerateResponse(status, msg, oTran.TransactionNo, FileKwitansi)
 
-def CollectionUpdate(config, srequest ,params):
+def CollectionUpdate(config, srequest , params):
   request = simplejson.loads(srequest)
   helper = phelper.PObjectHelper(config)
 
@@ -87,7 +94,7 @@ def CollectionUpdate(config, srequest ,params):
   oBatch = oBatchHelper.GetBatchUser(request['ActualDate'])
 
   oTran = helper.GetObjectByNames(
-      'Transaction',{'TransactionNo': request[u'TransactionNo'] }
+      'Transaction', {'TransactionNo': request[u'TransactionNo'] }
     )
   
   #oTran.DeleteJournal()
@@ -99,17 +106,10 @@ def CollectionUpdate(config, srequest ,params):
     oTran.CancelTransaction()
     #oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
     oTran.BatchId = oBatch.BatchId
-
-#     if request[u'PaymentType'] == 'K' : PettyCash
-    if request[u'PaymentType'] == 'C' : 
-      FileKwitansi = BranchCashCollection(helper,oTran,oBatch,request,params)
-    elif request[u'PaymentType'] == 'B' :  
-      FileKwitansi = BankCollection(helper,oTran,oBatch,request,params)
-    elif request[u'PaymentType'] == 'A' :
-      FileKwitansi = AssetCollection(helper,oTran,oBatch,request,params)
-    else :
-      raise '','Jenis Pembayaran Tidak Terdaftar'  
     
+    PaymentType = request[u'PaymentType']
+    FileKwitansi = ExecFunction(PaymentType, helper, oTran, oBatch, request, params)
+
     # Check for auto approval
     oTran.AutoApprovalUpdate()
     
@@ -118,10 +118,10 @@ def CollectionUpdate(config, srequest ,params):
     config.Rollback()
     raise
 
-  status,msg = oTran.CreateJournal()
-  return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
+  status, msg = oTran.CreateJournal()
+  return GenerateResponse(status, msg, oTran.TransactionNo, FileKwitansi)
   
-def BranchCashCollection(helper,oTran,oBatch,request,params):
+def BranchCashCollection(helper, oTran, oBatch, request, params):
   aInputer    = request[u'Inputer']
   aBranchCode = request[u'BranchCode']
   aValuta = request[u'CashCurrency']
@@ -141,7 +141,7 @@ def BranchCashCollection(helper,oTran,oBatch,request,params):
   # Get Sponsor & volunteer
   oSponsor = helper.GetObject('Sponsor', request[u'SponsorId'])
   oVolunteer = helper.GetObject('Volunteer', str(request[u'VolunteerId']))
-  oDonor = GetDataDonor(helper,request[u'DonorId'])
+  oDonor = GetDataDonor(helper, request[u'DonorId'])
   
   # Set Information
   oTran.SponsorId = request[u'SponsorId']
@@ -150,7 +150,7 @@ def BranchCashCollection(helper,oTran,oBatch,request,params):
   oTran.ActualDate = request[u'ActualDate']
   oTran.PaidTo = request[u'PaidTo']
   
-  oBranchCash = helper.GetObjectByNames('BranchCash',
+  oBranchCash = helper.GetObjectByNames('BranchCash', 
         {'BranchCode': aBranchCode, 'CurrencyCode': aValuta})
   if oBranchCash.isnull:
     raise 'Collection', 'Rekening kas cabang %s:%s tidak ditemukan' % (aBranchCode, aValuta)
@@ -162,8 +162,8 @@ def BranchCashCollection(helper,oTran,oBatch,request,params):
 
     # Create Item for ProductAccount
     aAccountNo = item[u'AccountNo']
-    oProductAccount = helper.GetObjectByNames('ProductAccount',{'AccountNo':aAccountNo})
-    #oProductAccount = helper.GetObject('ProductAccount',aAccountNo)
+    oProductAccount = helper.GetObjectByNames('ProductAccount', {'AccountNo':aAccountNo})
+    #oProductAccount = helper.GetObject('ProductAccount', aAccountNo)
     if oProductAccount.isnull:
       raise 'Collection', 'Rekening produk %s tidak ditemukan' % (aAccountNo)
 
@@ -205,7 +205,7 @@ def BranchCashCollection(helper,oTran,oBatch,request,params):
   
   return FileKwitansi
 
-def BankCollection(helper,oTran,oBatch,request,params):
+def BankCollection(helper, oTran, oBatch, request, params):
 
   aInputer    = request[u'Inputer']
   aBranchCode = request[u'BranchCode']
@@ -222,7 +222,7 @@ def BankCollection(helper,oTran,oBatch,request,params):
   # Get Sponsor & volunteer
   oSponsor = helper.GetObject('Sponsor', request[u'SponsorId'])
   oVolunteer = helper.GetObject('Volunteer', str(request[u'VolunteerId']))
-  oDonor = GetDataDonor(helper,request[u'DonorId'])
+  oDonor = GetDataDonor(helper, request[u'DonorId'])
   
   # Set Information
   oTran.SponsorId = request[u'SponsorId']
@@ -252,8 +252,8 @@ def BankCollection(helper,oTran,oBatch,request,params):
   for item in items:
     # Create Item for ProductAccount
     aAccountNo = item[u'AccountNo']
-    #oProductAccount = helper.GetObject('ProductAccount',aAccountNo)
-    oProductAccount = helper.GetObjectByNames('ProductAccount',{'AccountNo':aAccountNo})
+    #oProductAccount = helper.GetObject('ProductAccount', aAccountNo)
+    oProductAccount = helper.GetObjectByNames('ProductAccount', {'AccountNo':aAccountNo})
     if oProductAccount.isnull:
       raise 'Collection', 'Rekening produk %s tidak ditemukan' % (aAccountNo)
 
@@ -292,7 +292,7 @@ def BankCollection(helper,oTran,oBatch,request,params):
   
   return FileKwitansi 
 
-def AssetCollection(helper,oTran,oBatch,request,params):  
+def AssetCollection(helper, oTran, oBatch, request, params):  
   aInputer    = request[u'Inputer']
   aBranchCode = request[u'BranchCode']
 
@@ -309,7 +309,7 @@ def AssetCollection(helper,oTran,oBatch,request,params):
   # Get Sponsor & volunteer
   oSponsor = helper.GetObject('Sponsor', request[u'SponsorId'])
   oVolunteer = helper.GetObject('Volunteer', str(request[u'VolunteerId']))
-  oDonor = GetDataDonor(helper,request[u'DonorId'])
+  oDonor = GetDataDonor(helper, request[u'DonorId'])
 
   # Set Information
   oTran.SponsorId = request[u'SponsorId']
@@ -332,8 +332,8 @@ def AssetCollection(helper,oTran,oBatch,request,params):
   for item in items:
     # Create Item for ProductAccount
     aAccountNo = item[u'AccountNo']
-    oProductAccount = helper.GetObjectByNames('ProductAccount',{'AccountNo':aAccountNo})
-    #oProductAccount = helper.GetObject('ProductAccount',aAccountNo)
+    oProductAccount = helper.GetObjectByNames('ProductAccount', {'AccountNo':aAccountNo})
+    #oProductAccount = helper.GetObject('ProductAccount', aAccountNo)
     if oProductAccount.isnull:
       raise 'Collection', 'Rekening produk %s tidak ditemukan' % (aAccountNo)
 
@@ -372,7 +372,7 @@ def AssetCollection(helper,oTran,oBatch,request,params):
 
   return FileKwitansi
 
-def PettyCashCollection(config, srequest ,params):
+def PettyCashCollection(helper, oTran, oBatch, request, params):
   aInputer = request[u'Inputer']
   aBranchCode = request[u'BranchCode']
   aValuta = request[u'CashCurrency']
@@ -384,14 +384,15 @@ def PettyCashCollection(config, srequest ,params):
   oTran.Description = request[u'Description']
   oTran.DonorNo = request[u'DonorNo']
   oTran.DonorName = request[u'DonorName']
-  oTran.ChannelCode = 'P'
   oTran.CurrencyCode = aValuta
   oTran.Rate = aRate 
+  oTran.MarketerId = request[u'MarketerId']
+  oTran.ChannelCode = 'P'
 
   # Get Sponsor & volunteer
   oSponsor = helper.GetObject('Sponsor', request[u'SponsorId'])
   oVolunteer = helper.GetObject('Volunteer', str(request[u'VolunteerId']))
-  oDonor = GetDataDonor(helper,request[u'DonorId'])
+  oDonor = GetDataDonor(helper, request[u'DonorId'])
 
   # Set Information
   oTran.SponsorId = request[u'SponsorId']
@@ -399,11 +400,11 @@ def PettyCashCollection(config, srequest ,params):
   oTran.DonorId = request[u'DonorId']
   oTran.ActualDate = request[u'ActualDate']
   oTran.PaidTo = request[u'PaidTo']
-
-  oPettyCash = helper.GetObjectByNames('PettyCash',
-    {'UserName': aInputer, 'BranchCode': aBranchCode, 'CurrencyCode': aValuta})
+  
+  PettyCashAccountNo = str(request[u'PettyCashAccountNo'])
+  oPettyCash = helper.GetObject('PettyCash', PettyCashAccountNo)
   if oPettyCash.isnull:
-    raise 'Collection', 'Rekening kas kecil %s:%s tidak ditemukan' % (aInputer, aValuta)
+    raise 'Collection', 'Rekening kas kecil dengan kode %s tidak ditemukan' % ( PettyCashAccountNo)
   
   totalAmount = 0.0
   items = request[u'Items']
@@ -411,7 +412,7 @@ def PettyCashCollection(config, srequest ,params):
     # Create Item for ProductAccount      
     aAccountNo = item[u'AccountNo']
     aProductId = item[u'ProductId']
-    oProductAccount = helper.GetObjectByNames('ProductAccount',{'AccountNo':aAccountNo})
+    oProductAccount = helper.GetObjectByNames('ProductAccount', {'AccountNo':aAccountNo})
     if oProductAccount.isnull:
       raise 'Collection', 'Rekening produk %s tidak ditemukan' % (aAccountNo)
 

@@ -8,8 +8,8 @@ document <
   UIDefs={object:rpclass::TPClassUIDef<
       Name='uipData'
       PClassName='PettyCash'
-      LoadedFieldList='AccountNo;AccountName;BranchCode;CurrencyCode;Balance;OpeningDate;Status;UserName;CashCode'
-      StoredFieldList='AccountNo;AccountName;BranchCode;CurrencyCode;Balance;OpeningDate;Status;UserName;CashCode'
+      LoadedFieldList='AccountNo;AccountName;BranchCode;CurrencyCode;Balance;OpeningDate;Status;UserName;CashCode;AccountInterface'
+      StoredFieldList='AccountNo;AccountName;BranchCode;CurrencyCode;Balance;OpeningDate;Status;UserName;CashCode;AccountInterface'
       CustomLoadedFields={object:rpclass::TCustomLoadedField<
           Name='mode'
           DataTypeName='varchar'
@@ -68,6 +68,14 @@ document <
           DataLength=20
         >, object:rpclass::TCustomLoadedField<
           Name='LUser.Nama_Cabang'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LGLInterface.account_code'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LGLInterface.Account_Name'
           DataTypeName='varchar'
           DataLength=20
         >}Mode=imSingleRow

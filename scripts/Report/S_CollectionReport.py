@@ -47,6 +47,8 @@ def GetReportData(config,param):
          
     addFilter = ""
     addFilter2 = ""
+
+    # --- FILTER DONATUR
     if param.IsAllDonor == 'F' :
       addFilter += " and exists ( \
                         select 1 from transaction.transactionitem st , \
@@ -56,6 +58,7 @@ def GetReportData(config,param):
                      ) " % param.IdDonor
       addFilter2 += " and false"
 
+    # --- FILTER CABANG
     if param.IsAllBranch == 'F' :
       if param.IsIncludeChildBranch == 'F' :
         # jika hanya menampilkan cabang tanpa anak di bawahnya
@@ -77,10 +80,18 @@ def GetReportData(config,param):
         addFilter += SQLParam 
         addFilter2 += SQLParam
       
+    # --- FILTER JENIS PEMBAYARAN  
     if param.IsAllChannel == 'F' :
       addFilter += " and t.ChannelCode='%s' " % param.ChannelCode
       addFilter2 += " and t.ChannelCode='%s' " % param.ChannelCode
-            
+      
+      
+      if param.IsAllPettyCash == 'F' :
+        PettyCashAccountNo = param.GetFieldByName('LPettyCash.AccountNo')
+        addFilter += " and t.ChannelAccountNo='%s' " % PettyCashAccountNo
+        addFilter2 += " and t.ChannelAccountNo='%s' " % PettyCashAccountNo
+    
+    # --- FILTER PROGRAM        
     if param.IsAllProgram == 'F' : 
       oProductAccount = helper.GetObject('ProductAccount',param.AccountNo)      
       addFilter += " and p.productid=%d " % oProductAccount.ProductId
@@ -94,6 +105,7 @@ def GetReportData(config,param):
 #                           and sp.SponsorId=%d \
 #                      ) " % param.GetFieldByName('LSponsor.SponsorId')                     
 
+    # --- FILTER MITRA
     if param.IsAllVolunteer == 'F' :      
       addFilter += " and exists ( \
                         select 1 from volunteertransaction vt \
@@ -101,12 +113,14 @@ def GetReportData(config,param):
                           and vt.VolunteerId='%s' \
                      ) " % param.GetFieldByName('LVolunteer.VolunteerId')
       addFilter2 += " and false"
-
+ 
+    # --- FILTER JENIS DANA
     if param.IsAllFundEntity == 'F' :
       addFilter += " and a.FundEntity='%s' " % param.FundEntity
       if param.FundEntity != 4:
         addFilter2 += " and false"
 
+    # --- FILTER MARKETER
     if param.IsAllMarketer == 'F' :
       addFilter += " and t.MarketerId=%d " % param.GetFieldByName('LMarketer.MarketerId')
     

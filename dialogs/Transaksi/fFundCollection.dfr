@@ -201,8 +201,8 @@ document <
       BeforeDelete='ItemBeforeDelete'
     >}Containers={object:rtf::MultiSplit<
       Name='msMain'
-      Width=800
-      Height=550
+      Width=320
+      Height=320
       Side1Containers={$CONTAINERS['dualsplit1']
       }Side2Containers={$CONTAINERS['pAction']
       }SpaceContainer=$CONTAINERS['dsTransaction']
@@ -361,12 +361,29 @@ document <
     >, object:rtf::Panel<
       Elements={object:rtf::FieldUIElmtSetting<
           Name='CashType'
-          Hidden=true
           ControlCaption='Jenis Kas'
           DataTypeName='varchar'
           DataLength=1
           EnumeratedValues=['K=Kas Kecil'#13#10,
             'C=Kas Cabang'#13#10]
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LPettyCash'
+          ControlCaption='Pilih Kas Kecil'
+          ClassTypeName='PettyCash'
+          DisplayFields='AccountNo;AccountName;Balance;CurrencyCode;LCurrency.Full_Name;LCurrency.Kurs_Tengah_BI'
+          Restrictions='BranchCode|BranchCode'
+          OQLText=['select from PettyCash'#13#10,
+            '[BranchCode = :BranchCode]'#13#10,
+            '( AccountNo,'#13#10,
+            '  AccountName,'#13#10,
+            '  Balance,'#13#10,
+            '  CurrencyCode,'#13#10,
+            '  LCurrency.Full_Name,'#13#10,
+            '  LCurrency.Kurs_Tengah_BI,'#13#10,
+            '  self) then order by AccountName;'#13#10,
+            ' ']
+          LookupOption=loCustomOQL
+          FieldBaseName='LPettyCash'
         >, object:rtf::LinkUIElmtSetting<
           Name='LCurrency'
           ControlCaption='Kode Valuta'
@@ -410,20 +427,40 @@ document <
           FieldBaseName='LCurrency'
         >}Name='pCashTransaction'
       Width=750
-      Height=153
+      Height=177
       UIPart=$UIPARTS['uipTransaction']
-      Controls={*object:rtf::DBLookupEdit<
-          Name='LCurrency'
+      Controls={*object:rtf::DBComboBox<
+          Name='CashType'
           Top=8
           Left=8
+          Width=90
+          Height=21
+          Color=0
+          ControlCaption='Jenis Kas'
+          OnChange='CashTypeOnChange'
+        >, *object:rtf::DBLookupEdit<
+          Name='LPettyCash'
+          Layout=clAbsolute
+          Top=8
+          Left=216
+          ControlCaption='Pilih Kas Kecil'
+          CaptionWidth=100
+          LookupField='LPettyCash.AccountName'
+          DisplayLookupField=true
+          OnAfterLookup='PettyCashAfterLookUp'
+        >, *object:rtf::DBLookupEdit<
+          Name='LCurrency'
+          Top=36
+          Left=8
           ControlCaption='Kode Valuta'
+          CaptionWidth=100
           LookupField='LCurrency.Full_Name'
           DisplayLookupField=true
           OnAfterLookup='CurrencyAfterLookup'
         >, object:rtf::DBEdit<
           Name='RateCash'
           Layout=clNewLine
-          Top=36
+          Top=64
           Left=8
           Width=73
           Height=21
@@ -436,7 +473,7 @@ document <
         >, object:rtf::DBEdit<
           Name='RefCash'
           Layout=clNewLine
-          Top=64
+          Top=92
           Left=8
           Width=217
           Height=21
@@ -449,7 +486,7 @@ document <
         >, object:rtf::DBEdit<
           Name='DescCash'
           Layout=clNewLine
-          Top=92
+          Top=120
           Left=8
           Width=217
           Height=21
@@ -462,7 +499,7 @@ document <
         >, object:rtf::DBEdit<
           Name='edAmount'
           Layout=clNewLine
-          Top=120
+          Top=148
           Left=8
           Enabled=false
           ForceUseEqualCaptionWidth=true
@@ -572,8 +609,8 @@ document <
       RowControlGap=7
     >, object:rtf::MultiPages<
       Name='mpBayar'
-      Width=800
-      Height=290
+      Width=320
+      Height=320
       Pages={object:rtf::Page<
           PageName='pgCash'
           PageTitle='Kas'
@@ -735,8 +772,8 @@ document <
       ControlCharCase=ecUpperCase
     >, object:rtf::DualSplit<
       Name='dsTransaction'
-      Width=800
-      Height=311
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pPaymentType']
       Container2=$CONTAINERS['mpBayar']
     >, object:rtf::DualSplit<
@@ -825,7 +862,7 @@ document <
         >}>, object:rtf::Grid<
       Name='gCashTransactionItem'
       Width=792
-      Height=105
+      Height=81
       UIPart=$UIPARTS['uipTransactionItem']
       ControlLeftMargin=8
       ControlTopMargin=8
@@ -889,7 +926,7 @@ document <
           Width=80
         >}>, object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=800
+      Width=240
       Height=201
       Container1=$CONTAINERS['pDonor']
       Container2=$CONTAINERS['pBatch']

@@ -23,6 +23,11 @@ DefaultItems = [ 'Inputer',
                  'LBank.AccountNo',
                  'LBank.BankName',
                  'LBank.CurrencyCode',
+                 'LPettyCash.AccountNo',
+                 'LPettyCash.AccountName',
+                 'LPettyCash.CurrencyCode',
+                 'LPettyCash.LCurrency.Full_Name',
+                 'LPettyCash.LCurrency.Kurs_Tengah_BI',
                  'PeriodId',
                  'LSponsor.SponsorId',
                  'LVolunteer.VolunteerId',
@@ -102,6 +107,7 @@ class fFundCollection :
 
     self.CariDonor()
     #self.pBatch_LBatch.SetFocus()
+    self.SetCashType(uipTran.CashType)
     self.pBatch_ActualDate.SetFocus()
 
   # mode
@@ -113,6 +119,7 @@ class fFundCollection :
     uipTran.ShowMode = mode
     self.InitValues()
     self.DonorNo = self.uipDonor.DonorNo
+    self.SetCashType(uipTran.CashType)
     if mode == 2: # Edit Mode
       #self.pBatch_LBatch.Enabled = 0
       # Set Save button hidden
@@ -127,6 +134,8 @@ class fFundCollection :
       self.mpBayar.ActivePageIndex = PageIndex[uipTran.PaymentType]
 
     else: # Insert Mode
+      uipTran.PaymentType = 0
+      uipTran.CashType = 'C'
       self.CariDonor()
       self.SaveDefaultValues()
     # end if
@@ -137,6 +146,14 @@ class fFundCollection :
   def bCariDonorClick(self,sender):
     self.CariDonor()
 
+  def CashTypeOnChange(self,sender):
+    dictCashType = {0 : 'K', 1 : 'C'}
+    self.SetCashType(dictCashType[sender.ItemIndex])
+
+  def SetCashType(self,CashType):
+    self.pCashTransaction_LPettyCash.visible = (CashType == 'K')
+    self.pCashTransaction_LCurrency.enabled = (CashType == 'C')
+    
   def IdDonorOnExit(self,sender):
     uipDonor = self.uipDonor
     DonorNo = uipDonor.DonorNo or ''
@@ -231,6 +248,28 @@ class fFundCollection :
     self.DefaultValues['ActualDate'] = uipTran.ActualDate
     
 
+  def PettyCashAfterLookUp(self, sender, linkui):
+    uipTran = self.uipTransaction
+    uipTran.Edit()
+
+    # Set Currency Code and Rate
+    CurrCode = uipTran.GetFieldValue('LPettyCash.CurrencyCode')
+    CurrName = uipTran.GetFieldValue('LPettyCash.LCurrency.Full_Name')
+    CurrRate = uipTran.GetFieldValue('LPettyCash.LCurrency.Kurs_Tengah_BI')
+
+    uipTran.SetFieldValue('LCurrency.Currency_Code' , CurrCode)
+    uipTran.SetFieldValue('LCurrency.Full_Name' , CurrName)
+    uipTran.SetFieldValue('LCurrency.Kurs_Tengah_BI' , CurrRate)
+    
+    # Save Choice As Default Values
+    self.DefaultValues['LPettyCash.AccountNo'] = uipTran.GetFieldValue('LPettyCash.AccountNo')
+    self.DefaultValues['LPettyCash.AccountName'] = uipTran.GetFieldValue('LPettyCash.AccountName')
+    self.DefaultValues['LPettyCash.CurrencyCode'] = uipTran.GetFieldValue('LPettyCash.CurrencyCode')
+    self.DefaultValues['LPettyCash.LCurrency.Full_Name'] = uipTran.GetFieldValue('LPettyCash.LCurrency.Full_Name')
+    self.DefaultValues['LPettyCash.LCurrency.Kurs_Tengah_BI'] = uipTran.GetFieldValue('LPettyCash.LCurrency.Kurs_Tengah_BI')
+
+
+
   def CashCurrAfterLookup(self, sender, linkui):
     uipItem = self.uipTransactionItem
     uipItem.Edit()
@@ -315,6 +354,15 @@ class fFundCollection :
     else:
       return 1
 
+  def CheckRequiredPettyCash(self):
+    if self.uipTransaction.GetFieldValue('LPettyCash.AccountNo') == None:
+      self.app.ShowMessage('Rekening Kas Kecil belum dipilih')
+      return 0
+    return 1
+
+  def CheckRequiredBranchCash(self):
+    return 1
+    
   def CheckRequiredGeneral(self):
     uipDonor = self.uipDonor
     uipTran  = self.uipTransaction
@@ -382,7 +430,17 @@ class fFundCollection :
       uipTran.SaveMode = savemode
       pType = self.mpBayar.ActivePageIndex
       if pType == 0:
+        self.DefaultValues['CashType'] = uipTran.CashType
         uipTran.PaymentType = uipTran.CashType
+
+
+        if uipTran.CashType == 'K' :
+          if not self.CheckRequiredPettyCash():
+            return 0
+        else:
+          if not self.CheckRequiredBranchCash():
+            return 0
+            
       elif pType == 1:
         uipTran.PaymentType = 'B'
         if not self.CheckRequiredBank():

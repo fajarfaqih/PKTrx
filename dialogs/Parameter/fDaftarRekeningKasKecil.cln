@@ -57,7 +57,6 @@ document <
         '  BranchCode as Kode_Cabang,'#13#10,
         '  CurrencyCode as Kode_Valuta,'#13#10,
         '  OpeningDate as Tgl_Buka,'#13#10,
-        '  UserName,'#13#10,
         '  Status $, '#13#10,
         '  self'#13#10,
         ') then order by AccountNo;']
@@ -87,10 +86,6 @@ document <
           FieldName='PettyCash.Kode_Valuta'
           Width=60
           Caption='Kd Valuta'
-        >, object:rtf::QueryColumn<
-          FieldName='PettyCash.UserName'
-          Width=100
-          Caption='Nama User'
         >, object:rtf::QueryColumn<
           FieldName='PettyCash.Tgl_Buka'
           Caption='Tgl Buka'

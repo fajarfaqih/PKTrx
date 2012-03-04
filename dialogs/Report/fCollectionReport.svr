@@ -64,6 +64,36 @@ document <
           DataTypeName='varchar'
           DataLength=20
         >, object:rpclass::TCustomLoadedField<
+          Name='LPettyCash.AccountNo'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='LPettyCash.AccountNo'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='LPettyCash.AccountName'
+          DataTypeName='VARCHAR'
+          DataLength=50
+        >, object:rpclass::TCustomLoadedField<
+          Name='LPettyCash.Balance'
+          DataTypeName='DOUBLE'
+        >, object:rpclass::TCustomLoadedField<
+          Name='LPettyCash.CurrencyCode'
+          DataTypeName='VARCHAR'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LPettyCash.LCurrency.Full_Name'
+          DataTypeName='VARCHAR'
+          DataLength=50
+        >, object:rpclass::TCustomLoadedField<
+          Name='LPettyCash.LCurrency.Kurs_Tengah_BI'
+          DataTypeName='DOUBLE'
+        >, object:rpclass::TCustomLoadedField<
+          Name='IsAllPettyCash'
+          DataTypeName='varchar'
+          DataLength=1
+        >, object:rpclass::TCustomLoadedField<
           Name='ProgramName'
           DataTypeName='varchar'
           DataLength=30
@@ -151,6 +181,10 @@ document <
           Name='LBranch'
           ClassTypeName='Branch'
           FieldNames='BranchCode;BranchCode;BranchName'
+        >, object:rpclass::TCustomLoadedLink<
+          Name='LPettyCash'
+          ClassTypeName='PettyCash'
+          FieldNames='AccountNo;AccountNo;AccountName;Balance;CurrencyCode;LCurrency.Full_Name;LCurrency.Kurs_Tengah_BI'
         >, object:rpclass::TCustomLoadedLink<
           Name='LSponsor'
           ClassTypeName='Sponsor'

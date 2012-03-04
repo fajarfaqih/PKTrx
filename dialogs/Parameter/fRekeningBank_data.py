@@ -17,6 +17,16 @@ def FormSetDataEx(uideflist, parameter) :
     rec.mode = parameter.FirstRecord.mode
     rec.SetFieldByName(ID+'ID',rec.GetFieldByName(ID))
 
+    if parameter.FirstRecord.mode == 'New' :
+      AccountInterface = helper.GetObject('ParameterGlobal', 'GLIBANK').Get()
+      oAccount = helper.GetObject('Account', AccountInterface)
+      if oAccount.isnull: 'PERINGATAN', 'Akun %s tidak ditemukan' % AccountInterface
+
+      rec.SetFieldByName('LGLInterface.Account_Code', AccountInterface)
+      rec.SetFieldByName('LGLInterface.Account_Name', oAccount.Account_Name)
+    
+    parameter.FirstRecord.mode
+    
     config = uideflist.config
     rec.OpeningDate = config.Now()
 
@@ -34,13 +44,30 @@ def OnSetData(sender):
   BankCash = helper.GetObjectByInstance('BankCash', sender.ActiveInstance)
 
   rec.SetFieldByName('LBranch.Kode_Cabang',BankCash.BranchCode)
-  rec.SetFieldByName('LCurrency.Currency_Code',BankCash.CurrencyCode)
+
   rec.SetFieldByName('LBank.BankCode',BankCash.BankCode)
   rec.SetFieldByName('LBank.BankShortName',BankCash.BankName)
+  
+  # Set Nama Cabang
   corporate = helper.CreateObject('Corporate')
   CabangInfo = corporate.GetCabangInfo(BankCash.BranchCode)
   rec.SetFieldByName('LBranch.Nama_Cabang',CabangInfo.Nama_Cabang)
-  rec.SetFieldByName('LGLInterface.Account_Code',BankCash.AccountInterface)
+
+  # Set GL Interface
+  AccountInterface = BankCash.AccountInterface
+  oAccount = helper.GetObject('Account', AccountInterface)
+  if oAccount.isnull: 'PERINGATAN', 'Akun %s tidak ditemukan' % AccountInterface
+
+  rec.SetFieldByName('LGLInterface.Account_Code', AccountInterface)
+  rec.SetFieldByName('LGLInterface.Account_Name', oAccount.Account_Name)
+  
+  # Set Currency
+  CurrencyCode = BankCash.CurrencyCode
+  oCurrency = helper.GetObject('Currency',CurrencyCode)
+  if oCurrency.isnull : 'PERINGATAN', 'Kode Valuta %s tidak ditemukan' % CurrencyCode
+
+  rec.SetFieldByName('LCurrency.Currency_Code', CurrencyCode)
+  rec.SetFieldByName('LCurrency.Full_Name', oCurrency.Full_Name)
 
 
 def SimpanData(config, parameter, returnpacket) :

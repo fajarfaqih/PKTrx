@@ -9,8 +9,8 @@ document <
   Caption='Rekening Kas Kecil'
   Left=50
   Top=50
-  Width=361
-  Height=297
+  Width=393
+  Height=321
   UIParts={object:rtf::PClassUI<
       Elements={object:rtf::FieldUIElmtSetting<
           Name='mode'
@@ -66,7 +66,7 @@ document <
           Hidden=true
           ControlCaption='Kode Valuta'
           DataTypeName='VARCHAR'
-          DataLength=5
+          DataLength=20
         >, object:rtf::FieldUIElmtSetting<
           Name='Balance'
           ReadOnlyControl=true
@@ -99,6 +99,11 @@ document <
           Name='CashCode'
           DataTypeName='VARCHAR'
           DataLength=10
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AccountInterface'
+          Hidden=true
+          DataTypeName='VARCHAR'
+          DataLength=20
         >, object:rtf::FieldUIElmtSetting<
           Name='AccountNoID'
           ControlCaption='AccountNo'
@@ -167,6 +172,7 @@ document <
           FieldBaseName='LCurrency'
         >, object:rtf::LinkUIElmtSetting<
           Name='LUser'
+          Hidden=true
           ControlCaption='UserName'
           ClassTypeName=''
           ExternalClassTypeName='user'
@@ -208,14 +214,46 @@ document <
           OQLSystemContext='corporate'
           LookupOption=loCustomOQL
           FieldBaseName='LUser'
+        >, object:rtf::LinkUIElmtSetting<
+          Name='LGLInterface'
+          ControlCaption='GL Interface'
+          ClassTypeName=''
+          ExternalClassTypeName='account'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LGLInterface.account_code'
+              DataTypeName='varchar'
+              DataLength=20
+              UsedAsKey=true
+              KeyOrDisplayName='account_code'
+              FinalDisplayFieldName='account_code'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LGLInterface.Account_Name'
+              DataTypeName='varchar'
+              DataLength=20
+              UsedAsDisplay=true
+              KeyOrDisplayName='Account_Name'
+              FinalDisplayFieldName='Account_Name'
+            >}Restrictions=''
+          OQLText=['select from Account'#13#10,
+            '[ is_detail=''T'']'#13#10,
+            '('#13#10,
+            '  Account_Code,'#13#10,
+            '  Account_Name,'#13#10,
+            '  self'#13#10,
+            ') then order by account_code;']
+          OQLSystemContext='accounting'
+          LookupOption=loCustomOQL
+          FieldBaseName='LGLInterface'
         >}Name='pData'
-      Width=353
-      Height=313
+      Width=385
+      Height=265
       UIPart=$UIPARTS['uipData']
       Controls={*object:rtf::DBEdit<
           Name='AccountName'
-          Top=92
+          Top=64
           Left=8
+          Width=219
+          Height=21
           Color=0
           ControlCaption='Nama Rekening'
           LayoutOrder=2
@@ -254,13 +292,15 @@ document <
           Name='AccountNoID'
           Top=8
           Left=8
+          Width=219
+          Height=21
           Enabled=false
           Color=-2147483624
           ControlCaption='No Rekening'
           LayoutOrder=-2
         >, *object:rtf::DBLookupEdit<
           Name='LBranch'
-          Top=120
+          Top=92
           Left=8
           ControlCaption='Cabang'
           LayoutOrder=3
@@ -269,7 +309,7 @@ document <
           OnAfterLookup='BranchAfterLookup'
         >, *object:rtf::DBLookupEdit<
           Name='LCurrency'
-          Top=148
+          Top=120
           Left=8
           ControlCaption='Valuta'
           LayoutOrder=4
@@ -281,21 +321,13 @@ document <
           DisplayLookupColor=-2147483624
           DisplayLookupWidth=150
         >, *object:rtf::DBLookupEdit<
-          Name='LUser'
-          Top=64
+          Name='LGLInterface'
+          Top=148
           Left=8
-          Width=203
-          Height=21
-          ControlCaption='UserName'
-          LayoutOrder=1
-          FieldName='LUser.Id_User'
-          DisplayFormat=''
-          LookupField='LUser.Nama_User'
-          DisplayLookupField=false
-          OnAfterLookup='UserAfterLookup'
-          DisplayLookupColor=-2147483624
-          DisplayLookupWidth=150
-          DirectInput=true
+          ControlCaption='GL Interface'
+          LayoutOrder=5
+          LookupField='LGLInterface.Account_Name'
+          DisplayLookupField=true
         >}EqualCaptionWidth=130
       ControlLeftMargin=8
       ControlTopMargin=8
@@ -335,8 +367,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=240
-      Height=96
+      Width=393
+      Height=321
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['pData']
       InversedAlign=true

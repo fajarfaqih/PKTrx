@@ -22,6 +22,14 @@ def FormSetDataEx(uideflist, parameter) :
     if mode == 'New' :
       rec.UserName = config.SecurityContext.UserID
       rec.OpeningDate = config.Now()
+      
+      # Set GL Interface Default
+      AccountInterface = helper.GetObject('ParameterGlobal', 'GLICASH').Get()
+      oAccount = helper.GetObject('Account', AccountInterface)
+      if oAccount.isnull: 'PERINGATAN', 'Akun %s tidak ditemukan' % AccountInterface
+
+      rec.SetFieldByName('LGLInterface.Account_Code', AccountInterface)
+      rec.SetFieldByName('LGLInterface.Account_Name', oAccount.Account_Name)
     
 def OnBeginProcessData (uideflist, AData) :
   config = uideflist.Config
@@ -54,7 +62,7 @@ def SimpanData(config, parameter, returnpacket) :
     #Parameter
     ObjName = 'PettyCash'
     LsFieldInput = ('AccountName','Status','BranchCode',
-      'CurrencyCode','OpeningDate','UserName','CashCode')
+      'CurrencyCode','OpeningDate','UserName','CashCode','AccountInterface')
     config.BeginTransaction()
     try :
         helper = phelper.PObjectHelper(config)
@@ -62,7 +70,7 @@ def SimpanData(config, parameter, returnpacket) :
           rsSeq = config.CreateSQL("select nextval('seq_pettycashid')").RawResult
           sequence = str(rsSeq.GetFieldValueAt(0)).zfill(4)
           rsrc.AccountNoId = 'PC.%s.%s.%s' % (rsrc.BranchCode,rsrc.CurrencyCode,sequence)
-
+        
         CashCode = rsrc.CashCode or ''
         if CashCode != '':
           sSQLCheck = " \

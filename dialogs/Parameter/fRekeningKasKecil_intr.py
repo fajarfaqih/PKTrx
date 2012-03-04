@@ -60,10 +60,40 @@ class fRekeningKasKecil:
     eval(self.ParamDisplay[mode])
     self.FormContainer.Show()
     
+  def CheckInput(self):
+    uipData = self.uipData
+    uipData.Edit()
+    
+    CashCode = (uipData.CashCode or '').strip()
+    if uipData.CashCode in ['',None] :
+      self.pData_CashCode.SetFocus()
+      raise 'PERINGATAN','Kode Kas Belum Diinputkan'
+
+    if uipData.AccountName in ['',None] :
+      self.pData_AccountName.SetFocus()
+      raise 'PERINGATAN','Nama Rekening Belum Diinputkan'
+      
+    uipData.BranchCode = uipData.GetFieldValue("LBranch.Kode_Cabang")
+    if uipData.BranchCode in ['',None] :
+      self.pData_LBranch.SetFocus()
+      raise 'PERINGATAN','Kode Cabang Belum Dipilih\Tidak Valid'
+
+    uipData.CurrencyCode = uipData.GetFieldValue("LCurrency.Currency_Code")
+    if uipData.CurrencyCode in ['',None] :
+      self.pData_LCurrency.SetFocus()
+      raise 'PERINGATAN','Kode Valuta Belum Dipilih\Tidak Valid'
+
+    uipData.AccountInterface = uipData.GetFieldValue("LGLInterface.Account_Code")
+    if uipData.AccountInterface in ['',None] :
+      self.pData_LGLInterface.SetFocus()
+      raise 'PERINGATAN','Kode GL Interface Belum Dipilih\Tidak Valid'
+
+    self.FormObject.CommitBuffer()
+    
   def bOKClick(self, sender):
     if self.pAction_bClose.Visible :
       self.FormObject.CommitBuffer()
-      #self.FormObject.PostResult()
+      self.CheckInput()
       ph = self.FormObject.CallServerMethod('SimpanData',self.FormObject.GetDataPacket())
       status = ph.FirstRecord
       if status.Is_Err == 1 : raise 'ERROR', status.Err_Message

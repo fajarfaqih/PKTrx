@@ -121,6 +121,32 @@ document <
           DataTypeName='varchar'
           DataLength=1
         >, object:rpclass::TCustomLoadedField<
+          Name='LPettyCash.AccountNo'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='LPettyCash.AccountNo'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='LPettyCash.AccountName'
+          DataTypeName='VARCHAR'
+          DataLength=50
+        >, object:rpclass::TCustomLoadedField<
+          Name='LPettyCash.Balance'
+          DataTypeName='DOUBLE'
+        >, object:rpclass::TCustomLoadedField<
+          Name='LPettyCash.CurrencyCode'
+          DataTypeName='VARCHAR'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='LPettyCash.LCurrency.Full_Name'
+          DataTypeName='VARCHAR'
+          DataLength=50
+        >, object:rpclass::TCustomLoadedField<
+          Name='LPettyCash.LCurrency.Kurs_Tengah_BI'
+          DataTypeName='DOUBLE'
+        >, object:rpclass::TCustomLoadedField<
           Name='LCurrency.Currency_Code'
           DataTypeName='varchar'
           DataLength=20
@@ -239,6 +265,10 @@ document <
           Name='LBank'
           ClassTypeName='BankCash'
           FieldNames='AccountNo;AccountNo;BankName;CurrencyCode'
+        >, object:rpclass::TCustomLoadedLink<
+          Name='LPettyCash'
+          ClassTypeName='PettyCash'
+          FieldNames='AccountNo;AccountNo;AccountName;Balance;CurrencyCode;LCurrency.Full_Name;LCurrency.Kurs_Tengah_BI'
         >, object:rpclass::TCustomLoadedLink<
           Name='LAsset'
           ClassTypeName='Account'

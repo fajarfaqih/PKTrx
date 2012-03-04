@@ -4,9 +4,9 @@ MAPEntity = { 1 : 'Zakat',
               4 : 'Amil',
               5 : 'Non Halal'}
 
-MAPChannel = { 'P' : 'Kas Cabang',
-               'R' : 'Kas Kecil',
-               'A' : 'Banl',
+MAPChannel = { 'P' : 'Kas Kecil',
+               'R' : 'Kas Cabang',
+               'A' : 'Bank',
                'G' : 'Aktiva'}
 
 class fCollectionReport:
@@ -39,6 +39,7 @@ class fCollectionReport:
     uipFilter.IsIncludeChildBranch = 'F'
     uipFilter.IsAllDonor = 'T'
     uipFilter.IsAllChannel = 'T'
+    uipFilter.IsAllPettyCash = 'T'
     uipFilter.IsAllProgram = 'T'
     uipFilter.IsAllSponsor = 'T'
     uipFilter.IsAllVolunteer = 'T'
@@ -81,12 +82,29 @@ class fCollectionReport:
       uipFilter.NamaDonor = fData.DonorName
 
 
+  def ChannelCodeOnChange(self, sender):
+    dictChannelCode = {0 : 'P', 1 : 'R', 2 : 'A', 3 : 'G'}
+    self.SetPettyCashControl(dictChannelCode[sender.ItemIndex])
+
+  def IsAllPettyCashClick(self, sender):
+    self.SetPettyCashControl(self.uipFilter.ChannelCode)
+
+  def SetPettyCashControl(self, ChannelCode):
+    uipFilter = self.uipFilter
+
+    self.pFilter3_IsAllPettyCash.visible = (ChannelCode == 'P')
+    self.pFilter3_LPettyCash.visible = (ChannelCode == 'P')
+    self.pFilter3_LPettyCash.enabled = (ChannelCode == 'P' and not self.pFilter3_IsAllPettyCash.Checked)
+    if self.pFilter3_IsAllPettyCash.Checked:
+      uipFilter.SetFieldValue('LPettyCash.AccountNo','')
+      uipFilter.SetFieldValue('LPettyCash.AccountName','')
+
   def CheckClick(self,sender):
     form = self.form
     CtlNames = {
       'IsAllBranch' : ['LBranch','IsIncludeChildBranch'],
       'IsAllDonor' : ['NoDonor','NamaDonor','bSelectDonor'],
-      'IsAllChannel' : ['ChannelCode'],
+      'IsAllChannel' : ['ChannelCode', 'IsAllPettyCash', 'LPettyCash'],
       'IsAllProgram' : ['ProgramName','bSelectProgram'],
       'IsAllSponsor' : ['LSponsor'],
       'IsAllVolunteer' : ['LVolunteer'],
@@ -96,6 +114,8 @@ class fCollectionReport:
     
     for controlname in CtlNames[sender.Name] :
       form.GetPanelByName('pFilter3').GetControlByName(controlname).Visible = not sender.Checked
+
+    self.SetPettyCashControl(self.uipFilter.ChannelCode or '')
 
   def CheckFilter(self):
     uipFilter = self.uipFilter

@@ -66,7 +66,7 @@ document <
           Hidden=true
           ControlCaption='Kode Valuta'
           DataTypeName='VARCHAR'
-          DataLength=5
+          DataLength=20
         >, object:rtf::FieldUIElmtSetting<
           Name='BankName'
           Hidden=true
@@ -380,8 +380,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=361
-      Height=353
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['pData']
       InversedAlign=true
