@@ -142,12 +142,14 @@ def RegenerateJournalItem(config, parameters, returnpacket):
       
       AddParam = ''
       #AddParam = " and branchcode='%s' " % config.SecurityContext.GetUserInfo()[4]
-      AddParam += " and actualdate between '2011-01-01' and '2011-01-31' "
+      AddParam += " and actualdate between '2011-01-01' and '2011-03-31' "
       AddParam += " and transactioncode <> 'TB' "
+      #AddParam += " and transactioncode = 'EAR' "
       #AddParam += " and transactionid in (140505, 140528)"
       #AddParam += " and isposted = 'F' "
       #AddParam += " and exists ( select 1 from transaction.transactionitem a , transaction.accounttransactionitem b \
-      #                where a.transactionitemid=b.transactionitemid and b.accountno='11901.001.000' and a.transactionid=t.transactionid )"
+      #                where a.transactionitemid=b.transactionitemid and b.accounttitype ='D' and b.fundentity=2 and \
+      #                      b.accountno like '12101%' and a.transactionid=t.transactionid )"
       #AddParam = " and transactionno = 'KK-2011-221-KMD01-0000174' "
       # AddParam = " and transactionid in (select distinct c.transactionid \
       #        from accounting.journalitem a ,transaction.transaction c where \
@@ -176,7 +178,7 @@ def RegenerateJournalItem(config, parameters, returnpacket):
       #           and a.fl_account in ('4210101','4210102','4210103','4220101') \
       #           and b.branchcode='001' and c.transactionid=t.transactionid )"                
       
-      AddParam += " and exists ( select 1 from transaction.transactionitem i where i.transactionid=t.transactionid )"
+      #AddParam += " and exists ( select 1 from transaction.transactionitem i where i.transactionid=t.transactionid and parameterjournalid like 'PI%')"
       #AddParam += " and TransactionId > 35788 "
 
       # Total Data

@@ -1,6 +1,6 @@
 ﻿select * from accounting.account where 
 
-select * from accounting.account where account_code like '533%' 
+select * from accounting.account where account_code like '5530%' 
 
 select * from accounting.accounthierarchy where fl_parentaccountcode like '533%'
 

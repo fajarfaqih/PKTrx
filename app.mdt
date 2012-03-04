@@ -1478,7 +1478,7 @@ document <
           MemberName='ParameterJournalId'
           PhysicalName='PARAMETERJOURNALID'
           DataType=$TYPEDECLS['VARCHAR']
-          DataLength=5
+          DataLength=10
         >, object:LinkMember<
           MemberName='LCurrency'
           AttrLinks={object:AttributeLink<
