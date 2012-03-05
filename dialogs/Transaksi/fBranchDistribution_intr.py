@@ -8,8 +8,14 @@ class fBranchDistribution:
     self.fSelectProduct = None
 
   def Show(self , mode = 1):
-    self.uipTransaction.Edit()
-    self.uipTransaction.ShowMode = mode
+    uipTran = self.uipTransaction
+    uipTran.Edit()
+    uipTran.ShowMode = mode
+    if mode == 1 : # Insert Mode
+      uipTran.FundEntity = 4
+    
+    self.SetFundEntitySource(uipTran.FundEntity)
+    
     return self.FormContainer.Show()
 
   def BatchAfterLookup(self, sender, linkui):
@@ -24,6 +30,21 @@ class fBranchDistribution:
       raise 'PERINGATAN','Pilih Dahulu Cabang Tujuan'
       
     return 1
+
+  def FundEntityOnChange(self,sender):
+    self.SetFundEntitySource(sender.ItemIndex + 1)
+
+  def SetFundEntitySource(self, FundEntity):
+    uipTran = self.uipTransaction
+    
+    # enable jika jenis dana selain amil
+    self.pTransaction_bSelectProduct.enabled = ( FundEntity != 4 )
+
+    if FundEntity == 4 :
+      uipTran.Edit()
+      uipTran.AccountNo = ''
+      uipTran.AccountName = ''
+
 
   def EmployeeAfterLookup (self, sender, linkui):
     self.uipTransaction.EmployeeName = self.uipTransaction.GetFieldValue('LEmployee.Nama_Lengkap')
@@ -115,8 +136,12 @@ class fBranchDistribution:
     if uipTran.GetFieldValue('LCashAccountDestination.AccountNo') in ['', None] :
       raise 'PERINGATAN','Kas / Bank Penerima Belum diinputkan'
       
-    if uipTran.AccountNo in ['', None] :
-      raise 'PERINGATAN','Produk Belum diinputkan'
+    if uipTran.FundEntity in [None, '' ]:
+      raise 'PERINGATAN', 'Jenis Sumber Dana Belum dipilih'
+      
+    if uipTran.FundEntity != 4 :
+      if uipTran.AccountNo in ['', None] :
+        raise 'PERINGATAN','Program / Project Belum diinputkan'
 
     if (uipTran.Amount or 0.0) <= 0.0:
       raise 'PERINGATAN','Nilai Transaksi tidak boleh <= 0.0 '

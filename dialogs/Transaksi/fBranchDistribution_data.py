@@ -14,6 +14,9 @@ def FormSetDataEx(uideflist, params) :
 
     rec = uideflist.uipTransaction.Dataset.GetRecord(0)
 
+    if rec.FundEntity in [None, '', 0] :
+      rec.FundEntity = 2
+      
     return st
 
   rec = uideflist.uipTransaction.Dataset.AddRecord()

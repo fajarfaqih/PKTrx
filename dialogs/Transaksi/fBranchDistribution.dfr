@@ -10,7 +10,7 @@ document <
   Left=50
   Top=50
   Width=929
-  Height=441
+  Height=465
   BeforeDeleteRow=''
   BeforeResultSent=''
   OnGeneralSetData=''
@@ -56,8 +56,8 @@ document <
       PostLinkValues=true
     >}Containers={object:rtf::DualSplit<
       Name='dsMain'
-      Width=929
-      Height=441
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['pTransaction']
       InversedAlign=true
@@ -181,6 +181,15 @@ document <
           Name='PaidTo'
           ControlCaption='Dibayar Kepada'
         >, object:rtf::FieldUIElmtSetting<
+          Name='FundEntity'
+          ControlCaption='Jenis Sumber Dana'
+          DataTypeName='integer'
+          DataLength=20
+          EnumeratedValues=['1=Zakat'#13#10,
+            '2=Infaq'#13#10,
+            '3=Wakaf'#13#10,
+            '4=Amil'#13#10]
+        >, object:rtf::FieldUIElmtSetting<
           Name='AccountNo'
           ReadOnlyControl=true
           ControlCaption='Program / Project'
@@ -219,7 +228,7 @@ document <
           DataLength=100
         >}Name='pTransaction'
       Width=913
-      Height=393
+      Height=417
       UIPart=$UIPARTS['uipTransaction']
       Controls={*object:rtf::DBEdit<
           Name='TransactionNo'
@@ -313,13 +322,23 @@ document <
           Color=0
           ControlCaption='Dibayar Kepada'
           CharCase=ecUpperCase
+        >, *object:rtf::DBComboBox<
+          Name='FundEntity'
+          Layout=clAbsolute
+          Top=252
+          Left=8
+          ForceUseEqualCaptionWidth=true
+          Color=0
+          ControlCaption='Jenis Sumber Dana'
+          OnChange='FundEntityOnChange'
         >, *object:rtf::DBEdit<
           Name='AccountNo'
           Layout=clAbsolute
-          Top=256
+          Top=280
           Left=8
           Width=97
           Height=21
+          Enabled=false
           ForceUseEqualCaptionWidth=true
           Color=-2147483624
           ControlCaption='Program / Project'
@@ -327,15 +346,16 @@ document <
         >, *object:rtf::DBEdit<
           Name='AccountName'
           Layout=clAbsolute
-          Top=256
+          Top=280
           Left=213
+          Enabled=false
           Color=-2147483624
           ControlCaption='-'
           CharCase=ecUpperCase
         >, *object:rtf::DBEdit<
           Name='BudgetCode'
           Layout=clAbsolute
-          Top=284
+          Top=308
           Left=8
           Width=97
           Height=21
@@ -347,7 +367,7 @@ document <
         >, *object:rtf::DBEdit<
           Name='BudgetOwner'
           Layout=clAbsolute
-          Top=284
+          Top=308
           Left=213
           Color=-2147483624
           ControlCaption='-'
@@ -356,7 +376,7 @@ document <
         >, *object:rtf::DBEdit<
           Name='Amount'
           Layout=clAbsolute
-          Top=312
+          Top=336
           Left=8
           Width=225
           Height=21
@@ -370,7 +390,7 @@ document <
         >, *object:rtf::DBEdit<
           Name='ReferenceNo'
           Layout=clAbsolute
-          Top=340
+          Top=364
           Left=8
           Width=225
           Height=21
@@ -383,7 +403,7 @@ document <
         >, *object:rtf::DBEdit<
           Name='Description'
           Layout=clAbsolute
-          Top=368
+          Top=392
           Left=8
           Width=313
           Height=21
@@ -396,7 +416,7 @@ document <
         >, object:rtf::Button<
           Name='bSearchBudget'
           Layout=clAbsolute
-          Top=284
+          Top=308
           Left=425
           Width=112
           Height=21
@@ -408,7 +428,7 @@ document <
         >, object:rtf::Button<
           Name='bSelectProduct'
           Layout=clAbsolute
-          Top=256
+          Top=280
           Left=425
           Width=113
           Height=21
