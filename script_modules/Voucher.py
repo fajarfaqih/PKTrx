@@ -1006,7 +1006,7 @@ def GetKwitansiPengeluaranNew(oTran):
   NamaLembaga = oTran.Helper.GetObject('ParameterGlobal', 'COMPNAME').Get()
   dataKwitansi = {}
   dataKwitansi['NOTRANSAKSI'] = oTran.TransactionNo
-  dataKwitansi['PAIDTO'] = oTran.PaidTo[:30]
+  dataKwitansi['PAIDTO'] = oTran.PaidTo[:60]
   dataKwitansi['ALAMAT1'] = ''
   dataKwitansi['ALAMAT2'] = ''
   dataKwitansi['NAMAKAS'] = ''
