@@ -1300,7 +1300,7 @@ document <
           MemberName='PaidTo'
           PhysicalName='PAIDTO'
           DataType=$TYPEDECLS['VARCHAR']
-          DataLength=30
+          DataLength=100
         >, object:FieldMember<
           MemberName='DonorNo'
           PhysicalName='DONORNO'
@@ -1324,7 +1324,7 @@ document <
           MemberName='ReceivedFrom'
           PhysicalName='RECEIVEDFROM'
           DataType=$TYPEDECLS['VARCHAR']
-          DataLength=30
+          DataLength=100
         >, object:FieldMember<
           MemberName='MarketerId'
           PhysicalName='MARKETERID'

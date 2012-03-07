@@ -1173,6 +1173,110 @@ def GetKwitansiPengembalianUangMukaNew(oTran):
   dataKwitansi['DETAIL'] = DETAIL + UNDERLINE
     
   return oTran.CreateRTFForPrint(templateKwitansi,dataKwitansi)
+
+def GetKwitansiInvestasiKembaliNew(oTran):
+  config = oTran.Config
+  config.FlushUpdates()
+  helper = oTran.Helper
+  
+  # Get Tools
+  ToolsConvert = helper.LoadScript('Tools.S_Convert')
+
+  # Set Terbilang
+  Currency = oTran.LCurrency
+  Total = oTran.Amount or 0.0
+  
+  Terbilang = ToolsConvert.Terbilang(config,Total,
+            KodeMataUang = oTran.CurrencyCode,
+            NamaMataUang = Currency.Symbol_Says)
+  
+  Terbilang = ToolsConvert.Divider(Terbilang,45)
+  if len(Terbilang) == 1 : Terbilang.append('')
+  
+  # Get Branch Info
+  #corporate = helper.CreateObject('Corporate')
+  #CabangInfo = corporate.GetCabangInfo(oTran.BranchCode)
+  #Nama_Cabang = CabangInfo.Nama_Cabang
+  oBranch = helper.GetObject('Branch', oTran.BranchCode)
+  if oBranch.isnull : raise 'PERINGATAN','Data Cabang tidak ditemukan'
+
+  # Get Template
+  PrintHelper = helper.CreateObject('PrintHelper')
+  #templateKwitansi = PrintHelper.LoadTemplate('KwitansiPengeluaran')
+  templateKwitansi = PrintHelper.LoadRtfTemplate('KwitansiInvestasiKembaliNew')
+  
+  NamaLembaga = helper.GetObject('ParameterGlobal', 'COMPNAME').Get()
+  dataKwitansi = {}
+  dataKwitansi['NOTRANSAKSI'] = oTran.TransactionNo
+  dataKwitansi['PAIDTO'] = oTran.PaidTo[:30]
+  dataKwitansi['RECEIVEDFROM'] = oTran.ReceivedFrom[:30]
+  dataKwitansi['ALAMAT1'] = ''
+  dataKwitansi['ALAMAT2'] = ''
+  dataKwitansi['NAMAKAS'] = ''
+  dataKwitansi['TERBILANG1'] = Terbilang[0]
+  dataKwitansi['TERBILANG2'] = Terbilang[1]
+  dataKwitansi['NAMA_LEMBAGA'] = NamaLembaga
+  dataKwitansi['USER_CETAK'] = oTran.PaidTo#config.SecurityContext.InitUser[:15]
+  dataKwitansi['WAKTU_CETAK'] = config.FormatDateTime('dd-mm-yyyy hh:nn',config.Now())
+  dataKwitansi['TGL_BAYAR'] = config.FormatDateTime('dd mmmm yyyy',oTran.GetAsTDateTime('ActualDate'))
+  dataKwitansi['TOTAL'] = config.FormatFloat('#,##0.00',Total)
+  dataKwitansi['KOTA'] = oBranch.Location or ''
+  dataKwitansi['KETERANGAN'] = oTran.Description
+  dataKwitansi['CURRSYMBOL'] = Currency.Symbol
+  dataKwitansi['INVESTEENAME'] = oTran.ReceivedFrom
+  
+  DETAIL = ''
+  #oItems = oTran.Ls_TransactionItem
+  rowdetail = 0
+  #while not oItems.EndOfList:
+  aSQLText = " select transactionitemid from transactionitem \
+                   where transactionid=%d " % oTran.TransactionId        
+
+  aRate = oTran.Rate
+  oRes = oTran.Config.CreateSQL(aSQLText).RawResult
+  while not oRes.Eof:
+    oItem = helper.GetObject(
+          'TransactionItem', oRes.TransactionItemId
+      ).CastToLowestDescendant()
+    
+    if oItem.CurrencyCode == oTran.CurrencyCode :
+      aAmount = oItem.Amount
+    else :
+      if oItem.CurrencyCode == '000' :
+        aAmount = oItem.Amount / aRate
+      else:
+        aAmount = oItem.Amount * oItem.Rate
+      # end if 
+    # end if
+
+    if oItem.MutationType == 'D':
+      rowdetail += 1    
+      DETAIL += 0 * ' '  + '%(LINE)2s %(NOACCOUNT)-6s  %(DESCRIPTION)-40s  %(CURRSYMBOL)-2s %(AMOUNT)20s \n\\par ' % {
+           'LINE' : '-' , #str(rowdetail),
+           'NOACCOUNT' : oItem.AccountCode,
+           'DESCRIPTION' : oItem.Description[:40],
+           'AMOUNT' :  config.FormatFloat('#,##0.00',oItem.Amount/aRate),
+           'CURRSYMBOL' : Currency.Symbol,
+        }
+    #else:        
+    #  dataKwitansi['NAMAKAS'] = oItem.RefAccountName[:25]
+    #  dataKwitansi['KODEAKUN'] = oItem.AccountCode
+    #endif
+    oRes.Next()
+  #-- while
+  
+  # Tambah isi detail dengan sisa baris max detail (max 5 baris)
+  maxrowdetail = 5
+  
+  for row in range(maxrowdetail - rowdetail):
+    DETAIL += '\n\\par '
+  # end for
+  
+  # Tambah isi detail dengan garis pemisah dengan total  
+  UNDERLINE =  54 * ' '  + '-----------------------'
+  dataKwitansi['DETAIL'] = DETAIL + UNDERLINE
+    
+  return oTran.CreateRTFForPrint(templateKwitansi,dataKwitansi)
   
 def GetKwitansiPiutang(oTran,EmpMutationType):
   config = oTran.Config

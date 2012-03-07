@@ -901,8 +901,10 @@ class Transaction(pobject.PObject):
       return Voucher.GetKwitansiPenerimaanNew(self)
     elif self.TransactionCode in ['DD001','CO','PAD','FA','FAI','FAIP','CPIA','GT','CA','DT','INVS'] :
       return Voucher.GetKwitansiPengeluaranNew(self)
-    elif self.TransactionCode in ['CAR','DTR','CARR','INVSR','CARB'] :
+    elif self.TransactionCode in ['CAR','DTR','CARR','CARB'] :
       return Voucher.GetKwitansiPengembalianUangMukaNew(self)
+    elif self.TransactionCode in ['INVSR'] :  
+      return Voucher.GetKwitansiInvestasiKembaliNew(self)
     elif self.TransactionCode in ['INVC'] :
       return Voucher.GetKwitansiInvoiceNew(self)  
     elif self.TransactionCode in ['EAR','PEAR','XAR','PXAR'] :

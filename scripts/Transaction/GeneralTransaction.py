@@ -944,21 +944,27 @@ def InvestmentReturn(helper,oTran,oBatch,request,params):
   oTran.ActualDate = oBatch.GetAsTDateTime('BatchDate')
   
   # Investment Account
-  oAccount = helper.GetObject('Investment', str(request[u'InvestmentAccountNo']))  
-  if oAccount.isnull:
+  oInvestment = helper.GetObject('Investment', str(request[u'InvestmentAccountNo'])).CastToLowestDescendant()
+  if oInvestment.isnull:
     raise '','Data Investasi tidak ditemukan' 
+  
+  if oInvestment.IsA('InvestmentEmployee') :
+    oTran.ReceivedFrom = oInvestment.LEmployee.EmployeeName[:100]
+  else : # oInvestment.IsA('InvestmentNonEmployee') :
+    oTran.ReceivedFrom = oInvestment.LInvestee.InvesteeName[:100]
+  # end if
 
-  oItemInvR = oTran.CreateInvestmentTransactItem(oAccount)
+  oItemInvR = oTran.CreateInvestmentTransactItem(oInvestment)
   oItemInvR.SetMutation('C', request[u'Amount'], request[u'Share'], 1.0)
   oItemInvR.Description = request[u'Description']
-  oItemInvR.SetFundEntity(oAccount.FundEntity)
-  oItemInvR.SetJournalParameter(FundEntityMap[oAccount.FundEntity])
+  oItemInvR.SetFundEntity(oInvestment.FundEntity)
+  oItemInvR.SetJournalParameter(FundEntityMap[oInvestment.FundEntity])
   
   
-  #oItemShare = oTran.CreateAccountTransactionItem(oAccount,IsUpdateBalance='F')
+  #oItemShare = oTran.CreateAccountTransactionItem(oInvestment,IsUpdateBalance='F')
   #oItemShare.SetMutation('C', request[u'Share'], 1.0)
   #oItemShare.Description = 'Bagi Hasil'
-  #oItemShare.SetFundEntity(oAccount.FundEntity)  
+  #oItemShare.SetFundEntity(oInvestment.FundEntity)  
   # Set Account Bagi Hasil Investasi Pengelola
   #oItemShare.SetAccountInterface('4510603')
   #oItemShare.SetJournalParameter('10')
