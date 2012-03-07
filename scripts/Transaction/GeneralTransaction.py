@@ -863,7 +863,8 @@ def Investment(helper,oTran,oBatch,request,params):
   InvesteeId = request[u'InvesteeId']
   BranchCode = request[u'BranchCode']
 
-  AccountNo = str(request[u'InvestmentAccountNo'])
+  #AccountNo = str(request[u'InvestmentAccountNo'])
+  AccountNo = ''
   if AccountNo == '' :
     if request[u'InvesteeCategory'] == 1 : # ==> Non Employee
       oAccount = helper.CreatePObject('InvestmentNonEmployee', InvesteeId)
