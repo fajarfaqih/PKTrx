@@ -63,7 +63,75 @@ def DAFScriptMain(config, parameter, returnpacket):
         config.Rollback()
         status.Is_Error = 1
         status.Error_Message = str(sys.exc_info()[1])
-        logmessage = "Gagal Id User : %s , %s" % (  oTran.Inputer, str(sys.exc_info()[1]))
+        logmessage = "Gagal Id User : %s , %s, %s" % (  oTran.Inputer, str(sys.exc_info()[1]), oInvestment.classname)
+
+      # end try except
+      app.ConWriteln(logmessage ,'DMessage')
+      fh.write(logmessage + '\n')  
+
+      row += 1
+      ds.Next()
+    # end while  
+  
+  finally:
+    fh.close()
+  
+  sw = returnpacket.AddStreamWrapper()
+  sw.LoadFromFile(filename)
+  sw.MIMEType = config.AppObject.GetMIMETypeFromExtension(filename)
+
+  return 1
+
+def DeleteInvestment(config, parameter, returnpacket):
+  # config: ISysConfig object
+  # parameter: TPClassUIDataPacket
+  # returnpacket: TPClassUIDataPacket (undefined structure)
+  status = returnpacket.CreateValues(["Is_Error", 0], ["Error_Message", ""])
+  helper = phelper.PObjectHelper(config)
+
+  app = config.GetAppObject()
+  app.ConCreate('DMessage')
+  corporate = helper.CreateObject('Corporate')
+
+  filename = corporate.GetUserHomeDir() + "/RepairActualDateLog.txt"
+  try :
+    fh = open(filename,'w')
+
+    logmessage = "Proses update data transaksi investasi"
+    config.SendDebugMsg(logmessage)
+    app.ConWriteln(logmessage ,'DMessage')
+    fh.write(logmessage + '\n')
+
+    
+    s = " select accountno from transaction.investment where investmenttype='E' and employeeid=0 "
+
+    sql = config.CreateSQL(s)
+    ds  = sql.rawresult
+    
+    row = 1
+    while not ds.Eof:      
+      config.BeginTransaction()
+      try:
+
+        oInvestment = helper.GetObject('Investment', ds.accountno)
+        
+
+        logmessage = "Proses Investment %s : " % (oInvestment.AccountNo)
+        app.ConWriteln(logmessage ,'DMessage')
+        config.SendDebugMsg(logmessage)
+        fh.write(logmessage + '\n')
+
+        config.FlushUpdates()
+        oInvestment.Delete()
+        # end if
+        logmessage = "Berhasil"
+
+        config.Commit()
+      except:
+        config.Rollback()
+        status.Is_Error = 1
+        status.Error_Message = str(sys.exc_info()[1])
+        logmessage = str(sys.exc_info()[1])
 
       # end try except
       app.ConWriteln(logmessage ,'DMessage')
