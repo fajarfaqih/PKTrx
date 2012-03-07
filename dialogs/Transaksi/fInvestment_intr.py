@@ -30,7 +30,7 @@ class fInvestment :
       self.uipTransaction.FundEntity = 4
       self.SaveDefaultValues()
     else:
-      self.pInvestment_bSearchEmployee.Enabled = 0
+      self.pInvestment_bSearchEmployee.Enabled = 1
       
     return self.FormContainer.Show()
 
