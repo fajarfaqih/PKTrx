@@ -5,9 +5,24 @@ class fSummaryCashAdvance:
     self.oPrint = self.app.GetClientClass('PrintLib','PrintLib')()
 
   def Show(self):
+    #-- Set Branch Filter
+    uipData = self.uipData
+    uipData.Edit()
+    IsHeadOffice = (uipData.BranchCode == uipData.HeadOfficeCode)
+    self.MasterBranchCode = ''
+
+    if not IsHeadOffice :
+      uipData.MasterBranchCode = uipData.BranchCode
+
+    uipData.SetFieldValue('LBranch.BranchCode',uipData.BranchCode)
+    uipData.SetFieldValue('LBranch.BranchName',uipData.BranchName)
+
     return self.FormContainer.Show()
 
   def PrintExcelClick(self,sender) :
+    uipData = self.uipData
+    app = self.FormObject.ClientApplication
+
     if self.uipData.BeginDate > self.uipData.EndDate :
        raise 'PERINGATAN','Tanggal Awal tidak boleh lebih besar dari tanggal akhir'
 
@@ -15,8 +30,20 @@ class fSummaryCashAdvance:
     if filename in ['',None] : return
 
     self.FormObject.CommitBuffer()
-    ph = self.FormObject.GetDataPacket()
-    ph = self.FormObject.CallServerMethod("SummaryEmpCA", ph)
+
+    # -- Generate Param
+    #ph = self.FormObject.GetDataPacket()
+    BranchCode = uipData.GetFieldValue('LBranch.BranchCode')
+    BeginDate = uipData.BeginDate
+    EndDate = uipData.EndDate
+
+    param = app.CreateValues(
+      ['BranchCode',BranchCode],
+      ['BeginDate',BeginDate],
+      ['EndDate',EndDate]
+    )
+
+    ph = self.FormObject.CallServerMethod("SummaryEmpCA", param)
 
     status = ph.FirstRecord
     if status.Is_Err : raise 'PERINGATAN',status.Err_Message
@@ -29,7 +56,6 @@ class fSummaryCashAdvance:
     workbook = self.oPrint.OpenExcelTemplate(self.app,'tplSumEmployeeCA.xls')
     try:
       workbook.ActivateWorksheet('DataRekap')
-      BranchCode = self.uipData.BranchCode
       BranchName = status.BranchName
       PeriodStr = status.PeriodStr
 
@@ -40,8 +66,9 @@ class fSummaryCashAdvance:
       workbook.SetCellValue(6, 2, status.TotalCredit)
       workbook.SetCellValue(7, 2, status.EndBalance)
       
-      workbook.SetCellValue(9, 4, 'Saldo Awal \n' + status.BeginDateStr)
-      workbook.SetCellValue(9, 8, 'Saldo Akhir \n' + status.EndDateStr)
+      workbook.SetCellValue(10, 4, 'Saldo Awal \n' + status.BeginDateStr)
+      workbook.SetCellValue(10, 8, 'Saldo Akhir \n' + status.EndDateStr)
+
       i = 0
       oldIdNumber = 0
       while i < ds.RecordCount:

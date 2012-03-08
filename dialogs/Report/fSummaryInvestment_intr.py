@@ -5,18 +5,45 @@ class fSummaryInvestment:
     self.oPrint = self.app.GetClientClass('PrintLib','PrintLib')()
 
   def Show(self):
+    #-- Set Branch Filter
+    uipData = self.uipData
+    uipData.Edit()
+    IsHeadOffice = (uipData.BranchCode == uipData.HeadOfficeCode)
+    self.MasterBranchCode = ''
+    
+    if not IsHeadOffice :
+      uipData.MasterBranchCode = uipData.BranchCode
+
+    uipData.SetFieldValue('LBranch.BranchCode',uipData.BranchCode)
+    uipData.SetFieldValue('LBranch.BranchName',uipData.BranchName)
+    
     return self.FormContainer.Show()
 
   def PrintExcelClick(self,sender) :
+    uipData = self.uipData
+    app = self.FormObject.ClientApplication
+    
     if self.uipData.BeginDate > self.uipData.EndDate :
        raise 'PERINGATAN','Tanggal Awal tidak boleh lebih besar dari tanggal akhir'
 
     filename = self.oPrint.ConfirmDestinationPath(self.app,'xls')
     if filename in ['',None] : return
 
+
     self.FormObject.CommitBuffer()
-    ph = self.FormObject.GetDataPacket()
-    ph = self.FormObject.CallServerMethod("SummaryInvestment", ph)
+    
+    # -- Generate Param
+    #ph = self.FormObject.GetDataPacket()
+    BranchCode = uipData.GetFieldValue('LBranch.BranchCode')
+    BeginDate = uipData.BeginDate
+    EndDate = uipData.EndDate
+    
+    param = app.CreateValues(
+      ['BranchCode',BranchCode],
+      ['BeginDate',BeginDate],
+      ['EndDate',EndDate]
+    )
+    ph = self.FormObject.CallServerMethod("SummaryInvestment", param)
 
     status = ph.FirstRecord
     if status.Is_Err : raise 'PERINGATAN',status.Err_Message
@@ -29,11 +56,10 @@ class fSummaryInvestment:
     workbook = self.oPrint.OpenExcelTemplate(self.app,'tplSumInvestment.xls')
     try:
       workbook.ActivateWorksheet('DataRekap')
-      BranchCode = self.uipData.BranchCode
       BranchName = status.BranchName
       PeriodStr = status.PeriodStr
 
-      workbook.SetCellValue(2, 2, '%s - %s' % (BranchCode,BranchName))
+      workbook.SetCellValue(2, 2, '%s' % (BranchCode,BranchName))
       workbook.SetCellValue(3, 2, PeriodStr) # Nomor Karyawan
       workbook.SetCellValue(4, 2, status.BeginBalance) # Nomor Karyawan
       workbook.SetCellValue(5, 2, status.TotalDebet)

@@ -5,10 +5,25 @@ class fSummaryEmpAR:
     self.oPrint = self.app.GetClientClass('PrintLib','PrintLib')()
 
   def Show(self):
+    #-- Set Branch Filter
+    uipData = self.uipData
+    uipData.Edit()
+    IsHeadOffice = (uipData.BranchCode == uipData.HeadOfficeCode)
+    self.MasterBranchCode = ''
+
+    if not IsHeadOffice :
+      uipData.MasterBranchCode = uipData.BranchCode
+
+    uipData.SetFieldValue('LBranch.BranchCode',uipData.BranchCode)
+    uipData.SetFieldValue('LBranch.BranchName',uipData.BranchName)
+    
     return self.FormContainer.Show()
 
 
   def PrintExcelClick(self,sender) :
+    uipData = self.uipData
+    app = self.FormObject.ClientApplication
+
     if self.uipData.BeginDate > self.uipData.EndDate :
        raise 'PERINGATAN','Tanggal Awal tidak boleh lebih besar dari tanggal akhir'
 
@@ -16,8 +31,20 @@ class fSummaryEmpAR:
     if filename == '' : return
 
     self.FormObject.CommitBuffer()
-    ph = self.FormObject.GetDataPacket()
-    ph = self.FormObject.CallServerMethod("SummaryEmpAr", ph)
+
+    # -- Generate Param
+    #ph = self.FormObject.GetDataPacket()
+    BranchCode = uipData.GetFieldValue('LBranch.BranchCode')
+    BeginDate = uipData.BeginDate
+    EndDate = uipData.EndDate
+
+    param = app.CreateValues(
+      ['BranchCode',BranchCode],
+      ['BeginDate',BeginDate],
+      ['EndDate',EndDate]
+    )
+    
+    ph = self.FormObject.CallServerMethod("SummaryEmpAr", param)
 
     status = ph.FirstRecord
     if status.Is_Err : raise 'PERINGATAN',status.Err_Message
@@ -30,7 +57,6 @@ class fSummaryEmpAR:
     workbook = self.oPrint.OpenExcelTemplate(self.app,'tplSumEmployeeAR.xls')
     workbook.ActivateWorksheet('data')
     try:
-      BranchCode = self.uipData.BranchCode
       BranchName = status.BranchName
       PeriodStr = status.PeriodStr
 

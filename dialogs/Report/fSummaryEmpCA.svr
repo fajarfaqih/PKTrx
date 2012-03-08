@@ -16,6 +16,26 @@ document <
           DataTypeName='varchar'
           DataLength=30
         >, object:rpclass::TCustomLoadedField<
+          Name='MasterBranchCode'
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rpclass::TCustomLoadedField<
+          Name='HeadOfficeCode'
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBranch.BranchCode'
+          DataTypeName='VARCHAR'
+          DataLength=3
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBranch.BranchCode'
+          DataTypeName='VARCHAR'
+          DataLength=3
+        >, object:rpclass::TCustomLoadedField<
+          Name='LBranch.BranchName'
+          DataTypeName='VARCHAR'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
           Name='BeginDate'
           DataTypeName='timestamp'
           DataLength=20
@@ -23,6 +43,10 @@ document <
           Name='EndDate'
           DataTypeName='timestamp'
           DataLength=20
+        >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
+          Name='LBranch'
+          ClassTypeName='Branch'
+          FieldNames='BranchCode;BranchCode;BranchName'
         >}Mode=imSingleRow
     >}OnSetDataEx='FormSetDataEx'
 >

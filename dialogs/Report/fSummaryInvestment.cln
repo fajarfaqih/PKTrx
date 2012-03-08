@@ -6,30 +6,72 @@ document <
   MinorVersion='0'
 >object:rtf::Form<
   MainContainer=$CONTAINERS['dualsplit1']
-  Caption='Rekapitulasi uang muka karyawan'
+  Caption='Rekapitulasi Investasi'
   Left=50
   Top=50
-  Width=425
+  Width=545
   Height=153
   UIParts={object:rtf::PClassUI<
-      Name='uipData'
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BranchName'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='MasterBranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rtf::FieldUIElmtSetting<
+          Name='HeadOfficeCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=10
+        >}Name='uipData'
       FillInDefaultValues=true
       AlwaysPostToServer=true
       PostLinkValues=true
       InitWithDefaultValues=true
     >}Containers={object:rtf::Panel<
-      Elements={object:rtf::FieldUIElmtSetting<
-          Name='BranchCode'
-          ReadOnlyControl=true
-          ControlCaption='Cabang laporan'
-          DataTypeName='varchar'
-          DataLength=10
-        >, object:rtf::FieldUIElmtSetting<
-          Name='BranchName'
-          ReadOnlyControl=true
-          ControlCaption='-'
-          DataTypeName='varchar'
-          DataLength=30
+      Elements={object:rtf::LinkUIElmtSetting<
+          Name='LBranch'
+          ControlCaption='Cabang / Capem'
+          ClassTypeName='Branch'
+          KeyFields={object:rtf::FieldUIElmtSetting<
+              Name='LBranch.BranchCode'
+              DataTypeName='VARCHAR'
+              DataLength=3
+              UsedAsKey=true
+              KeyOrDisplayName='BranchCode'
+              FinalDisplayFieldName='BranchCode'
+            >}DisplayedFields={object:rtf::FieldUIElmtSetting<
+              Name='LBranch.BranchCode'
+              DataTypeName='VARCHAR'
+              DataLength=3
+              UsedAsDisplay=true
+              KeyOrDisplayName='BranchCode'
+              FinalDisplayFieldName='BranchCode'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LBranch.BranchName'
+              DataTypeName='VARCHAR'
+              DataLength=30
+              UsedAsDisplay=true
+              KeyOrDisplayName='BranchName'
+              FinalDisplayFieldName='BranchName'
+            >}Restrictions='MasterBranchCode|BranchCodeParam'
+          OQLText=['select from Branch'#13#10,
+            '[ BranchCode LIKE :BranchCodeParam or '#13#10,
+            '  MasterBranchCode LIKE :BranchCodeParam'#13#10,
+            ']'#13#10,
+            '( BranchCode,BranchName,self'#13#10,
+            ') then order by BranchName;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LBranch'
         >, object:rtf::FieldUIElmtSetting<
           Name='BeginDate'
           ControlCaption='Tanggal Awal'
@@ -41,27 +83,22 @@ document <
           DataTypeName='timestamp'
           DataLength=20
         >}Name='PData'
-      Width=409
+      Width=457
       Height=100
       UIPart=$UIPARTS['uipData']
-      Controls={*object:rtf::DBEdit<
-          Name='BranchCode'
+      Controls={*object:rtf::DBLookupEdit<
+          Name='LBranch'
           Top=8
           Left=8
-          Width=49
+          Width=120
           Height=21
-          Color=-2147483624
-          ControlCaption='Cabang laporan'
-          ReadOnly=true
-          CharCase=ecUpperCase
-        >, *object:rtf::DBEdit<
-          Name='BranchName'
-          Layout=clNextSide
-          Top=8
-          Left=165
-          Color=-2147483624
-          ControlCaption='-'
-          CharCase=ecUpperCase
+          ControlCaption='Cabang / Capem'
+          FieldName='LBranch.BranchCode'
+          DisplayFormat=''
+          LookupField='LBranch.BranchName'
+          DisplayLookupField=true
+          DisplayLookupColor=-2147483624
+          DisplayLookupWidth=200
         >, *object:rtf::DBDateEdit<
           Name='BeginDate'
           Top=36
@@ -113,8 +150,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=425
-      Height=153
+      Width=240
+      Height=96
       Container1=$CONTAINERS['PAction']
       Container2=$CONTAINERS['PData']
       InversedAlign=true

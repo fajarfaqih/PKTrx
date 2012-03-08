@@ -6,6 +6,7 @@ def FormSetDataEx(uideflist, parameter) :
   rec = uideflist.uipData.Dataset.AddRecord()
   rec.BranchCode = str(config.SecurityContext.GetUserInfo()[4])
   rec.BranchName = str(config.SecurityContext.GetUserInfo()[5])
+  rec.HeadOfficeCode = config.SysVarIntf.GetStringSysVar('OPTION','HeadOfficeCode')
 
   Now = config.Now()
 
