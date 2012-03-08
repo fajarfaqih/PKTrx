@@ -79,6 +79,9 @@ class fCashOutReport:
         uipTran.Description       = rec.Description
         uipTran.Inputer           = rec.Inputer
         uipTran.BranchName        = rec.BranchName
+        uipTran.Rate              = rec.Rate
+        uipTran.CurrencyName      = rec.CurrencyName
+        uipTran.AmountEkuivalen   = rec.AmountEkuivalen
 
         i += 1
       # end of while
@@ -109,12 +112,15 @@ class fCashOutReport:
           workbook.SetCellValue(row, 2, rec.TransactionDateStr)
           workbook.SetCellValue(row, 3, rec.AccountNo)
           workbook.SetCellValue(row, 4, rec.AccountName)
-          workbook.SetCellValue(row, 5, rec.Amount)
-          workbook.SetCellValue(row, 6, rec.Description)
-          workbook.SetCellValue(row, 7, rec.ReferenceNo)
-          workbook.SetCellValue(row, 8, rec.Inputer)
-          workbook.SetCellValue(row, 9, rec.BranchName)
-          workbook.SetCellValue(row, 10, rec.TransactionNo)
+          workbook.SetCellValue(row, 5, rec.CurrencyName)
+          workbook.SetCellValue(row, 6, rec.Amount)
+          workbook.SetCellValue(row, 7, rec.Rate)
+          workbook.SetCellValue(row, 8, rec.AmountEkuivalen)
+          workbook.SetCellValue(row, 9, rec.Description)
+          workbook.SetCellValue(row, 10, rec.ReferenceNo)
+          workbook.SetCellValue(row, 11, rec.Inputer)
+          workbook.SetCellValue(row, 12, rec.BranchName)
+          workbook.SetCellValue(row, 13, rec.TransactionNo)
 
           i += 1
         # end of while

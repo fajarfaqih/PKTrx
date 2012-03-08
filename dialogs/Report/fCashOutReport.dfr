@@ -156,7 +156,7 @@ document <
           Height=25
           Color=0
           ControlCaption=''
-          Caption='&Tampilkan Transaksi'
+          Caption='T&ampilkan Transaksi'
           OnClick='bViewHistClick'
         >, object:rtf::Button<
           Name='button1'
@@ -195,8 +195,23 @@ document <
           DataTypeName='varchar'
           DataLength=100
         >, object:rtf::FieldUIElmtSetting<
+          Name='CurrencyName'
+          ControlCaption='Nama Kurs'
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rtf::FieldUIElmtSetting<
           Name='Amount'
           ControlCaption='Nilai Transaksi'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Rate'
+          ControlCaption='Nilai Kurs'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AmountEkuivalen'
+          ControlCaption='Nilai Ekuivalen'
           DataTypeName='double'
           DataLength=20
         >, object:rtf::FieldUIElmtSetting<
@@ -264,6 +279,9 @@ document <
           TitleCaption='Keterangan'
           Width=200
         >, *object:rtf::GridColumn<
+          Name='CurrencyName'
+          TitleCaption='Nama Kurs'
+        >, *object:rtf::GridColumn<
           Name='Amount'
           InputStyle=cisNormal
           EnumeratedValues=''
@@ -272,7 +290,27 @@ document <
           TitleCaption='Nilai Transaksi'
           Width=120
         >, *object:rtf::GridColumn<
+          Name='Rate'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Rate'
+          DisplayFormat=',0.00'
+          TitleCaption='Nilai Kurs'
+          Width=70
+        >, *object:rtf::GridColumn<
+          Name='AmountEkuivalen'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='AmountEkuivalen'
+          DisplayFormat=',0.00'
+          TitleCaption='Nilai Ekuivalen'
+          Width=120
+        >, *object:rtf::GridColumn<
           Name='TransactionNo'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='TransactionNo'
+          DisplayFormat=''
           TitleCaption='No Referensi'
           Width=130
         >, *object:rtf::GridColumn<

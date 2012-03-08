@@ -57,7 +57,10 @@ def GetHistTransaction(config, params, returns):
       'AccountNo: string',
       'AccountName: string',
       'Description: string',
+      'CurrencyName: string',
       'Amount: float',
+      'AmountEkuivalen: float',
+      'Rate: float',
       'AuthStatus: string',
       'Channel:string',
       'FundEntity: string',
@@ -85,16 +88,20 @@ def GetHistTransaction(config, params, returns):
 
   qParam['ADDFILTER'] = AddFilter
   
-  sSQL = " select t.ActualDate, t.TransactionNo, t.ReferenceNo, a.account_code as AccountNo ,a.account_name as AccountName, \
-        t.Description, i.Amount, t.Inputer,t.donorname, \
+  sSQL = " select t.ActualDate, t.TransactionNo, t.ReferenceNo, \
+        a.account_code as AccountNo ,a.account_name as AccountName, \
+        t.Description, i.Amount, i.EkuivalenAmount,  t.Inputer,t.donorname, \
         t.AuthStatus, t.TransactionId, b.branchname, \
         (case when t.ChannelCode = 'R' then 'Kas Cabang' \
               when t.ChannelCode = 'P' then 'Kas Kecil' \
               when t.ChannelCode = 'A' then 'Bank' else 'Aktiva' end) as Channel , \
         '' as FundEntity, \
-         i.transactionitemid \
+         i.transactionitemid ,\
+         t.currencycode, i.currencycode, \
+         t.rate, i.rate, d.short_name, e.short_name \
       from transaction.transaction t, transaction.transactionitem i, \
-        accounting.account a, branch b \
+        accounting.account a, branch b , \
+        currency d, currency e \
       where t.transactionid = i.transactionid \
         and b.branchcode = i.branchcode \
         and t.transactioncode = 'CI' \
@@ -102,6 +109,8 @@ def GetHistTransaction(config, params, returns):
         and a.account_code = refaccountno \
         and t.ActualDate >= '%(BDATE)s' \
         and t.ActualDate <= '%(EDATE)s' \
+        and t.CURRENCYCODE = d.CURRENCY_CODE \
+        and i.CURRENCYCODE = e.CURRENCY_CODE \
         %(ADDFILTER)s\
         order by ActualDate, TransactionId " % qParam
         
@@ -119,7 +128,31 @@ def GetHistTransaction(config, params, returns):
     recData.TransactionNo = data.TransactionNo
     recData.AccountName = data.AccountName
     recData.Description = data.Description
-    recData.Amount = data.Amount or 0.0
+
+    TranCurrencyCode = data.CurrencyCode
+    TranCurrencyName = data.Short_Name
+    TransRate        = data.Rate
+    ItemCurrencyCode = data.CurrencyCode_1
+    ItemCurrencyName = data.Short_Name_1
+    ItemRate        = data.Rate_1
+
+    if TranCurrencyCode != ItemCurrencyCode  and ItemCurrencyCode == '000':
+      CurrencyCode = TranCurrencyCode
+      CurrencyName = TranCurrencyName
+      Rate = TransRate
+      Amount      = data.Amount / Rate
+    else :
+      CurrencyCode = ItemCurrencyCode
+      CurrencyName = ItemCurrencyName
+      Rate = ItemRate
+      Amount = data.Amount
+    # end if
+    
+    recData.Amount = Amount
+    recData.AmountEkuivalen = data.EkuivalenAmount
+    recData.Rate = Rate
+    recData.CurrencyName = TranCurrencyName
+    
     recData.Inputer = data.Inputer
     recData.Authstatus  = data.AuthStatus
     recData.Channel  = data.Channel[:20]
@@ -127,9 +160,11 @@ def GetHistTransaction(config, params, returns):
     recData.SponsorName = ''
     recData.BranchName = data.BranchName
     
-    TotalAmount += data.Amount
+    TotalAmount += data.EkuivalenAmount
     
     data.Next()
+  # end while
+  
   recSaldo.TotalAmount = TotalAmount
-  #-- while
+
   

@@ -79,7 +79,19 @@ document <
           DataTypeName='varchar'
           DataLength=100
         >, object:rpclass::TCustomLoadedField<
+          Name='CurrencyName'
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rpclass::TCustomLoadedField<
           Name='Amount'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='Rate'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='AmountEkuivalen'
           DataTypeName='double'
           DataLength=20
         >, object:rpclass::TCustomLoadedField<
