@@ -150,6 +150,7 @@ def RegenerateJournalItem(config, parameters, returnpacket):
       AddParam += " and actualdate between '2011-04-01' and '2011-08-31' "
       AddParam += " and transactioncode <> 'TB' "
       AddParam += " and amount <= 50000000 "
+      AddParam += " and authstatus = 'F' "
       #AddParam += " and transactioncode = 'EAR' "
       #AddParam += " and transactionid in (140505, 140528)"
       #AddParam += " and isposted = 'F' "
