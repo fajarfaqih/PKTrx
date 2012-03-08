@@ -697,6 +697,8 @@ def GetKwitansiPenerimaanNew(oTran):
   #corporate = oTran.Helper.CreateObject('Corporate')
   #CabangInfo = corporate.GetCabangInfo(oTran.BranchCode)
   #Nama_Cabang = CabangInfo.Nama_Cabang
+  oBranch = oTran.Helper.GetObject('Branch',oTran.Config.SecurityContext.GetUserInfo()[4])
+  if oBranch.isnull : raise 'PERINGATAN','Data Cabang tidak ditemukan'
 
   # Get Template
   PrintHelper = oTran.Helper.CreateObject('PrintHelper')
@@ -727,7 +729,7 @@ def GetKwitansiPenerimaanNew(oTran):
   dataKwitansi['TGL_BAYAR'] = config.FormatDateTime('dd mmmm yyyy',oTran.GetAsTDateTime('ActualDate'))
   dataKwitansi['TOTAL'] = config.FormatFloat('#,##0.00',Total)
   dataKwitansi['CURRSYMBOL'] = Currency.Symbol
-  dataKwitansi['KOTA'] = oTran.Config.SecurityContext.GetUserInfo()[5]
+  dataKwitansi['KOTA'] = oBranch.Location or ''
   dataKwitansi['KETERANGAN'] = oTran.Description
   dataKwitansi['TELP'] = ''
 
@@ -1195,6 +1197,8 @@ def GetKwitansiPengembalianUangMukaNew(oTran):
   #corporate = oTran.Helper.CreateObject('Corporate')
   #CabangInfo = corporate.GetCabangInfo(oTran.BranchCode)
   #Nama_Cabang = CabangInfo.Nama_Cabang
+  oBranch = oTran.Helper.GetObject('Branch',oTran.Config.SecurityContext.GetUserInfo()[4])
+  if oBranch.isnull : raise 'PERINGATAN','Data Cabang tidak ditemukan'
 
   # Get Template
   PrintHelper = oTran.Helper.CreateObject('PrintHelper')
@@ -1216,7 +1220,7 @@ def GetKwitansiPengembalianUangMukaNew(oTran):
   dataKwitansi['WAKTU_CETAK'] = config.FormatDateTime('dd-mm-yyyy hh:nn',config.Now())
   dataKwitansi['TGL_BAYAR'] = config.FormatDateTime('dd mmmm yyyy',oTran.GetAsTDateTime('ActualDate'))
   dataKwitansi['TOTAL'] = config.FormatFloat('#,##0.00',Total)
-  dataKwitansi['KOTA'] = oTran.Config.SecurityContext.GetUserInfo()[5]
+  dataKwitansi['KOTA'] = oBranch.Location
   dataKwitansi['KETERANGAN'] = oTran.Description
   dataKwitansi['CURRSYMBOL'] = Currency.Symbol
   
@@ -1250,7 +1254,7 @@ def GetKwitansiPengembalianUangMukaNew(oTran):
            'LINE' : '-' , #str(rowdetail),
            'NOACCOUNT' : oItem.AccountCode,
            'DESCRIPTION' : oItem.Description[:40],
-           'AMOUNT' :  config.FormatFloat('#,##0.00',oItem.Amount/aRate),
+           'AMOUNT' :  config.FormatFloat('#,##0.00', aAmount),
            'CURRSYMBOL' : Currency.Symbol,
         }
     #else:        

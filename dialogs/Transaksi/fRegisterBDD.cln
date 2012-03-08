@@ -10,7 +10,7 @@ document <
   Left=50
   Top=50
   Width=545
-  Height=425
+  Height=481
   UIParts={object:rtf::PClassUI<
       Elements={object:rtf::FieldUIElmtSetting<
           Name='BranchCode'
@@ -138,7 +138,12 @@ document <
           FieldBaseName='LBatch'
         >, object:rtf::FieldUIElmtSetting<
           Name='ReceivedFrom'
-          ControlCaption='Kasir'
+          ControlCaption='Diserahkan Oleh'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='PaidTo'
+          ControlCaption='Dibayarkan Kepada'
           DataTypeName='varchar'
           DataLength=30
         >, object:rtf::LinkUIElmtSetting<
@@ -306,11 +311,20 @@ document <
           Width=299
           Height=21
           Color=0
-          ControlCaption='Kasir'
+          ControlCaption='Diserahkan Oleh'
+          CharCase=ecUpperCase
+        >, *object:rtf::DBEdit<
+          Name='PaidTo'
+          Top=120
+          Left=8
+          Width=299
+          Height=21
+          Color=0
+          ControlCaption='Dibayarkan Kepada'
           CharCase=ecUpperCase
         >, *object:rtf::DBLookupEdit<
           Name='LCashAccount'
-          Top=120
+          Top=148
           Left=8
           Width=100
           Height=21
@@ -323,7 +337,7 @@ document <
           DisplayLookupWidth=200
         >, *object:rtf::DBEdit<
           Name='Amount'
-          Top=148
+          Top=176
           Left=8
           Color=0
           ControlCaption='Nilai'
@@ -332,21 +346,21 @@ document <
           DisplayFormat=',0.00'
         >, *object:rtf::DBLookupEdit<
           Name='LCPIACategory'
-          Top=176
+          Top=204
           Left=8
           ControlCaption='Kategori Biaya Dimuka'
           LookupField='LCPIACategory.CPIACatName'
           DisplayLookupField=true
         >, *object:rtf::DBLookupEdit<
           Name='LCostAccount'
-          Top=204
+          Top=232
           Left=8
           ControlCaption='Account Biaya'
           LookupField='LCostAccount.Account_Name'
           DisplayLookupField=true
         >, *object:rtf::DBCheckBox<
           Name='HasContract'
-          Top=232
+          Top=260
           Left=8
           Color=0
           ControlCaption='Memiliki Kontrak'
@@ -354,7 +368,7 @@ document <
           ValueUnchecked='F'
         >, *object:rtf::DBEdit<
           Name='ContractNo'
-          Top=260
+          Top=288
           Left=8
           Width=299
           Height=21
@@ -363,13 +377,13 @@ document <
           CharCase=ecUpperCase
         >, *object:rtf::DBDateEdit<
           Name='ContractEndDate'
-          Top=288
+          Top=316
           Left=8
           Color=0
           ControlCaption='Tanggal berakhir kontrak'
         >, *object:rtf::DBEdit<
           Name='ReferenceNo'
-          Top=316
+          Top=344
           Left=8
           Width=299
           Height=21
@@ -379,7 +393,7 @@ document <
           CharCase=ecUpperCase
         >, *object:rtf::DBEdit<
           Name='Description'
-          Top=344
+          Top=372
           Left=8
           Width=299
           Height=21

@@ -1088,6 +1088,7 @@ def CostPaidInAdvance(helper,oTran,oBatch,request,params):
   oTran.Amount = request[u'Amount']
   oTran.CurrencyCode = '000'
   oTran.ReceivedFrom = request[u'ReceivedFrom']
+  oTran.PaidTo = request[u'PaidTo']
   oTran.ActualDate = oBatch.GetAsTDateTime('BatchDate')
 
   oItem = oTran.CreateAccountTransactionItem(oAccount)
@@ -1105,8 +1106,6 @@ def CostPaidInAdvance(helper,oTran,oBatch,request,params):
   oItemCA.SetMutation('C', request[u'Amount'], 1.0)    
   oItemCA.Description = request[u'Description']
   oItemCA.SetJournalParameter('10')
-  oTran.PaidTo = oAccount.AccountName
-  #oTran.Rece
   
   oTran.GenerateTransactionNumber(oCashAccount.CashCode)
   oTran.SaveInbox(params)
@@ -1149,8 +1148,7 @@ def InvoicePayment(helper,oTran,oBatch,request,params):
   oItemPA.Description = request[u'Description']
   oItemPA.SetJournalParameter('10')
   oItemPA.SetCollectionEntity(FundEntityMAP['I'])
-  
-  #oItemPA.PercentageOfAmil = item['PercentageOfAmil']
+  oItemPA.PercentageOfAmil = request[u'PercentageOfAmil']
   
   # Update PaymentTransaction Invoice
   oInvoice.InvoicePaymentStatus = 'T'

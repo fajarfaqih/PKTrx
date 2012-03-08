@@ -168,6 +168,10 @@ document <
           DataTypeName='varchar'
           DataLength=100
         >, object:rpclass::TCustomLoadedField<
+          Name='PercentageOfAmil'
+          DataTypeName='Double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
           Name='RefProductNo'
           DataTypeName='varchar'
           DataLength=20

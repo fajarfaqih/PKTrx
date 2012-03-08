@@ -22,6 +22,9 @@ def FormSetDataEx(uideflist, params) :
       uipTran.RefAmountEkuivalen = uipTran.RefRate * uipTran.RefAmount
     # end if
     
+    if uipTran.PercentageOfAmil in [0.0,None] :
+      uipTran.PercentageOfAmil = 30.0
+    
     return
 
   Now = int(config.Now())
@@ -112,7 +115,7 @@ def SimpanData(config, params, returns):
     request['InvoiceId'] = oTransaction.InvoiceId
     request['CurrencyCode'] = oTransaction.RefCurrencyCode
     request['Rate'] = oTransaction.RefRate
-    
+    request['PercentageOfAmil'] = oTransaction.PercentageOfAmil
     
     sRequest = simplejson.dumps(request)
 

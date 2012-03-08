@@ -176,7 +176,7 @@ document <
         >, *object:rtf::LinkUIElmtSetting<
           Name='LProductAccount'
           ControlCaption='Program / Proyek'
-          DisplayFields='AccountNo;AccountName'
+          DisplayFields='AccountNo;AccountName;LProduct.PercentageOfAmilFunds'
           Restrictions=''
           FieldBaseName='LProductAccount'
         >, *object:rtf::FieldUIElmtSetting<
@@ -285,6 +285,10 @@ document <
           DisplayFormat=''
           TitleCaption='Program / Proyek'
           Width=200
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='LProductAccount.LProduct.PercentageOfAmilFunds'
+          TitleCaption='Program / Proyek'
           ReadOnly=true
         >, *object:rtf::GridColumn<
           Name='Description'

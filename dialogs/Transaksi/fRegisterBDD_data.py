@@ -48,6 +48,7 @@ def SimpanData(config, params, returns):
     request['BranchCode'] = config.SecurityContext.GetUserInfo()[4]
     request['TransactionNo'] = oTransaction.TransactionNo
     request['ReceivedFrom'] = oTransaction.ReceivedFrom
+    request['PaidTo'] = oTransaction.PaidTo
     request['CostAccountNo'] = oTransaction.GetFieldByName('LCostAccount.Account_Code')
     request['CPIACatId'] = oTransaction.GetFieldByName('LCPIACategory.CPIACatId')
     request['HasContract'] = oTransaction.HasContract

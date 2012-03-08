@@ -10,7 +10,7 @@ document <
   Left=50
   Top=50
   Width=825
-  Height=441
+  Height=457
   BeforeDeleteRow=''
   BeforeResultSent=''
   OnGeneralSetData=''
@@ -61,8 +61,8 @@ document <
       PostLinkValues=true
     >}Containers={object:rtf::DualSplit<
       Name='dsMain'
-      Width=825
-      Height=441
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['pTransaction']
       InversedAlign=true
@@ -271,6 +271,11 @@ document <
           DataTypeName='varchar'
           DataLength=100
         >, object:rtf::FieldUIElmtSetting<
+          Name='PercentageOfAmil'
+          ControlCaption='Persentase Amil (%)'
+          DataTypeName='Double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
           Name='RefProductNo'
           Hidden=true
         >, object:rtf::FieldUIElmtSetting<
@@ -280,7 +285,7 @@ document <
           DataLength=20
         >}Name='pTransaction'
       Width=793
-      Height=393
+      Height=409
       UIPart=$UIPARTS['uipTransaction']
       Controls={*object:rtf::DBEdit<
           Name='TransactionNo'
@@ -451,6 +456,17 @@ document <
           ControlCaption='Nama Sponsor'
           LayoutOrder=14
           CharCase=ecUpperCase
+        >, *object:rtf::DBEdit<
+          Name='PercentageOfAmil'
+          Layout=clAbsolute
+          Top=384
+          Left=8
+          Width=120
+          Height=21
+          ForceUseEqualCaptionWidth=true
+          Color=0
+          ControlCaption='Persentase Amil (%)'
+          LayoutOrder=14
         >, object:rtf::Label<
           Name='label1'
           Layout=clAbsolute

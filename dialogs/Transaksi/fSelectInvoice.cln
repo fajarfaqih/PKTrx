@@ -247,6 +247,13 @@ document <
               UsedAsDisplay=true
               KeyOrDisplayName='AccountName'
               FinalDisplayFieldName='AccountName'
+            >, object:rtf::FieldUIElmtSetting<
+              Name='LProductAccount.LProduct.PercentageOfAmilFunds'
+              DataTypeName='DOUBLE'
+              DataLength=0
+              UsedAsDisplay=true
+              KeyOrDisplayName='LProduct.PercentageOfAmilFunds'
+              FinalDisplayFieldName='PercentageOfAmilFunds'
             >}Restrictions=''
           FieldBaseName='LProductAccount'
         >, object:rtf::FieldUIElmtSetting<
@@ -358,6 +365,14 @@ document <
           DisplayFormat=''
           TitleCaption='Program / Proyek'
           Width=200
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='LProductAccount.LProduct.PercentageOfAmilFunds'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='LProductAccount.LProduct.PercentageOfAmilFunds'
+          DisplayFormat=''
+          TitleCaption='Program / Proyek'
           ReadOnly=true
         >, *object:rtf::GridColumn<
           Name='Description'

@@ -35,7 +35,7 @@ document <
     >, object:rpclass::TPClassUIDef<
       Name='uipInvoice'
       PClassName='InvoiceProduct'
-      LoadedFieldList='BranchCode;InvoiceId;InvoiceNo;InvoiceDate;LCurrency.Currency_Code;LCurrency.Currency_Code;LCurrency.Short_Name;LCurrency.Kurs_Tengah_BI;InvoiceAmount;LSponsor.ID;LSponsor.ID;LSponsor.Full_Name;LProductAccount.AccountNo;LProductAccount.AccountNo;LProductAccount.AccountName;Description'
+      LoadedFieldList='BranchCode;InvoiceId;InvoiceNo;InvoiceDate;LCurrency.Currency_Code;LCurrency.Currency_Code;LCurrency.Short_Name;LCurrency.Kurs_Tengah_BI;InvoiceAmount;LSponsor.ID;LSponsor.ID;LSponsor.Full_Name;LProductAccount.AccountNo;LProductAccount.AccountNo;LProductAccount.AccountName;LProductAccount.LProduct.PercentageOfAmilFunds;Description'
       CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
           Name='LCurrency'
           ClassTypeName='Currency'
@@ -47,7 +47,7 @@ document <
         >, object:rpclass::TCustomLoadedLink<
           Name='LProductAccount'
           ClassTypeName='ProductAccount'
-          FieldNames='AccountNo;AccountNo;AccountName'
+          FieldNames='AccountNo;AccountNo;AccountName;LProduct.PercentageOfAmilFunds'
         >}Mode=imMultiRow
       OnSetData='OnSetData'
     >}OnSetDataEx='FormSetDataEx'

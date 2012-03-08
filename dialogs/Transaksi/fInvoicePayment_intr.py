@@ -82,6 +82,7 @@ class fInvoicePayment :
       uipTran.RefCurrencyCode = uipInv.GetFieldValue('LCurrency.Currency_Code')
       uipTran.RefCurrencyName = uipInv.GetFieldValue('LCurrency.Short_Name')
       uipTran.RefRate = uipInv.GetFieldValue('LCurrency.Kurs_Tengah_BI')
+      uipTran.PercentageOfAmil = uipInv.GetFieldValue('LProductAccount.LProduct.PercentageOfAmilFunds')
       uipTran.Description = uipInv.Description
       self.SetEkuivalenAmount()
 

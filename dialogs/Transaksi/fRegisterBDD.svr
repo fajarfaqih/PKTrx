@@ -57,6 +57,10 @@ document <
           DataTypeName='varchar'
           DataLength=30
         >, object:rpclass::TCustomLoadedField<
+          Name='PaidTo'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
           Name='LCashAccount.AccountNo'
           DataTypeName='VARCHAR'
           DataLength=30
