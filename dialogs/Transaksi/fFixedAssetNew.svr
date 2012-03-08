@@ -44,6 +44,10 @@ document <
           DataTypeName='integer'
           DataLength=20
         >, object:rpclass::TCustomLoadedField<
+          Name='AssetDetailDescription'
+          DataTypeName='varchar'
+          DataLength=500
+        >, object:rpclass::TCustomLoadedField<
           Name='TransactionDate'
           DataTypeName='timestamp'
           DataLength=20
@@ -137,7 +141,7 @@ document <
         >, object:rpclass::TCustomLoadedField<
           Name='ReceivedFrom'
           DataTypeName='varchar'
-          DataLength=30
+          DataLength=100
         >, object:rpclass::TCustomLoadedField<
           Name='AssetType'
           DataTypeName='varchar'

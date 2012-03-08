@@ -64,7 +64,7 @@ def FormSetDataEx(uideflist, params) :
   rec.FloatTransactionDate = int(Now)
   rec.ActualDate = int(Now)
   rec.Amount = 0.0
-  rec.ReceivedFrom = rec.Inputer
+  #rec.ReceivedFrom = rec.Inputer
   rec.BranchId = int(config.SecurityContext.GetUserInfo()[2])
   
   # Set Transaction Number
@@ -103,6 +103,7 @@ def SimpanData(config, params, returns):
     request['FixAssetAccountNo'] = oTransaction.FixAssetAccountNo or ''
     request['FundEntity'] = oTransaction.FundEntity or ''
     request['PaidTo'] = oTransaction.PaidTo or ''
+    request['AssetDetailDescription'] = oTransaction.AssetDetailDescription or ''
     
     request['SourceAssetType'] = oTransaction.SourceAssetType or ''
     

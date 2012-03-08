@@ -1,6 +1,12 @@
 import sys
 import com.ihsan.foundation.pobjecthelper as phelper
 
+def WriteLog(config, app, FileBuf, LogName, LogMessage):
+  app.ConWriteln(LogMessage)
+  FileBuf.write(LogMessage)
+  config.SendDebugMsg(LogMessage)
+
+
 def SyncBatchTransActualDate(config, parameters, returnpacket):
   status = returnpacket.CreateValues(["Is_Error", 0], ["Error_Message", ""])
   app = config.GetAppObject()
@@ -79,8 +85,7 @@ def RegenerateJournal(config, parameters, returnpacket):
     config.BeginTransaction()
     try :
       logmessage = "Proses Batch Transaksi (Journal) "
-      app.ConWriteln(logmessage ,'DJournal')
-      fh.write(logmessage + '\n')
+      WriteLog(config, app, fh, 'DJournal', logmessage)
       
       sSQL = "\
          select BatchId \
@@ -96,8 +101,7 @@ def RegenerateJournal(config, parameters, returnpacket):
         oBatch = helper.GetObject('TransactionBatch', oRes.BatchId)
          
         logmessage = "Proses Batch %s ( Id %d ) : " % (oBatch.BatchNo, oRes.BatchId)
-        app.ConWriteln(logmessage ,'DJournal')
-        fh.write(logmessage+ '\n')
+        WriteLog(config, app, fh, 'DJournal', logmessage)
 
         try:
           oBatch.PostToAccounting()
@@ -107,8 +111,9 @@ def RegenerateJournal(config, parameters, returnpacket):
           logmessage = 'Gagal ' + str(sys.exc_info()[1])
         # end try except
         
-        app.ConWriteln(logmessage ,'DJournal')
-        fh.write(logmessage + '\n')
+        WriteLog(config, app, fh, 'DJournal', logmessage)
+        # app.ConWriteln(logmessage ,'DJournal')
+        # fh.write(logmessage + '\n')
         
         oRes.Next()
       # end while 
@@ -129,7 +134,7 @@ def RegenerateJournal(config, parameters, returnpacket):
 def RegenerateJournalItem(config, parameters, returnpacket):
   status = returnpacket.CreateValues(["Is_Error", 0], ["Error_Message", ""])
   app = config.GetAppObject()
-  app.ConCreate('DJournal')
+  #app.ConCreate('DJournal')
   helper = phelper.PObjectHelper(config)
   corporate = helper.CreateObject('Corporate')
       
@@ -142,7 +147,7 @@ def RegenerateJournalItem(config, parameters, returnpacket):
       
       AddParam = ''
       #AddParam = " and branchcode='%s' " % config.SecurityContext.GetUserInfo()[4]
-      AddParam += " and actualdate between '2011-01-01' and '2011-03-31' "
+      AddParam += " and actualdate between '2011-04-01' and '2011-08-31' "
       AddParam += " and transactioncode <> 'TB' "
       AddParam += " and amount <= 50000000 "
       #AddParam += " and transactioncode = 'EAR' "
@@ -209,13 +214,15 @@ def RegenerateJournalItem(config, parameters, returnpacket):
         oTran = helper.GetObject('Transaction', oRes.TransactionId)
         logmessage = "Proses Data ke %d dari %s data " % ( idx, TotalData)
 
-        app.ConWriteln(logmessage ,'DJournal')
+        #app.ConWriteln(logmessage ,'DJournal')
         fh.write(logmessage +  '\n')
+        config.SendDebugMsg(logmessage)
 
         logmessage = "Proses TransactionId %d No Trans %s : " % ( oRes.TransactionId, oTran.TransactionNo)
 
         app.ConWrite(logmessage ,'DJournal')
         fh.write(logmessage)
+        config.SendDebugMsg(logmessage)
         
         if oTran.AuthStatus == 'F' :
           config.BeginTransaction()

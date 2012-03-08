@@ -132,10 +132,9 @@ def FixAssetAdd(helper,oTran,oBatch,request,params):
   oTran.Description = request[u'Description']
   oTran.Inputer     = request[u'Inputer']
   oTran.BranchCode  = request[u'BranchCode']
-  oTran.Amount = request[u'Amount']
   oTran.CurrencyCode = '000'
   oTran.PaidTo = request[u'PaidTo']
-  #oTran.ReceivedFrom = request[u'ReceivedFrom']
+  oTran.ReceivedFrom = request[u'ReceivedFrom']
   oTran.ActualDate = oBatch.GetAsTDateTime('BatchDate')
 
   # 2. Create/Replace Data FixedAsset
@@ -154,25 +153,28 @@ def FixAssetAdd(helper,oTran,oBatch,request,params):
   oFAAccount.SetInitialProcessDate()
   oFAAccount.UangMuka = CashAdvance
   oFAAccount.FundEntity = FundEntity
+  oFAAccount.AssetOrigin = SourceAssetType
+  oFAAccount.AssetDetailDescription = str(request[u'AssetDetailDescription'])
   
   # Set Product Account jika asset terikat
   if oFAAccount.LAssetCategory.AssetType == 'T' :
     oFAAccount.AccountNoProduct = request[u'ProductAccountNo']
-
   
   # 3. Buat transaksi pembelian/penambahan asset
-  # Set Journal Code berdasarkan PaymentType
-  if SourceAssetType == 'B' :
-   if PaymentType == 'T' :
-     JournalCode = 'DA01B'
-   else :
-     if CashAdvance > 0.0 :
-       JournalCode = 'DA01A'
-     else:
-       JournalCode = 'DA01C'
-     # end if else
-  else:
-    JournalCode = 'DA01D'   
+  # Set Journal Code berdasarkan sumber aset (Pembelian atau Donasi)
+  if SourceAssetType == 'B' : # Pembelian
+    if PaymentType == 'T' :
+      JournalCode = 'DA01B'
+    else :
+      if CashAdvance > 0.0 :
+        JournalCode = 'DA01A'
+      else:
+        JournalCode = 'DA01C'
+      # end if else
+    oTran.Amount = request[u'CashAdvance']
+  else: # Donasi
+    JournalCode = 'DA01D'
+    oTran.Amount = request[u'Amount']
   # end if else
   
 
@@ -213,7 +215,6 @@ def FixAssetAdd(helper,oTran,oBatch,request,params):
     oItemCA.SetMutation('C', CashAdvance, 1.0)    
     oItemCA.Description = request[u'Description']
     oItemCA.SetJournalParameter('10')
-    
     oFAAccount.TotalDibayar = CashAdvance
     
     # Set Transaksi Produk Jika asset adalah asset terikat

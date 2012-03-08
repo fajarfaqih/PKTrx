@@ -4031,6 +4031,22 @@ document <
           PhysicalName='FUNDENTITY'
           DataType=$TYPEDECLS['INTEGER']
           Enumerator=$TYPEDECLS['eFundEntity']
+        >, object:FieldMember<
+          MemberName='BuyerName'
+          PhysicalName='BUYERNAME'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=200
+        >, object:FieldMember<
+          MemberName='AssetDetailDescription'
+          PhysicalName='ASSETDETAILDESCRIPTION'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=500
+        >, object:FieldMember<
+          MemberName='AssetOrigin'
+          PhysicalName='ASSETORIGIN'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['eAssetOrigin']
         >}Ancestors={object:Inheritance<
           ClassifierStringValue='F'
           AncestorClass=$TYPEDECLS['DepreciableAsset']
@@ -5152,6 +5168,15 @@ document <
           DataType=$TYPEDECLS['VARCHAR']
           DataLength=200
         >}ClassID='{32B19F88-FB12-4220-8211-E4D60C6E2A75}'
-    >}PhysicalDB=object:ODLDatabase<
+    >, object:EnumTypeDecl<
+      TypeName='eAssetOrigin'
+      EnumType=etString
+      EnumMembers={object:EnumMember<
+          StringValue='D'
+          DescriptiveName='Donasi'
+        >, object:EnumMember<
+          StringValue='B'
+          DescriptiveName='Pembelian'
+        >}>}PhysicalDB=object:ODLDatabase<
   >LastMethodID=6
 >

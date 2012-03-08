@@ -81,6 +81,7 @@ class fFixedAssetNew :
     else: # Edit Mode
       self.SetSourceTypeVisible(PageIndex[uipTran.SourceAssetType or 'B'])
       self.AssetTypeOnChange(self.pTransaction_AssetType)
+      self.SetAssetDescriptionControl()
     # end if.else
       
   def SetSourceTypeVisible(self, ItemIndex):
@@ -179,12 +180,24 @@ class fFixedAssetNew :
     elif sourceType == 1:
       uipTran.SourceAssetType = 'D'
 
+  def SetAssetDescription(self):
+    uipTran = self.uipTransaction
+    uipTran.Edit()
+    
+    uipTran.AssetDetailDescription = self.pTransaction_edAssetDescription.Text
+
+  def SetAssetDescriptionControl(self):
+    uipTran = self.uipTransaction
+    self.pTransaction_edAssetDescription.Text = str(uipTran.AssetDetailDescription)
+
   def bSimpanClick(self, sender):
     app = self.app
     self.CheckRequired()
     
     if app.ConfirmDialog('Yakin simpan transaksi ?'):
       self.SetSourceAssetType()
+      
+      self.SetAssetDescription()
       
       self.FormObject.CommitBuffer()
 

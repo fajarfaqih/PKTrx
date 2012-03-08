@@ -10,7 +10,7 @@ document <
   State=rsMaximized
   Left=50
   Top=50
-  Width=617
+  Width=849
   Height=592
   UIParts={object:rtf::PClassUI<
       Elements={object:rtf::FieldUIElmtSetting<
@@ -58,12 +58,17 @@ document <
           Hidden=true
           DataTypeName='integer'
           DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AssetDetailDescription'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=500
         >}Name='uipTransaction'
       AlwaysPostToServer=true
       PostLinkValues=true
     >}Containers={object:rtf::DualSplit<
       Name='dsMain'
-      Width=617
+      Width=849
       Height=592
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dualsplit1']
@@ -197,7 +202,7 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=617
+      Width=849
       Height=556
       Container1=$CONTAINERS['pTransactionInfo']
       Container2=$CONTAINERS['dualsplit2']
@@ -339,6 +344,8 @@ document <
           Layout=clNewLine
           Top=120
           Left=8
+          Width=221
+          Height=21
           Color=0
           ControlCaption='Penerima / Kasir'
           FieldName='PaidTo'
@@ -409,6 +416,11 @@ document <
           ControlCaption='-'
           DataTypeName='varchar'
           DataLength=100
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ReceivedFrom'
+          ControlCaption='Diserahkan Oleh'
+          DataTypeName='varchar'
+          DataLength=100
         >}Name='pPaymentInfo'
       Width=553
       Height=224
@@ -456,6 +468,12 @@ document <
           Enabled=false
           Color=-2147483624
           ControlCaption='-'
+        >, *object:rtf::DBEdit<
+          Name='ReceivedFrom'
+          Top=120
+          Left=8
+          Color=0
+          ControlCaption='Diserahkan Oleh'
         >, object:rtf::Button<
           Name='bSearchBudget'
           Layout=clAbsolute
@@ -470,10 +488,13 @@ document <
         >, object:rtf::DBEdit<
           Name='ePaymentPaidTo'
           Layout=clNewLine
-          Top=120
+          Top=148
           Left=8
+          Width=337
+          Height=21
           Color=0
-          ControlCaption='Kasir'
+          ControlCaption='Dibayarkan Kepada'
+          LayoutOrder=7
           FieldName='PaidTo'
           DisplayFormat=''
         >}EqualCaptionWidth=100
@@ -484,12 +505,6 @@ document <
       RowControlGap=7
     >, object:rtf::Panel<
       Elements={object:rtf::FieldUIElmtSetting<
-          Name='ReceivedFrom'
-          Hidden=true
-          ControlCaption='Kasir'
-          DataTypeName='varchar'
-          DataLength=30
-        >, object:rtf::FieldUIElmtSetting<
           Name='AssetType'
           ControlCaption='Jenis Asset'
           DataTypeName='varchar'
@@ -722,8 +737,8 @@ document <
           EnumeratedValues=['B=Pembelian'#13#10,
             'D=Donasi'#13#10]
         >}Name='pTransaction'
-      Width=569
-      Height=281
+      Width=841
+      Height=291
       UIPart=$UIPARTS['uipTransaction']
       Controls={*object:rtf::DBComboBox<
           Name='AssetType'
@@ -849,6 +864,43 @@ document <
           FontColor=-2147483640
           FontSize=8
           FontStyleBold=true
+        >, object:rtf::Edit<
+          Name='edAssetDescription'
+          Layout=clAbsolute
+          Top=56
+          Left=512
+          Width=270
+          Height=217
+          Color=0
+          ControlCaption='Deskripsi Aset'
+          MultiLine=true
+        >, object:rtf::Label<
+          Name='label3'
+          Layout=clAbsolute
+          Top=24
+          Left=584
+          Width=390
+          Height=33
+          Color=65535
+          ControlCaption=''
+          Caption='* Deskripsi Aset diinput dengan data yang menerangkan keterangan detail aset'
+          FontName='Tahoma'
+          FontColor=-2147483640
+          FontSize=8
+        >, object:rtf::Label<
+          Name='label4'
+          Layout=clAbsolute
+          Top=40
+          Left=584
+          Width=219
+          Height=17
+          Color=65535
+          ControlCaption=''
+          Caption='   misalnya merk, warna, berat, satuan dsb'
+          AutoSize=true
+          FontName='Tahoma'
+          FontColor=-2147483640
+          FontSize=8
         >}EqualCaptionWidth=120
       ControlLeftMargin=8
       ControlTopMargin=30
@@ -858,14 +910,14 @@ document <
       ControlCharCase=ecUpperCase
     >, object:rtf::DualSplit<
       Name='dualsplit2'
-      Width=617
+      Width=849
       Height=490
       Container1=$CONTAINERS['pTransaction']
       Container2=$CONTAINERS['mpSourceInfo']
     >, object:rtf::MultiPages<
       Name='mpSourceInfo'
-      Width=617
-      Height=208
+      Width=849
+      Height=198
       Pages={object:rtf::Page<
           PageName='mpPaymentSourceInfo'
           PageTitle='Data Pembelian'
