@@ -4,8 +4,8 @@ import sys
 def FormSetDataEx(uideflist, parameter) :
   config = uideflist.Config
   rec = uideflist.uipData.Dataset.AddRecord()
-  rec.BranchCode = str(config.SecurityContext.GetUserInfo()[4])
-  rec.BranchName = str(config.SecurityContext.GetUserInfo()[5])
+  rec.UserBranchCode = str(config.SecurityContext.GetUserInfo()[4])
+  rec.UserBranchName = str(config.SecurityContext.GetUserInfo()[5])
   rec.HeadOfficeCode = config.SysVarIntf.GetStringSysVar('OPTION','HeadOfficeCode')
   
   Now = config.Now()
@@ -25,18 +25,28 @@ def SummaryVolunteer(config,params,returns):
      ['TotalCredit',0.0],
      ['EndBalance',0.0],
   )
-  
-  BranchCode = params.FirstRecord.BranchCode
-  BeginDate = params.FirstRecord.BeginDate
-  EndDate = params.FirstRecord.EndDate
+
+  param = params.FirstRecord
+  BranchCode = param.GetFieldByName('LBranch.BranchCode')
+  IsAllBranch = param.IsAllBranch
+  BeginDate = param.BeginDate
+  EndDate = param.EndDate
+  UserBranchCode = param.UserBranchCode
+  HeadOfficeCode = param.HeadOfficeCode
+  MasterBranchCode = param.MasterBranchCode
+
   
   try:
     helper = phelper.PObjectHelper(config)
     
-    corporate = helper.CreateObject('Corporate')
-    CabangInfo = corporate.GetCabangInfo(BranchCode)
+    # Set BranchName
+    if BranchCode not in ['',None] :
+      corporate = helper.CreateObject('Corporate')
+      CabangInfo = corporate.GetCabangInfo(BranchCode)
 
-    status.BranchName = CabangInfo.Nama_Cabang
+      status.BranchName = CabangInfo.Nama_Cabang
+
+    # Set strPeriod
     status.BeginDateStr = config.FormatDateTime('dd-mm-yyyy',BeginDate)
     status.EndDateStr = config.FormatDateTime('dd-mm-yyyy',EndDate)
     if BeginDate == EndDate :
@@ -53,6 +63,8 @@ def SummaryVolunteer(config,params,returns):
      ';'.join([
        'IDMitra: string',
        'NamaMitra: string',
+       'BranchCode: string',
+       'BranchName: string',
        'Debet: float',
        'Kredit: float',
        'TotalMutasi: float',
@@ -61,9 +73,25 @@ def SummaryVolunteer(config,params,returns):
      ])
     )
 
-    
+
+    # Set BranchCodeParam
+    BranchCodeParam = ''
+    if IsAllBranch == 'F' :
+      BranchCodeParam = " and a.branchcode='%s' " % BranchCode
+    else:
+      IsHeadOffice = (UserBranchCode == HeadOfficeCode)
+
+      # Jika Bukan Kantor Pusat maka branchcode dari user login ditambah konsolidasi dengan KCPnya
+      if not IsHeadOffice :
+        BranchCodeParam = "and ( br.BranchCode='%(BranchCode)s'  \
+                           or br.MasterBranchCode='%(BranchCode)s' ) " \
+                           % {'BranchCode' : UserBranchCode}
+
+      #end if
+    # end if
+
     strSQL = " \
-              select volunteerid, volunteername, \
+              select volunteerid, volunteername, a.branchcode, br.branchname, \
                  (select sum(d.Amount) \
                      from transaction.transaction c, \
                           transaction.transactionitem d, \
@@ -78,11 +106,12 @@ def SummaryVolunteer(config,params,returns):
                      where c.transactionid = d.transactionid and d.transactionitemid = e.transactionitemid \
                          and c.actualdate between '%(BEGINDATE)s' and '%(ENDDATE)s'  and e.volunteerid=a.volunteerid \
                          and d.mutationtype='D') as Kredit \
-              from transaction.volunteer a \
-              where a.branchcode='%(BRANCHCODE)s' \
-                 order by  a.volunteername \
+              from transaction.volunteer a , branch br \
+              where a.BranchCode = br.BranchCode \
+                  %(BRANCHCODEPARAM)s \
+                 order by  a.branchcode, a.volunteername \
                 " % {
-                  'BRANCHCODE' : BranchCode ,
+                  'BRANCHCODEPARAM' : BranchCodeParam ,
                   'BEGINDATE' : config.FormatDateTime('yyyy-mm-dd',BeginDate),
                   'ENDDATE' : config.FormatDateTime('yyyy-mm-dd',EndDate)
                }
@@ -93,6 +122,9 @@ def SummaryVolunteer(config,params,returns):
       recSum = dsSummary.AddRecord()
       recSum.IdMitra = res.VolunteerId
       recSum.NamaMitra = res.VolunteerName
+      recSum.BranchCode = res.BranchCode
+      recSum.BranchName = res.BranchName
+
       recSum.Debet = res.Debet or 0.0
       recSum.Kredit = res.Kredit or 0.0
       recSum.TotalMutasi = (res.Debet or 0.0 ) - ( res.Kredit or 0.0)

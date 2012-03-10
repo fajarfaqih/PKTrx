@@ -8,11 +8,11 @@ document <
   UIDefs={object:rpclass::TPClassUIDef<
       Name='uipData'
       CustomLoadedFields={object:rpclass::TCustomLoadedField<
-          Name='BranchCode'
+          Name='UserBranchCode'
           DataTypeName='varchar'
           DataLength=10
         >, object:rpclass::TCustomLoadedField<
-          Name='BranchName'
+          Name='UserBranchName'
           DataTypeName='varchar'
           DataLength=30
         >, object:rpclass::TCustomLoadedField<
@@ -35,6 +35,10 @@ document <
           Name='LBranch.BranchName'
           DataTypeName='VARCHAR'
           DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='IsAllBranch'
+          DataTypeName='varchar'
+          DataLength=1
         >, object:rpclass::TCustomLoadedField<
           Name='BeginDate'
           DataTypeName='timestamp'

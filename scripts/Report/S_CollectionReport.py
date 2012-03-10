@@ -66,7 +66,7 @@ def GetReportData(config,param):
         addFilter += SQLParam 
         addFilter2 += SQLParam
       else :
-        # jika inging menampilkan cabang termasuk anak di bawahnya
+        # jika ingin menampilkan cabang termasuk anak di bawahnya
         SQLParam = " and ( b.BranchCode='%(BranchCode)s'  or b.MasterBranchCode='%(BranchCode)s' ) " % {'BranchCode' : aBranchCode}  
         addFilter += SQLParam
         addFilter2 += SQLParam

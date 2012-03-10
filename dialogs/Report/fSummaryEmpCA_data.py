@@ -4,8 +4,8 @@ import sys
 def FormSetDataEx(uideflist, parameter) :
   config = uideflist.Config
   rec = uideflist.uipData.Dataset.AddRecord()
-  rec.BranchCode = str(config.SecurityContext.GetUserInfo()[4])
-  rec.BranchName = str(config.SecurityContext.GetUserInfo()[5])
+  rec.UserBranchCode = str(config.SecurityContext.GetUserInfo()[4])
+  rec.UserBranchName = str(config.SecurityContext.GetUserInfo()[5])
   rec.HeadOfficeCode = config.SysVarIntf.GetStringSysVar('OPTION','HeadOfficeCode')
   
   Now = config.Now()
@@ -25,25 +25,34 @@ def SummaryEmpCA(config,params,returns):
      ['Is_Err',0],['Err_Message',''],
      ['PeriodStr',''],['BranchName',''],
      ['BeginDateStr',''],['EndDateStr',''],
-     ['BeginBalance',0.0],
-     ['TotalDebet',0.0],
-     ['TotalCredit',0.0],
-     ['EndBalance',0.0],
+     ['BeginBalanceEkuiv',0.0],
+     ['TotalDebetEkuiv',0.0],
+     ['TotalCreditEkuiv',0.0],
+     ['EndBalanceEkuiv',0.0],
      ['TotalDebetHist',0.0],
      ['TotalCreditHist',0.0],
   )
   
-  BranchCode = params.FirstRecord.BranchCode
-  BeginDate = params.FirstRecord.BeginDate
-  EndDate = params.FirstRecord.EndDate
+  param = params.FirstRecord
+  BranchCode = param.GetFieldByName('LBranch.BranchCode')
+  IsAllBranch = param.IsAllBranch
+  BeginDate = param.BeginDate
+  EndDate = param.EndDate
+  UserBranchCode = param.UserBranchCode
+  HeadOfficeCode = param.HeadOfficeCode
+  MasterBranchCode = param.MasterBranchCode
   
   try:
     helper = phelper.PObjectHelper(config)
     
-    corporate = helper.CreateObject('Corporate')
-    CabangInfo = corporate.GetCabangInfo(BranchCode)
+    # Set BranchName
+    if BranchCode not in ['',None] :
+      corporate = helper.CreateObject('Corporate')
+      CabangInfo = corporate.GetCabangInfo(BranchCode)
 
-    status.BranchName = CabangInfo.Nama_Cabang
+      status.BranchName = CabangInfo.Nama_Cabang
+
+    
     status.BeginDateStr = config.FormatDateTime('dd-mm-yyyy',BeginDate)
     status.EndDateStr = config.FormatDateTime('dd-mm-yyyy',EndDate)
     if BeginDate == EndDate :
@@ -64,18 +73,41 @@ def SummaryEmpCA(config,params,returns):
      ';'.join([
        'NomorKaryawan: string',
        'NamaKaryawan: string',
+       'BranchCode: string',
+       'BranchName: string',
        'Debet: float',
+       'DebetEkuiv: float',
        'Kredit: float',
+       'KreditEkuiv: float',
        'TotalMutasi: float',
        'SaldoAwal: float',
+       'SaldoAwalEkuiv: float',
        'SaldoAkhir: float',
+       'SaldoAkhirEkuiv: float',
        'CurrencyName: string'
      ])
     )
 
     
+    # Set BranchCodeParam
+    BranchCodeParam = ''
+    if IsAllBranch == 'F' :
+      BranchCodeParam = " and br.branchcode='%s' " % BranchCode
+    else:
+      IsHeadOffice = (UserBranchCode == HeadOfficeCode)
+
+      # Jika Bukan Kantor Pusat maka branchcode dari user login ditambah konsolidasi dengan KCPnya
+      if not IsHeadOffice :
+        BranchCodeParam = "and ( br.BranchCode='%(BranchCode)s'  \
+                           or br.MasterBranchCode='%(BranchCode)s' ) " \
+                           % {'BranchCode' : UserBranchCode}
+
+      #end if
+    # end if
+
     strSQL = " \
               select b.employeeidnumber, a.accountno, a.accountname, a.currencycode, c.short_name, \
+              br.branchcode, br.branchname , \
               ( select sum(case when d.mutationtype='D' then d.Amount \
                            else -d.Amount \
                       end) \
@@ -83,6 +115,13 @@ def SummaryEmpCA(config,params,returns):
               where d.transactionid=e.transactionid \
                  and d.transactionitemid=f.transactionitemid \
                  and f.accountno = a.accountno and e.actualdate < '%(BEGINDATE)s' ) as BeginBalance, \
+              ( select sum(case when d.mutationtype='D' then d.EkuivalenAmount \
+                           else -d.EkuivalenAmount \
+                      end) \
+              from transactionitem d, transaction e, accounttransactionitem f\
+              where d.transactionid=e.transactionid \
+                 and d.transactionitemid=f.transactionitemid \
+                 and f.accountno = a.accountno and e.actualdate < '%(BEGINDATE)s' ) as BeginBalanceEkuiv, \
                  (select sum(d.Amount) \
                      from transaction.transaction c, \
                           transaction.transactionitem d, \
@@ -90,21 +129,36 @@ def SummaryEmpCA(config,params,returns):
                      where c.transactionid = d.transactionid and d.transactionitemid = e.transactionitemid \
                          and c.actualdate between '%(BEGINDATE)s' and '%(ENDDATE)s'  and e.accountno=a.accountno \
                          and d.mutationtype='D') as Debet, \
+                 (select sum(d.EkuivalenAmount) \
+                     from transaction.transaction c, \
+                          transaction.transactionitem d, \
+                          transaction.accounttransactionitem e \
+                     where c.transactionid = d.transactionid and d.transactionitemid = e.transactionitemid \
+                         and c.actualdate between '%(BEGINDATE)s' and '%(ENDDATE)s'  and e.accountno=a.accountno \
+                         and d.mutationtype='D') as DebetEkuiv, \
                  (select sum(d.Amount) \
                      from transaction.transaction c, \
                           transaction.transactionitem d, \
                           transaction.accounttransactionitem e \
                      where c.transactionid = d.transactionid and d.transactionitemid = e.transactionitemid \
                          and c.actualdate between '%(BEGINDATE)s' and '%(ENDDATE)s'  and e.accountno=a.accountno \
-                         and d.mutationtype='C') as Kredit \
-              from transaction.financialaccount a, transaction.accountreceivable b, transaction.currency c \
+                         and d.mutationtype='C') as Kredit, \
+                 (select sum(d.EkuivalenAmount) \
+                     from transaction.transaction c, \
+                          transaction.transactionitem d, \
+                          transaction.accounttransactionitem e \
+                     where c.transactionid = d.transactionid and d.transactionitemid = e.transactionitemid \
+                         and c.actualdate between '%(BEGINDATE)s' and '%(ENDDATE)s'  and e.accountno=a.accountno \
+                         and d.mutationtype='C') as KreditEkuiv \
+              from transaction.financialaccount a, transaction.accountreceivable b, transaction.currency c, branch br \
               where a.accountno = b.accountno \
                   and a.currencycode = c.currency_code \
                   and b.AccountReceivableType = 'C' \
-                  and a.branchcode = '%(BRANCHCODE)s' \
-                 order by  a.accountname \
+                  and a.BranchCode = br.BranchCode \
+                  %(BRANCHCODEPARAM)s \
+                 order by br.branchcode, a.accountname \
                 " % {
-                  'BRANCHCODE' : BranchCode ,
+                  'BRANCHCODEPARAM' : BranchCodeParam ,
                   'BEGINDATE' : sqlBeginDateParam,
                   'ENDDATE' : sqlEndDateParam
                }
@@ -116,10 +170,16 @@ def SummaryEmpCA(config,params,returns):
       #recSum.NomorKaryawan = res.AccountNo
       recSum.NomorKaryawan = str(res.EmployeeIdNumber)
       recSum.NamaKaryawan = res.AccountName
+      recSum.BranchCode = res.BranchCode
+      recSum.BranchName = res.BranchName
+      
       recSum.CurrencyName = res.Short_Name
       recSum.Debet = res.Debet or 0.0
+      recSum.DebetEkuiv = res.DebetEkuiv or 0.0
       recSum.Kredit = res.Kredit or 0.0
+      recSum.KreditEkuiv = res.KreditEkuiv or 0.0
       recSum.TotalMutasi = (res.Debet or 0.0 ) - ( res.Kredit or 0.0)
+      
       
       #AccountR = helper.GetObject('AccountReceivable',res.AccountNo)
       SaldoAwal = res.BeginBalance or 0.0 #AccountR.GetBalanceByDate(BeginDate)
@@ -127,10 +187,10 @@ def SummaryEmpCA(config,params,returns):
       recSum.SaldoAwal = SaldoAwal
       recSum.SaldoAkhir = SaldoAwal + recSum.TotalMutasi
       
-      status.BeginBalance += recSum.SaldoAwal
-      status.TotalDebet += recSum.Debet
-      status.TotalCredit += recSum.Kredit
-      status.EndBalance += recSum.SaldoAkhir
+      status.BeginBalanceEkuiv += res.BeginBalanceEkuiv or 0.0
+      status.TotalDebetEkuiv += res.DebetEkuiv or 0.0
+      status.TotalCreditEkuiv += res.KreditEkuiv or 0.0
+      status.EndBalanceEkuiv += (res.BeginBalanceEkuiv or 0.0) + (res.DebetEkuiv or 0.0) - (res.KreditEkuiv or 0.0)
       
       res.Next()
       
@@ -161,53 +221,15 @@ def SummaryEmpCA(config,params,returns):
         'AccountName:string',
         'ReturnStatus:string',
         'ReturnTransactionNo:string',
+        'BranchName:string',
       ])
     )
 
-    """
-    s = ' \
-      SELECT FROM CashAdvanceTransactItem \
-      [ \
-        LTransaction.ActualDate >= :BeginDate and \
-        LTransaction.ActualDate < :EndDate and \
-        BranchCode = :BranchCode \
-      ] \
-      ( \
-        TransactionItemId, \
-        LTransaction.TransactionDate , \
-        LTransaction.TransactionCode , \
-        LTransaction.ActualDate , \
-        MutationType , \
-        Amount , \
-        EkuivalenAmount , \
-        LTransaction.ReferenceNo , \
-        LTransaction.Description , \
-        LTransaction.Inputer , \
-        LTransaction.TransactionNo ,\
-        LTransaction.AuthStatus ,\
-        CurrencyCode , \
-        Rate , \
-        LCurrency.Short_Name , \
-        LTransaction.CurrencyCode as TransCurrencyCode , \
-        LTransaction.Rate as TransRate , \
-        LTransaction.LCurrency.Short_Name as TransCurrencyName , \
-        LCashAdvanceAccount.AccountName, \
-        Self \
-      ) \
-      THEN ORDER BY ASC ActualDate, ASC TransactionItemId;'
 
-    oql = config.OQLEngine.CreateOQL(s)
-    oql.SetParameterValueByName('BeginDate', BeginDate)
-    oql.SetParameterValueByName('EndDate', EndDate + 1)
-    oql.SetParameterValueByName('BranchCode', BranchCode)
-    oql.ApplyParamValues()
-
-    oql.active = 1
-    ds  = oql.rawresult """
-    
     strSQL = "SELECT A.TRANSACTIONITEMID, C.TRANSACTIONDATE, C.TRANSACTIONCODE, C.ACTUALDATE, B.MUTATIONTYPE, \
         B.AMOUNT, B.EKUIVALENAMOUNT, C.REFERENCENO, C.DESCRIPTION, C.INPUTER, C.TRANSACTIONNO, \
         C.AUTHSTATUS, B.CURRENCYCODE, B.RATE, E.SHORT_NAME, C.CURRENCYCODE, C.RATE, D.SHORT_NAME, \
+        BR.BRANCHCODE, BR.BRANCHNAME,  \
         G.ACCOUNTNAME, A.TRANSACTIONITEMID,  a.returntransactionitemid, \
           (select transactionno from \
              transaction.transaction tr, transaction.transactionitem ti \
@@ -220,7 +242,8 @@ def SummaryEmpCA(config,params,returns):
         transaction.CURRENCY D, \
         transaction.CURRENCY E, \
         transaction.ACCOUNTRECEIVABLE F, \
-        transaction.FINANCIALACCOUNT G \
+        transaction.FINANCIALACCOUNT G, \
+        transaction.BRANCH BR \
         WHERE A.ACCOUNTTITYPE = 'C' AND \
         A.TransactionItemId = B.TransactionItemId AND \
         B.TRANSACTIONID = C.TRANSACTIONID AND \
@@ -228,9 +251,10 @@ def SummaryEmpCA(config,params,returns):
         B.CURRENCYCODE = E.CURRENCY_CODE AND \
         A.ACCOUNTNO = F.ACCOUNTNO AND \
         F.AccountNo = G.AccountNo AND \
-        ( C.ACTUALDATE BETWEEN '%(BEGINDATE)s' AND '%(ENDDATE)s' AND B.BRANCHCODE = '%(BRANCHCODE)s' ) \
+        BR.BranchCode = B.BranchCode AND \
+        ( C.ACTUALDATE BETWEEN '%(BEGINDATE)s' AND '%(ENDDATE)s' %(BRANCHCODEPARAM)s ) \
         ORDER BY C.ACTUALDATE ASC, A.TRANSACTIONITEMID ASC \
-        " % { 'BRANCHCODE' : BranchCode ,
+        " % { 'BRANCHCODEPARAM' : BranchCodeParam ,
               'BEGINDATE' : sqlBeginDateParam,
               'ENDDATE' : sqlEndDateParam
         }
@@ -292,6 +316,7 @@ def SummaryEmpCA(config,params,returns):
       recHist.AuthStatus = stAuth[ds.AuthStatus]
       recHist.ReturnStatus = stReturn[ds.ReturnTransactionItemid not in [0,None,'']]
       recHist.ReturnTransactionNo = ds.return_transactionno
+      recHist.BranchName = ds.BranchName
 
       ds.Next()
     #-- while

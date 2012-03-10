@@ -280,6 +280,10 @@ document <
           Width=200
         >, *object:rtf::GridColumn<
           Name='CurrencyName'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='CurrencyName'
+          DisplayFormat=''
           TitleCaption='Nama Kurs'
         >, *object:rtf::GridColumn<
           Name='Amount'

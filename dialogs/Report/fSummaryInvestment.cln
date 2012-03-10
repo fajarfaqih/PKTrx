@@ -9,16 +9,16 @@ document <
   Caption='Rekapitulasi Investasi'
   Left=50
   Top=50
-  Width=545
+  Width=577
   Height=153
   UIParts={object:rtf::PClassUI<
       Elements={object:rtf::FieldUIElmtSetting<
-          Name='BranchCode'
+          Name='UserBranchCode'
           Hidden=true
           DataTypeName='varchar'
           DataLength=10
         >, object:rtf::FieldUIElmtSetting<
-          Name='BranchName'
+          Name='UserBranchName'
           Hidden=true
           DataTypeName='varchar'
           DataLength=30
@@ -73,6 +73,14 @@ document <
           LookupOption=loCustomOQL
           FieldBaseName='LBranch'
         >, object:rtf::FieldUIElmtSetting<
+          Name='IsAllBranch'
+          ControlCaption='Seluruh Cabang / Capem'
+          DataTypeName='varchar'
+          DataLength=1
+          EnumeratedValues=['F=False'#13#10,
+            'T=True'#13#10]
+          GenerateCheckBoxForEnum=true
+        >, object:rtf::FieldUIElmtSetting<
           Name='BeginDate'
           ControlCaption='Tanggal Awal'
           DataTypeName='timestamp'
@@ -82,15 +90,15 @@ document <
           ControlCaption='Tanggal Akhir'
           DataTypeName='timestamp'
           DataLength=20
-        >}Name='PData'
-      Width=457
+        >}Name='pData'
+      Width=569
       Height=100
       UIPart=$UIPARTS['uipData']
       Controls={*object:rtf::DBLookupEdit<
           Name='LBranch'
           Top=8
           Left=8
-          Width=120
+          Width=100
           Height=21
           ControlCaption='Cabang / Capem'
           FieldName='LBranch.BranchCode'
@@ -99,16 +107,32 @@ document <
           DisplayLookupField=true
           DisplayLookupColor=-2147483624
           DisplayLookupWidth=200
+        >, *object:rtf::DBCheckBox<
+          Name='IsAllBranch'
+          Layout=clNextSide
+          Top=8
+          Left=416
+          Width=145
+          Height=17
+          Color=0
+          ControlCaption='Seluruh Cabang / Capem'
+          ValueChecked='T'
+          ValueUnchecked='F'
+          OnClick='IsAllBranchClick'
         >, *object:rtf::DBDateEdit<
           Name='BeginDate'
           Top=36
           Left=8
+          Width=100
+          Height=21
           Color=0
           ControlCaption='Tanggal Awal'
         >, *object:rtf::DBDateEdit<
           Name='EndDate'
           Top=64
           Left=8
+          Width=100
+          Height=21
           Color=0
           ControlCaption='Tanggal Akhir'
         >}EqualCaptionWidth=100
@@ -153,7 +177,7 @@ document <
       Width=240
       Height=96
       Container1=$CONTAINERS['PAction']
-      Container2=$CONTAINERS['PData']
+      Container2=$CONTAINERS['pData']
       InversedAlign=true
     >}FormClassName='fSummaryInvestment'
 >

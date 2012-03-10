@@ -4,8 +4,8 @@ import sys
 def FormSetDataEx(uideflist, parameter) :
   config = uideflist.Config
   rec = uideflist.uipData.Dataset.AddRecord()
-  rec.BranchCode = str(config.SecurityContext.GetUserInfo()[4])
-  rec.BranchName = str(config.SecurityContext.GetUserInfo()[5])
+  rec.UserBranchCode = str(config.SecurityContext.GetUserInfo()[4])
+  rec.UserBranchName = str(config.SecurityContext.GetUserInfo()[5])
   rec.HeadOfficeCode = config.SysVarIntf.GetStringSysVar('OPTION','HeadOfficeCode')
 
   Now = config.Now()
@@ -26,17 +26,28 @@ def SummaryExtAR(config,params,returns):
      ['EndBalance',0.0],
   )
   
-  BranchCode = params.FirstRecord.BranchCode
-  BeginDate = params.FirstRecord.BeginDate
-  EndDate = params.FirstRecord.EndDate
-  
+  param = params.FirstRecord
+  BranchCode = param.GetFieldByName('LBranch.BranchCode')
+  IsAllBranch = param.IsAllBranch
+  BeginDate = param.BeginDate
+  EndDate = param.EndDate
+  UserBranchCode = param.UserBranchCode
+  HeadOfficeCode = param.HeadOfficeCode
+  MasterBranchCode = param.MasterBranchCode
+
   try:
     helper = phelper.PObjectHelper(config)
     
     corporate = helper.CreateObject('Corporate')
     CabangInfo = corporate.GetCabangInfo(BranchCode)
 
-    status.BranchName = CabangInfo.Nama_Cabang
+    # Set BranchName
+    if BranchCode not in ['',None] :
+      corporate = helper.CreateObject('Corporate')
+      CabangInfo = corporate.GetCabangInfo(BranchCode)
+
+      status.BranchName = CabangInfo.Nama_Cabang
+
     status.BeginDateStr = config.FormatDateTime('dd-mm-yyyy',BeginDate)
     status.EndDateStr = config.FormatDateTime('dd-mm-yyyy',EndDate)
     if BeginDate == EndDate :
@@ -51,8 +62,10 @@ def SummaryExtAR(config,params,returns):
     dsSummary = returns.AddNewDatasetEx(
      'summary',
      ';'.join([
-       'NomorKaryawan: string',
-       'NamaKaryawan: string',
+       'IdDebitur: string',
+       'NamaDebitur: string',
+       'BranchCode: string',
+       'BranchName: string',
        'Debet: float',
        'Kredit: float',
        'TotalMutasi: float',
@@ -61,9 +74,25 @@ def SummaryExtAR(config,params,returns):
      ])
     )
 
+    # Set BranchCodeParam
+    BranchCodeParam = ''
+    if IsAllBranch == 'F' :
+      BranchCodeParam = " and a.branchcode='%s' " % BranchCode
+    else:
+      IsHeadOffice = (UserBranchCode == HeadOfficeCode)
+
+      # Jika Bukan Kantor Pusat maka branchcode dari user login ditambah konsolidasi dengan KCPnya
+      if not IsHeadOffice :
+        BranchCodeParam = "and ( br.BranchCode='%(BranchCode)s'  \
+                           or br.MasterBranchCode='%(BranchCode)s' ) " \
+                           % {'BranchCode' : UserBranchCode}
+
+      #end if
+    # end if
+
     
     strSQL = " \
-              select a.accountno,a.accountname, \
+              select a.accountno,a.accountname, a.branchcode, br.branchname, \
                  (select sum(d.Amount) \
                      from transaction.transaction c, \
                           transaction.transactionitem d, \
@@ -78,13 +107,14 @@ def SummaryExtAR(config,params,returns):
                      where c.transactionid = d.transactionid and d.transactionitemid = e.transactionitemid \
                          and c.actualdate between '%(BEGINDATE)s' and '%(ENDDATE)s'  and e.accountno=a.accountno \
                          and d.mutationtype='C') as Kredit \
-              from transaction.financialaccount a, transaction.accountreceivable b \
+              from transaction.financialaccount a, transaction.accountreceivable b, branch br \
               where a.accountno=b.accountno \
                   and b.AccountReceivableType = 'D' \
-                  and a.branchcode='%(BRANCHCODE)s' \
-                 order by  a.accountname \
+                  and a.BranchCode = br.BranchCode \
+                  %(BRANCHCODEPARAM)s \
+                 order by  a.branchcode, a.accountname \
                 " % {
-                  'BRANCHCODE' : BranchCode ,
+                  'BRANCHCODEPARAM' : BranchCodeParam ,
                   'BEGINDATE' : config.FormatDateTime('yyyy-mm-dd',BeginDate),
                   'ENDDATE' : config.FormatDateTime('yyyy-mm-dd',EndDate)
                }
@@ -93,8 +123,10 @@ def SummaryExtAR(config,params,returns):
 
     while not res.Eof:
       recSum = dsSummary.AddRecord()
-      recSum.NomorKaryawan = res.AccountNo
-      recSum.NamaKaryawan = res.AccountName
+      recSum.IdDebitur = res.AccountNo
+      recSum.NamaDebitur = res.AccountName
+      recSum.BranchCode = res.BranchCode
+      recSum.BranchName = res.BranchName
       recSum.Debet = res.Debet or 0.0
       recSum.Kredit = res.Kredit or 0.0
       recSum.TotalMutasi = (res.Debet or 0.0 ) - ( res.Kredit or 0.0)
