@@ -4,8 +4,8 @@ import sys
 def FormSetDataEx(uideflist, parameter) :
   config = uideflist.Config
   rec = uideflist.uipData.Dataset.AddRecord()
-  rec.BranchCode = str(config.SecurityContext.GetUserInfo()[4])
-  rec.BranchName = str(config.SecurityContext.GetUserInfo()[5])
+  rec.UserBranchCode = str(config.SecurityContext.GetUserInfo()[4])
+  rec.UserBranchName = str(config.SecurityContext.GetUserInfo()[5])
   rec.HeadOfficeCode = config.SysVarIntf.GetStringSysVar('OPTION','HeadOfficeCode')
 
   Now = config.Now()
@@ -33,9 +33,15 @@ def SummaryInvestment(config,params,returns):
      ['TotalCreditHist',0.0],
   )
   
-  BranchCode = params.FirstRecord.BranchCode
-  BeginDate = params.FirstRecord.BeginDate
-  EndDate = params.FirstRecord.EndDate
+  param = params.FirstRecord
+  BranchCode = param.GetFieldByName('LBranch.BranchCode')
+  IsAllBranch = param.IsAllBranch
+  BeginDate = param.BeginDate
+  EndDate = param.EndDate
+  UserBranchCode = param.UserBranchCode
+  HeadOfficeCode = param.HeadOfficeCode
+  MasterBranchCode = param.MasterBranchCode
+
   
   try:
     helper = phelper.PObjectHelper(config)
@@ -43,7 +49,14 @@ def SummaryInvestment(config,params,returns):
     corporate = helper.CreateObject('Corporate')
     CabangInfo = corporate.GetCabangInfo(BranchCode)
 
-    status.BranchName = CabangInfo.Nama_Cabang
+    # Set BranchName
+    if BranchCode not in ['',None] :
+      corporate = helper.CreateObject('Corporate')
+      CabangInfo = corporate.GetCabangInfo(BranchCode)
+
+      status.BranchName = CabangInfo.Nama_Cabang
+      
+    # Set strPeriod
     status.BeginDateStr = config.FormatDateTime('dd-mm-yyyy',BeginDate)
     status.EndDateStr = config.FormatDateTime('dd-mm-yyyy',EndDate)
     if BeginDate == EndDate :
@@ -60,6 +73,8 @@ def SummaryInvestment(config,params,returns):
      ';'.join([
        'NomorKaryawan: string',
        'NamaKaryawan: string',
+       'BranchCode:string',
+       'BranchName:string',
        'Debet: float',
        'Kredit: float',
        'TotalMutasi: float',
@@ -69,10 +84,30 @@ def SummaryInvestment(config,params,returns):
      ])
     )
 
+    # Set BranchCodeParam
+    BranchCodeParam = ''
+    if IsAllBranch == 'F' :
+      BranchCodeParam = " and br.branchcode='%s' " % BranchCode
+      BranchCodeParamOQL = " and LBranch.BranchCode='%s' " % BranchCode
+    else:
+      IsHeadOffice = (UserBranchCode == HeadOfficeCode)
+
+      # Jika Bukan Kantor Pusat maka branchcode dari user login ditambah konsolidasi dengan KCPnya
+      if not IsHeadOffice :
+        BranchCodeParam = "and ( br.BranchCode='%(BranchCode)s'  \
+                           or br.MasterBranchCode='%(BranchCode)s' ) " \
+                           % {'BranchCode' : UserBranchCode}
+        BranchCodeParamOQL = " and ( LBranch.BranchCode='%(BranchCode)s' \
+                           or LBranch.MasterBranchCode='%(BranchCode)s' ) " \
+                           % {'BranchCode' : UserBranchCode}
+
+      #end if
+    # end if
 
     LsSQL = []
     strSQLEmp = " \
               select ve.employeeid as investeeid, ve.employeename as investeename, a.currencycode, c.short_name, \
+               br.BranchCode,  br.BranchName ,\
               ( select sum(case when d.mutationtype='D' then d.Amount \
                            else -d.Amount \
                       end) \
@@ -94,17 +129,18 @@ def SummaryInvestment(config,params,returns):
                      where c.transactionid = d.transactionid and d.transactionitemid = e.transactionitemid \
                          and c.actualdate between '%(BEGINDATE)s' and '%(ENDDATE)s'  and e.accountno=a.accountno \
                          and d.mutationtype='C') as Kredit \
-              from transaction.financialaccount a, transaction.accountreceivable b, \
+              from transaction.financialaccount a, transaction.accountreceivable b , branch br , \
                    transaction.currency c,  transaction.investment i, transaction.vemployee ve \
               where a.accountno = b.accountno \
                   and i.accountno = b.accountno \
                   and ve.employeeid = i.employeeid \
                   and a.currencycode = c.currency_code \
+                  and a.BranchCode = br.BranchCode \
                   and b.AccountReceivableType = 'I' \
-                  and a.branchcode = '%(BRANCHCODE)s' \
+                  %(BRANCHCODEPARAM)s \
                  order by  b.employeeidnumber \
                 " % {
-                  'BRANCHCODE' : BranchCode ,
+                  'BRANCHCODEPARAM' : BranchCodeParam ,
                   'BEGINDATE' : config.FormatDateTime('yyyy-mm-dd',BeginDate),
                   'ENDDATE' : config.FormatDateTime('yyyy-mm-dd',EndDate)
                }
@@ -113,6 +149,7 @@ def SummaryInvestment(config,params,returns):
     
     strSQLExt = " \
               select ve.investeeid, ve.investeename , a.currencycode, c.short_name, \
+               br.BranchCode,  br.BranchName ,\
               ( select sum(case when d.mutationtype='D' then d.Amount \
                            else -d.Amount \
                       end) \
@@ -134,17 +171,18 @@ def SummaryInvestment(config,params,returns):
                      where c.transactionid = d.transactionid and d.transactionitemid = e.transactionitemid \
                          and c.actualdate between '%(BEGINDATE)s' and '%(ENDDATE)s'  and e.accountno=a.accountno \
                          and d.mutationtype='C') as Kredit \
-              from transaction.financialaccount a, transaction.accountreceivable b, \
+              from transaction.financialaccount a, transaction.accountreceivable b , branch br , \
                    transaction.currency c,  transaction.investment i, transaction.investee ve \
               where a.accountno = b.accountno \
                   and i.accountno = b.accountno \
                   and ve.investeeid = i.investeeid \
                   and a.currencycode = c.currency_code \
+                  and a.BranchCode = br.BranchCode \
                   and b.AccountReceivableType = 'I' \
-                  and a.branchcode = '%(BRANCHCODE)s' \
+                  %(BRANCHCODEPARAM)s \
                  order by  b.employeeidnumber \
                 " % {
-                  'BRANCHCODE' : BranchCode ,
+                  'BRANCHCODEPARAM' : BranchCodeParam ,
                   'BEGINDATE' : config.FormatDateTime('yyyy-mm-dd',BeginDate),
                   'ENDDATE' : config.FormatDateTime('yyyy-mm-dd',EndDate)
                }
@@ -160,6 +198,8 @@ def SummaryInvestment(config,params,returns):
         #recSum.NomorKaryawan = res.AccountNo
         recSum.NomorKaryawan = str(res.investeeid)
         recSum.NamaKaryawan = res.investeename
+        recSum.BranchCode = res.BranchCode
+        recSum.BranchName = res.BranchName
         recSum.CurrencyName = res.Short_Name
         recSum.Debet = res.Debet or 0.0
         recSum.Kredit = res.Kredit or 0.0
@@ -203,6 +243,8 @@ def SummaryInvestment(config,params,returns):
         'Total:float',
         'AuthStatus:string',
         'AccountName:string',
+        'BranchCode:string',
+        'BranchName:string',
       ])
     )
 
@@ -210,8 +252,8 @@ def SummaryInvestment(config,params,returns):
       SELECT FROM InvestmentTransactItem \
       [ \
         LTransaction.ActualDate >= :BeginDate and \
-        LTransaction.ActualDate < :EndDate and \
-        BranchCode = :BranchCode \
+        LTransaction.ActualDate < :EndDate \
+        %(BRANCHCODEPARAM)s \
       ] \
       ( \
         TransactionItemId, \
@@ -233,14 +275,14 @@ def SummaryInvestment(config,params,returns):
         LTransaction.Rate as TransRate , \
         LTransaction.LCurrency.Short_Name as TransCurrencyName , \
         LInvestment.AccountName, \
+        LBranch.BranchName , \
         Self \
       ) \
-      THEN ORDER BY ASC ActualDate, ASC TransactionItemId;'
+      THEN ORDER BY ASC ActualDate, ASC TransactionItemId;' % { 'BRANCHCODEPARAM' : BranchCodeParamOQL}
 
     oql = config.OQLEngine.CreateOQL(s)
     oql.SetParameterValueByName('BeginDate', BeginDate)
     oql.SetParameterValueByName('EndDate', EndDate + 1)
-    oql.SetParameterValueByName('BranchCode', BranchCode)
     oql.ApplyParamValues()
 
     oql.active = 1
@@ -292,6 +334,7 @@ def SummaryInvestment(config,params,returns):
       recHist.TransactionNo = ds.TransactionNo
       recHist.AccountName = ds.AccountName
       recHist.AuthStatus = stAuth[ds.AuthStatus]
+      recHist.BranchName = ds.BranchName
 
       ds.Next()
     #-- while

@@ -100,6 +100,7 @@ def GetHistTransaction(config, params, returns):
       TransactionItemId, \
       LTransaction.TransactionDate, \
       LTransaction.TransactionCode, \
+      LTransaction.ActualDate, \
       MutationType, \
       Amount, \
       LTransaction.ReferenceNo, \
@@ -123,7 +124,7 @@ def GetHistTransaction(config, params, returns):
   while not ds.Eof:
     recHist = dsHist.AddRecord()
     recHist.TransactionItemId = ds.TransactionItemId
-    recHist.TransactionDate = AsDateTime(ds.TransactionDate)
+    recHist.TransactionDate = AsDateTime(ds.ActualDate)
     recHist.TransactionDateStr = config.FormatDateTime('dd-mmm-yyyy',recHist.TransactionDate)
     recHist.TransactionCode = ds.TransactionCode
     recHist.MutationType = ds.MutationType

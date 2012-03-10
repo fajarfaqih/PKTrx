@@ -1,3 +1,3 @@
 def ViewClick(sender,context):
-  context.OwnerForm.pyFormObject.ViewData()
+  context.OwnerForm.pyFormObject.ViewDetailInvestment()
   

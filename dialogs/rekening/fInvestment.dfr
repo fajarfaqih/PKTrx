@@ -1,0 +1,381 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{781210D2-E6AA-49BD-934A-EF8503DE20B0}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rtf::Form<
+  MainContainer=$CONTAINERS['dsMain']
+  Caption='Peragaan Investasi'
+  State=rsMaximized
+  Left=50
+  Top=50
+  Width=700
+  Height=505
+  BeforeDeleteRow=''
+  BeforeResultSent=''
+  OnGeneralSetData=''
+  AfterSetData=''
+  OnGeneralProcessData=''
+  OnProcessRawData=''
+  OnBeginSetData=''
+  OnEndSetData=''
+  OnSetDataEx='FormSetDataEx'
+  OnBeginProcessData=''
+  OnEndProcessData=''
+  UIParts={object:rtf::PClassUI<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='BranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BranchId'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=10
+        >}Name='uipInvestee'
+    >, object:rtf::PClassUI<
+      Name='uipInvestmentEmployee'
+      MultiLine=true
+    >, object:rtf::PClassUI<
+      Name='uipInvestmentNonEmployee'
+    >}Containers={object:rtf::DualSplit<
+      Name='dsMain'
+      Width=700
+      Height=505
+      Container1=$CONTAINERS['pAction']
+      Container2=$CONTAINERS['mpInvestment']
+      InversedAlign=true
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=649
+      Height=41
+      Bordered=true
+      UIPart=$UIPARTS['uipInvestee']
+      Controls={object:rtf::Button<
+          Name='bClose'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Tutup'
+          Cancel=true
+          ExitAction=eaQuitOK
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Elements={object:rtf::LinkUIElmtSetting<
+          Name='LInvestee'
+          ControlCaption='Pilih Nama Investee'
+          ClassTypeName='Investee'
+          DisplayFields='InvesteeId;InvesteeName;BranchCode;Description'
+          Restrictions='BranchCode|BranchCode'
+          OQLText=['select from Investee'#13#10,
+            '[BranchCode = :BranchCode]'#13#10,
+            '(  InvesteeId,'#13#10,
+            '  InvesteeName,'#13#10,
+            '  self ) then order by InvesteeName;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LInvestee'
+        >}Name='pNonEmployee'
+      Width=537
+      Height=49
+      UIPart=$UIPARTS['uipInvestee']
+      Controls={*object:rtf::DBLookupEdit<
+          Name='LInvestee'
+          Top=10
+          Left=10
+          ControlCaption='Pilih Nama Investee'
+          LookupField='LInvestee.InvesteeName'
+          DisplayLookupField=true
+        >, object:rtf::Button<
+          Name='button1'
+          Layout=clAbsolute
+          Top=8
+          Left=368
+          Color=0
+          ControlCaption=''
+          Caption='T&ampilkan'
+          OnClick='ShowInvestmentNonEmpClick'
+        >}EqualCaptionWidth=120
+      ControlLeftMargin=10
+      ControlTopMargin=10
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::Panel<
+      Elements={object:rtf::LinkUIElmtSetting<
+          Name='LEmployee'
+          ControlCaption='Pilih Nama Karyawan'
+          ClassTypeName='VEmployeeCashAdvance'
+          DisplayFields='EmployeeId;EmployeeName'
+          Restrictions='BranchId|BranchId'
+          OQLText=['select from VEmployeeCashAdvance'#13#10,
+            '[Branch_Id=:BranchId]'#13#10,
+            '('#13#10,
+            '   EmployeeId,'#13#10,
+            '   EmployeeName,'#13#10,
+            '   self'#13#10,
+            ')then order by EmployeeName;']
+          LookupOption=loCustomOQL
+          FieldBaseName='LEmployee'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Balance'
+          Hidden=true
+          ReadOnlyControl=true
+          ControlCaption='Saldo'
+          DataTypeName='double'
+          DataLength=20
+        >}Name='pEmployee'
+      Width=649
+      Height=49
+      Bordered=true
+      UIPart=$UIPARTS['uipInvestee']
+      Controls={*object:rtf::DBLookupEdit<
+          Name='LEmployee'
+          Top=10
+          Left=10
+          ControlCaption='Pilih Nama Karyawan'
+          LookupField='LEmployee.EmployeeName'
+          DisplayLookupField=true
+        >, object:rtf::Button<
+          Name='button1'
+          Layout=clAbsolute
+          Top=8
+          Left=368
+          Color=0
+          ControlCaption=''
+          Caption='T&ampilkan'
+          OnClick='ShowInvestmentEmpClick'
+        >}EqualCaptionWidth=120
+      ControlLeftMargin=10
+      ControlTopMargin=10
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=692
+      Height=435
+      Container1=$CONTAINERS['pEmployee']
+      Container2=$CONTAINERS['gInvesmentEmployee']
+    >, object:rtf::DualSplit<
+      Name='dualsplit2'
+      Width=692
+      Height=435
+      Container1=$CONTAINERS['pNonEmployee']
+      Container2=$CONTAINERS['gInvestmentNonEmployee']
+    >, object:rtf::Grid<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='AccountNo'
+          ControlCaption='Nomor Investasi'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AccountName'
+          ControlCaption='Nama Investasi'
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount'
+          ControlCaption='Nilai Investasi'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Nisbah'
+          ControlCaption='Nisbah'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='OpeningDate'
+          ControlCaption='Tanggal Buka'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='InvestmentCatName'
+          Hidden=true
+          ControlCaption='Kategori Investasi'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionNo'
+          ControlCaption='Nomor Transaksi'
+          DataTypeName='varchar'
+          DataLength=30
+        >}Name='gInvesmentEmployee'
+      Width=692
+      Height=385
+      ContextMenuName='popupmenus/rekening/pInvestmentList'
+      UIPart=$UIPARTS['uipInvestmentEmployee']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='Daftar Investasi'
+      Columns={*object:rtf::GridColumn<
+          Name='AccountNo'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='AccountNo'
+          DisplayFormat=''
+          TitleCaption='Nomor Investasi'
+          Width=120
+        >, *object:rtf::GridColumn<
+          Name='AccountName'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='AccountName'
+          DisplayFormat=''
+          TitleCaption='Nama Investasi'
+          Width=150
+        >, *object:rtf::GridColumn<
+          Name='Amount'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Amount'
+          DisplayFormat=',0.00'
+          TitleCaption='Nilai'
+          Width=100
+        >, *object:rtf::GridColumn<
+          Name='Nisbah'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Nisbah'
+          DisplayFormat=''
+          TitleCaption='Nisbah'
+          Width=80
+        >, *object:rtf::GridColumn<
+          Name='OpeningDate'
+          InputStyle=cisDate
+          EnumeratedValues=''
+          FieldName='OpeningDate'
+          DisplayFormat=''
+          TitleCaption='Tanggal Buka'
+          Width=100
+        >, *object:rtf::GridColumn<
+          Name='TransactionNo'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='TransactionNo'
+          DisplayFormat=''
+          TitleCaption='Nomor Transaksi'
+          Width=160
+        >}ReadOnly=true
+      RowSelect=true
+      SuppressHelpLine=true
+    >, object:rtf::Grid<
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='AccountNo'
+          ControlCaption='Nomor Investasi'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='AccountName'
+          ControlCaption='Nama Investasi'
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Amount'
+          ControlCaption='Nilai Investasi'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='Nisbah'
+          ControlCaption='Nisbah'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='OpeningDate'
+          ControlCaption='Tanggal Buka'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='InvestmentCatName'
+          Hidden=true
+          ControlCaption='Kategori Investasi'
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionNo'
+          ControlCaption='Nomor Transaksi'
+          DataTypeName='varchar'
+          DataLength=30
+        >}Name='gInvestmentNonEmployee'
+      Width=692
+      Height=385
+      ContextMenuName='popupmenus/rekening/pInvestmentList'
+      UIPart=$UIPARTS['uipInvestmentNonEmployee']
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+      Caption='Daftar Investasi'
+      Columns={*object:rtf::GridColumn<
+          Name='AccountNo'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='AccountNo'
+          DisplayFormat=''
+          TitleCaption='Nomor Investasi'
+          Width=120
+        >, *object:rtf::GridColumn<
+          Name='AccountName'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='AccountName'
+          DisplayFormat=''
+          TitleCaption='Nama Investasi'
+          Width=150
+        >, *object:rtf::GridColumn<
+          Name='Amount'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Amount'
+          DisplayFormat=',0.00'
+          TitleCaption='Nilai'
+          Width=100
+        >, *object:rtf::GridColumn<
+          Name='Nisbah'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='Nisbah'
+          DisplayFormat=''
+          TitleCaption='Nisbah'
+          Width=80
+        >, *object:rtf::GridColumn<
+          Name='OpeningDate'
+          InputStyle=cisDate
+          EnumeratedValues=''
+          FieldName='OpeningDate'
+          DisplayFormat=''
+          TitleCaption='Tanggal Buka'
+          Width=100
+        >, *object:rtf::GridColumn<
+          Name='TransactionNo'
+          InputStyle=cisNormal
+          EnumeratedValues=''
+          FieldName='TransactionNo'
+          DisplayFormat=''
+          TitleCaption='Nomor Transaksi'
+          Width=160
+        >}ReadOnly=true
+      RowSelect=true
+      SuppressHelpLine=true
+    >, object:rtf::MultiPages<
+      Name='mpInvestment'
+      Width=700
+      Height=463
+      Pages={object:rtf::Page<
+          PageName='mpEmployee'
+          PageTitle='Karyawan'
+          Container=$CONTAINERS['dualsplit1']
+        >, object:rtf::Page<
+          PageName='mpNonEmployee'
+          PageTitle='Non Karyawan'
+          Container=$CONTAINERS['dualsplit2']
+          Index=1
+        >}>}FormClassName='fInvestment'
+>

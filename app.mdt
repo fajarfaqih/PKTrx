@@ -1488,6 +1488,12 @@ document <
         >, object:ListMember<
           MemberName='LsGLInterface'
           UsedLink=$TYPEDECLS['TransItemGLInterface'].MEMBERS['LTransactionItem']
+        >, object:LinkMember<
+          MemberName='LBranch'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['TransactionItem'].MEMBERS['BranchCode']
+              OriginPKey=$TYPEDECLS['Branch'].MEMBERS['BranchCode']
+            >}LinkedClass=$TYPEDECLS['Branch']
         >}ClassID='{87D3E9B6-DCB2-4400-ADA5-CB2B94D2BAE9}'
       AutoPrimaryKey=$TYPEDECLS['TransactionItem'].MEMBERS['TransactionItemId']
     >, object:ClassTypeDecl<

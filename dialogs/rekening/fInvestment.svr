@@ -1,0 +1,122 @@
+document <
+  libversionID='{34FC4F41-D74A-11D5-AB5B-FB56D633B52C}'
+  DocumentTypeID='{03AB2DCD-D5DA-4DD5-B07D-CD15AE22527E}'
+  DocumentID=''
+  MajorVersion='0'
+  MinorVersion='0'
+>object:rpclass::TPClassUIDefList<
+  UIDefs={object:rpclass::TPClassUIDef<
+      Name='uipInvestee'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='BranchCode'
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rpclass::TCustomLoadedField<
+          Name='BranchId'
+          DataTypeName='integer'
+          DataLength=10
+        >, object:rpclass::TCustomLoadedField<
+          Name='LInvestee.InvesteeId'
+          DataTypeName='INTEGER'
+        >, object:rpclass::TCustomLoadedField<
+          Name='LInvestee.InvesteeId'
+          DataTypeName='INTEGER'
+        >, object:rpclass::TCustomLoadedField<
+          Name='LInvestee.InvesteeName'
+          DataTypeName='VARCHAR'
+          DataLength=150
+        >, object:rpclass::TCustomLoadedField<
+          Name='LInvestee.BranchCode'
+          DataTypeName='VARCHAR'
+          DataLength=5
+        >, object:rpclass::TCustomLoadedField<
+          Name='LInvestee.Description'
+          DataTypeName='VARCHAR'
+          DataLength=200
+        >, object:rpclass::TCustomLoadedField<
+          Name='LEmployee.EmployeeId'
+          DataTypeName='INTEGER'
+        >, object:rpclass::TCustomLoadedField<
+          Name='LEmployee.EmployeeId'
+          DataTypeName='INTEGER'
+        >, object:rpclass::TCustomLoadedField<
+          Name='LEmployee.EmployeeName'
+          DataTypeName='VARCHAR'
+          DataLength=150
+        >, object:rpclass::TCustomLoadedField<
+          Name='Balance'
+          DataTypeName='double'
+          DataLength=20
+        >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
+          Name='LInvestee'
+          ClassTypeName='Investee'
+          FieldNames='InvesteeId;InvesteeId;InvesteeName;BranchCode;Description'
+        >, object:rpclass::TCustomLoadedLink<
+          Name='LEmployee'
+          ClassTypeName='VEmployeeCashAdvance'
+          FieldNames='EmployeeId;EmployeeId;EmployeeName'
+        >}Mode=imSingleRow
+    >, object:rpclass::TPClassUIDef<
+      Name='uipInvestmentEmployee'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='AccountNo'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='AccountName'
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rpclass::TCustomLoadedField<
+          Name='Amount'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='Nisbah'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='OpeningDate'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='InvestmentCatName'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='TransactionNo'
+          DataTypeName='varchar'
+          DataLength=30
+        >}Mode=imMultiRow
+    >, object:rpclass::TPClassUIDef<
+      Name='uipInvestmentNonEmployee'
+      CustomLoadedFields={object:rpclass::TCustomLoadedField<
+          Name='AccountNo'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='AccountName'
+          DataTypeName='varchar'
+          DataLength=50
+        >, object:rpclass::TCustomLoadedField<
+          Name='Amount'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='Nisbah'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='OpeningDate'
+          DataTypeName='timestamp'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='InvestmentCatName'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='TransactionNo'
+          DataTypeName='varchar'
+          DataLength=30
+        >}Mode=imSingleRow
+    >}OnSetDataEx='FormSetDataEx'
+>

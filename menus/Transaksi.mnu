@@ -201,6 +201,11 @@ document <
           AllowedGroups='ADM;SPV;KEU'
           StringTag='Rekening/fEmployeeCashAdvance'
         >, object:rmn::MenuItem<
+          Name='TR0016'
+          Caption='Peragaan Investasi'
+          OnClick='InvestmentListClick'
+          AllowedGroups='ADM;SPV;KEU'
+        >, object:rmn::MenuItem<
           Caption='-'
         >, object:rmn::MenuItem<
           Name='TR0112'
@@ -217,11 +222,6 @@ document <
           Caption='Daftar Biaya Dibayar Dimuka'
           OnClick='CPIAListClick'
           AllowedGroups='001'
-        >, object:rmn::MenuItem<
-          Name='TR0016'
-          Caption='Daftar Investasi'
-          OnClick='InvestmentListClick'
-          AllowedGroups='ADM;SPV;KEU'
         >, object:rmn::MenuItem<
           Caption='-'
           AllowedGroups='ADM;SPV;KEU'

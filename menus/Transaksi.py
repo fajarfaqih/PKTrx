@@ -427,7 +427,7 @@ def CPIAListClick(menu, app):
 
 def InvestmentListClick(menu, app):
   GetAccess(app, menu.Name)
-  fTran= app.CreateForm('rekening/fInvestmentList', 'rekening/fInvestmentList', 0, None, None)
+  fTran= app.CreateForm('rekening/fInvestment', 'rekening/fInvestment', 0, None, None)
   fTran.Show()
   
 def SettingParameterClick(menu, app):
