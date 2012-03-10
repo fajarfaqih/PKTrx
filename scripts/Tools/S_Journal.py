@@ -2,7 +2,7 @@ import sys
 import com.ihsan.foundation.pobjecthelper as phelper
 
 def WriteLog(config, app, FileBuf, LogName, LogMessage):
-  app.ConWriteln(LogMessage)
+  app.ConWriteln(LogMessage, LogName)
   FileBuf.write(LogMessage)
   config.SendDebugMsg(LogMessage)
 
@@ -134,7 +134,7 @@ def RegenerateJournal(config, parameters, returnpacket):
 def RegenerateJournalItem(config, parameters, returnpacket):
   status = returnpacket.CreateValues(["Is_Error", 0], ["Error_Message", ""])
   app = config.GetAppObject()
-  #app.ConCreate('DJournal')
+  app.ConCreate('DJournal')
   helper = phelper.PObjectHelper(config)
   corporate = helper.CreateObject('Corporate')
       
@@ -214,23 +214,16 @@ def RegenerateJournalItem(config, parameters, returnpacket):
       while not oRes.Eof:
         oTran = helper.GetObject('Transaction', oRes.TransactionId)
         logmessage = "Proses Data ke %d dari %s data " % ( idx, TotalData)
-
-        #app.ConWriteln(logmessage ,'DJournal')
-        fh.write(logmessage +  '\n')
-        config.SendDebugMsg(logmessage)
+        WriteLog(config, app, fh, 'DJournal', logmessage)
 
         logmessage = "Proses TransactionId %d No Trans %s : " % ( oRes.TransactionId, oTran.TransactionNo)
-
-        app.ConWrite(logmessage ,'DJournal')
-        fh.write(logmessage)
-        config.SendDebugMsg(logmessage)
+        WriteLog(config, app, fh, 'DJournal', logmessage)
         
         if oTran.AuthStatus == 'F' :
           config.BeginTransaction()
           try :
             logmessage = "Proses Otorisasi" 
-            app.ConWrite(logmessage ,'DJournal')
-            fh.write(logmessage)
+            WriteLog(config, app, fh, 'DJournal', logmessage)
 
             oTran.AutoApproval()
             config.Commit()
@@ -247,9 +240,7 @@ def RegenerateJournalItem(config, parameters, returnpacket):
           # end if else
         # end if  
         
-        app.ConWriteln(logmessage ,'DJournal')
-        fh.write(logmessage + '\n')
-        logProcess += logmessage + '\n'
+        WriteLog(config, app, fh, 'DJournal', logmessage)
 
         idx += 1
         oRes.Next()
