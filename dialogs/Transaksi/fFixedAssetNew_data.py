@@ -55,6 +55,9 @@ def FormSetDataEx(uideflist, params) :
       #rec.SetFieldByName('LAssetCategory.AssetCategoryCode',oFAAccount.LAssetCategory.AssetCategoryCode)
       #rec.SetFieldByName('LAssetCategory.AssetCategoryName',oFAAccount.LAssetCategory.AssetCategoryName)
 
+    if rec.AssetDetailDescription in [None, ''] :
+      rec.AssetDetailDescription = ''
+
     return st
 
   rec = uideflist.uipTransaction.Dataset.AddRecord()
