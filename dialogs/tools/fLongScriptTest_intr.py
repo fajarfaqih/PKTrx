@@ -12,9 +12,9 @@ class fLongScriptTest :
         
         pid = app.ExecuteScriptTrackable(uipInput.Script, app.CreateValues(['run',0]))
 
-        pcConsole = self.pcConsole
-        pcConsole.ConsoleFilterName = 'ExecutePackage_' + str(pid)
-        pcConsole.ShowStatusBar = 0
-        pcConsole.Headerless = 1
-        pcConsole.Activate()
+        #pcConsole = self.pcConsole
+        #pcConsole.ConsoleFilterName = 'ExecutePackage_' + str(pid)
+        #pcConsole.ShowStatusBar = 0
+        #pcConsole.Headerless = 1
+        #pcConsole.Activate()
         

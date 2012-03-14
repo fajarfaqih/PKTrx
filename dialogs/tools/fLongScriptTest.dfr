@@ -58,6 +58,11 @@ document <
       Name='pcConsole'
       Width=401
       Height=39
+      ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
       RemoveClosedConsoleDelay=-1
     >, object:rtf::DualSplit<
       Name='dualsplit1'
