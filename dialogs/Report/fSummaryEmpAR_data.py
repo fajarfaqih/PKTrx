@@ -88,7 +88,7 @@ def SummaryEmpAr(config,params,returns):
 
       #end if
     # end if
-    
+
     strSQL = " \
               select a.accountno,a.accountname, a.branchcode, br.branchname, \
                  (select sum(case when d.mutationtype='D' then d.Amount \
@@ -97,7 +97,8 @@ def SummaryEmpAr(config,params,returns):
                      from transaction c, transactionitem d, accounttransactionitem e\
                      where c.transactionid=d.transactionid \
                         and d.transactionitemid=e.transactionitemid \
-                        and e.accountno = a.accountno) as BeginBalance, \
+                        and e.accountno = a.accountno \
+                        and c.actualdate < '%(BEGINDATE)s' ) as BeginBalance, \
                  (select sum(d.Amount) \
                      from transaction.transaction c, \
                           transaction.transactionitem d, \
@@ -123,7 +124,7 @@ def SummaryEmpAr(config,params,returns):
                   'BEGINDATE' : config.FormatDateTime('yyyy-mm-dd',BeginDate),
                   'ENDDATE' : config.FormatDateTime('yyyy-mm-dd',EndDate)
                }
-
+    config.SendDebugMsg(strSQL)
     res = config.CreateSQL(strSQL).RawResult
 
     while not res.Eof:
