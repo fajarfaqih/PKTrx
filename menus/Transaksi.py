@@ -354,6 +354,11 @@ def ScriptTestClick(menu,app):
   form = app.CreateForm(formname, formname, 0, None, None)
   form.FormContainer.Show()
   
+def LongScriptTestClick(menu,app):
+  formname = 'Tools/fLongScriptTest'
+  form = app.CreateForm(formname, formname, 0, None, None)
+  form.FormContainer.Show()
+  
 def OnBatchCabang(sender, app):
   ph  = app.CreatePacket()
   res = app.ExecuteScript("Tools/S_KontrolBatch.KontrolCabang", ph)
