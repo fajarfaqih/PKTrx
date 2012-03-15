@@ -545,13 +545,21 @@ class fSaldoAwal:
     return ph
     
   def ConvertFileToPacket8(self,ph,filename):
+    dictFundEntity = {
+      'Zakat' : 1,
+      'Infaq' : 2,
+      'Wakaf' : 3,
+      'Amil'  : 4,
+      'Non Halal'  : 5,
+    }
     app = self.app
     dsBalance = ph.Packet.AddNewDatasetEx(
       'BalanceData',
       ';'.join([
-        'AssetName:string',
+        'AssetName: string',
         'AssetCategoryId: integer',
         'StartDate: datetime',
+        'Description: string',
         'Amount: float',
         'DeprAmount: float',
         'AccumDeprAmount: float',
@@ -565,13 +573,22 @@ class fSaldoAwal:
       row = 5
       while workbook.GetCellValue(row, 1) not in ['',None]:
         recBalance = dsBalance.AddRecord()
-        recBalance.AssetName = str(workbook.GetCellValue(row, 2))
-        recBalance.AssetCategoryId = int(workbook.GetCellValue(row, 3))
-        recBalance.StartDate = workbook.GetCellValue(row, 4)
-        recBalance.Amount = workbook.GetCellValue(row, 5)
-        recBalance.DeprAmount = workbook.GetCellValue(row, 6)
-        recBalance.AccumDeprAmount = workbook.GetCellValue(row, 7)
-        recBalance.DeprSeq = workbook.GetCellValue(row, 8)
+        recBalance.AssetCategoryId = int(workbook.GetCellValue(row, 2))
+        recBalance.AssetName = str(workbook.GetCellValue(row, 3))
+        recBalance.Description = str(workbook.GetCellValue(row, 4))
+        recBalance.StartDate = workbook.GetCellValue(row, 5)
+        recBalance.Amount = workbook.GetCellValue(row, 6)
+        recBalance.DeprAmount = workbook.GetCellValue(row, 7)
+        recBalance.AccumDeprAmount = workbook.GetCellValue(row, 8)
+        recBalance.DeprSeq = workbook.GetCellValue(row, 9)
+
+        strFundEntity = str(workbook.GetCellValue(row, 10))
+        if dictFundEntity.has_key(strFundEntity) :
+          intFundEntity = dictFundEntity[strFundEntity]
+        else:
+          intFundEntity = int(workbook.GetCellValue(row, 10))
+        # end if
+        recBalance.FundEntity = intFundEntity
         
         row += 1
       # end while

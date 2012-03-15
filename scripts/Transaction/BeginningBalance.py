@@ -661,6 +661,7 @@ def FixedAsset(config,params):
       oFAAccount.CurrencyCode = aCurrencyCode
       oFAAccount.Qty = 1
       oFAAccount.UangMuka = 0
+      oFAAccount.AssetDetailDescription = recBalance.Description
 
       # Set Kategori Aset
       oFAAccount.AssetCategoryId = LsAssetCategory[recBalance.AssetCategoryId]
@@ -668,7 +669,7 @@ def FixedAsset(config,params):
 
       NilaiAwal = recBalance.Amount
 
-      if AssetCategoryId in (1,8) :
+      if recBalance.AssetCategoryId in (1,8) :
         oFAAccount.DeprState = 'I'
         
         # Set Nilai Awal 
@@ -687,14 +688,19 @@ def FixedAsset(config,params):
 
         oFAAccount.NilaiAwal = NilaiAwal
         oFAAccount.NominalPenyusutan = NominalPenyusutan
-        oFAAccount.PenyusutanKe = 0
+        oFAAccount.PenyusutanKe = recBalance.DeprSeq
         oFAAccount.TotalDibayar = NilaiAwal
         oFAAccount.Balance = NilaiAwal - AkumulasiPenyusutan 
 
         # Set Tanggal Proses Depresiasi    
         y, m, d = oFAAccount.OpeningDate[:3]
-        oFAAccount.TanggalProsesBerikut = libUtils.EncodeDate(2011, 1, 25)
-            
+        oFAAccount.TanggalProsesBerikut = libUtils.EncodeDate(2011, 1, 15)
+
+        if oFAAccount.Balance <= 0.0 :
+          oFAAccount.DeprState = 'I'
+      
+      BeginningBalance = oFAAccount.Balance
+
       TotalAmount += BeginningBalance
     # end for
     

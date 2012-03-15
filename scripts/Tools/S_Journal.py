@@ -3,7 +3,7 @@ import com.ihsan.foundation.pobjecthelper as phelper
 
 def WriteLog(config, app, FileBuf, LogName, LogMessage):
   app.ConWriteln(LogMessage, LogName)
-  FileBuf.write(LogMessage)
+  FileBuf.write(LogMessage + '\n')
   config.SendDebugMsg(LogMessage)
 
 
@@ -151,6 +151,7 @@ def RegenerateJournalItem(config, parameters, returnpacket):
       AddParam += " and transactioncode <> 'TB' "
       AddParam += " and amount <= 50000000 "
       AddParam += " and authstatus = 'F' "
+      #AddParam += " and exists(select 1 from listtransaction l where l.journalblockid=t.journalblockid)"
       #AddParam += " and transactioncode = 'EAR' "
       #AddParam += " and transactionid in (140505, 140528)"
       #AddParam += " and isposted = 'F' "
@@ -396,10 +397,24 @@ def DeleteTransaction(config, parameters, returnpacket):
     try:
                   
       AddParam = " TransactionId is not null "
-      AddParam += " and transactioncode = 'INVC'"
+      #AddParam += " and transactioncode = 'INVC'"
+      AddParam = " and exists( \
+            select 1 \
+              FROM \
+            accounting.account ac, \
+            accounting.JOURNAL b, \
+            accounting.JOURNALITEM a \
+            left outer join transaction.transaction c \
+            on (c.journalblockid = a.id_journalblock) \
+            WHERE a.fl_account = ac.account_code and A.FL_JOURNAL = B.JOURNAL_NO AND  \
+            (B.JOURNAL_DATE >= '2011-01-01' AND B.JOURNAL_DATE < '2011-12-31') \
+            and fl_account in ('1220104') \
+            and c.transactioncode='CO' \
+            and c.transactionno = t.transactionno \
+        ) "
 
       sSQL = "select TransactionId \
-              from transaction \
+              from transaction t \
               where %s order by TransactionId " % ( AddParam )
       
       oRes = config.CreateSQL(sSQL).RawResult
