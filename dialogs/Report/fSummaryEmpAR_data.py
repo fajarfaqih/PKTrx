@@ -141,13 +141,13 @@ def SummaryEmpAr(config,params,returns):
       #AccountR = helper.GetObject('AccountReceivable',res.AccountNo)
       #SaldoAwal = AccountR.GetBalanceByDate(BeginDate)
       SaldoAwal = res.BeginBalance
-      recSum.SaldoAwal = SaldoAwal
-      recSum.SaldoAkhir = SaldoAwal + recSum.TotalMutasi
+      recSum.SaldoAwal = SaldoAwal or 0.0
+      recSum.SaldoAkhir = (SaldoAwal or 0.0) + (recSum.TotalMutasi or 0.0)
       
-      status.BeginBalance += recSum.SaldoAwal
-      status.TotalDebet += recSum.Debet
-      status.TotalCredit += recSum.Kredit
-      status.EndBalance += recSum.SaldoAkhir
+      status.BeginBalance += recSum.SaldoAwal or 0.0
+      status.TotalDebet += recSum.Debet or 0.0
+      status.TotalCredit += recSum.Kredit or 0.0
+      status.EndBalance += recSum.SaldoAkhir or 0.0
       
       res.Next()
       
