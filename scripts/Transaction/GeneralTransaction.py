@@ -878,7 +878,7 @@ def Investment(helper,oTran,oBatch,request,params):
     oInvestee = helper.GetObject('Investee',InvesteeId)
     InvesteeName = oInvestee.InvesteeName
   else : # InvesteeCategory == 2  ==> Employee
-    oEmployee = helper.GetObject('Employee',InvesteeId)
+    oEmployee = helper.GetObject('VEmployee',InvesteeId)
     InvesteeName = oEmployee.EmployeeName
   # end if
 
