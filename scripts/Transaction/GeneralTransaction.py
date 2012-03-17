@@ -1213,7 +1213,7 @@ def BranchDistribution(helper,oTran,oBatch,request,params):
   # Destination Cash Account    
   aDestBranchCode = request[u'DestBranchCode']
   aDestAccountNo = str(request[u'DestAccountNo'])
-  oDCashAccount = helper.GetObject('BranchCash',
+  oDCashAccount = helper.GetObject('CashAccount',
        aDestAccountNo).CastToLowestDescendant()
   if oDCashAccount.isnull:
     raise 'Cash/Bank', 'Kas Tujuan tidak ditemukan'
