@@ -24,6 +24,10 @@ document <
           DataTypeName='varchar'
           DataLength=5
         >, object:rpclass::TCustomLoadedField<
+          Name='UserId'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rpclass::TCustomLoadedField<
           Name='LBranch.BranchCode'
           DataTypeName='VARCHAR'
           DataLength=3

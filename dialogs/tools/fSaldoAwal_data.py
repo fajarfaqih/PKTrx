@@ -10,6 +10,7 @@ def FormSetDataEx(uideflist,params):
 
   # Set Default Branch Info
   UserInfo = config.SecurityContext.GetUserInfo()
+  rec.UserId = config.SecurityContext.InitUser.upper()
   rec.BranchCode = str(UserInfo[4])
   rec.BranchName = str(UserInfo[5])
   rec.HeadOfficeCode = config.SysVarIntf.GetStringSysVar('OPTION','HeadOfficeCode')
@@ -41,6 +42,8 @@ def UploadData(config,params,returns):
       is_err,err_message = oService.ExternalInvestment(config ,params)
     elif header.AccountType == 8 :
       is_err,err_message = oService.FixedAsset(config ,params)
+    elif header.AccountType == 9 :
+      is_err,err_message = oService.AmortizedCost(config ,params)
 
     # end if elif
 
@@ -75,6 +78,8 @@ def GetTemplate(config,params,returns):
       GetListInvestee(config, returns)
     elif param.AccountType == 8:
       GetListFixedAsset(config, returns)
+    elif param.AccountType == 9:
+      GetAmortizedCost(config, returns)
 
   except:
     status.Is_Err = 1
@@ -363,4 +368,7 @@ def GetListInvestee( config, returns):
   # end while
 
 def GetListFixedAsset( config, returns):
+  return
+
+def GetAmortizedCost( config, returns):
   return

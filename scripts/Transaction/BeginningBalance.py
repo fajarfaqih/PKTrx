@@ -29,6 +29,7 @@ def GetBatch( helper, BranchCode = None):
          { 'BatchNo' : BatchNo,
            'BranchCode' : BranchCode,
          })
+  
   if oBatch.isnull:
     oBatch = helper.CreatePObject('TransactionBatch')
     oBatch.BatchNo = BatchNo
@@ -631,14 +632,16 @@ def FixedAsset(config,params):
   err_message = ''
   config.BeginTransaction()
   try:
+    recHeader = params.HeaderData.GetRecord(0)
+
     app.ConWriteln('Get Batch','TB')
-    oBatch = GetBatch(helper)
+    oBatch = GetBatch(helper, recHeader.BranchCode)
     app.ConWriteln('Get Transaction','TB')
     aCurrencyCode = '000'
     PrefTransactionNo = "BB-FA-%s" % aCurrencyCode
     oTran = GetTransaction(helper, oBatch, PrefTransactionNo, 'Saldo Awal Aset Tetap')
     
-    aBranchCode = config.SecurityContext.GetUserInfo()[4]
+    aBranchCode = recHeader.BranchCode
         
     BalanceData = params.BalanceData
     TotalAmount = 0.0
@@ -669,7 +672,7 @@ def FixedAsset(config,params):
 
       NilaiAwal = recBalance.Amount
 
-      if recBalance.AssetCategoryId in (1,8) :
+      if oFAAccount.AssetCategoryId in (1,8) :
         oFAAccount.DeprState = 'I'
         
         # Set Nilai Awal 
@@ -691,10 +694,11 @@ def FixedAsset(config,params):
         oFAAccount.PenyusutanKe = recBalance.DeprSeq
         oFAAccount.TotalDibayar = NilaiAwal
         oFAAccount.Balance = NilaiAwal - AkumulasiPenyusutan 
+        oFAAccount.TotalPenyusutan = AkumulasiPenyusutan
 
         # Set Tanggal Proses Depresiasi    
         y, m, d = oFAAccount.OpeningDate[:3]
-        oFAAccount.TanggalProsesBerikut = libUtils.EncodeDate(2011, 1, 15)
+        oFAAccount.TanggalProsesBerikut = config.ModLibUtils.EncodeDate(2011, 1, 15)
 
         if oFAAccount.Balance <= 0.0 :
           oFAAccount.DeprState = 'I'

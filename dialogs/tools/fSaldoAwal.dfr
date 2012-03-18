@@ -43,6 +43,11 @@ document <
           Hidden=true
           DataTypeName='varchar'
           DataLength=5
+        >, object:rtf::FieldUIElmtSetting<
+          Name='UserId'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=30
         >}Name='uipData'
       AlwaysPostToServer=true
       PostLinkValues=true

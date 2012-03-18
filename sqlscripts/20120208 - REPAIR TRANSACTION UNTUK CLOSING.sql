@@ -721,18 +721,39 @@ and authstatus='T'), 0)
 where financialaccounttype='R' and accountno like 'EXT%'
 
 -- DAFTAR TRANSAKSI ASET YANG BELUM MEMAKAI FORM ASET
-select c.transactionno,sum(amount_debit * nilai_kurs),sum(amount_credit* nilai_kurs)
+select c.transactionno,c.actualdate,c.inputer,br.branchname,c.description,
+sum(amount_debit * nilai_kurs),sum(amount_credit* nilai_kurs)
 FROM
 accounting.account ac,
 accounting.JOURNAL b,
+transaction.branch br,
 accounting.JOURNALITEM a
 left outer join transaction.transaction c
 on (c.journalblockid = a.id_journalblock)
 WHERE a.fl_account = ac.account_code and A.FL_JOURNAL = B.JOURNAL_NO AND 
-(B.JOURNAL_DATE >= '2011-01-01' AND B.JOURNAL_DATE < '2011-02-01' AND A.branch_code = '001')
-and fl_account in ('1220104')
+(B.JOURNAL_DATE >= '2011-01-01' AND B.JOURNAL_DATE < '2012-01-01' )
+and fl_account in ('1220101','1220102','1220103','1220104','1220201','1220202','1220203','1220204')
 and c.transactioncode='CO'
-group by c.transactionno 
+and br.branchcode=c.branchcode
+group by c.transactionno, c.actualdate,c.inputer,br.branchname,c.description
+order by br.branchname, actualdate;
+
+drop table transaction.listtransaction ;
+create table transaction.listtransaction as
+select c.transactionno
+FROM
+accounting.account ac,
+accounting.JOURNAL b,
+transaction.branch br,
+accounting.JOURNALITEM a
+left outer join transaction.transaction c
+on (c.journalblockid = a.id_journalblock)
+WHERE a.fl_account = ac.account_code and A.FL_JOURNAL = B.JOURNAL_NO AND 
+(B.JOURNAL_DATE >= '2011-01-01' AND B.JOURNAL_DATE < '2012-01-01' )
+and fl_account in ('1220101','1220102','1220103','1220104','1220201','1220202','1220203','1220204')
+and c.transactioncode='CO'
+and br.branchcode=c.branchcode ;
+alter table transaction.listtransaction  owner to transaction ;
 
 --Select journalitem group by transaction transactioncode
 
@@ -819,6 +840,72 @@ insert into transaction.parameterglobal (kode_parameter,deskripsi,nilai_paramete
 values('GLIPROJ21','Account Pengurangan Aset Dari Wakaf','5610301','GLI_PROJECT','ASSET_TO_WAKAF');
 insert into transaction.parameterglobal (kode_parameter,deskripsi,nilai_parameter_string,tag,default_code)
 values('GLIPROJ22','Account Pengurangan Aset Dari Non Halal','5610501','GLI_PROJECT','ASSET_TO_NONHALAL');
+
+-- Update Transaction Penyerahan UM sumber dana amil jadi sumber dana infak
+-- Untuk UM yang belum di LPJ kan dijadikan infaq semua kecuali Nama karyawan mbak fithri, silmi, rudi, amir
+update transaction.transactionitem ti set parameterjournalid='AK-I'
+where exists(
+select 1 
+from transaction.transactionitem i , transaction.transaction t, transaction.accounttransactionitem c
+where mutationtype='D'
+and t.transactionid=i.transactionid
+and i.transactionitemid=c.transactionitemid
+and t.transactioncode='CA'
+and t.branchcode='001'
+and i.parameterjournalid = 'AK-A2'
+and (c.returntransactionitemid is null or c.returntransactionitemid = 0)
+and refaccountno not in ('CA.0109403','CA.0037563','CA.0102179','CA.0038070')
+and ti.transactionitemid=i.transactionitemid);
+
+update transaction.accounttransactionitem ti set fundentity=2
+where exists(
+select 1 
+from transaction.transactionitem i , transaction.transaction t, transaction.accounttransactionitem c
+where mutationtype='D'
+and t.transactionid=i.transactionid
+and i.transactionitemid=c.transactionitemid
+and t.transactioncode='CA'
+and t.branchcode='001'
+and c.fundentity = 4
+and (c.returntransactionitemid is null or c.returntransactionitemid = 0)
+and refaccountno not in ('CA.0109403','CA.0037563','CA.0102179','CA.0038070')
+and ti.transactionitemid=i.transactionitemid);
+
+-- UPDATE JURNAL LPJ UNTUK SUMBER DANA DARI AMIL
+
+update transaction.transactionitem ti  set parameterjournalid='PAK-A2'
+where exists(
+select 1 
+from transaction.transactionitem i , transaction.transaction t, transaction.accounttransactionitem c
+where mutationtype='C'
+and t.transactionid=i.transactionid
+and i.transactionitemid=c.transactionitemid
+and t.transactioncode='CAR'
+and i.parameterjournalid='PAK-A'
+and t.isposted = 'F'
+and actualdate between '2011-01-01' and '2011-12-31'
+and ti.transactionitemid=i.transactionitemid);
+
+-- Update data donatur yang masih salah
+update transaction.transaction set donorid=82334 where donorno='00182334';
+update transaction.accounttransactionitem ti set donorid=182334
+where exists(
+select 1 
+from transaction.transactionitem i , transaction.transaction t, transaction.accounttransactionitem c
+where mutationtype='C'
+and t.transactionid=i.transactionid
+and i.transactionitemid=c.transactionitemid
+and t.donorno='00182334'
+and t.branchcode='001'
+and ti.transactionitemid=i.transactionitemid)
+
+-- Transaksi yang memiliki journalblockid redundan
+drop table transaction.listtransaction;
+create table transaction.listtransaction as
+select journalblockid,count(*) from transaction.transaction 
+where journalblockid is not null
+group by journalblockid having count(*) > 1 ;
+alter table transaction.listtransaction  owner to transaction;
 
 -------------
 

@@ -45,6 +45,8 @@ class fSaldoAwal:
 
     filename = uipData.FileName
     if AccountType == 1 :
+      if uipData.UserId != 'SYSTEM':
+        raise '','Untuk Upload Saldo Awal Kas dan Bank di non aktifkan'
       param = self.ConvertFileToPacket1(ph,filename)
     elif AccountType == 2 :
       param = self.ConvertFileToPacket2(ph,filename)
@@ -103,6 +105,8 @@ class fSaldoAwal:
       self.ShowTemplateExternalInvestment(resp,filename)
     elif AccountType == 8 :
       self.ShowTemplateFixedAsset(resp,filename)
+    elif AccountType == 9 :
+      self.ShowTemplateAmortizedCost(resp,filename)
     # end if
     
     app.ShellExecuteFile(filename)
@@ -348,7 +352,19 @@ class fSaldoAwal:
     finally:
       # close
       workbook = None
-      
+    # end try finally
+    
+  def ShowTemplateAmortizedCost(self,resp,filename):
+    app = self.app
+    workbook = self.oPrint.OpenExcelTemplate(app,'tplBBalanceAmortizedCost.xls')
+    workbook.ActivateWorksheet('data')
+    try:
+      workbook.SaveAs(filename)
+    finally:
+      # close
+      workbook = None
+    # end try finally
+
   # ------------------ FUNCTION FOR CONVERT TO DATAPACKET
   def ConvertFileToPacket1(self,ph,filename):
     app = self.app

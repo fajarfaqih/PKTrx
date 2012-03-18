@@ -596,6 +596,10 @@ document <
           OnClick='PrintSaldoAwalClick'
           AllowedGroups='ADM;SPV'
         >, object:rmn::MenuItem<
+          Caption='Kontrol Saldo Awal'
+          OnClick='KontroloSaldoAwalClick'
+          AllowedUsers='OP001;SYSTEM'
+        >, object:rmn::MenuItem<
           Caption='-'
         >, object:rmn::MenuItem<
           Name='TR0037B'
