@@ -127,7 +127,12 @@ class fCashOut :
       fSelectAccount = self.app.CreateForm(formname,formname,0,None,None)
       self.fSelectAccount = fSelectAccount
 
-    if self.fSelectAccount.GetAccount(" and NOT Account_Code llike '6%' ") == 1:
+    if self.fSelectAccount.GetAccount(" \
+                  and Account_Type <> 'A' \
+                  and Account_Type <> 'E' \
+                  and Account_Type <> 'I' \
+                  and NOT Account_Code llike '6%' ") == 1:
+
       AccountCode = self.fSelectAccount.Account_Code
       AccountName = self.fSelectAccount.Account_Name
       
