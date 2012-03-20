@@ -67,6 +67,7 @@ def GetHistTransaction(config, params, returns):
       'SponsorName: string',
       'BranchName: string',
       'Inputer: string',
+      'TransactionType: string',
     ])
   )
   
@@ -98,13 +99,20 @@ def GetHistTransaction(config, params, returns):
         '' as FundEntity, \
          i.transactionitemid ,\
          t.currencycode, i.currencycode, \
-         t.rate, i.rate, d.short_name, e.short_name \
+         t.rate, i.rate, d.short_name, e.short_name, \
+         t.transactioncode \
       from transaction.transaction t, transaction.transactionitem i, \
         accounting.account a, branch b , \
         currency d, currency e \
       where t.transactionid = i.transactionid \
         and b.branchcode = i.branchcode \
-        and t.transactioncode = 'CO' \
+        and ( \
+          t.transactioncode = 'CO' \
+          or ( \
+            t.transactioncode in ('CAR','CARR','CARB') and \
+            i.transactionitemtype = 'G' \
+          ) \
+        ) \
         and i.mutationtype='D' \
         and a.account_code = refaccountno \
         and t.ActualDate >= '%(BDATE)s' \
@@ -159,6 +167,7 @@ def GetHistTransaction(config, params, returns):
     recData.FundEntity = data.FundEntity
     recData.SponsorName = ''
     recData.BranchName = data.BranchName
+    recData.TransactionType = data.TransactionCode
 
     TotalAmount += data.EkuivalenAmount
 

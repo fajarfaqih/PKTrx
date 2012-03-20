@@ -55,6 +55,10 @@ document <
           Name='IsAllBranch'
           DataTypeName='varchar'
           DataLength=1
+        >, object:rpclass::TCustomLoadedField<
+          Name='TotalTransaction'
+          DataTypeName='double'
+          DataLength=20
         >}CustomLoadedLinks={object:rpclass::TCustomLoadedLink<
           Name='LBranch'
           ClassTypeName='Branch'
@@ -114,6 +118,10 @@ document <
           Name='TransactionItemId'
           DataTypeName='integer'
           DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='TransactionType'
+          DataTypeName='varchar'
+          DataLength=50
         >}Mode=imMultiRow
     >}OnSetDataEx='FormSetDataEx'
 >

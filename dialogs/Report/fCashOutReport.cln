@@ -184,6 +184,40 @@ document <
       DefaultControlHeight=21
       HorizontalControlGap=4
       RowControlGap=7
+    >, object:rtf::Panel<
+      Name='pAction'
+      Width=649
+      Height=41
+      Bordered=true
+      UIPart=$UIPARTS['uipFilter']
+      Controls={object:rtf::Button<
+          Name='bClose'
+          Layout=clNewLine
+          Top=8
+          Left=8
+          Color=0
+          ControlCaption=''
+          Caption='&Tutup'
+          Cancel=true
+          ExitAction=eaQuitOK
+        >}ControlLeftMargin=8
+      ControlTopMargin=8
+      DefaultControlHeight=21
+      HorizontalControlGap=4
+      RowControlGap=7
+    >, object:rtf::DualSplit<
+      Name='dsTransaction'
+      Width=240
+      Height=96
+      Container1=$CONTAINERS['pFilter']
+      Container2=$CONTAINERS['dualsplit1']
+    >, object:rtf::DualSplit<
+      Name='dualsplit1'
+      Width=700
+      Height=341
+      Container1=$CONTAINERS['pTotal']
+      Container2=$CONTAINERS['gTransaction']
+      InversedAlign=true
     >, object:rtf::Grid<
       Elements={object:rtf::FieldUIElmtSetting<
           Name='TransactionDate'
@@ -227,7 +261,7 @@ document <
           DataLength=20
         >, object:rtf::FieldUIElmtSetting<
           Name='TransactionNo'
-          ControlCaption='No Referensi'
+          ControlCaption='No Transaksi'
           DataTypeName='varchar'
           DataLength=30
         >, object:rtf::FieldUIElmtSetting<
@@ -251,9 +285,15 @@ document <
           ReadOnlyControl=true
           DataTypeName='integer'
           DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='TransactionType'
+          Hidden=true
+          ControlCaption='Sumber Transaksi'
+          DataTypeName='varchar'
+          DataLength=50
         >}Name='gTransaction'
       Width=700
-      Height=341
+      Height=294
       UIPart=$UIPARTS['uipTransaction']
       ControlLeftMargin=8
       ControlTopMargin=8
@@ -328,7 +368,7 @@ document <
           EnumeratedValues=''
           FieldName='TransactionNo'
           DisplayFormat=''
-          TitleCaption='No Referensi'
+          TitleCaption='No Transaksi'
           Width=130
         >, *object:rtf::GridColumn<
           Name='ReferenceNo'
@@ -357,31 +397,28 @@ document <
       RowSelect=true
       SuppressHelpLine=true
     >, object:rtf::Panel<
-      Name='pAction'
-      Width=649
-      Height=41
-      Bordered=true
+      Elements={object:rtf::FieldUIElmtSetting<
+          Name='TotalTransaction'
+          ControlCaption='Total Transaksi'
+          DataTypeName='double'
+          DataLength=20
+        >}Name='pTotal'
+      Width=320
+      Height=46
       UIPart=$UIPARTS['uipFilter']
-      Controls={object:rtf::Button<
-          Name='bClose'
-          Layout=clNewLine
+      Controls={*object:rtf::DBEdit<
+          Name='TotalTransaction'
           Top=8
           Left=8
           Color=0
-          ControlCaption=''
-          Caption='&Tutup'
-          Cancel=true
-          ExitAction=eaQuitOK
-        >}ControlLeftMargin=8
+          ControlCaption='Total Transaksi'
+          FieldName='TotalTransaction'
+          DisplayFormat=',0.00'
+        >}EqualCaptionWidth=100
+      ControlLeftMargin=8
       ControlTopMargin=8
       DefaultControlHeight=21
       HorizontalControlGap=4
       RowControlGap=7
-    >, object:rtf::DualSplit<
-      Name='dsTransaction'
-      Width=240
-      Height=96
-      Container1=$CONTAINERS['pFilter']
-      Container2=$CONTAINERS['gTransaction']
     >}FormClassName='fCashOutReport'
 >

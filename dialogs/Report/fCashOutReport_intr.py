@@ -63,6 +63,7 @@ class fCashOutReport:
       uipTran.ClearData()
 
       i = 0
+      TotalTransaksi = 0.0
       while i < ds.RecordCount:
         rec = ds.GetRecord(i)
         uipTran.Append()
@@ -82,9 +83,14 @@ class fCashOutReport:
         uipTran.Rate              = rec.Rate
         uipTran.CurrencyName      = rec.CurrencyName
         uipTran.AmountEkuivalen   = rec.AmountEkuivalen
+        uipTran.TransactionType   = rec.TransactionType
+        
+        TotalTransaksi += rec.AmountEkuivalen
 
         i += 1
       # end of while
+      uipFilter.Edit()
+      uipFilter.TotalTransaction = TotalTransaksi
 
       uipTran.First()
 
