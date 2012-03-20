@@ -1,8 +1,14 @@
-﻿-- Kasus yang perlu di cek
+﻿-- KASUS KESALAHAN USER
+-- * Menginput transaksi penyaluran dan penerimaan amil salah peruntukannya
+
+-- Kasus yang perlu di cek
 -- * journalblockid di transaksi yang double
 -- * transaksi yang status isposted = 'T' tapi belum ada jurnalnya
 -- * jurnal accounting yang tidak ada sumber data transaksinya
 -- * mungkin ada amount jurnal yang ga sinkron dengan transaksinya
+-- * Cek Transaksi yang nomor jurnalnya ga sama dengan batch transaksi
+-- * Cek Transaksi yang belum digenerate jurnalnya
+-- * Cek Tranasksi yang ekuivalenamountnya 0
 
 
 --## Cek Transaksi yang memiliki journalblockid redundan
@@ -75,7 +81,41 @@ from
      )
 group by ji.source_key_id       
     
+--## Cek Transaksi yang nomor jurnalnya ga sama dengan batch transaksi
+drop table transaction.listtransaction ;
+create table transaction.listtransaction as
+select 
+t.transactionno, ti.mutationtype ,
+sum(case when ti.mutationtype ='D' then ti.ekuivalenamount else (-1 * ti.ekuivalenamount) end) as saldo
+from transaction.financialaccount f,
+    transaction.cashaccount c,
+    transaction.accounttransactionitem ac,
+    transaction.transactionitem ti,
+    transaction.transaction t,
+    transaction.transactiontype ty,
+    transaction.transactionbatch tb
+where tb.batchid = t.batchid
+and financialaccounttype = 'C'
+and f.accountno = c.accountno
+and ac.accountno = f.accountno
+and ti.transactionitemid = ac.transactionitemid
+and t.transactionid = ti.transactionid
+and ty.transactioncode = t.transactioncode
+and t.isposted = 'T'
+and t.transactionno not like 'BB%'
+and not exists(
+select 1 from accounting.journalitem ji where ji.id_journalblock=t.journalblockid
+  and ji.fl_journal=tb.batchno)
+group by
+t.transactionno
+,ti.mutationtype ;
+alter table transaction.listtransaction  owner to transaction ;
 
+-- ## Cek Transaksi yang belum digenerate jurnalnya
+select * from transaction.transaction where isposted='F' and actualdate >= '2011-01-01' and actualdate < '2012-01-01';
+
+-- ## Cek Transaksi yang ekuivalen amountnya 0
+update transaction.transactionitem  set rate=1,ekuivalenamount=amount where rate = 0
 --------------------------------------------------------------------
 
 select c.transactioncode, sum(amount_debit * nilai_kurs), sum(amount_credit * nilai_kurs)
@@ -408,3 +448,184 @@ and c.cashaccounttype = 'A'
 group by f.branchcode) tran
 on (tran.branchcode = br.branchcode)
 order by branchcode
+
+
+
+and exists(
+select 
+
+select * from transaction.accounttransactionitem ti
+where accountno='BA.001.501.00238.15'
+and exists(
+select 1 
+from 
+  transaction.transactionitem i , 
+  transaction.transaction t, 
+  transaction.accounttransactionitem c,
+  transaction.cashaccount ca
+where t.transactionid=i.transactionid
+and i.transactionitemid=c.transactionitemid
+and c.accountno=ca.accountno
+and ti.transactionitemid=i.transactionitemid
+and actualdate < '2011-01-01')
+order by ti.transactionitemid  
+
+select * from transaction.transaction where transactioncode ='TB' and branchcode='112'
+update transaction.transaction set actualdate='2010-12-31' where transactionno='BB-CB-000-112'
+select * from transaction.transactionitem where transactionid = 8060 and refaccountno='BA.001.501.00238.15'
+grant select on accounting.branchlocation to transaction
+--- CEK MUTASI ACCOUNTING 
+	select 
+	tran.transactioncode,tran.trandescription, ji.branch_code, br.branchname,
+	--tran.transactionno, tran.transactionid ,
+	--ac.account_code,journal_no,ji.journalitem_no,
+	sum(ji.amount_debit * nilai_kurs) as debit ,
+	sum(ji.amount_credit * nilai_kurs) as credit
+	from 
+	      accounting.account ac, 
+	      accounting.accountinstance ai, 
+	      accounting.journal j, 
+	      accounting.accounthierarchy ah ,
+	      accounting.branchlocation br,
+	      accounting.journalitem ji 	      
+	      left outer join (
+	       select t.transactionid,t.transactionno,t.transactioncode, 
+		  ti.amount,ti.ekuivalenamount, t.journalblockid,
+		  ti.transactionitemid, ty.description as trandescription
+	       from transaction.transaction t, transaction.transactionitem ti,
+		  transaction.transactiontype ty
+	       where t.transactionid = ti.transactionid
+		  and ty.transactioncode = t.transactioncode
+	       ) tran
+	      on (ji.source_key_id = tran.transactionitemid)
+	  where ai.accountinstance_id=ji.accountinstance_id 
+	    and ac.account_code = ai.account_code 
+	    and j.journal_no = ji.fl_journal 
+	    and ah.fl_childaccountcode=ai.account_code 
+	    and br.branch_code = ji.branch_code
+	    and ah.fl_parentaccountcode in ('1110201','1110101')
+	    and j.journal_date >= '2011-01-01' and j.journal_date < '2012-01-01'
+	    --and tran.transactioncode ='CO'
+	    --and ji.amount_debit > 0.0
+	    --and not exists ( select 1 from transaction.transactiontype typ where typ.transactioncode=tran.transactioncode)
+	  --group by tran.transactionno , tran.transactionid order by tran.transactionno  
+	  group by tran.transactioncode,tran.trandescription,ji.branch_code,br.branchname 
+	  order by ji.branch_code, tran.transactioncode
+	  --group by ac.account_code,journal_no,ji.journalitem_no
+    ;	
+
+-- CEK MUTASI TRANSAKSI
+        
+	select 
+	t.transactioncode,ty.description,
+	--t.transactionno,
+	sum (case when ti.mutationtype ='D' then ti.ekuivalenamount else 0.0 end) as saldo_debit,
+	sum (case when ti.mutationtype ='C' then ti.ekuivalenamount else 0.0 end) as saldo_credit
+	from transaction.financialaccount f,
+	    transaction.cashaccount c,
+	    transaction.accounttransactionitem ac,
+	    transaction.transactionitem ti,
+	    transaction.transaction t,
+	    transaction.transactiontype ty
+	where financialaccounttype = 'C'
+	and f.accountno = c.accountno
+	and ac.accountno = f.accountno
+	and ti.transactionitemid = ac.transactionitemid
+	and t.transactionid = ti.transactionid
+	and ty.transactioncode = t.transactioncode
+	and t.actualdate >= '2011-01-01' and t.actualdate < '2012-01-01'
+	and ti.branchcode = '001'
+	--and t.transactioncode ='CAR'
+	--and t.transactionno='KK-2011-101-KBD01-0000363'
+	--and mutationtype ='D'
+	--and c.cashaccounttype = 'A'
+	--group by t.transactionno order by t.transactionno
+	group by t.transactioncode,ty.description order by t.transactioncode;
+
+ select               t.transactioncode, ty.description, ti.branchcode, br.branchname,               sum (case when ti.mutationtype ='D' then ti.ekuivalenamount else 0.0 end) as saldo_debit,               sum (case when ti.mutationtype ='C' then ti.ekuivalenamount else 0.0 end) as saldo_credit               from transaction.financialaccount f,                   transaction.cashaccount c,                   transaction.accounttransactionitem ac,                   transaction.transactionitem ti,                   transaction.transaction t,                   transaction.transactiontype ty,                   transaction.branch br               where financialaccounttype = 'C'               and f.accountno = c.accountno               and ac.accountno = f.accountno               and ti.transactionitemid = ac.transactionitemid               and t.transactionid = ti.transactionid               and ty.transactioncode = t.transactioncode               and ti.branchcode = br.branchcode               and t.actualdate >= '2011-01-01' and t.actualdate < '2012-01-01'               group by ti.branchcode, t.transactioncode,ty.description,br.branchname               order by ti.branchcode, t.transactioncode       
+
+
+select
+  ai.ACCOUNT_CODE as AccountCode,
+  case
+    when sum(ji.AMOUNT_DEBIT) is null then 0.0
+    else sum(ji.AMOUNT_DEBIT)
+  end as sumdebit,
+  case 
+    when sum(ji.AMOUNT_CREDIT) is null then 0.0
+    else sum(ji.AMOUNT_CREDIT)
+  end as sumcredit,
+  case 
+    when sum(ji.AMOUNT_DEBIT * ji.NILAI_KURS) is null then 0.0
+    else sum(ji.AMOUNT_DEBIT * ji.NILAI_KURS)
+  end as sumdebit_ekuiv,
+  case 
+    when sum(ji.AMOUNT_CREDIT * ji.NILAI_KURS) is null then 0.0
+    else sum(ji.AMOUNT_CREDIT * ji.NILAI_KURS)
+  end as sumcredit_ekuiv
+from 
+  accounting.ACCOUNT ac,
+  accounting.ACCOUNTINSTANCE ai,
+  accounting.JOURNAL j,
+  accounting.JOURNALITEM ji
+where 
+  ai.ACCOUNT_CODE >= '1110101'
+  and ai.ACCOUNT_CODE <= '1120101'
+  and ai.BRANCH_CODE = '001'
+  and ai.ACCOUNT_CODE = ac.ACCOUNT_CODE
+  and ac.IS_DETAIL = 'T'
+  and ai.ACCOUNTINSTANCE_ID = ji.ACCOUNTINSTANCE_ID
+  and ji.FL_JOURNAL = j.JOURNAL_NO
+  and j.JOURNAL_DATE  >= '2011-01-01'
+  and j.JOURNAL_DATE  < '2012-02-01'
+group by 
+  ai.ACCOUNT_CODE
+order by 
+  ai.ACCOUNT_CODE
+)
+
+select * from transaction.transaction where isposted='F' and actualdate >= '2011-01-01' and actualdate < '2012-01-01';
+
+select * from accounting.journal where journal_no='IST.2011.01.0000054';
+select * from accounting.journalitem where fl_journal='IST.2011.01.0000054';
+"1110101";"IST.2011.01.0000054";11;0;1325000
+
+select * from transaction.transactionitem where transactionitemid=4600;
+select * from transaction.transaction where transactionid=2143
+select * from transaction.transactiontype where transactioncode = 'TM'
+select * from transaction.transaction where transactioncode = 'TM'
+update transaction.transaction set transactioncode = 'GT' where transactioncode = 'TM'
+
+select t.actualdate,t.transactionno, ti.* from 
+  transaction.transaction t,
+  transaction.transactionitem ti
+where t.transactionid = ti.transactionid
+and ti.Transactionitemtype = 'G' 
+and glnumber='1110201'
+
+select * from transaction.transactionbatch where batchid=2021
+select * from transaction.transaction where transactionno='KK-2011-101-KBD01-0000363';
+select * from transaction.transactionitem where transactionid = 42341
+
+
+select * from transaction.transactionitem where transactionitemid=351271
+
+select * from transaction.transaction where transactionid=42341
+
+select * from transaction.transaction where journalblockid=38491
+select * from accounting.journalitem where id_journalblock=72215
+select * from transaction.transactiontype where transactioncode ='CAB'
+update transaction.transactiontype  set transactioncode ='CARB' where transactioncode ='CAB';
+update transaction.parameterinbox  set kodeinbox='CARB' where kodeinbox='CAB';
+select * from transaction.parameterinbox 
+delete from transaction.transactiontype  where transactioncode ='CARB';
+insert into transaction.transactiontype values('CARB','PENGEMBALIAN UANG MUKA DENGAN REIMBURSE','KM',null);
+insert into transaction.parameterinbox values('CARB','PENGEMBALIAN UANG MUKA DENGAN REIMBURSE','fCashAdvanceReturn','
+
+select * from transaction.transactiontype 
+
+
+select * from accounting.journalblock where id_journalblock = 74440
+update accounting.journalblock set journal_no='IST.2011.05.0000337' where id_journalblock = 74440
+
+select * from accounting.journalitem where fl_journal= 'IST.2011.10.0000646' and journalitem_no=5

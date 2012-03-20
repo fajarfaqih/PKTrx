@@ -147,11 +147,13 @@ def RegenerateJournalItem(config, parameters, returnpacket):
       
       AddParam = ''
       #AddParam = " and branchcode='%s' " % config.SecurityContext.GetUserInfo()[4]
-      AddParam += " and actualdate between '2011-04-01' and '2011-08-31' "
+      AddParam += " and actualdate between '2011-01-01' and '2011-12-31' "
       AddParam += " and transactioncode <> 'TB' "
-      AddParam += " and amount <= 50000000 "
-      AddParam += " and authstatus = 'F' "
-      #AddParam += " and exists(select 1 from listtransaction l where l.journalblockid=t.journalblockid)"
+      #AddParam += " and transactionno in ('KM-2011-001-KKP01-0000112','GT-2011-101-000-0000799') "
+      #AddParam += " and transactioncode = 'DT' "
+      #AddParam += " and amount <= 50000000 "
+      AddParam += " and IsPosted = 'F' "
+      #AddParam += " and exists(select 1 from listtransaction l where l.transactionno=t.transactionno)"
       #AddParam += " and transactioncode = 'EAR' "
       #AddParam += " and transactionid in (140505, 140528)"
       #AddParam += " and isposted = 'F' "
@@ -397,21 +399,23 @@ def DeleteTransaction(config, parameters, returnpacket):
     try:
                   
       AddParam = " TransactionId is not null "
+      #AddParam += " and TransactionNo = 'KK-2011-111-KYG01-0000003'"
+      #AddParam += " and TransactionNo = 'KK-2011-112-KSE01-0000305'" 
       #AddParam += " and transactioncode = 'INVC'"
-      AddParam = " and exists( \
-            select 1 \
-              FROM \
-            accounting.account ac, \
-            accounting.JOURNAL b, \
-            accounting.JOURNALITEM a \
-            left outer join transaction.transaction c \
-            on (c.journalblockid = a.id_journalblock) \
-            WHERE a.fl_account = ac.account_code and A.FL_JOURNAL = B.JOURNAL_NO AND  \
-            (B.JOURNAL_DATE >= '2011-01-01' AND B.JOURNAL_DATE < '2011-12-31') \
-            and fl_account in ('1220104') \
-            and c.transactioncode='CO' \
-            and c.transactionno = t.transactionno \
-        ) "
+      # AddParam += " and exists( \
+      #       select 1 \
+      #         FROM \
+      #       accounting.account ac, \
+      #       accounting.JOURNAL b, \
+      #       accounting.JOURNALITEM a \
+      #       left outer join transaction.transaction c \
+      #       on (c.journalblockid = a.id_journalblock) \
+      #       WHERE a.fl_account = ac.account_code and A.FL_JOURNAL = B.JOURNAL_NO AND  \
+      #       (B.JOURNAL_DATE >= '2011-01-01' AND B.JOURNAL_DATE < '2011-12-31') \
+      #       and fl_account in ('1220104') \
+      #       and c.transactioncode='CO' \
+      #       and c.transactionno = t.transactionno \
+      #   ) "
 
       sSQL = "select TransactionId \
               from transaction t \
