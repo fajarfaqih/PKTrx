@@ -9,7 +9,7 @@ document <
   Caption='Peragaan Asset Tetap'
   Left=50
   Top=50
-  Width=585
+  Width=449
   Height=369
   BeforeDeleteRow=''
   BeforeResultSent=''
@@ -32,7 +32,7 @@ document <
       CreateInstanceOnNew=true
     >}Containers={object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=585
+      Width=449
       Height=369
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['multipages1']
@@ -57,13 +57,13 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit2'
-      Width=577
+      Width=441
       Height=298
       Container1=$CONTAINERS['pDepretiation']
       Container2=$CONTAINERS['gHistoriPenyusutan']
     >, object:rtf::MultiPages<
       Name='multipages1'
-      Width=585
+      Width=449
       Height=326
       Pages={object:rtf::Page<
           PageName='mpMainData'
@@ -82,7 +82,8 @@ document <
             'Qty'#13#10,
             'OpeningDate'#13#10,
             'NilaiAwal'#13#10,
-            'TotalDibayar'#13#10]
+            'TotalDibayar'#13#10,
+            'AssetDetailDescription'#13#10]
         >}Elements={*object:rtf::FieldUIElmtSetting<
           Name='AccountNo'
           ControlCaption='Kode Aset'
@@ -101,6 +102,9 @@ document <
         >, *object:rtf::FieldUIElmtSetting<
           Name='TotalDibayar'
           ControlCaption='Nilai Yang Sudah dibayarkan'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='AssetDetailDescription'
+          Hidden=true
         >}Name='pData'
       Width=553
       Height=297
@@ -141,6 +145,16 @@ document <
           Left=8
           Color=-2147483624
           ControlCaption='Nilai Yang Sudah dibayarkan'
+        >, object:rtf::Edit<
+          Name='eDescription'
+          Layout=clNewLine
+          Top=178
+          Left=8
+          Width=200
+          Height=111
+          Color=-2147483624
+          ControlCaption='Deskripsi'
+          MultiLine=true
         >}EqualCaptionWidth=150
       ControlLeftMargin=8
       ControlTopMargin=10
@@ -164,8 +178,8 @@ document <
           DataTypeName='timestamp'
           DataLength=20
         >}Name='gHistoriPenyusutan'
-      Width=577
-      Height=144
+      Width=240
+      Height=240
       UIPart=$UIPARTS['uipDepreciationHistori']
       ControlLeftMargin=8
       ControlTopMargin=8

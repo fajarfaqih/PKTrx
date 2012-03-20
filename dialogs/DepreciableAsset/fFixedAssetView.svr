@@ -8,7 +8,7 @@ document <
   UIDefs={object:rpclass::TPClassUIDef<
       Name='uipFixedAsset'
       PClassName='FixedAsset'
-      LoadedFieldList='AccountNo;AccountName;Qty;OpeningDate;NilaiAwal;TotalDibayar;TanggalProsesTerakhir;TanggalProsesBerikut;NominalPenyusutan;TotalPenyusutan;Balance'
+      LoadedFieldList='AccountNo;AccountName;Qty;OpeningDate;NilaiAwal;TotalDibayar;AssetDetailDescription;TanggalProsesTerakhir;TanggalProsesBerikut;NominalPenyusutan;TotalPenyusutan;Balance'
       Mode=imSingleRow
     >, object:rpclass::TPClassUIDef<
       Name='uipDepreciationHistori'
