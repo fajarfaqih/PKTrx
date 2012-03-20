@@ -32,8 +32,8 @@ document <
       SetMasterDetailRelationship=true
     >}Containers={object:rtf::DualSplit<
       Name='dsMain'
-      Width=785
-      Height=505
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pTransaction']
       Container2=$CONTAINERS['dsDown']
     >, object:rtf::DualSplit<
@@ -246,7 +246,7 @@ document <
           AccessOption=aoReadOnly
           ControlCaption='Kode Jurnal'
           DataTypeName='VARCHAR'
-          DataLength=5
+          DataLength=10
         >}Name='gTransactionItem'
       Width=785
       Height=261
@@ -343,8 +343,15 @@ document <
           DataTypeName='VARCHAR'
           DataLength=30
         >, object:rtf::FieldUIElmtSetting<
+          Name='ActualDate'
+          AccessOption=aoReadOnly
+          ControlCaption='Tanggal Transaksi'
+          DataTypeName='TIMESTAMP'
+          DataLength=0
+        >, object:rtf::FieldUIElmtSetting<
           Name='TransactionDate'
           AccessOption=aoReadOnly
+          Hidden=true
           ControlCaption='Tanggal Transaksi'
           DataTypeName='TIMESTAMP'
           DataLength=0
@@ -390,7 +397,7 @@ document <
           Color=-2147483624
           ControlCaption='Nomor Transaksi'
         >, *object:rtf::DBDateEdit<
-          Name='TransactionDate'
+          Name='ActualDate'
           Top=38
           Left=10
           Color=-2147483624

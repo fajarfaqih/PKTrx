@@ -41,8 +41,8 @@ document <
       SetMasterDetailRelationship=true
     >}Containers={object:rtf::DualSplit<
       Name='dsMain'
-      Width=785
-      Height=505
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pTransaction']
       Container2=$CONTAINERS['dsDown']
     >, object:rtf::DualSplit<
@@ -297,6 +297,7 @@ document <
           Action=caView
           DataMembers=['TransactionId'#13#10,
             'TransactionNo'#13#10,
+            'ActualDate'#13#10,
             'TransactionDate'#13#10,
             'ReferenceNo'#13#10,
             'AuthStatus'#13#10,
@@ -308,7 +309,11 @@ document <
           Name='transactionno'
           ControlCaption='Nomor Transaksi'
         >, *object:rtf::FieldUIElmtSetting<
+          Name='ActualDate'
+          ControlCaption='Tanggal Transaksi'
+        >, *object:rtf::FieldUIElmtSetting<
           Name='TransactionDate'
+          Hidden=true
           ControlCaption='Tanggal Transaksi'
         >, *object:rtf::FieldUIElmtSetting<
           Name='referenceno'
@@ -339,7 +344,7 @@ document <
           Color=-2147483624
           ControlCaption='Nomor Transaksi'
         >, *object:rtf::DBDateEdit<
-          Name='TransactionDate'
+          Name='ActualDate'
           Top=38
           Left=10
           Color=-2147483624

@@ -33,7 +33,7 @@ document <
     >, object:rpclass::TPClassUIDef<
       Name='uipTransaction'
       PClassName='Transaction'
-      LoadedFieldList='TransactionId;TransactionCode;TransactionTime;Inputer;ReferenceNo;Description;AuthStatus;IsPosted;TransactionId;transactionno;TransactionDate;referenceno;AuthStatus;IsPosted'
+      LoadedFieldList='TransactionId;TransactionCode;TransactionTime;Inputer;ReferenceNo;Description;AuthStatus;IsPosted;TransactionId;transactionno;ActualDate;TransactionDate;referenceno;AuthStatus;IsPosted'
       CustomLoadedFields={object:rpclass::TCustomLoadedField<
           Name='IsPostedMir'
           DataTypeName='varchar'
