@@ -60,8 +60,7 @@ def OnGetUserInfo(config, userid, userinfo):
     userinfo[4] = login_context.Kode_Cabang
     userinfo[5] = login_context.Nama_Cabang
     userinfo[6] = '\n'.join(login_context.Ls_PeranUser)
-    userinfo[7] = login_context.Tanggal_Perbarui
-    #userinfo[7] = config.Now()
+    userinfo[7] = login_context.Tipe_Cabang
 
 def AfterFailedLogin(config, appid, userid, password): pass
 def BeforeChangePassword(config, new_password, confirm_password):

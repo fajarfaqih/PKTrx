@@ -3408,6 +3408,11 @@ document <
           PhysicalName='MASTERBRANCHCODE'
           DataType=$TYPEDECLS['VARCHAR']
           DataLength=5
+        >, object:FieldMember<
+          MemberName='BranchType'
+          PhysicalName='BRANCHTYPE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=2
         >}ClassID='{559686C2-135C-4801-ADBA-4E530DBD198F}'
     >, object:ClassTypeDecl<
       TypeName='Currency'
@@ -5183,6 +5188,26 @@ document <
         >, object:EnumMember<
           StringValue='B'
           DescriptiveName='Pembelian'
-        >}>}PhysicalDB=object:ODLDatabase<
+        >}>, object:ClassTypeDecl<
+      TypeName='UserParameter'
+      PTableName='USERPARAMETER'
+      Members={object:FieldMember<
+          MemberName='UserId'
+          PhysicalName='USERID'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='PrinterType'
+          PhysicalName='PRINTERTYPE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+        >, object:FieldMember<
+          MemberName='VoucherFormat'
+          PhysicalName='VOUCHERFORMAT'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+        >}ClassID='{64D9837C-92DF-4C89-8B34-43556600DAF4}'
+    >}PhysicalDB=object:ODLDatabase<
   >LastMethodID=6
 >
