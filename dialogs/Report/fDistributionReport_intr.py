@@ -184,11 +184,12 @@ class fDistributionReport:
           workbook.SetCellValue(row, 8, rec.Rate)
           workbook.SetCellValue(row, 9, rec.EkuivalenAmount)
           workbook.SetCellValue(row, 10, rec.FundEntity)
-          workbook.SetCellValue(row, 11, rec.SponsorName)
-          workbook.SetCellValue(row, 12, rec.ReferenceNo)
-          workbook.SetCellValue(row, 13, rec.Inputer)
-          workbook.SetCellValue(row, 14, rec.BranchName)
-          workbook.SetCellValue(row, 15, rec.TransactionNo)
+          workbook.SetCellValue(row, 11, rec.Ashnaf)
+          workbook.SetCellValue(row, 12, rec.SponsorName)
+          workbook.SetCellValue(row, 13, rec.ReferenceNo)
+          workbook.SetCellValue(row, 14, rec.Inputer)
+          workbook.SetCellValue(row, 15, rec.BranchName)
+          workbook.SetCellValue(row, 16, rec.TransactionNo)
           
           i += 1
         # end while

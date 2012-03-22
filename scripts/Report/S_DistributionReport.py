@@ -4,6 +4,16 @@ import sys
 
 addFilter = ""
 
+dictAshnaf = {
+  'F' : 'Fakir',
+  'G' : 'Gharimin',
+  'H' : 'Hamba Sahaya',
+  'I' : 'Ibnu Sabil',
+  'M' : 'Miskin',
+  'S' : 'Fisabilillah',
+  'U' : 'Mualaf',  
+  'L' : 'Lainnya',
+}
 def DAFScriptMain(config,parameters,returns):
   helper = phelper.PObjectHelper(config)
 
@@ -46,6 +56,7 @@ def GetDataTransaction(config,parameters,returns):
       'BranchName: string',
       'TransactionNo: string',
       'CurrencyName: string',
+      'Ashnaf : string',
     ])
   )
   
@@ -101,6 +112,7 @@ def GetDataTransaction(config,parameters,returns):
       recData.SponsorName = ''
       recData.BranchName = data.BranchName
       recData.TransactionNo = data.TransactionNo
+      recData.Ashnaf = dictAshnaf[data.Ashnaf]
             
       data.Next()
     # end while
@@ -213,7 +225,7 @@ def GetData(config,param):
               when a.FundEntity = '4' then 'Amil' \
               when a.FundEntity = '5' then 'Lainnya' \
               else '' end) as FundEntity, \
-         i.transactionitemid , b.branchname, t.TransactionNo ,\
+         i.transactionitemid , b.branchname, t.TransactionNo , a.ashnaf , \
          t.currencycode as TransCurrencyCode , t.rate as TransRate , \
          (select short_name from currency c where c.currency_code = i.currencycode) as CurrencyName , \
             (select short_name from currency c where c.currency_code = t.currencycode) as TransCurrencyName \
@@ -245,7 +257,7 @@ def GetData(config,param):
               when a.FundEntity = '4' then 'Amil' \
               when a.FundEntity = '5' then 'Lainnya' \
               else '' end) as FundEntity, \
-         i.transactionitemid , b.branchname, t.TransactionNo , \
+         i.transactionitemid , b.branchname, t.TransactionNo , a.ashnaf ,\
          t.currencycode as TransCurrencyCode , t.rate as TransRate , \
          (select short_name from currency c where c.currency_code = i.currencycode) as CurrencyName , \
          (select short_name from currency c where c.currency_code = t.currencycode) as TransCurrencyName \
