@@ -32,13 +32,18 @@ document <
           Hidden=true
           DataTypeName='integer'
           DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='GroupBranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=5
         >}Name='uipTransaction'
       AlwaysPostToServer=true
       PostLinkValues=true
     >}Containers={object:rtf::DualSplit<
       Name='dsMain'
-      Width=785
-      Height=409
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['pTransaction']
       InversedAlign=true
@@ -206,9 +211,9 @@ document <
               UsedAsDisplay=true
               KeyOrDisplayName='Balance'
               FinalDisplayFieldName='Balance'
-            >}Restrictions='BranchCode|BranchCode'
+            >}Restrictions='GroupBranchCode|GroupBranchCode'
           OQLText=['select from CashAccount'#13#10,
-            '[status = ''A'' and BranchCode = :BranchCode]'#13#10,
+            '[status = ''A'' and LBranch.GroupBranchCode = :GroupBranchCode]'#13#10,
             '('#13#10,
             ' AccountName, '#13#10,
             ' AccountNo, '#13#10,
@@ -289,9 +294,9 @@ document <
               UsedAsDisplay=true
               KeyOrDisplayName='LCurrency.Kurs_Tengah_BI'
               FinalDisplayFieldName='Kurs_Tengah_BI'
-            >}Restrictions='BranchCode|BranchCode'
+            >}Restrictions='GroupBranchCode|GroupBranchCode'
           OQLText=['select from CashAccount'#13#10,
-            '[status = ''A'' and BranchCode = :BranchCode]'#13#10,
+            '[status = ''A'' and LBranch.GroupBranchCode = :GroupBranchCode]'#13#10,
             '('#13#10,
             ' AccountName, '#13#10,
             ' AccountNo, '#13#10,

@@ -14,7 +14,8 @@ def FormSetDataEx(uideflist, params) :
     # Set value for data from obselete form
     param = params.FirstRecord
     rec = uideflist.uipTransaction.Dataset.GetRecord(0)
-
+    rec.GroupBranchCode = str(config.SecurityContext.GetUserInfo()[3])
+    
     oCTran = helper.GetObjectByNames('AccountTransactionItem',
       { 'MutationType' : 'C',
         'AccountNo' : rec.GetFieldByName('LCashAccountSource.AccountNo'),
@@ -23,6 +24,7 @@ def FormSetDataEx(uideflist, params) :
     rec.SourceRate = oCTran.Rate
     rec.SourceAmount = oCTran.Amount
     rec.ActualDate = oCTran.LTransaction.GetAsTDateTime('ActualDate')
+
     
     oDTran = helper.GetObjectByNames('AccountTransactionItem',
       { 'MutationType' : 'D',
@@ -39,6 +41,7 @@ def FormSetDataEx(uideflist, params) :
   rec = uideflist.uipTransaction.Dataset.AddRecord()
   rec.Inputer = str(config.SecurityContext.UserId)
   rec.BranchCode = str(config.SecurityContext.GetUserInfo()[4])
+  rec.GroupBranchCode = str(config.SecurityContext.GetUserInfo()[3])
   rec.TransactionDate = Now
   rec.FloatTransactionDate = Now
   rec.ActualDate = Now
