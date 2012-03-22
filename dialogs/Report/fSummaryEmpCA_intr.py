@@ -94,14 +94,6 @@ class fSummaryCashAdvance:
       i = 0
       oldIdNumber = 0
       row = 12
-      rowTotalGroup = 2
-      PrevBranchCode = ''
-      PrevBranchName = ''
-      TotalSaldoAwalGroup = 0.0
-      TotalDebetGroup = 0.0
-      TotalCreditGroup = 0.0
-      TotalMutasiGroup = 0.0
-      TotalSaldoAkhirGroup = 0.0
       while i < ds.RecordCount:
         rec = ds.GetRecord(i)
 
@@ -110,29 +102,6 @@ class fSummaryCashAdvance:
           workbook.SetCellValue(row, 2, rec.NamaKaryawan)
           oldIdNumber = rec.NomorKaryawan
 
-        if PrevBranchCode != rec.BranchCode :
-          if PrevBranchCode != '' :
-            workbook.ActivateWorksheet('TotalPerCabang')
-            workbook.SetCellValue(rowTotalGroup, 1, PrevBranchCode)
-            workbook.SetCellValue(rowTotalGroup, 2, PrevBranchName)
-            workbook.SetCellValue(rowTotalGroup, 3, TotalSaldoAwalGroup)
-            workbook.SetCellValue(rowTotalGroup, 4, TotalDebetGroup)
-            workbook.SetCellValue(rowTotalGroup, 5, TotalCreditGroup)
-            workbook.SetCellValue(rowTotalGroup, 6, TotalMutasiGroup)
-            workbook.SetCellValue(rowTotalGroup, 7, TotalSaldoAkhirGroup)
-            workbook.ActivateWorksheet('DataRekap')
-            
-            TotalSaldoAwalGroup = 0.0
-            TotalDebetGroup = 0.0
-            TotalCreditGroup = 0.0
-            TotalMutasiGroup = 0.0
-            TotalSaldoAkhirGroup = 0.0
-
-            rowTotalGroup += 1
-          # end if
-          PrevBranchCode = rec.BranchCode
-          PrevBranchName = rec.BranchName
-        # end if
 
         workbook.SetCellValue(row, 3, rec.CurrencyName)
         workbook.SetCellValue(row, 4, rec.SaldoAwal)
@@ -142,25 +111,21 @@ class fSummaryCashAdvance:
         workbook.SetCellValue(row, 8, rec.SaldoAkhir)
         workbook.SetCellValue(row, 9, rec.BranchName)
         
-        TotalSaldoAwalGroup += rec.SaldoAwal
-        TotalDebetGroup += rec.Debet
-        TotalCreditGroup += rec.Kredit
-        TotalMutasiGroup += rec.TotalMutasi
-        TotalSaldoAkhirGroup += rec.SaldoAkhir
-        
         i += 1
         row += 1
       # end of while
-      workbook.ActivateWorksheet('TotalPerCabang')
-      workbook.SetCellValue(rowTotalGroup, 1, PrevBranchCode)
-      workbook.SetCellValue(rowTotalGroup, 2, PrevBranchName)
-      workbook.SetCellValue(rowTotalGroup, 3, TotalSaldoAwalGroup)
-      workbook.SetCellValue(rowTotalGroup, 4, TotalDebetGroup)
-      workbook.SetCellValue(rowTotalGroup, 5, TotalCreditGroup)
-      workbook.SetCellValue(rowTotalGroup, 6, TotalMutasiGroup)
-      workbook.SetCellValue(rowTotalGroup, 7, TotalSaldoAkhirGroup)
-      workbook.ActivateWorksheet('DataRekap')
-
+      
+      # ---- Data Saldo Awal
+      dsBeginBalance = ph.packet.BeginBalance
+      
+      i = 0
+      LsBeginBalance = {}
+      TotalData = dsBeginBalance.RecordCount
+      while i < TotalData:
+        rec = dsBeginBalance.GetRecord(i)
+        LsBeginBalance[rec.BranchCode] = rec.BeginBalanceEkuiv
+        
+        i += 1
 
       # ---- Data Histori
       dsHistTrans = ph.packet.historitransaksi
@@ -171,9 +136,44 @@ class fSummaryCashAdvance:
 
       i = 0
       TotalTransaksi = dsHistTrans.RecordCount
+      
+      rowTotalGroup = 2
+      PrevBranchCode = ''
+      PrevBranchName = ''
+      TotalDebetGroup = 0.0
+      TotalCreditGroup = 0.0
+
       while i < TotalTransaksi:
         rec = dsHistTrans.GetRecord(i)
         row = i + 5
+        
+        if PrevBranchCode != rec.BranchCode :
+          if PrevBranchCode != '' :
+            workbook.ActivateWorksheet('TotalPerCabang')
+            workbook.SetCellValue(rowTotalGroup, 1, PrevBranchCode)
+            workbook.SetCellValue(rowTotalGroup, 2, PrevBranchName)
+            
+            BeginBalance = 0.0
+            if LsBeginBalance.has_key(PrevBranchCode):
+              BeginBalance = LsBeginBalance[PrevBranchCode]
+            MutasiGroup = TotalDebetGroup - TotalCreditGroup
+            
+            workbook.SetCellValue(rowTotalGroup, 3, BeginBalance)
+            workbook.SetCellValue(rowTotalGroup, 4, TotalDebetGroup)
+            workbook.SetCellValue(rowTotalGroup, 5, TotalCreditGroup)
+            workbook.SetCellValue(rowTotalGroup, 6, MutasiGroup)
+            workbook.SetCellValue(rowTotalGroup, 7, BeginBalance + MutasiGroup)
+            workbook.ActivateWorksheet('DetilTransaksi')
+
+            TotalDebetGroup = 0.0
+            TotalCreditGroup = 0.0
+
+            rowTotalGroup += 1
+          # end if
+          PrevBranchCode = rec.BranchCode
+          PrevBranchName = rec.BranchName
+        # end if
+
 
         workbook.SetCellValue(row, 1, rec.TransactionDateStr)
         workbook.SetCellValue(row, 2, rec.TransactionNo)
@@ -189,9 +189,26 @@ class fSummaryCashAdvance:
         workbook.SetCellValue(row, 12, rec.Inputer)
         workbook.SetCellValue(row, 13, rec.BranchName)
 
+        TotalDebetGroup += rec.Debet
+        TotalCreditGroup += rec.Kredit
+
         i += 1
       # end while
+      workbook.ActivateWorksheet('TotalPerCabang')
+      
+      BeginBalance = 0.0
+      if LsBeginBalance.has_key(PrevBranchCode):
+        BeginBalance = LsBeginBalance[PrevBranchCode]
+      MutasiGroup = TotalDebetGroup - TotalCreditGroup
 
+      workbook.SetCellValue(rowTotalGroup, 1, PrevBranchCode)
+      workbook.SetCellValue(rowTotalGroup, 2, PrevBranchName)
+      workbook.SetCellValue(rowTotalGroup, 3, BeginBalance)
+      workbook.SetCellValue(rowTotalGroup, 4, TotalDebetGroup)
+      workbook.SetCellValue(rowTotalGroup, 5, TotalCreditGroup)
+      workbook.SetCellValue(rowTotalGroup, 6, MutasiGroup)
+      workbook.SetCellValue(rowTotalGroup, 7, BeginBalance + MutasiGroup)
+      
       # set sheet aktif
       workbook.ActivateWorksheet('DataRekap')
       

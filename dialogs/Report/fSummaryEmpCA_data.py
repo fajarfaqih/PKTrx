@@ -196,6 +196,58 @@ def SummaryEmpCA(config,params,returns):
       
     # end while
     
+    #--- GET Saldo Awal
+    dsBalance = returns.AddNewDatasetEx(
+     'BeginBalance',
+     ';'.join([
+       'BranchCode: string',
+       'BeginBalanceEkuiv: float',
+     ])
+    )
+
+    sSQLBalance = " \
+       select br.branchcode, br.branchname , \
+         sum(case when d.mutationtype='D' then d.EkuivalenAmount \
+        	   else -d.EkuivalenAmount \
+              end) as beginbalance \
+        from transaction.financialaccount a, \
+           transaction.accountreceivable b, \
+           transaction.currency c, \
+           transaction.transactionitem d, \
+           transaction.transaction e, \
+           transaction.accounttransactionitem f, \
+           transaction.branch br \
+       where a.accountno = b.accountno \
+           and a.currencycode = c.currency_code \
+           and d.transactionid=e.transactionid \
+      		  and d.transactionitemid=f.transactionitemid \
+      		  and f.accountno = a.accountno \
+      		  and d.transactionid=e.transactionid \
+      		  and d.transactionitemid=f.transactionitemid \
+      		  and f.accountno = a.accountno \
+      		  and e.actualdate < '%(BEGINDATE)s' \
+            and b.AccountReceivableType = 'C' \
+            and a.BranchCode = br.BranchCode \
+            %(BRANCHCODEPARAM)s \
+       group by br.branchcode, br.branchname \
+       order by br.branchcode \
+    " % {
+      'BRANCHCODEPARAM' : BranchCodeParam,
+      'BEGINDATE' : sqlBeginDateParam,
+    }
+
+    config.SendDebugMsg(sSQLBalance)
+    ds = config.CreateSQL(sSQLBalance).RawResult
+    ds.First()
+    
+    while not ds.Eof:
+      recBalance = dsBalance.AddRecord()
+      recBalance.BranchCode = ds.BranchCode
+      recBalance.BeginBalanceEkuiv = ds.BeginBalance or 0.0
+
+      ds.Next()
+    # end while
+      
     
     #--- GET HISTORI TRANSAKSI
     dsHist = returns.AddNewDatasetEx(
@@ -221,6 +273,7 @@ def SummaryEmpCA(config,params,returns):
         'AccountName:string',
         'ReturnStatus:string',
         'ReturnTransactionNo:string',
+        'BranchCode:string',
         'BranchName:string',
       ])
     )
@@ -253,7 +306,7 @@ def SummaryEmpCA(config,params,returns):
         F.AccountNo = G.AccountNo AND \
         BR.BranchCode = B.BranchCode AND \
         ( C.ACTUALDATE BETWEEN '%(BEGINDATE)s' AND '%(ENDDATE)s' %(BRANCHCODEPARAM)s ) \
-        ORDER BY C.ACTUALDATE ASC, A.TRANSACTIONITEMID ASC \
+        ORDER BY B.BranchCode, C.ACTUALDATE ASC, A.TRANSACTIONITEMID ASC \
         " % { 'BRANCHCODEPARAM' : BranchCodeParam ,
               'BEGINDATE' : sqlBeginDateParam,
               'ENDDATE' : sqlEndDateParam
@@ -317,7 +370,8 @@ def SummaryEmpCA(config,params,returns):
       recHist.ReturnStatus = stReturn[ds.ReturnTransactionItemid not in [0,None,'']]
       recHist.ReturnTransactionNo = ds.return_transactionno
       recHist.BranchName = ds.BranchName
-
+      recHist.BranchCode = ds.BranchCode
+      
       ds.Next()
     #-- while
     
