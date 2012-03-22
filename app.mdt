@@ -3413,6 +3413,15 @@ document <
           PhysicalName='BRANCHTYPE'
           DataType=$TYPEDECLS['VARCHAR']
           DataLength=2
+        >, object:FieldMember<
+          MemberName='GroupBranchCode'
+          PhysicalName='GROUPBRANCHCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=5
+        >, object:FieldMember<
+          MemberName='GroupBranchId'
+          PhysicalName='GROUPBRANCHID'
+          DataType=$TYPEDECLS['INTEGER']
         >}ClassID='{559686C2-135C-4801-ADBA-4E530DBD198F}'
     >, object:ClassTypeDecl<
       TypeName='Currency'

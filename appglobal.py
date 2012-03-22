@@ -52,15 +52,19 @@ def BeforeLogout(config): pass
 def OnGetUserInfo(config, userid, userinfo):
     helper = phelper.PObjectHelper(config)
     corporate = helper.CreateObject('Corporate')
-    
+
     login_context = corporate.LoginContext
-    userinfo[1] = login_context.Nama_User
-    userinfo[2] = str(login_context.BranchId)
-    userinfo[3] = login_context.Nama_Departemen
+    
+    oBranch = helper.GetObject('Branch', login_context.Kode_Cabang)    
+
+    userinfo[1] = login_context.Tipe_Cabang
+    userinfo[2] = str(login_context.BranchId)    
+    userinfo[3] = oBranch.GroupBranchCode
     userinfo[4] = login_context.Kode_Cabang
     userinfo[5] = login_context.Nama_Cabang
     userinfo[6] = '\n'.join(login_context.Ls_PeranUser)
-    userinfo[7] = login_context.Tipe_Cabang
+    userinfo[7] = login_context.Tanggal_Perbarui
+    #userinfo[7] = config.Now()
 
 def AfterFailedLogin(config, appid, userid, password): pass
 def BeforeChangePassword(config, new_password, confirm_password):
