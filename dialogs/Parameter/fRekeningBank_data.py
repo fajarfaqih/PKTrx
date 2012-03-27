@@ -55,11 +55,12 @@ def OnSetData(sender):
 
   # Set GL Interface
   AccountInterface = BankCash.AccountInterface
-  oAccount = helper.GetObject('Account', AccountInterface)
-  if oAccount.isnull: 'PERINGATAN', 'Akun %s tidak ditemukan' % AccountInterface
+  #oAccount = helper.GetObject('Account', AccountInterface)
+  #raise '',AccountInterface
+  #if oAccount.isnull: 'PERINGATAN', 'Akun %s tidak ditemukan' % AccountInterface
 
-  rec.SetFieldByName('LGLInterface.Account_Code', AccountInterface)
-  rec.SetFieldByName('LGLInterface.Account_Name', oAccount.Account_Name)
+  #rec.SetFieldByName('LGLInterface.Account_Code', AccountInterface)
+  #rec.SetFieldByName('LGLInterface.Account_Name', oAccount.Account_Name)
   
   # Set Currency
   CurrencyCode = BankCash.CurrencyCode

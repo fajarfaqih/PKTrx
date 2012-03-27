@@ -7,9 +7,11 @@
 -- * jurnal accounting yang tidak ada sumber data transaksinya
 -- * mungkin ada amount jurnal yang ga sinkron dengan transaksinya
 -- * Cek Transaksi yang nomor jurnalnya ga sama dengan batch transaksi
+-- * Cek Transaksi yang nomor jurnalnya ga sama dengan batch transaksi
 -- * Cek Transaksi yang belum digenerate jurnalnya
 -- * Cek Tranasksi yang ekuivalenamountnya 0
-
+-- * Cek transaksi amil yang melibatkan detail transaksi kas
+-- * Cek Transaksi Temporary account
 
 --## Cek Transaksi yang memiliki journalblockid redundan
 select journalblockid,count(*) from transaction.transaction 
@@ -116,6 +118,48 @@ select * from transaction.transaction where isposted='F' and actualdate >= '2011
 
 -- ## Cek Transaksi yang ekuivalen amountnya 0
 update transaction.transactionitem  set rate=1,ekuivalenamount=amount where rate = 0
+
+-- ## Cek Transaksi yang melibatkan Kas di detail transaksi
+select t.transactionno, t.description, br.branchname, t.inputer  from 
+  transaction.transaction t, 
+  transaction.branch br
+where t.branchcode = br.branchcode
+   and transactioncode = 'CO'
+   and exists (
+    select 1 from transaction.transactionitem ti
+      where ti.transactionid = t.transactionid
+        and transactionitemtype ='G'     
+        and accountcode in ('1110101','1110201') 
+        and mutationtype = 'D')     
+order by t.branchcode   ;   
+
+select t.transactionno, t.description, br.branchname, t.inputer  from 
+  transaction.transaction t, 
+  transaction.branch br
+where t.branchcode = br.branchcode
+   and transactioncode = 'CI'
+   and exists (
+    select 1 from transaction.transactionitem ti
+      where ti.transactionid = t.transactionid
+        and transactionitemtype ='G'     
+        and accountcode in ('1110101','1110201') 
+        and mutationtype = 'C')     
+order by t.branchcode   ;  
+
+-- ## CEK TRANSAKSI TEMPORARY ACCOUNT
+select t.transactionno, t.description, br.branchname, t.inputer  from 
+  transaction.transaction t, 
+  transaction.branch br
+where t.branchcode = br.branchcode
+   and transactioncode = 'GT'
+   and exists (
+    select 1 from transaction.transactionitem ti
+      where ti.transactionid = t.transactionid
+        and transactionitemtype ='G'     
+        and accountcode in ('9999999')
+        )     
+order by t.branchcode   ;  
+
 --------------------------------------------------------------------
 
 select c.transactioncode, sum(amount_debit * nilai_kurs), sum(amount_credit * nilai_kurs)
@@ -629,3 +673,75 @@ select * from accounting.journalblock where id_journalblock = 74440
 update accounting.journalblock set journal_no='IST.2011.05.0000337' where id_journalblock = 74440
 
 select * from accounting.journalitem where fl_journal= 'IST.2011.10.0000646' and journalitem_no=5
+
+
+
+select * from 
+ transaction.transaction t,
+ transaction.transactionitem ti
+where t.transactionid=ti.transactionid
+ and t.actualdate between '2011-01-01' and '2011-01-31'
+ and ti.parameterjournalid = 'AK-Z'
+
+
+select           ac.account_code, ac.account_name,           
+	tran.transactioncode,tran.trandescription,            
+	ji.branch_code, br.branchname,           
+	sum(ji.amount_debit * nilai_kurs) as debit ,           
+	sum(ji.amount_credit * nilai_kurs) as credit         
+from                
+   accounting.account ac,                
+   accounting.accountinstance ai,                
+   accounting.journal j,                
+   accounting.accounthierarchy ah ,               
+   accounting.branchlocation br,               
+   accounting.journalitem ji               
+   left outer join (                
+      select t.transactionid,t.transactionno,t.transactioncode,              
+         ti.amount,ti.ekuivalenamount, t.journalblockid,             
+         ti.transactionitemid, ty.description as trandescription                
+      from transaction.transaction t, transaction.transactionitem ti,             
+         transaction.transactiontype ty                
+      where t.transactionid = ti.transactionid             
+        and ty.transactioncode = t.transactioncode                ) tran               
+      on (ji.source_key_id = tran.transactionitemid)           
+where ai.accountinstance_id=ji.accountinstance_id              
+   and ac.account_code = ai.account_code              
+   and j.journal_no = ji.fl_journal             
+   and ah.fl_childaccountcode=ai.account_code             
+   and br.branch_code = ji.branch_code             
+   and j.journal_date >= '2011-01-01' and j.journal_date < '2011-02-01'              
+   and ji.branch_code = '001'                  
+   and exists ( select 1 from accounting.account where                               
+   fl_CPA_AccountCode = '3110101'                               
+   and account_code =ah.fl_parentaccountcode )            
+group by tran.transactioncode, tran.trandescription,                    ji.branch_code, br.branchname,                    ac.account_code, ac.account_name           order by ji.branch_code, account_code, tran.transactioncode 
+
+select * from accounting.journalitem where fl_account='5110102'
+   and branch_code='001'
+select * from accounting.accounthierarchy where fl_parentaccountcode='5110101'
+   
+select * from accounting.journal where journal_no='IST.2011.03.0000166'   
+select * from accounting.account where                               
+   fl_CPA_AccountCode = '3110101' 
+
+select aci.ashnaf,sum(amount_debit) as amount from       accounting.journal j,       accounting.journalitem ji,       accounting.accountinstance ac,       accounting.journalblock jb,       transaction.transaction tr,       transaction.transactionitem ti,       transaction.accounttransactionitem aci     where  j.journal_no = ji.fl_journal         and ji.accountinstance_id = ac.accountinstance_id         and jb.id_journalblock=ji.id_journalblock         and jb.id_journalblock=tr.journalblockid         and tr.transactionid=ti.transactionid         and ti.mutationtype='D'         and aci.transactionitemid=ti.transactionitemid         and j.journal_date_posting between '2011-01-01' and '2011-02-01'         and ac.account_code = '5110101'         and aci.ashnaf is not null          and ac.branch_code='001'      group by ashnaf 
+
+select ji.*,tr.transactionno from 
+      accounting.journal j, 
+      accounting.journalitem ji, 
+      accounting.accountinstance ac, 
+      accounting.journalblock jb, 
+      transaction.transaction tr, 
+      transaction.transactionitem ti, 
+      transaction.accounttransactionitem aci 
+    where  j.journal_no = ji.fl_journal 
+        and ji.accountinstance_id = ac.accountinstance_id 
+        and jb.id_journalblock=ji.id_journalblock 
+        and jb.id_journalblock=tr.journalblockid 
+        and tr.transactionid=ti.transactionid 
+        and aci.transactionitemid=ti.transactionitemid 
+        and j.journal_date_posting between '2011-01-01' and '2011-01-31' 
+        and ac.account_code = '4510302' 
+        and ac.branch_code='001'
+select * from transaction.product where productcode='11901'

@@ -86,8 +86,8 @@ def Proses(helper,Month,Year):
 #     sNow = aParam.GetFormatted('YYYY-MM-DD')
 #   else:
 #     sNow = strDate
-  strDeprDate = "%s-%s-25" % (str(Year),str(Month).zfill(2))
-  intDeprDate = config.ModDateTime.EncodeDate(Year,Month,25)
+  strDeprDate = "%s-%s-15" % (str(Year),str(Month).zfill(2))
+  intDeprDate = config.ModDateTime.EncodeDate(Year,Month,15)
    
   res = config.CreateSQL("\
     select accountno from depreciableasset where deprstate='A' and \
@@ -156,4 +156,4 @@ def Proses(helper,Month,Year):
     #-- try..except
     
     res.Next()  
-  #-- while        
+  #-- while

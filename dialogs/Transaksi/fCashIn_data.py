@@ -30,7 +30,10 @@ def FormSetDataEx(uideflist, params) :
 
       AccountCode = recItem.AccountCode
 
-      oAccount = helper.GetObject('Account',AccountCode)
+      oAccount = helper.GetObjectByNames('Account',
+         { 'Account_Code' : AccountCode,
+           'Is_Detail' : 'T'
+         })
       if oAccount.isnull :
         oMapAccount = helper.GetObject('MapAccount',AccountCode)
         if not oMapAccount.isnull :

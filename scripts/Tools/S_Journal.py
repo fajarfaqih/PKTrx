@@ -147,12 +147,12 @@ def RegenerateJournalItem(config, parameters, returnpacket):
       
       AddParam = ''
       #AddParam = " and branchcode='%s' " % config.SecurityContext.GetUserInfo()[4]
-      AddParam += " and actualdate between '2011-01-01' and '2011-12-31' "
+      AddParam += " and actualdate between '2011-01-01' and '2011-01-31' "
       AddParam += " and transactioncode <> 'TB' "
       #AddParam += " and transactionno in ('KM-2011-001-KKP01-0000112','GT-2011-101-000-0000799') "
       #AddParam += " and transactioncode = 'DT' "
       #AddParam += " and amount <= 50000000 "
-      AddParam += " and IsPosted = 'F' "
+      AddParam += " and IsPosted = 'T' "
       #AddParam += " and exists(select 1 from listtransaction l where l.transactionno=t.transactionno)"
       #AddParam += " and transactioncode = 'EAR' "
       #AddParam += " and transactionid in (140505, 140528)"
@@ -167,17 +167,17 @@ def RegenerateJournalItem(config, parameters, returnpacket):
       #          not exists( \
       #             select accountinstance_id from accounting.accountinstance b where a.accountinstance_id=b.accountinstance_id) ) "
       
-      # AddParam += " and exists( \
-      #               select 1 from \
-      #                 transaction.transactionitem i , \
-      #                 transaction.accounttransactionitem a, \
-      #                 transaction.productaccount b, \
-      #                 transaction.product c \
-      #               where a.transactionitemid=i.transactionitemid \
-      #                 and a.accountno = b.accountno \
-      #                 and b.productid = c.productid \
-      #                 and (b.productid = 125 or productcode like '122%' ) \
-      #                 and t.transactionid=i.transactionid)"
+      AddParam += " and exists( \
+                    select 1 from \
+                      transaction.transactionitem i , \
+                      transaction.accounttransactionitem a, \
+                      transaction.productaccount b, \
+                      transaction.product c \
+                    where a.transactionitemid=i.transactionitemid \
+                      and a.accountno = b.accountno \
+                      and b.productid = c.productid \
+                      and (b.productid = 123 or productcode like '11901%' ) \
+                      and t.transactionid=i.transactionid)"
 
       # AddParam += " and not exists( \
       #         select 1 \
@@ -188,7 +188,13 @@ def RegenerateJournalItem(config, parameters, returnpacket):
       #           and a.fl_account in ('4210101','4210102','4210103','4220101') \
       #           and b.branchcode='001' and c.transactionid=t.transactionid )"                
       
-      #AddParam += " and exists ( select 1 from transaction.transactionitem i where i.transactionid=t.transactionid and parameterjournalid like 'PI%')"
+      #AddParam += " and exists ( select 1 from transaction.transactionitem i where i.transactionid=t.transactionid and parameterjournalid like 'PAK%')"
+      # AddParam += " and exists ( select 1 from transaction.transactionitem i \
+      #                   where i.transactionid=t.transactionid \
+      #                   and ( parameterjournalid like 'AK%' \
+      #                       or parameterjournalid like 'PAK%' \
+      #                       or parameterjournalid like 'PI%' ) \
+      #                   )"
       #AddParam += " and TransactionId > 35788 "
 
       # Total Data

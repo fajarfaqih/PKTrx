@@ -275,6 +275,20 @@ def GetListExternalDebtor( config, returns):
     recAccount.AccountNo = ds.debtorid
     recAccount.AccountName = ds.debtorname
     recAccount.Balance = 0.0
+
+    # Cek jika sudah pernah ada saldo awal    
+    TransactionNo = 'BB-EXT-%s' % (BranchCode)
+    oTranItem = helper.GetObjectByNames('AccountTransactionItem',
+        {'AccountNo' : ds.AccountNo ,
+         'LTransaction.TransactionNo' : TransactionNo ,
+         'LTransaction.TransactionCode' : 'TB' }
+     )
+     
+    if not oTranItem.isnull :
+      recAccount.Balance = oTranItem.Amount
+    # end if
+
+    
     ds.Next()
   # end while
   

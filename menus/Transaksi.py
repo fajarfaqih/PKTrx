@@ -359,6 +359,19 @@ def LongScriptTestClick(menu,app):
   form = app.CreateForm(formname, formname, 0, None, None)
   form.FormContainer.Show()
   
+def ListFaultTransClick(menu,app):
+  oPrint = app.GetClientClass('PrintLib','PrintLib')()
+
+  response = app.ExecuteScript('Tools/S_ListFaultTrans',app.CreateValues())
+
+  resp = response.FirstRecord
+
+  if resp.Is_Error :
+     raise 'ERROR',resp.Error_Message
+
+  if response.packet.StreamWrapperCount > 0:
+    oPrint.doProcess(app,response.packet,1)
+          
 def OnBatchCabang(sender, app):
   ph  = app.CreatePacket()
   res = app.ExecuteScript("Tools/S_KontrolBatch.KontrolCabang", ph)

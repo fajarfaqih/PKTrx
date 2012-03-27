@@ -641,6 +641,10 @@ document <
           Caption='Long Script Test'
           OnClick='LongScriptTestClick'
           AllowedUsers='OP001;SYSTEM'
+        >, object:rmn::MenuItem<
+          Caption='List Transaksi Yang Salah'
+          OnClick='ListFaultTransClick'
+          AllowedUsers='OP001;SYSTEM'
         >}AllowedGroups='ADM;SPV'
     >, object:rmn::MenuItem<
       Caption='Batch Process'
