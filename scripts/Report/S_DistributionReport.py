@@ -112,7 +112,8 @@ def GetDataTransaction(config,parameters,returns):
       recData.SponsorName = ''
       recData.BranchName = data.BranchName
       recData.TransactionNo = data.TransactionNo
-      recData.Ashnaf = dictAshnaf[data.Ashnaf]
+      if data.Ashnaf not in [None, '', 0]:
+        recData.Ashnaf = dictAshnaf[data.Ashnaf]
             
       data.Next()
     # end while
