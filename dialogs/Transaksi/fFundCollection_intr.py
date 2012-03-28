@@ -23,11 +23,11 @@ DefaultItems = [ 'Inputer',
                  'LBank.AccountNo',
                  'LBank.BankName',
                  'LBank.CurrencyCode',
-                 'LPettyCash.AccountNo',
-                 'LPettyCash.AccountName',
-                 'LPettyCash.CurrencyCode',
-                 'LPettyCash.LCurrency.Full_Name',
-                 'LPettyCash.LCurrency.Kurs_Tengah_BI',
+                 #'LPettyCash.AccountNo',
+                 #'LPettyCash.AccountName',
+                 #'LPettyCash.CurrencyCode',
+                 #'LPettyCash.LCurrency.Full_Name',
+                 #'LPettyCash.LCurrency.Kurs_Tengah_BI',
                  'PeriodId',
                  'LSponsor.SponsorId',
                  'LVolunteer.VolunteerId',
@@ -151,7 +151,7 @@ class fFundCollection :
     self.SetCashType(dictCashType[sender.ItemIndex])
 
   def SetCashType(self,CashType):
-    self.pCashTransaction_LPettyCash.visible = (CashType == 'K')
+    #self.pCashTransaction_LPettyCash.visible = (CashType == 'K')
     self.pCashTransaction_LCurrency.enabled = (CashType == 'C')
     
   def IdDonorOnExit(self,sender):

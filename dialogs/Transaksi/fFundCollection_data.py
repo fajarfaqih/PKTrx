@@ -168,7 +168,7 @@ def SimpanData(config, params, returns):
     request['TransactionNo'] = oTransaction.TransactionNo
     request['CashCurrency'] = oTransaction.GetFieldByName('LCurrency.Currency_Code')
     request['PaidTo'] = oTransaction.PaidTo
-    request['PettyCashAccountNo'] = oTransaction.GetFieldByName('LPettyCash.AccountNo')
+    #request['PettyCashAccountNo'] = oTransaction.GetFieldByName('LPettyCash.AccountNo')
 
     oDonor = params.uipDonor.GetRecord(0)
     request['DonorId'] = oDonor.DonorId

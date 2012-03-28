@@ -888,7 +888,7 @@ document <
     >, object:rtf::DualSplit<
       Name='dsAsset'
       Width=792
-      Height=259
+      Height=262
       Container1=$CONTAINERS['pAssetTransaction']
       Container2=$CONTAINERS['gAssetTransactionItem']
     >, object:rtf::DualSplit<
@@ -899,8 +899,8 @@ document <
       Container2=$CONTAINERS['gCashTransactionItem']
     >, object:rtf::Grid<
       Name='gAssetTransactionItem'
-      Width=792
-      Height=81
+      Width=240
+      Height=240
       UIPart=$UIPARTS['uipTransactionItem']
       ControlLeftMargin=8
       ControlTopMargin=8
