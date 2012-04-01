@@ -5217,6 +5217,41 @@ document <
           DataType=$TYPEDECLS['VARCHAR']
           DataLength=1
         >}ClassID='{64D9837C-92DF-4C89-8B34-43556600DAF4}'
+    >, object:ClassTypeDecl<
+      TypeName='TransHistoryOfChanges'
+      PTableName='TRANSHISTORYOFCHANGES'
+      Members={object:FieldMember<
+          MemberName='HistoryId'
+          PhysicalName='HISTORYID'
+          DataType=$TYPEDECLS['INTEGER']
+          IsPrimaryKey=true
+        >, object:FieldMember<
+          MemberName='TransactionNo'
+          PhysicalName='TRANSACTIONNO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='NewTransactionNo'
+          PhysicalName='NEWTRANSACTIONNO'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=30
+        >, object:FieldMember<
+          MemberName='UserId'
+          PhysicalName='USERID'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=20
+        >, object:FieldMember<
+          MemberName='ChangeType'
+          PhysicalName='CHANGETYPE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=1
+          Enumerator=$TYPEDECLS['eChangeType']
+        >, object:FieldMember<
+          MemberName='ProcessTime'
+          PhysicalName='PROCESSTIME'
+          DataType=$TYPEDECLS['TIMESTAMP']
+        >}ClassID='{8ABA80AD-18E7-4652-9D98-F45572E21B57}'
+      AutoPrimaryKey=$TYPEDECLS['TransHistoryOfChanges'].MEMBERS['HistoryId']
     >}PhysicalDB=object:ODLDatabase<
   >LastMethodID=6
 >

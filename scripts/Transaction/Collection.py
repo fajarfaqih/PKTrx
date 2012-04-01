@@ -67,6 +67,9 @@ def CollectionNew(config, srequest , params):
 
   config.BeginTransaction()
   try:
+    oHistory = helper.CreateObject('TransHistoryOfChanges')
+    oHistory.ChangeType = 'I'
+
     #oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
     oTran = oBatch.NewTransaction('SD001')
     
@@ -77,7 +80,9 @@ def CollectionNew(config, srequest , params):
     corporate = helper.CreateObject('Corporate')
     if corporate.CheckLimitOtorisasi(request[u'Amount'] * request[u'Rate']):
       oTran.AutoApproval()
-      
+    
+    oHistory.TransactionNo = oTran.TransactionNo
+
     config.Commit()
   except:
     config.Rollback()
@@ -103,6 +108,10 @@ def CollectionUpdate(config, srequest , params):
   
   config.BeginTransaction()
   try:
+    oHistory = helper.CreateObject('TransHistoryOfChanges')
+    oHistory.TransactionNo = oTran.TransactionNo
+    oHistory.ChangeType = 'E'
+
     oTran.CancelTransaction()
     #oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
     oTran.BatchId = oBatch.BatchId
@@ -112,7 +121,8 @@ def CollectionUpdate(config, srequest , params):
 
     # Check for auto approval
     oTran.AutoApprovalUpdate()
-    
+    oTran.NewTransactionNo = oTran.TransactionNo
+
     config.Commit()
   except:
     config.Rollback()

@@ -191,6 +191,15 @@ class TransactionBatch(pobject.PObject):
     
     return oTran
     
+class TransHistoryOfChanges(pobject.PObject):
+  # static variable
+  pobject_classname = 'TransHistoryOfChanges'
+  pobject_keys = ['HistoryId']
+
+  def OnCreate(self, param):
+    self.UserId = self.Config.SecurityContext.InitUser
+    self.ProcessTime = int(self.Config.Now())
+
 class Transaction(pobject.PObject):
   # static variable
   pobject_classname = 'Transaction'
@@ -541,11 +550,13 @@ class Transaction(pobject.PObject):
 
       conn = app.UseCachedTCPConn(acc_host, acc_port)
       #conn = socketclient.TCPClient_STX_ETX((acc_host, acc_port))
+
       try:
         conn.SendSTXETXMessage(sMessage)
         #print sMessage
         #conn.Send(sMessage)
         resp = simplejson.loads(conn.ReadSTXETXMessage())
+
         #resp = simplejson.loads(conn.Receive())
       finally:
         app.ReleaseCachedTCPConn(conn, 1)
@@ -712,7 +723,6 @@ class Transaction(pobject.PObject):
       #-- for
       listItem.Next()
     #-- while
-    #raise '',self.TransactionId
 
     return oJData
 
@@ -1611,8 +1621,8 @@ class Inbox(pobject.PObject):
         self.InputTime = Now
         oPacket.SaveToFile(aFileInbox)
         
-    def LoadDataPacket(self):
-        self.inbox_location = self.LoadInboxLocation()
+    def LoadDataPacket(self, BranchCode = None):
+        self.inbox_location = self.LoadInboxLocation( BranchCode)
         aFileInbox = self.inbox_location + self.FileName
         #aText = utils.GetStringFromFile(aFileInbox)
         #n = int(aText[:8].strip(), 16)
@@ -1626,10 +1636,16 @@ class Inbox(pobject.PObject):
 
         return ph
 
-    def LoadInboxLocation(self):
+    def LoadInboxLocation(self, BranchCode = None):
         inboxhomedir = self.Config.GetGlobalSetting('INBOXHOMEDIR')
         s_pod = self.Config.FormatDateTime('yyyymmdd', self.GetAsTDateTime('InputDate'))
-        cabang = self.BranchCode
+        
+        if BranchCode not in ['', None] :
+          cabang = BranchCode
+        else:
+          cabang = self.BranchCode
+        # end if  
+        
         return '%s\\%s\\%s\\' % (inboxhomedir, s_pod, cabang)
          
     def Override(self):

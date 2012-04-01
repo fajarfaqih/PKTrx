@@ -63,6 +63,7 @@ TransactionBatch=mtran
 Transaction=mtran
 TransactionItem=mtran
 TransItemGLInterface=mtran
+TransHistoryOfChanges=mtran
 AccountTransactionItem=mtran
 DonorTransactionItem=mtran
 ZakahDistTransactItem=mtran
