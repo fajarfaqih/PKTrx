@@ -26,7 +26,7 @@ def DAFScriptMain(config, parameter, returnpacket):
       AddParam += " and inputer = 'SUDIANA' "
       #AddParam += " and TransactionCode = 'SD001' "
       AddParam += " and TransactionCode not in ('CAR', 'CA')"
-      AddParam += " and TransactionNo = 'KM-2011-101-000-0000007' "
+      #AddParam += " and TransactionNo = 'KM-2011-101-000-0000007' "
 
       # Total Data
       sSQLCount = "select count(TransactionId) \
@@ -53,6 +53,9 @@ def DAFScriptMain(config, parameter, returnpacket):
       oRes.First()
       while not oRes.Eof:
         oTran = helper.GetObject('Transaction', oRes.TransactionId)
+
+        logmessage = "Proses Data ke %d dari %s data " % ( idx, TotalData)
+        WriteLog(config, app, fh, 'DJournal', logmessage)
 
         logmessage = "Proses TransactionId %d No Trans %s : " % ( oRes.TransactionId, oTran.TransactionNo)
         WriteLog(config, app, fh, 'DJournal', logmessage)
