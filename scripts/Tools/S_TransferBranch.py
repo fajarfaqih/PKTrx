@@ -71,6 +71,8 @@ def DAFScriptMain(config, parameter, returnpacket):
         try: 
           if oTran.TransactionCode =='SD001' : 
             ExeFundCollection(config, params)
+          elif oTran.TransactionCode =='DD001' : 
+            ExeFundDistribution(config, params)
 
           logmessage = "Transfer Transaksi Berhasil"
         except :
@@ -190,6 +192,87 @@ def ExeFundCollection(config, params):
   response = simplejson.loads(response)
   TransactionNo = response[u'TransactionNo']
   
+  IsErr = response[u'Status']
+  ErrMessage = response[u'ErrMessage']
+
+  if IsErr : raise '', ErrMessage
+
+def ExeFundDistribution(config, params):
+  helper = phelper.PObjectHelper(config)  
+  oTransaction = params.uipTransaction.GetRecord(0)
+  
+  request = {}
+  BranchCode =config.SecurityContext.GetUserInfo()[4]
+
+  request['ReferenceNo'] = oTransaction.ReferenceNo
+  request['Description'] = oTransaction.Description
+  request['Amount'] = oTransaction.TotalAmount
+  request['Inputer'] = oTransaction.Inputer
+  #request['BatchId'] = oTransaction.GetFieldByName('LBatch.BatchId')
+  request['TransactionNo'] = oTransaction.TransactionNo
+  request['PaidTo'] = oTransaction.PaidTo
+  request['CashCurrency'] = oTransaction.GetFieldByName('LCurrency.Currency_Code')
+  request['DonorId'] = oTransaction.DonorId
+  request['ReceivedFrom'] = oTransaction.ReceivedFrom
+  request['ActualDate'] = oTransaction.ActualDate
+  
+  
+  request['Rate'] = oTransaction.Rate
+  request['BankAccountNo'] = oTransaction.GetFieldByName('LBank.AccountNo')
+  request['AssetCode'] = oTransaction.GetFieldByName('LAsset.Account_Code')
+  request['AssetName'] = oTransaction.GetFieldByName('LAsset.Account_Name')
+  request['AssetCurrency'] = oTransaction.GetFieldByName('LValuta.Currency_Code')
+  request['BranchCode'] = BranchCode
+
+  request['SponsorId'] = oTransaction.GetFieldByName('LSponsor.SponsorId')
+  request['VolunteerId'] = oTransaction.GetFieldByName('LVolunteer.VolunteerId')
+  #request['ProductBranchCode'] = oTransaction.GetFieldByName('LProductBranch.Kode_Cabang')
+  request['PeriodId'] = oTransaction.GetFieldByName('PeriodId')
+  request['PaymentType'] = oTransaction.PaymentType
+
+  items = []
+  
+  for i in range(params.uipTransactionItem.RecordCount):
+    oItem = params.uipTransactionItem.GetRecord(i)
+    item = {}
+    item['ProductId'] = oItem.GetFieldByName('LProduct.ProductId')
+
+    item['Ashnaf'] = oItem.Ashnaf
+    item['Amount'] = oItem.Amount
+    item['Description'] = oItem.Description
+    item['FundEntity'] = oItem.FundEntity
+    item['DistItemAccount'] = oItem.DistItemCode
+    item['BudgetId'] = oItem.BudgetId or 0
+
+    # Set ProductAccount
+    ProductId = oItem.GetFieldByName('LProduct.ProductId')
+
+    oProductAccount = helper.GetObjectByNames('ProductAccount',
+        {
+          'ProductId' : ProductId ,
+          'BranchCode' : BranchCode,
+          'CurrencyCode' : '000'
+        }
+
+     )
+    item['AccountNo'] = oItem.AccountNo
+    item['BudgetCode'] = oItem.BudgetCode or ''
+
+    items.append(item)
+  #-- for
+  
+  request['Items']= items
+  sRequest = simplejson.dumps(request)
+  oService = helper.LoadScript('Transaction.Distribution')
+  
+  if oTransaction.ShowMode == 1 :
+    response = oService.DistributionNew(config, sRequest ,params)
+  else :
+    response = oService.DistributionUpdate(config, sRequest ,params)
+
+  response = simplejson.loads(response)
+
+  TransactionNo = response[u'TransactionNo']
   IsErr = response[u'Status']
   ErrMessage = response[u'ErrMessage']
 
