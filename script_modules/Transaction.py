@@ -196,7 +196,7 @@ class TransHistoryOfChanges(pobject.PObject):
   pobject_classname = 'TransHistoryOfChanges'
   pobject_keys = ['HistoryId']
 
-  def OnCreate(self, param):
+  def OnCreate(self):
     self.UserId = self.Config.SecurityContext.InitUser
     self.ProcessTime = int(self.Config.Now())
 
