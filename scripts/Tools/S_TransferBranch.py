@@ -24,7 +24,8 @@ def DAFScriptMain(config, parameter, returnpacket):
       
       AddParam = ''
       AddParam += " and inputer = 'SUDIANA' "
-      AddParam += " and TransactionCode = 'SD001' "
+      #AddParam += " and TransactionCode = 'SD001' "
+      AddParam += " and TransactionCode not in ('CAR', 'CA')"
       AddParam += " and TransactionNo = 'KM-2011-101-000-0000007' "
 
       # Total Data
@@ -70,9 +71,16 @@ def DAFScriptMain(config, parameter, returnpacket):
 
         try: 
           if oTran.TransactionCode =='SD001' : 
-            ExeFundCollection(config, params)
+            FundCollection(config, params)
           elif oTran.TransactionCode =='DD001' : 
-            ExeFundDistribution(config, params)
+            FundDistribution(config, params)
+          elif oTran.TransactionCode =='GT' : 
+            GeneralTransaction(config, params)
+          elif oTran.TransactionCode =='CO' :
+            CashOut(config, params)
+          elif oTran.TransactionCode =='TI' :
+            TransferInternal(config, params)
+          # end if  
 
           logmessage = "Transfer Transaksi Berhasil"
         except :
@@ -102,7 +110,7 @@ def WriteLog(config, app, FileBuf, LogName, LogMessage):
   config.SendDebugMsg(LogMessage)
 
 
-def ExeFundCollection(config, params):
+def FundCollection(config, params):
   helper = phelper.PObjectHelper(config)
   oTransaction = params.uipTransaction.GetRecord(0)
 
@@ -172,7 +180,7 @@ def ExeFundCollection(config, params):
         }
 
      )
-    item['AccountNo'] = oItem.AccountNo
+    item['AccountNo'] = oProductAccount.AccountNo
     
     items.append(item)
     ItemDescList.append(oItem.Description)
@@ -197,7 +205,7 @@ def ExeFundCollection(config, params):
 
   if IsErr : raise '', ErrMessage
 
-def ExeFundDistribution(config, params):
+def FundDistribution(config, params):
   helper = phelper.PObjectHelper(config)  
   oTransaction = params.uipTransaction.GetRecord(0)
   
@@ -255,7 +263,7 @@ def ExeFundDistribution(config, params):
         }
 
      )
-    item['AccountNo'] = oItem.AccountNo
+    item['AccountNo'] = oProductAccount.AccountNo
     item['BudgetCode'] = oItem.BudgetCode or ''
 
     items.append(item)
@@ -274,3 +282,213 @@ def ExeFundDistribution(config, params):
   ErrMessage = response[u'ErrMessage']
 
   if IsErr : raise '', ErrMessage
+
+def GeneralTransaction(config, params):
+  helper = phelper.PObjectHelper(config)
+
+  oTransaction = params.uipTransaction.GetRecord(0)
+  BranchCode =config.SecurityContext.GetUserInfo()[4]
+
+  request = {}
+  request['ReferenceNo'] = oTransaction.ReferenceNo
+  request['Description'] = oTransaction.Description
+  request['TotalDebit'] = oTransaction.TotalDebit
+  request['TotalCredit'] = oTransaction.TotalCredit
+  request['Amount'] = oTransaction.TotalDebit
+  request['Rate'] = 1.0
+  request['Inputer'] = oTransaction.Inputer
+  #request['BatchId'] = oTransaction.GetFieldByName('LBatch.BatchId')
+  request['BranchCode'] = BranchCode
+  request['ActualDate'] = oTransaction.ActualDate
+  request['TransactionNo'] = oTransaction.TransactionNo
+
+  items = []
+
+  for i in range(params.uipTransactionItem.RecordCount):
+    oItem = params.uipTransactionItem.GetRecord(i)
+    item = {}
+    itemType = oItem.ItemType
+    item['ItemType'] = itemType
+
+    if itemType == 'C':
+      item['DonorId'] = int(oItem.DonorId)
+      item['DonorName'] = oItem.DonorName
+      item['ProductId'] = oItem.ProductIdColl
+
+      oProductAccount = helper.GetObjectByNames('ProductAccount',
+        {
+          'ProductId' : oItem.ProductIdColl ,
+          'BranchCode' : BranchCode,
+          'CurrencyCode' : '000'
+        }
+
+       )
+
+      item['AccountNo'] = oProductAccount.AccountNo
+      item['VolunteerId'] = oItem.GetFieldByName('LVolunteer.VolunteerId')
+      item['FundEntity'] = oItem.FundEntityCollection
+      item['PercentageOfAmil'] = oItem.PercentageOfAmil
+    elif itemType == 'D':
+      item['ProductId'] = oItem.ProductIdDist #oItem.GetFieldByName('ProductDist.ProductId')
+
+      oProductAccount = helper.GetObjectByNames('ProductAccount',
+        {
+          'ProductId' : oItem.ProductIdDist ,
+          'BranchCode' : BranchCode,
+          'CurrencyCode' : '000'
+        }
+       )
+      item['AccountNo'] = oProductAccount.AccountNo
+
+      item['SponsorId'] = oItem.SponsorId or 0
+      item['SponsorName'] = oItem.SponsorName
+      item['FundEntity'] = oItem.FundEntityDist
+      item['Ashnaf'] = oItem.Ashnaf
+    elif itemType == 'B':
+      item['AccountNo'] = oItem.GetFieldByName('LCashAccount.AccountNo')
+    elif itemType == 'G':
+      item['AccountCode'] = oItem.GetFieldByName('LLedger.Account_Code')
+      item['AccountName'] = oItem.AccountName
+
+    item['Valuta'] = oItem.CurrencyCode
+    item['MutationType'] = oItem.MutationType
+    item['Amount'] = oItem.Amount
+    item['Rate']   = oItem.Rate
+    item['Ekuivalen'] = oItem.Ekuivalen
+    item['Description'] = oItem.Description
+
+    items.append(item)
+  #-- for
+
+  request['Items']= items
+  sRequest = simplejson.dumps(request)
+
+
+  oService = helper.LoadScript('Transaction.GeneralTransaction')
+
+  TransactionCode = 'GT'
+  response = oService.UpdateTransaction(TransactionCode, config, sRequest, params)
+
+
+  response = simplejson.loads(response)
+  TransactionNo = response[u'TransactionNo']  
+  IsErr = response[u'Status']
+  ErrMessage = response[u'ErrMessage']
+
+  if IsErr : raise '', ErrMessage
+
+def CashOut(config, params):
+  helper = phelper.PObjectHelper(config)
+
+  oTransaction = params.uipTransaction.GetRecord(0)
+    
+  BranchCode =config.SecurityContext.GetUserInfo()[4]
+
+  request = {}
+  request['ReferenceNo'] = oTransaction.ReferenceNo
+  request['Description'] = oTransaction.Description
+  request['ActualDate'] = oTransaction.ActualDate
+  request['Amount'] = oTransaction.TotalAmount
+  request['Inputer'] = oTransaction.Inputer
+  request['BatchId'] = oTransaction.GetFieldByName('LBatch.BatchId')
+  request['TransactionNo'] = oTransaction.TransactionNo
+  request['PaidTo'] = oTransaction.PaidTo
+  request['ReceivedFrom'] = oTransaction.ReceivedFrom
+  
+  request['Rate'] = oTransaction.Rate
+  request['CurrencyCode'] = oTransaction.CurrencyCode
+  request['RateCash'] = oTransaction.RateCash
+  request['RateBank'] = oTransaction.RateBank
+
+  request['BankAccountNo'] = oTransaction.GetFieldByName('LBank.AccountNo')
+  request['AssetCode'] = oTransaction.GetFieldByName('LAsset.Account_Code')
+  request['AssetName'] = oTransaction.GetFieldByName('LAsset.Account_Name')
+  request['AssetCurrency'] = oTransaction.GetFieldByName('LValuta.Currency_Code')
+  request['BranchCode'] = BranchCode
+  request['PaymentType'] = oTransaction.PaymentType
+
+  items = []
+
+  for i in range(params.uipTransactionItem.RecordCount):
+    oItem = params.uipTransactionItem.GetRecord(i)
+    item = {}
+    item['AccountCode'] = oItem.AccountCode
+    item['AccountName'] = oItem.AccountName
+    item['Amount'] = oItem.Amount
+    item['Valuta'] = oItem.GetFieldByName('LCurrency.Currency_Code')
+    item['Rate']   = oItem.Rate
+    item['Ekuivalen'] = oItem.Ekuivalen
+    item['Description'] = oItem.Description
+    item['BudgetId'] = oItem.BudgetId
+    
+    items.append(item)
+  #-- for
+
+  request['Items']= items
+  sRequest = simplejson.dumps(request)
+
+  oService = helper.LoadScript('Transaction.CashOut')
+
+  response = oService.CashOutUpdate(config, sRequest,params)
+
+  response = simplejson.loads(response)
+  TransactionNo = response[u'TransactionNo']
+
+  IsErr = response[u'Status']
+  ErrMessage = response[u'ErrMessage']
+  
+  if IsErr : raise '', ErrMessage
+
+def TransferInternal(config, params):
+  helper = phelper.PObjectHelper(config)
+
+  oTransaction = params.uipTransaction.GetRecord(0)
+    
+  BranchCode =config.SecurityContext.GetUserInfo()[4]
+
+  request = {}
+  #request['BatchId'] = oTransaction.GetFieldByName('LBatch.BatchId')
+  request['ActualDate'] = oTransaction.ActualDate
+  request['SourceAccountNo'] = oTransaction.GetFieldByName('LCashAccountSource.AccountNo')
+  if request['SourceAccountNo'] == 'BC.101.000' :
+    request['SourceAccountNo'] == 'BC.104.000'
+  request['DestAccountNo'] = oTransaction.GetFieldByName('LCashAccountDestination.AccountNo')
+  if request['DestAccountNo'] == 'BC.101.000' :
+    request['DestAccountNo'] == 'BC.104.000'
+
+  request['TransactionNo'] = oTransaction.TransactionNo
+  request['ReferenceNo'] = oTransaction.ReferenceNo
+  request['Description'] = oTransaction.Description
+  request['TranCurrencyCode'] = oTransaction.TranCurrencyCode
+  request['Amount'] = oTransaction.Amount
+  request['Rate'] = oTransaction.Rate
+  request['Inputer'] = config.SecurityContext.InitUser
+  request['BranchCode'] = config.SecurityContext.GetUserInfo()[4]
+
+
+  request['SourceCurrencyCode'] = oTransaction.GetFieldByName('LCashAccountSource.CurrencyCode')
+  request['SourceAmount'] = oTransaction.SourceAmount
+  request['SourceRate'] = oTransaction.SourceRate
+
+  sRequest = simplejson.dumps(request)
+
+  oService = helper.LoadScript('Transaction.GeneralTransaction')
+
+  TransactionCode = 'TI'
+  response = oService.UpdateTransaction(TransactionCode, config, sRequest, params)
+
+  response = simplejson.loads(response)
+
+  TransactionNo = response[u'TransactionNo']
+  filename = response[u'FileKwitansi']
+
+  sw = returns.AddStreamWrapper()
+  sw.Name = 'Kwitansi'
+  sw.LoadFromFile(filename)
+  #sw.MIMEType = config.AppObject.GetMIMETypeFromExtension(filename)
+  sw.MIMEType = 'application/msword'
+
+  StreamName = sw.Name
+
+  IsErr = response[u'Status']
+  ErrMessage = response[u'ErrMessage']
