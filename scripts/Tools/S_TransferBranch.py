@@ -265,10 +265,7 @@ def ExeFundDistribution(config, params):
   sRequest = simplejson.dumps(request)
   oService = helper.LoadScript('Transaction.Distribution')
   
-  if oTransaction.ShowMode == 1 :
-    response = oService.DistributionNew(config, sRequest ,params)
-  else :
-    response = oService.DistributionUpdate(config, sRequest ,params)
+  response = oService.DistributionUpdate(config, sRequest ,params)
 
   response = simplejson.loads(response)
 

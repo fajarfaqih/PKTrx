@@ -86,6 +86,9 @@ def CreateTransaction(TranCode, config, srequest, params):
    
   config.BeginTransaction()
   try:
+    oHistory = helper.CreatePObject('TransHistoryOfChanges')
+    oHistory.ChangeType = 'I'
+
     #oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
     oTran = oBatch.NewTransaction(TranCode)
 
@@ -95,7 +98,9 @@ def CreateTransaction(TranCode, config, srequest, params):
     corporate = helper.CreateObject('Corporate')
     if corporate.CheckLimitOtorisasi(request[u'Amount'] * request[u'Rate']):
       oTran.AutoApproval()
-      
+    
+    oHistory.TransactionNo = oTran.TransactionNo
+
     config.Commit()
   except:
     config.Rollback()
@@ -122,7 +127,11 @@ def UpdateTransaction(TranCode, config, srequest, params):
   
   config.BeginTransaction()
   try:
-    
+    # Generate History
+    oHistory = helper.CreatePObject('TransHistoryOfChanges')
+    oHistory.TransactionNo = oTran.TransactionNo
+    oHistory.ChangeType = 'E'
+
     oTran.CancelTransaction()
 
     oTran.BatchId = oBatch.BatchId
@@ -132,6 +141,8 @@ def UpdateTransaction(TranCode, config, srequest, params):
     
     # Check for auto approval
     oTran.AutoApprovalUpdate()
+
+    oHistory.NewTransactionNo = oTran.TransactionNo
     
     config.Commit()
   except:

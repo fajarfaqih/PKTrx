@@ -21,6 +21,10 @@ def DistributionNew(config, srequest ,params):
   config.BeginTransaction()
   try:
     #oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
+    
+    oHistory = helper.CreatePObject('TransHistoryOfChanges')
+    oHistory.ChangeType = 'I'
+
     oTran = oBatch.NewTransaction('DD001')
     
 #     if request[u'PaymentType'] == 'K' : PettyCash 
@@ -37,6 +41,8 @@ def DistributionNew(config, srequest ,params):
     corporate = helper.CreateObject('Corporate')
     if corporate.CheckLimitOtorisasi(request[u'Amount'] * request[u'Rate']):
       oTran.AutoApproval()
+    
+    oHistory.TransactionNo = oTran.TransactionNo
       
     config.Commit()
   except:
@@ -63,7 +69,13 @@ def DistributionUpdate(config, srequest ,params):
   
   config.BeginTransaction()
   try:
+    # Generate History
+    oHistory = helper.CreatePObject('TransHistoryOfChanges')
+    oHistory.TransactionNo = oTran.TransactionNo
+    oHistory.ChangeType = 'E'
+
     oTran.CancelTransaction()
+
     #oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
     oTran.BatchId = oBatch.BatchId
 
@@ -79,7 +91,8 @@ def DistributionUpdate(config, srequest ,params):
     
     # Check for auto approval
     oTran.AutoApprovalUpdate()
-    
+    oHistory.NewTransactionNo = oTran.TransactionNo
+
     config.Commit()
   except:
     config.Rollback()

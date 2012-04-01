@@ -108,6 +108,7 @@ def CollectionUpdate(config, srequest , params):
   
   config.BeginTransaction()
   try:
+    # Generate History
     oHistory = helper.CreatePObject('TransHistoryOfChanges')
     oHistory.TransactionNo = oTran.TransactionNo
     oHistory.ChangeType = 'E'
