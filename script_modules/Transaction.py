@@ -1624,6 +1624,7 @@ class Inbox(pobject.PObject):
         self.UserId      = self.Config.SecurityContext.UserID
         self.InputDate = int(Now)
         self.InputTime = Now
+        self.BranchCode = self.Config.SecurityContext.GetUserInfo()[4]
         oPacket.SaveToFile(aFileInbox)
         
     def LoadDataPacket(self, BranchCode = None):
