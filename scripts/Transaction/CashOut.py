@@ -40,6 +40,12 @@ def CashOutNew(config,srequest,params):
     if corporate.CheckLimitOtorisasi(request[u'Amount'] * request[u'Rate']):
       oTran.AutoApproval()
 
+    # Generate History
+    oHistory = helper.CreatePObject('TransHistoryOfChanges')
+    oHistory.ChangeType = 'I'    
+    oHistory.TransactionNo = oTran.TransactionNo
+
+
     config.Commit()
   except:
     config.Rollback()
@@ -66,6 +72,10 @@ def CashOutUpdate(config, srequest, params):
   
   config.BeginTransaction()
   try:
+    oHistory = helper.CreatePObject('TransHistoryOfChanges')
+    oHistory.TransactionNo = oTran.TransactionNo
+    oHistory.ChangeType = 'E'
+
     oTran.CancelTransaction()
     oTran.BatchId = oBatch.BatchId
 
@@ -80,7 +90,8 @@ def CashOutUpdate(config, srequest, params):
     
     # Check for auto approval
     oTran.AutoApprovalUpdate()
-    
+    oHistory.NewTransactionNo = oTran.TransactionNo
+
     config.Commit()
   except:
     config.Rollback()

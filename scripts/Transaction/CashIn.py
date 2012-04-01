@@ -24,6 +24,7 @@ def CashInNew(config,srequest,params):
   
   config.BeginTransaction()
   try:
+    
     oTran = oBatch.NewTransaction('CI')
     
     if request[u'PaymentType'] == 'K' : 
@@ -39,6 +40,11 @@ def CashInNew(config,srequest,params):
     corporate = helper.CreateObject('Corporate')
     if corporate.CheckLimitOtorisasi(request[u'Amount'] * request[u'Rate']):
       oTran.AutoApproval()
+    
+    # Generate History
+    oHistory = helper.CreatePObject('TransHistoryOfChanges')
+    oHistory.ChangeType = 'I'    
+    oHistory.TransactionNo = oTran.TransactionNo
 
     config.Commit()
   except:
@@ -66,6 +72,11 @@ def CashInUpdate(config, srequest, params):
   
   config.BeginTransaction()
   try:
+    # Generate History
+    oHistory = helper.CreatePObject('TransHistoryOfChanges')
+    oHistory.TransactionNo = oTran.TransactionNo
+    oHistory.ChangeType = 'E'
+
     oTran.CancelTransaction()
     oTran.BatchId = oBatch.BatchId
 
@@ -80,6 +91,8 @@ def CashInUpdate(config, srequest, params):
     
     # Check for auto approval
     oTran.AutoApprovalUpdate()
+
+    oHistory.NewTransactionNo = oTran.TransactionNo
     
     config.Commit()
   except:
