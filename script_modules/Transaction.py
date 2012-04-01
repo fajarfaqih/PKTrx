@@ -1670,6 +1670,7 @@ class Inbox(pobject.PObject):
         oHistory.InputTime = self.GetAsTDateTime('InputTime')
         oHistory.InboxId = self.InboxId
         oHistory.UserId = self.UserId
+        oHistory.BranchCode = self.Config.SecurityContext.GetUserInfo()[4]
         oHistory.NextInboxHistory = self.LastInboxHistoryId or 0
 
         self.LastInboxHistoryId = oHistory.InboxHistoryId

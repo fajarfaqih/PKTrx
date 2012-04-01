@@ -3222,6 +3222,11 @@ document <
               OriginPKey=$TYPEDECLS['InboxHistory'].MEMBERS['InboxHistoryId']
             >}IsWeak=true
           LinkedClass=$TYPEDECLS['InboxHistory']
+        >, object:FieldMember<
+          MemberName='BranchCode'
+          PhysicalName='BRANCHCODE'
+          DataType=$TYPEDECLS['VARCHAR']
+          DataLength=5
         >}ClassID='{FEB1907C-7B1F-4DB9-8FDD-3E399825475F}'
       AutoPrimaryKey=$TYPEDECLS['InboxHistory'].MEMBERS['InboxHistoryId']
     >, object:ClassTypeDecl<
