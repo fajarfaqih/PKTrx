@@ -121,7 +121,7 @@ def CollectionUpdate(config, srequest , params):
 
     # Check for auto approval
     oTran.AutoApprovalUpdate()
-    oTran.NewTransactionNo = oTran.TransactionNo
+    oHistory.NewTransactionNo = oTran.TransactionNo
 
     config.Commit()
   except:

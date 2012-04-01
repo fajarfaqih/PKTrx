@@ -134,7 +134,7 @@ def ExeFundCollection(config, params):
   request['AssetCode'] = oTransaction.GetFieldByName('LAsset.Account_Code')
   request['AssetName'] = oTransaction.GetFieldByName('LAsset.Account_Name')
   request['AssetCurrency'] = oTransaction.GetFieldByName('LValuta.Currency_Code')
-  request['BranchCode'] = config.SecurityContext.GetUserInfo()[4]
+  request['BranchCode'] = OldBranch
 
   request['SponsorId'] = oTransaction.GetFieldByName('LSponsor.SponsorId')
   request['VolunteerId'] = oTransaction.GetFieldByName('LVolunteer.VolunteerId')
@@ -164,7 +164,7 @@ def ExeFundCollection(config, params):
     oProductAccount = helper.GetObjectByNames('ProductAccount',
         {
           'ProductId' : ProductId ,
-          'BranchCode' : request['BranchCode'],
+          'BranchCode' : OldBranch,
           'CurrencyCode' : '000'
         }
 
