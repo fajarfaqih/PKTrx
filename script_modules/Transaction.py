@@ -232,13 +232,18 @@ class Transaction(pobject.PObject):
 
   def GenerateTransactionNumber(self,CashCode,IsChangeTransNo = 0):
     
+    VoucherCode = self.LTransactionType.VoucherCode
     #y = config.ModLibUtils.DecodeDate(config.Now())[0]
     TransactionYear = self.ActualDate[0]
+    branchCode = self.BranchCode
 
     # Cek apakah perlu generate nomor baru atau ada perubahan cashcode
     if (self.TransactionNo or '') != '' and not IsChangeTransNo: 
       splitNumber = self.TransactionNo.split('-')
-      if splitNumber[3] == CashCode and splitNumber[1] == str(TransactionYear) : # Cek jika cashcode masih sama
+      if splitNumber[3] == CashCode and \
+         splitNumber[1] == str(TransactionYear) and \
+         splitNumber[0] == VoucherCode and \
+         splitNumber[2] == branchCode : # Cek jika cashcode masih sama
         return
 
     # Proses generate number
@@ -254,7 +259,7 @@ class Transaction(pobject.PObject):
 
     #y = config.ModLibUtils.DecodeDate(config.Now())[0]
     #branchCode = config.SecurityContext.GetUserInfo()[4]
-    branchCode = self.BranchCode
+    
     
     #raise '',"TES %s " %self.LTransactionType.VoucherCode
 
