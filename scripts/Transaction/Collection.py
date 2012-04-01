@@ -67,7 +67,7 @@ def CollectionNew(config, srequest , params):
 
   config.BeginTransaction()
   try:
-    oHistory = helper.CreateObject('TransHistoryOfChanges')
+    oHistory = helper.CreatePObject('TransHistoryOfChanges')
     oHistory.ChangeType = 'I'
 
     #oBatch = helper.GetObject('TransactionBatch', request[u'BatchId'])
@@ -108,7 +108,7 @@ def CollectionUpdate(config, srequest , params):
   
   config.BeginTransaction()
   try:
-    oHistory = helper.CreateObject('TransHistoryOfChanges')
+    oHistory = helper.CreatePObject('TransHistoryOfChanges')
     oHistory.TransactionNo = oTran.TransactionNo
     oHistory.ChangeType = 'E'
 
