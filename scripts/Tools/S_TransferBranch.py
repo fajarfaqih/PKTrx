@@ -105,7 +105,8 @@ def ExeFundCollection(config, params):
   oTransaction = params.uipTransaction.GetRecord(0)
 
   request = {}
-
+  
+  BranchCode =config.SecurityContext.GetUserInfo()[4]
   request['ReferenceNo'] = oTransaction.ReferenceNo
   request['Description'] = oTransaction.Description
   request['ActualDate'] = oTransaction.ActualDate
@@ -134,7 +135,7 @@ def ExeFundCollection(config, params):
   request['AssetCode'] = oTransaction.GetFieldByName('LAsset.Account_Code')
   request['AssetName'] = oTransaction.GetFieldByName('LAsset.Account_Name')
   request['AssetCurrency'] = oTransaction.GetFieldByName('LValuta.Currency_Code')
-  request['BranchCode'] = OldBranch
+  request['BranchCode'] = BranchCode
 
   request['SponsorId'] = oTransaction.GetFieldByName('LSponsor.SponsorId')
   request['VolunteerId'] = oTransaction.GetFieldByName('LVolunteer.VolunteerId')
@@ -164,7 +165,7 @@ def ExeFundCollection(config, params):
     oProductAccount = helper.GetObjectByNames('ProductAccount',
         {
           'ProductId' : ProductId ,
-          'BranchCode' : OldBranch,
+          'BranchCode' : BranchCode,
           'CurrencyCode' : '000'
         }
 
