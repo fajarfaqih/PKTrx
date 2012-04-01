@@ -68,8 +68,13 @@ def DAFScriptMain(config, parameter, returnpacket):
         uipTran = params.uipTransaction.GetRecord(0)
         uipTran.TransactionNo = oTran.TransactionNo
 
-        if oTran.TransactionCode =='SD001' : 
-          ExeFundCollection(config, params)
+        try: 
+          if oTran.TransactionCode =='SD001' : 
+            ExeFundCollection(config, params)
+
+          logmessage = "Transfer Transaksi Berhasil"
+        except :
+          logmessage = "Transfer Transaksi Gagal : "  + str(sys.exc_info()[1])
         
         WriteLog(config, app, fh, 'DJournal', logmessage)
 
@@ -183,3 +188,8 @@ def ExeFundCollection(config, params):
 
   response = simplejson.loads(response)
   TransactionNo = response[u'TransactionNo']
+  
+  IsErr = response[u'Status']
+  ErrMessage = response[u'ErrMessage']
+
+  if IsErr : raise '', ErrMessage
