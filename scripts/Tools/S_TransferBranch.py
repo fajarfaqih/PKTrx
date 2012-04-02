@@ -74,7 +74,7 @@ def DAFScriptMain(config, parameter, returnpacket):
           uipTran = params.uipTransaction.GetRecord(0)
           uipTran.TransactionNo = oTran.TransactionNo
 
-          
+
           if oTran.TransactionCode =='SD001' : 
             FundCollection(config, params)
           elif oTran.TransactionCode =='DD001' : 
@@ -183,7 +183,6 @@ def FundCollection(config, params):
           'BranchCode' : BranchCode,
           'CurrencyCode' : '000'
         }
-
      )
     item['AccountNo'] = oProductAccount.AccountNo
     
@@ -401,7 +400,7 @@ def CashOut(config, params):
   request['ReceivedFrom'] = oTransaction.ReceivedFrom
   
   request['Rate'] = oTransaction.Rate
-  request['CurrencyCode'] = oTransaction.CurrencyCode
+  request['CurrencyCode'] = '000'
   request['RateCash'] = oTransaction.RateCash
   request['RateBank'] = oTransaction.RateBank
 
@@ -485,15 +484,7 @@ def TransferInternal(config, params):
   response = simplejson.loads(response)
 
   TransactionNo = response[u'TransactionNo']
-  filename = response[u'FileKwitansi']
-
-  sw = returns.AddStreamWrapper()
-  sw.Name = 'Kwitansi'
-  sw.LoadFromFile(filename)
-  #sw.MIMEType = config.AppObject.GetMIMETypeFromExtension(filename)
-  sw.MIMEType = 'application/msword'
-
-  StreamName = sw.Name
-
   IsErr = response[u'Status']
   ErrMessage = response[u'ErrMessage']
+  
+  if IsErr : raise '', ErrMessage
