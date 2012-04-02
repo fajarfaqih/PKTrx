@@ -103,6 +103,11 @@ document <
           Hidden=true
           DataTypeName='integer'
           DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='GroupBranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=5
         >}Name='uipTransaction'
       FillInDefaultValues=true
       AlwaysPostToServer=true
@@ -201,8 +206,8 @@ document <
       BeforeDelete='ItemBeforeDelete'
     >}Containers={object:rtf::MultiSplit<
       Name='msMain'
-      Width=800
-      Height=550
+      Width=320
+      Height=320
       Side1Containers={$CONTAINERS['dualsplit1']
       }Side2Containers={$CONTAINERS['pAction']
       }SpaceContainer=$CONTAINERS['dsTransaction']
@@ -257,8 +262,8 @@ document <
           ControlCaption='Rekening Bank'
           ClassTypeName='BankCash'
           DisplayFields='AccountNo;BankName;CurrencyCode'
-          Restrictions='BranchCode|BranchCode'
-          OQLText=['Select from BankCash [Status = ''A'' and BranchCode = :BranchCode]'#13#10,
+          Restrictions='GroupBranchCode|GroupBranchCode'
+          OQLText=['Select from BankCash [Status = ''A'' and LBranch.GroupBranchCode = :GroupBranchCode]'#13#10,
             '('#13#10,
             '  BankName,'#13#10,
             '  BankAccountNo,'#13#10,
@@ -501,8 +506,8 @@ document <
       ControlCharCase=ecUpperCase
     >, object:rtf::Grid<
       Name='gBankTransactionItem'
-      Width=792
-      Height=105
+      Width=240
+      Height=240
       UIPart=$UIPARTS['uipTransactionItem']
       ControlLeftMargin=8
       ControlTopMargin=8
@@ -592,8 +597,8 @@ document <
       RowControlGap=7
     >, object:rtf::MultiPages<
       Name='mpBayar'
-      Width=800
-      Height=290
+      Width=320
+      Height=320
       Pages={object:rtf::Page<
           PageName='pgCash'
           PageTitle='Kas'
@@ -755,14 +760,14 @@ document <
       ControlCharCase=ecUpperCase
     >, object:rtf::DualSplit<
       Name='dsTransaction'
-      Width=800
-      Height=311
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pPaymentType']
       Container2=$CONTAINERS['mpBayar']
     >, object:rtf::DualSplit<
       Name='dsBank'
       Width=792
-      Height=259
+      Height=262
       Container1=$CONTAINERS['pBankTransaction']
       Container2=$CONTAINERS['gBankTransactionItem']
     >, object:rtf::DualSplit<
@@ -909,7 +914,7 @@ document <
           Width=80
         >}>, object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=800
+      Width=240
       Height=201
       Container1=$CONTAINERS['pDonor']
       Container2=$CONTAINERS['pBatch']

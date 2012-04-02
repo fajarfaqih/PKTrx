@@ -85,6 +85,11 @@ def DAFScriptMain(config, parameter, returnpacket):
             CashOut(config, params)
           elif oTran.TransactionCode =='TI' :
             TransferInternal(config, params)
+          elif oTran.TransactionCode =='CA' :
+            CashAdvance(config, params)
+          elif oTran.TransactionCode =='CAR' :
+            CashAdvanceReturn(config, params)
+            
           # end if  
 
           logmessage = "Transfer Transaksi Berhasil"
@@ -488,3 +493,43 @@ def TransferInternal(config, params):
   ErrMessage = response[u'ErrMessage']
   
   if IsErr : raise '', ErrMessage
+
+def CashAdvance(config, params):
+  helper = phelper.PObjectHelper(config)
+
+  oTransaction = params.uipTransaction.GetRecord(0)
+    
+  BranchCode = config.SecurityContext.GetUserInfo()[4]
+
+  request = {}
+  #request['BatchId'] = oTransaction.GetFieldByName('LBatch.BatchId')
+  request['EmployeeId'] = oTransaction.EmployeeId #oTransaction.GetFieldByName('LEmployee.Nomor_Karyawan')
+  request['EmployeeName'] = oTransaction.EmployeeName
+  request['CashAccountNo'] = oTransaction.GetFieldByName('LCashAccount.AccountNo')
+  request['CurrencyCode'] = oTransaction.CurrencyCode #GetFieldByName('LCashAccount.CurrencyCode')
+  request['Amount'] = oTransaction.Amount
+  request['ReferenceNo'] = oTransaction.ReferenceNo
+  request['Description'] = oTransaction.Description
+  request['Rate'] = oTransaction.Rate
+  request['Inputer'] = config.SecurityContext.InitUser
+  request['BranchCode'] = BranchCode
+  request['TransactionNo'] = oTransaction.TransactionNo
+  request['ReceivedFrom'] = oTransaction.ReceivedFrom
+  request['BudgetCode'] = oTransaction.BudgetCode or ''
+  request['BudgetId'] = oTransaction.BudgetId or 0
+  request['FundEntity'] = oTransaction.FundEntity or 4
+  request['DistributionTransferId'] = oTransaction.DistributionId or 0
+  request['ActualDate'] = oTransaction.ActualDate
+  
+  sRequest = simplejson.dumps(request)
+
+  oService = helper.LoadScript('Transaction.GeneralTransaction')
+  
+  TransactionCode = 'CA'
+  response = oService.UpdateTransaction(TransactionCode, config, sRequest, params)
+
+  response = simplejson.loads(response)
+  TransactionNo = response[u'TransactionNo']
+
+  IsErr = response[u'Status']
+  ErrMessage = response[u'ErrMessage']

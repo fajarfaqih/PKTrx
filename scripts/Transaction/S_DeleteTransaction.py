@@ -23,6 +23,10 @@ def DAFScriptMain(config, parameter, returnpacket):
 
   config.BeginTransaction()
   try:
+    oHistory = helper.CreatePObject('TransHistoryOfChanges')
+    oHistory.ChangeType = 'D'
+    oHistory.TransactionNo = oTran.TransactionNo
+
     # oInbox = helper.GetObjectByNames('InboxTransaction',{'TransactionId':oTran.TransactionId})
     # if not oInbox.isnull :      
     #   oInbox.Delete()

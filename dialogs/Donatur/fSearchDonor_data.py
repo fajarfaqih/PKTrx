@@ -1,7 +1,7 @@
 import com.ihsan.foundation.pobjecthelper as phelper
 
 def CariData(config, parameter, returns):
-
+  
   #FieldStruc = ('DonorId','DonorType','DonorName','PhoneNumber','Email','AddressStreet','Status')
   GridFields = ('DonorId','DonorType','DonorName','PhoneNumber','Email','AddressStreet','Status','DonorIntId','NPWP','NPWZ','MarketerId','MarketerName')
 
@@ -26,8 +26,16 @@ def CariData(config, parameter, returns):
     #corporate = helper.CreateObject('Corporate')
     #login_context = corporate.LoginContext
     #CabangInfo = corporate.GetCabangInfo(login_context.Kode_Cabang)
-    BranchId = int(config.SecurityContext.GetUserInfo()[2])
-    addParam += ' and branch_id=%d' % BranchId
+    UserInfo = config.SecurityContext.GetUserInfo()
+    BranchId = int(UserInfo[2])
+    #addParam += ' and branch_id=%d' % BranchId
+    
+    GroupBranchCode = str(UserInfo[3])
+    addParam += " and exists( \
+                         select 1 from transaction.branch tb \
+                         where tb.BranchId=a.branch_id and \
+                          GroupBranchCode= '%s' ) "% GroupBranchCode
+
 
 
   FieldFilter = { 'DonorId' : 'donor_no',
