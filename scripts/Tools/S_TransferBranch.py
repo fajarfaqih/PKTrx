@@ -401,8 +401,8 @@ def CashOut(config, params):
   
   request['Rate'] = oTransaction.Rate
   request['CurrencyCode'] = '000'
-  request['RateCash'] = oTransaction.RateCash
-  request['RateBank'] = oTransaction.RateBank
+  request['RateCash'] = 1.0
+  request['RateBank'] = 1.0
 
   request['BankAccountNo'] = oTransaction.GetFieldByName('LBank.AccountNo')
   request['AssetCode'] = oTransaction.GetFieldByName('LAsset.Account_Code')
