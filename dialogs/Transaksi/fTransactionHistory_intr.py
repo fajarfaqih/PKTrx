@@ -24,8 +24,8 @@ class fTransactionHistory:
     if SPVMode :
       self.form.Caption += ' (Supervisor)'
     else:
-      self.pBatch_IsAllCabang.visible = 1
-      self.pBatch_LBranch.enabled = 1
+      self.pBatch_IsAllCabang.visible = 0
+      self.pBatch_LBranch.enabled = 0
     # end if.else
     
     IsHeadOffice = (uipData.BranchCode == uipData.HeadOfficeCode)
@@ -229,8 +229,8 @@ class fTransactionHistory:
       raise 'PERINGATAN','Transaksi Saldo Awal tidak dapat diubah / dihapus menggunakan form ini.\n' \
                          'Silahkan gunakan form Saldo Awal'
 
-    #if uipTran.BranchCode != self.uipData.BranchCode :
-    #  raise 'PERINGATAN','Anda tidak dapat mengubah / menghapus transaksi milik cabang lain'
+    if uipTran.BranchCode != self.uipData.BranchCode :
+      raise 'PERINGATAN','Anda tidak dapat mengubah / menghapus transaksi milik cabang lain'
 
     if uipTran.AuthStatus == 'T' and not self.uipData.IsSPV :
       if uipTran.Amount > uipData.LimitOtorisasi :
