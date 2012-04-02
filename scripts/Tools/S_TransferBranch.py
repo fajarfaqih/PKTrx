@@ -25,7 +25,8 @@ def DAFScriptMain(config, parameter, returnpacket):
       AddParam = ''
       AddParam += " and inputer = 'SUDIANA' "
       #AddParam += " and TransactionCode = 'SD001' "
-      AddParam += " and TransactionCode not in ('CAR', 'CA')"
+      AddParam += " and TransactionCode not in ('CAR', 'CA') "
+      AddParam += " and BranchCode = '101' "
       #AddParam += " and TransactionNo = 'KM-2011-101-000-0000007' "
 
       # Total Data
@@ -60,19 +61,20 @@ def DAFScriptMain(config, parameter, returnpacket):
         logmessage = "Proses TransactionId %d No Trans %s : " % ( oRes.TransactionId, oTran.TransactionNo)
         WriteLog(config, app, fh, 'DJournal', logmessage)
         
-        Inbox = helper.GetObjectByNames(
-                'InboxTransaction',
-                {'TransactionId': oTran.TransactionId}
-            )
-
-        ph = Inbox.LoadDataPacket(OldBranch)
-        #uideflist.SetCustomReturnDataset(ph)
-        params = ph.Packet
-        # uipart must have TransactionNo member
-        uipTran = params.uipTransaction.GetRecord(0)
-        uipTran.TransactionNo = oTran.TransactionNo
-
         try: 
+          Inbox = helper.GetObjectByNames(
+                  'InboxTransaction',
+                  {'TransactionId': oTran.TransactionId}
+              )
+
+          ph = Inbox.LoadDataPacket(OldBranch)
+          #uideflist.SetCustomReturnDataset(ph)
+          params = ph.Packet
+          # uipart must have TransactionNo member
+          uipTran = params.uipTransaction.GetRecord(0)
+          uipTran.TransactionNo = oTran.TransactionNo
+
+          
           if oTran.TransactionCode =='SD001' : 
             FundCollection(config, params)
           elif oTran.TransactionCode =='DD001' : 
