@@ -73,8 +73,11 @@ def DAFScriptMain(config, params, returns):
           #TotalDebet = 0.0
           #TotalCredit = 0.0 
 
+          y, m, d = resSQL.Actualdate[:3]
+          TanggalTrans = config.FormatDateTime('dd mmm yyyy',config.ModLibUtils.EncodeDate(y, m, d))
+
           workbook.SetCellValue(row , 1, str(resSQL.TransactionNo))
-          workbook.SetCellValue(row + 1  , 1, str(resSQL.BranchName))
+          workbook.SetCellValue(row + 1  , 1, "%s (%s)" % (str(resSQL.BranchName), TanggalTrans))
           workbook.SetCellValue(row , 2, resSQL.description)
           workbook.SetCellValue(row , 3, "Inputer : %s" % resSQL.Inputer)
           workbook.SetCellValue(row , 4, "Jenis Transaksi : %s" % resSQL.trantypedesc)
