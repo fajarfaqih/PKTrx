@@ -1,3 +1,4 @@
+import com.ihsan.foundation.pobjecthelper as phelper
 import sys
 
 def FormSetDataEx(uideflist,params):
@@ -34,8 +35,15 @@ def FormSetDataEx(uideflist,params):
   
 
 def GetSQLEmployee(config,Name=None):
-  BranchId = int(config.SecurityContext.GetUserInfo()[2])
-  strSQL = "select EmployeeId,EmployeeName from vemployee where branch_id=%d" % BranchId
+  #BranchId = int(config.SecurityContext.GetUserInfo()[2])
+  #strSQL = "select EmployeeId,EmployeeName from vemployee where branch_id=%d" % oBranch.GroupBranchId
+  
+  GroupBranchCode = str(config.SecurityContext.GetUserInfo()[3])
+
+  strSQL = "select EmployeeId,EmployeeName from vemployee a "
+  strSQL += " where exists( select 1 from transaction.branch tb \
+                         where tb.BranchId=a.branch_id and \
+                          GroupBranchCode= '%s' ) "% GroupBranchCode
 
   if Name != None :
     strSQL += " and upper(employeename) like '%%%s%%' " % (Name.upper())
