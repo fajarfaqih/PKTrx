@@ -238,6 +238,11 @@ def CloseDayClick(menu,app) :
   GetAccess(app, menu.Name)
   fAuth = app.CreateForm('tools/fCloseDay', 'tools/fCloseDay', 0, None, None)
   fAuth.Show()
+
+def DepreciationClick(menu,app) :
+  GetAccess(app, menu.Name)
+  fTools = app.CreateForm('tools/fDepreciation', 'tools/fDepreciation', 0, None, None)
+  fTools.Show()
   
 def BackDateClick(menu,app) :
   #GetAccess(app, menu.Name)

@@ -634,6 +634,13 @@ document <
           OnClick='BackDateClick'
           AllowedGroups='ADM;SPV'
         >, object:rmn::MenuItem<
+          Caption='-'
+        >, object:rmn::MenuItem<
+          Name='TR0037'
+          Caption='Proses Penyusutan'
+          OnClick='DepreciationClick'
+          AllowedUsers='SYSTEM'
+        >, object:rmn::MenuItem<
           Caption='Script Execute'
           OnClick='ScriptTestClick'
           AllowedUsers='OP001;SYSTEM;SUDIANA'

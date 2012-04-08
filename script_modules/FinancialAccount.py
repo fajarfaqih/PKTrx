@@ -763,10 +763,11 @@ class DepreciableAsset(FinancialAccount):
   
   def SetInitialProcessDate(self):
     libUtils = self.Config.ModLibUtils
-    
     y, m, d = self.OpeningDate[:3]    
-    self.TanggalProsesBerikut = libUtils.EncodeDate(y, m, 25)    
-    if d > 25:       
+    DepreciationDay = self.Helper.GetObject('ParameterGlobal', 'DEPRECIATION').GetInt()
+
+    self.TanggalProsesBerikut = libUtils.EncodeDate(y, m, DepreciationDay)    
+    if d > DepreciationDay:
       self.TanggalProsesBerikut = libUtils.IncMonth(self.GetAsTDateTime('TanggalProsesBerikut'), 1)      
           
   def SetLifeTime(self,):
@@ -779,7 +780,7 @@ class DepreciableAsset(FinancialAccount):
   def CheckForDepreciation(self):
     return (self.DeprState == 'A' and self.Balance > 0)
   
-  def Depreciation(self,DeprDate):
+  def Depreciation(self, DeprDate):
     self.PenyusutanKe += 1
     if (self.PenyusutanKe < self.LifeTime and 
       self.Balance > self.NominalPenyusutan):
@@ -918,6 +919,8 @@ class CostPaidInAdvance(AmortizedCost):
     DepreciableAsset.OnCreate(self)
   
   def SetContract(self, aContractNo, aContractEndDate):
+    DepreciationDay = self.Helper.GetObject('ParameterGlobal', 'DEPRECIATION').GetInt()
+
     if aContractEndDate <= self.GetAsTDateTime('OpeningDate'):
       raise 'SetContract', 'Tanggal berakhir kontrak tidak valid'
       
@@ -930,8 +933,8 @@ class CostPaidInAdvance(AmortizedCost):
     y2, m2, d2 = libUtils.DecodeDate(aContractEndDate)
     
     self.LifeTime = (y2-y)*12 + (m2-m)
-    self.TanggalProsesBerikut = libUtils.EncodeDate(y, m, 25)
-    if d > 25:
+    self.TanggalProsesBerikut = libUtils.EncodeDate(y, m, DepreciationDay)
+    if d > DepreciationDay:
       self.TanggalProsesBerikut = libUtils.IncMonth(self.TanggalProsesBerikut, 1)
     else:
       self.LifeTime += 1
@@ -940,19 +943,22 @@ class CostPaidInAdvance(AmortizedCost):
     self.HasContract = 'F'
     libUtils = self.Config.ModLibUtils
     y, m, d = libUtils.DecodeDate(libUtils.Now())
-    self.TanggalAkhirPenyusutan = libUtils.EncodeDate(y, 12, 25)
-    if d > 25:
+    
+    DepreciationDay = self.Helper.GetObject('ParameterGlobal', 'DEPRECIATION').GetInt()
+
+    self.TanggalAkhirPenyusutan = libUtils.EncodeDate(y, 12, DepreciationDay)
+    if d > DepreciationDay:
       if m == 12:
         self.LifeTime = 12
-        self.TanggalProsesBerikut = libUtils.EncodeDate(y+1, 1, 25)
-        self.TanggalAkhirPenyusutan = libUtils.EncodeDate(y+1, 12, 25)
+        self.TanggalProsesBerikut = libUtils.EncodeDate(y+1, 1, DepreciationDay)
+        self.TanggalAkhirPenyusutan = libUtils.EncodeDate(y+1, 12, DepreciationDay)
       else:
         self.LifeTime = 12 - m
-        self.TanggalProsesBerikut = libUtils.EncodeDate(y, m+1, 25)
+        self.TanggalProsesBerikut = libUtils.EncodeDate(y, m+1, DepreciationDay)
       #--if.else
     else:
       self.LifeTime = 12 - m + 1
-      self.TanggalProsesBerikut = libUtils.EncodeDate(y, m, 25)
+      self.TanggalProsesBerikut = libUtils.EncodeDate(y, m, DepreciationDay)
     #-- if.else
   
   def GetAccountInterface(self):

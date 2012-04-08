@@ -11,5 +11,5 @@ class fFixedAssetView:
     self.FormContainer.Show()
     
   def SetDetailDescription(self):
-    self.pData_eDescription.Text = str(self.uipFixedAsset.AssetDetailDescription)
+    self.pData_eDescription.Text = str(self.uipFixedAsset.AssetDetailDescription or '')
 

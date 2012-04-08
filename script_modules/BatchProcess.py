@@ -62,14 +62,32 @@ class BPScript(pobject.PObject):
   # static variable
   pobject_classname = 'BPScript'
   pobject_keys = ['BPScripId']
-  
+
+  def GetScriptByScriptName(self):
+    if self.BPScriptName in ['',None] :
+      raise '','\nBatch Script Id : %d\nError : Script Name is empty' % self.BPScriptId
+
+    ScriptName = self.BPScriptName
+    return 
+
+  def GetScriptByScriptPath(self):
+    if self.BPScriptPath in ['',None] :
+      raise '','\nBatch Script Id : %d\nError : Script Path is empty' % self.BPScriptId
+
+    ScriptPath = self.BPScriptPath
+    ScriptName = ScriptPath.replace('/','.').replace('\\','.')
+    return ScriptName
+
   def DoProcess(self,App, Params):
     config = self.Config
     helper = self.Helper
     
     App.ConWriteln("== Process Script %s " % self.BPScriptDescription,"BP")
-    
-    oScript = helper.LoadScript(self.BPScriptName)
+
+    #-- Load Script
+    #oScript = helper.LoadScript(self.GetScriptByScriptName())
+    oScript = helper.LoadScript(self.GetScriptByScriptPath())
+
     oScript.DoProcess(self.Config, App, Params)
 
 #class BPScenario

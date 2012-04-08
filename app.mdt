@@ -1026,7 +1026,7 @@ document <
           MemberName='AccountName'
           PhysicalName='ACCOUNTNAME'
           DataType=$TYPEDECLS['VARCHAR']
-          DataLength=50
+          DataLength=100
         >, object:FieldMember<
           MemberName='Balance'
           PhysicalName='BALANCE'
@@ -4841,7 +4841,7 @@ document <
           MemberName='BPScenarioCode'
           PhysicalName='BPSCENARIOCODE'
           DataType=$TYPEDECLS['VARCHAR']
-          DataLength=10
+          DataLength=15
         >, object:FieldMember<
           MemberName='BPScenarioName'
           PhysicalName='BPSCENARIONAME'
