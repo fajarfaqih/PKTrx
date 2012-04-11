@@ -17,6 +17,7 @@ def FormSetDataEx(uideflist, params) :
     oTran = helper.GetObjectByNames('Transaction',{'TransactionNo' : rec.TransactionNo})
     rec.ActualDate = oTran.GetAsTDateTime('ActualDate')
     rec.TransactionDate = oTran.GetAsTDateTime('TransactionDate')
+    rec.BranchId = int(config.SecurityContext.GetUserInfo()[2])
     
     if rec.CurrencyCode in ['',None]:
       rec.CurrencyCode = '000'

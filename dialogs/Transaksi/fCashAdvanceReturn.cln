@@ -504,7 +504,7 @@ document <
             >, object:rtf::FieldUIElmtSetting<
               Name='LCashAccount.AccountName'
               DataTypeName='VARCHAR'
-              DataLength=50
+              DataLength=100
               UsedAsDisplay=true
               KeyOrDisplayName='AccountName'
               FinalDisplayFieldName='AccountName'
