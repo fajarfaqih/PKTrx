@@ -109,6 +109,19 @@ def SimpanData(config, params, returns):
   try :
     oTransaction = params.uipTransaction.GetRecord(0)
 
+    # Check Source Transaction
+    oRefItemCA = helper.GetObjectByNames(
+        'CATransactItem',
+        {'LTransaction.TransactionNo' : oTransaction.RefTransactionNo}
+    )
+    oReturnInfo = helper.GetObject('CashAdvanceReturnInfo',
+                                        oRefItemCA.LTransaction.TransactionId)
+    if not oReturnInfo.isnull :
+      raise '', "Transaksi UM yang dipilih \
+          sudah memiliki LPJ dengan nomor transaksi : %s " % (
+            oReturnInfo.LReturnTransaction.TransactionNo)
+
+    
     request = {}
     #request['BatchId'] = oTransaction.GetFieldByName('LBatch.BatchId')
     request['ActualDate'] = oTransaction.ActualDate
