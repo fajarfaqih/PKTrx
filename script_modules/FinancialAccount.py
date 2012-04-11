@@ -764,7 +764,7 @@ class DepreciableAsset(FinancialAccount):
   def SetInitialProcessDate(self):
     libUtils = self.Config.ModLibUtils
     y, m, d = self.OpeningDate[:3]    
-    DepreciationDay = self.Helper.GetObject('ParameterGlobal', 'DEPRECIATION').GetInt()
+    DepreciationDay = self.Helper.GetObject('ParameterGlobal', 'DEPR_DAY').GetInt()
 
     self.TanggalProsesBerikut = libUtils.EncodeDate(y, m, DepreciationDay)    
     if d > DepreciationDay:
@@ -919,7 +919,7 @@ class CostPaidInAdvance(AmortizedCost):
     DepreciableAsset.OnCreate(self)
   
   def SetContract(self, aContractNo, aContractEndDate):
-    DepreciationDay = self.Helper.GetObject('ParameterGlobal', 'DEPRECIATION').GetInt()
+    DepreciationDay = self.Helper.GetObject('ParameterGlobal', 'DEPR_DAY').GetInt()
 
     if aContractEndDate <= self.GetAsTDateTime('OpeningDate'):
       raise 'SetContract', 'Tanggal berakhir kontrak tidak valid'
@@ -944,7 +944,7 @@ class CostPaidInAdvance(AmortizedCost):
     libUtils = self.Config.ModLibUtils
     y, m, d = libUtils.DecodeDate(libUtils.Now())
     
-    DepreciationDay = self.Helper.GetObject('ParameterGlobal', 'DEPRECIATION').GetInt()
+    DepreciationDay = self.Helper.GetObject('ParameterGlobal', 'DEPR_DAY').GetInt()
 
     self.TanggalAkhirPenyusutan = libUtils.EncodeDate(y, 12, DepreciationDay)
     if d > DepreciationDay:
