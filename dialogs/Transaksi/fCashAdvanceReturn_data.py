@@ -117,8 +117,7 @@ def SimpanData(config, params, returns):
     oReturnInfo = helper.GetObject('CashAdvanceReturnInfo',
                                         oRefItemCA.LTransaction.TransactionId)
     if not oReturnInfo.isnull :
-      raise '', "Transaksi UM yang dipilih \
-          sudah memiliki LPJ dengan nomor transaksi : %s " % (
+      raise '', "Transaksi UM yang dipilih sudah memiliki LPJ dengan nomor transaksi : %s " % (
             oReturnInfo.LReturnTransaction.TransactionNo)
 
     
