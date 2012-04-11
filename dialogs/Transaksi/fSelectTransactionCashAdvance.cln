@@ -42,8 +42,8 @@ document <
       OnSetData='OnSetData'
     >}Containers={object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=240
-      Height=96
+      Width=489
+      Height=329
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dualsplit2']
       InversedAlign=true
@@ -128,8 +128,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit2'
-      Width=240
-      Height=96
+      Width=489
+      Height=294
       Container1=$CONTAINERS['pFilter']
       Container2=$CONTAINERS['gCATrans']
     >, object:rtf::Grid<
@@ -155,7 +155,7 @@ document <
             >, object:rtf::FieldUIElmtSetting<
               Name='LFinancialAccount.AccountName'
               DataTypeName='VARCHAR'
-              DataLength=50
+              DataLength=100
               UsedAsDisplay=true
               KeyOrDisplayName='AccountName'
               FinalDisplayFieldName='AccountName'

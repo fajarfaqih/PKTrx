@@ -49,8 +49,8 @@ class fSelectTransactionCashAdvance:
     self.form.SetDataFromQuery('uipCATransactItem',
          " \
          LCashAdvanceAccount.EmployeeIdNumber = %d  \
-         and LTransaction.TransactionDate >= '%s' \
-         and LTransaction.TransactionDate <= '%s' \
+         and LTransaction.ActualDate >= '%s' \
+         and LTransaction.ActualDate <= '%s' \
          %s " % ( uipFilter.EmployeeId, sBegin, sEnd, AddParam) ,
          '')
     return
