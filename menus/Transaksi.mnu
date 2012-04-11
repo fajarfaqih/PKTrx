@@ -651,7 +651,7 @@ document <
         >, object:rmn::MenuItem<
           Caption='List Transaksi Yang Salah'
           OnClick='ListFaultTransClick'
-          AllowedUsers='OP001;SYSTEM'
+          AllowedUsers='OP001;SYSTEM;RETNO.RIYANTI'
         >}AllowedUsers='OP001;SYSTEM;SUDIANA'
       AllowedGroups='ADM;SPV'
     >, object:rmn::MenuItem<
