@@ -40,7 +40,9 @@ def FormSetDataEx(uideflist, params) :
     TotalRec = uideflist.uipTransactionItem.Dataset.RecordCount
     for idx in range(TotalRec):
       recDetail = uideflist.uipTransactionItem.Dataset.GetRecord(idx)
-      if recDetail.FundEntity == 1 and recDetail.Ashnaf == 'L' :
+      if ( recDetail.ItemType == 'D' and
+           recDetail.FundEntity == 1 and
+           recDetail.Ashnaf == 'L' ):
         recDetail.Ashnaf = 'F'
 
     return
