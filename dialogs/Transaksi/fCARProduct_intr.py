@@ -38,8 +38,17 @@ class fCARProduct:
 
   def CheckInput(self):
     uipData = self.uipData
+
+    self.form.CommitBuffer()
     if uipData.Amount <= 0.0 :
       raise 'PERINGATAN','Nilai Transaksi tidak boleh < 0.0'
+
+    if uipData.FundEntity == 1 and uipData.Ashnaf == 'L' :
+      raise 'PERINGATAN', "Untuk Jenis Dana Zakat, pemilihan Ashnaf Tidak Boleh Memilih 'Lainnya' "
+
+    if uipData.FundEntity != 1 :
+      uipData.Edit()
+      uipData.Ashnaf = 'L'
 
   def OKClick(self,sender):
     self.CheckInput()

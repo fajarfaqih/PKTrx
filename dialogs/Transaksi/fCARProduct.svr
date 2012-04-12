@@ -40,13 +40,13 @@ document <
           DataTypeName='VARCHAR'
           DataLength=1
         >, object:rpclass::TCustomLoadedField<
-          Name='Ashnaf'
-          DataTypeName='varchar'
-          DataLength=1
-        >, object:rpclass::TCustomLoadedField<
           Name='FundEntity'
           DataTypeName='integer'
           DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='Ashnaf'
+          DataTypeName='varchar'
+          DataLength=1
         >, object:rpclass::TCustomLoadedField<
           Name='Amount'
           DataTypeName='double'
