@@ -24,6 +24,7 @@ def FormSetDataEx(uideflist, params) :
       rec.CurrencyName = 'IDR'
       rec.Rate = 1.0
       #rec.AmountEkuivalen = rec.Amount
+    #-- end if
 
     if rec.GetFieldByName('LEmployee.EmployeeName') in ['', None] :
       oTranItem = helper.GetObjectByNames(
@@ -33,7 +34,15 @@ def FormSetDataEx(uideflist, params) :
       if not oTranItem.isnull :
         rec.SetFieldByName('LEmployee.EmployeeId', oTranItem.LCashAdvanceAccount.EmployeeIdNumber)
         rec.SetFieldByName('LEmployee.EmployeeName', oTranItem.LCashAdvanceAccount.AccountName)
+      #-- end if
+    #-- end if
     
+    TotalRec = uideflist.uipTransactionItem.Dataset.RecordCount
+    for idx in range(TotalRec):
+      recDetail = uideflist.uipTransactionItem.Dataset.GetRecord(idx)
+      if recDetail.FundEntity == 1 and recDetail.Ashnaf == 'L' :
+        recDetail.Ashnaf = 'F'
+
     return
 
   Now = int(config.Now())
