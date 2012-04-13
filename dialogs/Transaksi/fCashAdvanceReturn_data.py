@@ -120,6 +120,7 @@ def SimpanData(config, params, returns):
   try :
     oTransaction = params.uipTransaction.GetRecord(0)
 
+    """
     # Check Source Transaction
     oRefItemCA = helper.GetObjectByNames(
         'CATransactItem',
@@ -129,7 +130,32 @@ def SimpanData(config, params, returns):
                                         oRefItemCA.LTransaction.TransactionId)
     if not oReturnInfo.isnull :
       raise '', "Transaksi UM yang dipilih sudah memiliki LPJ dengan nomor transaksi : %s " % (
-            oReturnInfo.LReturnTransaction.TransactionNo)
+            oReturnInfo.LReturnTransaction.TransactionNo)"""
+
+    if oTransaction.ShowMode != 1:
+      # Check Source Transaction
+      oRefItemCA = helper.GetObjectByNames(
+          'CATransactItem',
+          {'LTransaction.TransactionNo' : oTransaction.RefTransactionNo}
+      )
+
+
+      oTran = helper.GetObjectByNames('Transaction',
+         {'TransactionNo' : oTransaction.TransactionNo })
+      
+      RefTransactionId = oRefItemCA.LTransaction.TransactionId
+      ReturnTransactionId = oTran.TransactionId
+      sSQL = "select * from cashadvancereturninfo \
+              where SourceTransactionId=%d \
+              and ReturnTransactionId <> %d " % (RefTransactionId, ReturnTransactionId)
+      
+      resSQL = config.CreateSQL(sSQL).rawresult
+      
+      if not resSQL.Eof :
+        oRetTransaction = helper.GetObject('Transaction', resSQL.ReturnTransactionId)
+        raise '', "Transaksi UM yang dipilih sudah memiliki LPJ dengan nomor transaksi : %s " % (
+            oRetTransaction.TransactionNo)
+      
 
     
     request = {}
