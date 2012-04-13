@@ -38,7 +38,6 @@ def DAFScriptMain(config, params, returns):
               and transactionitemtype ='G' \
               and ( \
                  accountcode like '1%' \
-                 or accountcode like '2%' \
                ) \
             ) \
         order by t.branchcode,t.transactionno, ti.transactionitemid  ; \
