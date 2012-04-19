@@ -118,19 +118,28 @@ class fInternalTransfer :
     SCurrencyCode = uipTran.GetFieldValue('LCashAccountSource.CurrencyCode') or '000'
     DCurrencyCode = uipTran.GetFieldValue('LCashAccountDestination.CurrencyCode') or '000'
 
-    if SCurrencyCode != '000' and DCurrencyCode != '000' :
-      raise 'PERINGATAN','Transaksi antar valas tidak diperbolehkan'
+    if SCurrencyCode != DCurrencyCode and SCurrencyCode != '000' and DCurrencyCode != '000' :
+        raise 'PERINGATAN','Transaksi antar valas tidak diperbolehkan'
 
     uipTran.Edit()
     uipTran.AmountEkuiv = (uipTran.Amount or 0.0) * (uipTran.Rate or 0.0)
 
-    # Jika transaksi antar rupiah
+    # Jika transaksi untuk valuta yang sama
     if (SCurrencyCode == DCurrencyCode) :
-      uipTran.Rate = 1.0
-      uipTran.TranCurrencyCode = '000'
-      uipTran.TranCurrencyName = 'IDR'
-      uipTran.DestAmount = (uipTran.SourceAmount or 0.0)
-      uipTran.Amount = uipTran.DestAmount
+      if SCurrencyCode == '000' :
+        # Jika Transfer rupiah
+        uipTran.Rate = 1.0
+        uipTran.TranCurrencyCode = '000'
+        uipTran.TranCurrencyName = 'IDR'
+        uipTran.DestAmount = (uipTran.SourceAmount or 0.0)
+        uipTran.Amount = uipTran.DestAmount
+      else:
+        # Jika Transfer valas
+        uipTran.Rate = (uipTran.SourceRate or 0.0)
+        uipTran.TranCurrencyCode = SCurrencyCode
+        uipTran.TranCurrencyName = uipTran.GetFieldValue('LCashAccountSource.LCurrency.Short_Name')
+        uipTran.DestAmount = (uipTran.SourceAmount or 0.0)
+        uipTran.Amount = uipTran.DestAmount
 
     # Jika sumber kas adalah valas
     elif SCurrencyCode != '000':
@@ -167,7 +176,7 @@ class fInternalTransfer :
     SCurrencyCode = uipTran.GetFieldValue('LCashAccountSource.CurrencyCode') or '000'
     DCurrencyCode = uipTran.GetFieldValue('LCashAccountDestination.CurrencyCode') or '000'
 
-    if SCurrencyCode != '000' and DCurrencyCode != '000' :
+    if SCurrencyCode != DCurrencyCode and SCurrencyCode != '000' and DCurrencyCode != '000' :
       raise 'PERINGATAN','Transaksi antar valas tidak diperbolehkan'
 
     if (uipTran.Amount or 0.0 ) <= 0.0 :

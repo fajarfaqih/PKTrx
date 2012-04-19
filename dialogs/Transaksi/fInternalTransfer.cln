@@ -42,8 +42,8 @@ document <
       PostLinkValues=true
     >}Containers={object:rtf::DualSplit<
       Name='dsMain'
-      Width=240
-      Height=96
+      Width=785
+      Height=409
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['pTransaction']
       InversedAlign=true
@@ -179,7 +179,7 @@ document <
             >, object:rtf::FieldUIElmtSetting<
               Name='LCashAccountSource.AccountName'
               DataTypeName='VARCHAR'
-              DataLength=50
+              DataLength=100
               UsedAsDisplay=true
               KeyOrDisplayName='AccountName'
               FinalDisplayFieldName='AccountName'
@@ -269,7 +269,7 @@ document <
             >, object:rtf::FieldUIElmtSetting<
               Name='LCashAccountDestination.AccountName'
               DataTypeName='VARCHAR'
-              DataLength=50
+              DataLength=100
               UsedAsDisplay=true
               KeyOrDisplayName='AccountName'
               FinalDisplayFieldName='AccountName'

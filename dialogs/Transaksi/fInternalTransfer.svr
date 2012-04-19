@@ -67,7 +67,7 @@ document <
         >, object:rpclass::TCustomLoadedField<
           Name='LCashAccountSource.AccountName'
           DataTypeName='VARCHAR'
-          DataLength=50
+          DataLength=100
         >, object:rpclass::TCustomLoadedField<
           Name='LCashAccountSource.CurrencyCode'
           DataTypeName='VARCHAR'
@@ -109,7 +109,7 @@ document <
         >, object:rpclass::TCustomLoadedField<
           Name='LCashAccountDestination.AccountName'
           DataTypeName='VARCHAR'
-          DataLength=50
+          DataLength=100
         >, object:rpclass::TCustomLoadedField<
           Name='LCashAccountDestination.CurrencyCode'
           DataTypeName='VARCHAR'
