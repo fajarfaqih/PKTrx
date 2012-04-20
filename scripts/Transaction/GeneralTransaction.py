@@ -731,7 +731,7 @@ def CreateCPIATransactionItem(helper, oTran, params, request, item, isCreateRAK 
   # end if
 
 def CashAdvanceReturn(helper,oTran,oBatch,request,params):
-  FundEntityMap = {1 : 'PAK-Z', 2 : 'PAK-I', 3 : 'PAK-W', 4 : 'PAK-A2'}
+  FundEntityMap = {1 : 'PAK-Z', 2 : 'PAK-I', 3 : 'PAK-W', 4 : 'PAK-A2', 5 : 'PAK-N'}
   
   # Set Transaction Data  
   oTran.ReferenceNo = request[u'ReferenceNo']
@@ -773,6 +773,7 @@ def CashAdvanceReturn(helper,oTran,oBatch,request,params):
   oItemCAR.SetMutation('C', request[u'RefAmount'], aRate)
   oItemCAR.Description = request[u'Description']  
   oItemCAR.SetFundEntity(oRefItemCA.FundEntity)
+
   oItemCAR.SetJournalParameter(FundEntityMap[oRefItemCA.FundEntity or 4] )
   
   oItemCAR.SetReturnInfo(oRefItemCA)
@@ -849,7 +850,7 @@ def CashAdvanceReturn(helper,oTran,oBatch,request,params):
     #-- if.else
   #-- for
   
-  oTran.GenerateTransactionNumber(oCashAccount.CashCode)
+  oTran.GenerateTransactionNumber(oCashAccount.CashCode) 
     
   oTran.SaveInbox(params)
   
