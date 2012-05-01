@@ -72,7 +72,16 @@ def GetTransaction(helper, oBatch, PrefTransactionNo, Description, CurrencyCode 
   
   return oTran  
     
-      
+    
+def ApprovalTransaction(config, oTran) :
+  if oTran.AuthStatus == 'T' :
+      raise 'Authorization', 'Transaksi sudah diotorisasi'
+
+  oTran.AuthStatus = 'T'
+  oTran.AuthAction = authAction
+  oTran.AuthDate   = config.Now()
+  oTran.AuthUser   = config.SecurityContext.InitUser
+
 def CashAccount(config,params):
   app = config.AppObject  
   app.ConCreate('TB')
@@ -347,7 +356,8 @@ def EmployeeAR(config,params):
       oRes.Next()
     #-- while
     #----------
-    oTran.AutoApproval()
+    #oTran.AutoApproval()
+    ApprovalTransaction(config, oTran)
       
     config.Commit() 
   except:
@@ -427,7 +437,8 @@ def ExternalAR(config,params):
       oRes.Next()
     #-- while
     #----------
-    oTran.AutoApproval()
+    #oTran.AutoApproval()
+    ApprovalTransaction(config, oTran)
       
     config.Commit() 
   except:
@@ -514,7 +525,8 @@ def EmployeeInvestment(config,params):
       oRes.Next()
     #-- while
     #----------
-    oTran.AutoApproval()
+    #oTran.AutoApproval()
+    ApprovalTransaction(config, oTran)
       
     config.Commit() 
   except:
@@ -603,7 +615,8 @@ def ExternalInvestment(config,params):
       oRes.Next()
     #-- while
     #----------
-    oTran.AutoApproval()
+    #oTran.AutoApproval()
+    ApprovalTransaction(config, oTran)
       
     config.Commit() 
   except:
@@ -664,7 +677,7 @@ def FixedAsset(config,params):
       oFAAccount.CurrencyCode = aCurrencyCode
       oFAAccount.Qty = 1
       oFAAccount.UangMuka = 0
-      oFAAccount.AssetDetailDescription = recBalance.Description
+      oFAAccount.AssetDetailDescription = recBalance.Description or ''
 
       # Set Kategori Aset
       oFAAccount.AssetCategoryId = LsAssetCategory[recBalance.AssetCategoryId]
@@ -729,7 +742,8 @@ def FixedAsset(config,params):
       oRes.Next()
     #-- while
     #----------
-    oTran.AutoApproval()
+    #oTran.AutoApproval()
+    ApprovalTransaction(config, oTran)
       
     config.Commit() 
   except:
