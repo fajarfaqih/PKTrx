@@ -411,7 +411,7 @@ class InvestmentCategory(pobject.PObject):
         oGLIMember.GLIMemberCode = kode
         oGLIMember.Description = item[0]
         oGLIMember.AccountCode = item[1]
-    
+
 class Investee(pobject.PObject):
   # static variable
   pobject_classname = 'Investee'
@@ -427,7 +427,8 @@ class Investment(AccountReceivable):
     self.InvestmentShare = self.InvestmentAmount // LifeTime
     
   def GetAccountInterface(self):
-    return self.Helper.GetObject('ParameterGlobal', 'GLIINVEST').Get()
+    #return self.Helper.GetObject('ParameterGlobal', 'GLIINVEST').Get()
+    return self.LInvestmentCategory.LGLIContainer.GetAccountInterface('INVEST_ACC').AccountCode
 
 class InvestmentNonEmployee(Investment):
   # static variable
