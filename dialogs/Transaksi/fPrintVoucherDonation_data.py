@@ -48,7 +48,7 @@ def FormSetDataEx(uideflist, parameter):
       # end if else
       
       if IsAllCabang == 'F' :
-        addParam += " and a.BranchCode='%s' " % BranchCode
+        addParam += " and c.GroupBranchCode='%s' " % BranchCode
       # end if
       
       if SearchCategory != 0:
@@ -78,6 +78,8 @@ def FormSetDataEx(uideflist, parameter):
         select a.*,b.accountname from Transaction a \
         left outer join financialaccount b \
         on (a.channelaccountno=b.accountno) \
+        left outer join branch c \
+        on (a.branchcode=c.branchcode) \
         where %s \
         order by %s asc \
         Limit %d " % (addParam,orderBy,LimitData)

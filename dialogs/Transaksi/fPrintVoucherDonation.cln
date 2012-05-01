@@ -356,7 +356,7 @@ document <
           AccessOption=aoReadOnly
           ControlCaption='Keterangan'
           DataTypeName='VARCHAR'
-          DataLength=100
+          DataLength=500
         >, object:rtf::FieldUIElmtSetting<
           Name='Inputer'
           AccessOption=aoReadOnly
