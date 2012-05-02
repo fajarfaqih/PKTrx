@@ -147,8 +147,10 @@ def RegenerateJournalItem(config, parameters, returnpacket):
       
       AddParam = ''
       #AddParam = " and branchcode='%s' " % config.SecurityContext.GetUserInfo()[4]
-      AddParam += " and actualdate between '2011-01-01' and '2011-01-31' "
+      #AddParam += " and actualdate between '2011-01-01' and '2011-01-31' "
       AddParam += " and transactioncode <> 'TB' "
+      AddParam += " and transactioncode in ('INVS','INVSR') "
+
       #AddParam += " and transactionno in ('KM-2011-001-KKP01-0000112','GT-2011-101-000-0000799') "
       #AddParam += " and transactioncode = 'DT' "
       #AddParam += " and amount <= 50000000 "
@@ -167,17 +169,17 @@ def RegenerateJournalItem(config, parameters, returnpacket):
       #          not exists( \
       #             select accountinstance_id from accounting.accountinstance b where a.accountinstance_id=b.accountinstance_id) ) "
       
-      AddParam += " and exists( \
-                    select 1 from \
-                      transaction.transactionitem i , \
-                      transaction.accounttransactionitem a, \
-                      transaction.productaccount b, \
-                      transaction.product c \
-                    where a.transactionitemid=i.transactionitemid \
-                      and a.accountno = b.accountno \
-                      and b.productid = c.productid \
-                      and (b.productid = 123 or productcode like '11901%' ) \
-                      and t.transactionid=i.transactionid)"
+      # AddParam += " and exists( \
+      #               select 1 from \
+      #                 transaction.transactionitem i , \
+      #                 transaction.accounttransactionitem a, \
+      #                 transaction.productaccount b, \
+      #                 transaction.product c \
+      #               where a.transactionitemid=i.transactionitemid \
+      #                 and a.accountno = b.accountno \
+      #                 and b.productid = c.productid \
+      #                 and (b.productid = 123 or productcode like '11901%' ) \
+      #                 and t.transactionid=i.transactionid)"
 
       # AddParam += " and not exists( \
       #         select 1 \
