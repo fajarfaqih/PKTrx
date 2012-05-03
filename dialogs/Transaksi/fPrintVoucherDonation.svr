@@ -16,6 +16,10 @@ document <
           DataTypeName='varchar'
           DataLength=3
         >, object:rpclass::TCustomLoadedField<
+          Name='GroupBranchCode'
+          DataTypeName='varchar'
+          DataLength=10
+        >, object:rpclass::TCustomLoadedField<
           Name='BeginItemNo'
           DataTypeName='integer'
           DataLength=20
@@ -80,6 +84,10 @@ document <
           Name='BranchName'
           DataTypeName='varchar'
           DataLength=30
+        >, object:rpclass::TCustomLoadedField<
+          Name='GroupBranchCode'
+          DataTypeName='varchar'
+          DataLength=5
         >}Mode=imMultiRow
     >, object:rpclass::TPClassUIDef<
       Name='uipTransactionItem'

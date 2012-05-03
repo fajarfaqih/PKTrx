@@ -221,7 +221,7 @@ class fPrintVoucherDonation:
     uipTran = self.uipTransaction
     transactionId = uipTran.TransactionId or 0
     
-    if uipTran.BranchCode != self.uipData.BranchCode :
+    if uipTran.GroupBranchCode != self.uipData.GroupBranchCode :
       raise 'PERINGATAN','Anda tidak dapat mencetak kwitansi milik cabang lain'
       
     if transactionId != 0:

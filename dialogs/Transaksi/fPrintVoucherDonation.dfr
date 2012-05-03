@@ -34,6 +34,11 @@ document <
           Hidden=true
           DataTypeName='varchar'
           DataLength=3
+        >, object:rtf::FieldUIElmtSetting<
+          Name='GroupBranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=10
         >}Name='uipData'
     >, object:rtf::PClassUI<
       Name='uipTransaction'
@@ -377,6 +382,11 @@ document <
           ControlCaption='Nama Cabang'
           DataTypeName='varchar'
           DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='GroupBranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=5
         >}Name='gTransaction'
       Width=785
       Height=227

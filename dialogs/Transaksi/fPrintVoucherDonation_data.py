@@ -18,6 +18,7 @@ def FormSetDataEx(uideflist, parameter):
     rec.SetFieldByName('LBranch.Kode_Cabang',config.securitycontext.GetUserInfo()[4])
     rec.SetFieldByName('LBranch.Nama_Cabang',config.securitycontext.GetUserInfo()[5])
     rec.BranchCode = config.securitycontext.GetUserInfo()[4]
+    rec.GroupBranchCode = config.securitycontext.GetUserInfo()[3]
   else:
     #-- routine untuk SetDataWithParameters
     helper = phelper.PObjectHelper(config, 'default')
@@ -73,9 +74,10 @@ def FormSetDataEx(uideflist, parameter):
 
       orderBy = OrderCategoryList[SortCategory]
       
-      addParam += " and TransactionCode='SD001'"
+      addParam += " and TransactionCode='SD001' "
+      
       sSQL = "\
-        select a.*,b.accountname from Transaction a \
+        select a.*,b.accountname,c.groupbranchcode from Transaction a \
         left outer join financialaccount b \
         on (a.channelaccountno=b.accountno) \
         left outer join branch c \
@@ -119,6 +121,7 @@ def FormSetDataEx(uideflist, parameter):
           rec.IsPostedMir = res.IsPosted
           rec.BranchCode = res.BranchCode
           rec.ChannelName = res.AccountName
+          rec.GroupBranchCode = res.GroupBranchCode
 
           if not BranchList.has_key(rec.BranchCode):
             oBranch = helper.GetObject('Branch',rec.BranchCode)
