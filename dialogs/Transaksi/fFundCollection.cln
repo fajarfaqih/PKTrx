@@ -215,8 +215,8 @@ document <
       BeforeDelete='ItemBeforeDelete'
     >}Containers={object:rtf::MultiSplit<
       Name='msMain'
-      Width=320
-      Height=320
+      Width=800
+      Height=550
       Side1Containers={$CONTAINERS['dualsplit1']
       }Side2Containers={$CONTAINERS['pAction']
       }SpaceContainer=$CONTAINERS['dsTransaction']
@@ -430,7 +430,7 @@ document <
             >, object:rtf::FieldUIElmtSetting<
               Name='LPettyCash.AccountName'
               DataTypeName='VARCHAR'
-              DataLength=50
+              DataLength=100
               UsedAsDisplay=true
               KeyOrDisplayName='AccountName'
               FinalDisplayFieldName='AccountName'
@@ -689,8 +689,8 @@ document <
       RowControlGap=7
     >, object:rtf::MultiPages<
       Name='mpBayar'
-      Width=320
-      Height=320
+      Width=800
+      Height=290
       Pages={object:rtf::Page<
           PageName='pgCash'
           PageTitle='Kas'
@@ -880,8 +880,8 @@ document <
       ControlCharCase=ecUpperCase
     >, object:rtf::DualSplit<
       Name='dsTransaction'
-      Width=240
-      Height=96
+      Width=800
+      Height=311
       Container1=$CONTAINERS['pPaymentType']
       Container2=$CONTAINERS['mpBayar']
     >, object:rtf::DualSplit<
@@ -1034,7 +1034,7 @@ document <
           Width=80
         >}>, object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=240
+      Width=800
       Height=201
       Container1=$CONTAINERS['pDonor']
       Container2=$CONTAINERS['pBatch']
@@ -1290,9 +1290,9 @@ document <
               UsedAsDisplay=true
               KeyOrDisplayName='VolunteerName'
               FinalDisplayFieldName='VolunteerName'
-            >}Restrictions='BranchCode|BranchCode'
+            >}Restrictions='GroupBranchCode|GroupBranchCode'
           OQLText=['select from volunteer '#13#10,
-            '[BranchCode = :BranchCode]'#13#10,
+            '[LBranch.GroupBranchCode = :GroupBranchCode]'#13#10,
             '('#13#10,
             '  VolunteerId, VolunteerName, HomeAddress, MobilePhone,'#13#10,
             '  self'#13#10,

@@ -83,6 +83,11 @@ document <
           Hidden=true
           DataTypeName='integer'
           DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='GroupBranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=5
         >}Name='uipTransaction'
       FillInDefaultValues=true
       AlwaysPostToServer=true
@@ -508,8 +513,8 @@ document <
       ControlCharCase=ecUpperCase
     >, object:rtf::Grid<
       Name='gBankTransactionItem'
-      Width=792
-      Height=132
+      Width=240
+      Height=240
       UIPart=$UIPARTS['uipTransactionItem']
       ControlLeftMargin=8
       ControlTopMargin=8
@@ -824,13 +829,13 @@ document <
     >, object:rtf::DualSplit<
       Name='dsBank'
       Width=792
-      Height=286
+      Height=289
       Container1=$CONTAINERS['pBankTransaction']
       Container2=$CONTAINERS['gBankTransactionItem']
     >, object:rtf::DualSplit<
       Name='dsAsset'
       Width=792
-      Height=286
+      Height=289
       Container1=$CONTAINERS['pAssetTransaction']
       Container2=$CONTAINERS['gAssetTransactionItem']
     >, object:rtf::DualSplit<
@@ -841,8 +846,8 @@ document <
       Container2=$CONTAINERS['gCashTransactionItem']
     >, object:rtf::Grid<
       Name='gAssetTransactionItem'
-      Width=792
-      Height=108
+      Width=240
+      Height=240
       UIPart=$UIPARTS['uipTransactionItem']
       ControlLeftMargin=8
       ControlTopMargin=8
@@ -1224,9 +1229,9 @@ document <
               UsedAsDisplay=true
               KeyOrDisplayName='VolunteerName'
               FinalDisplayFieldName='VolunteerName'
-            >}Restrictions='BranchCode|BranchCode'
+            >}Restrictions='GroupBranchCode|GroupBranchCode'
           OQLText=['select from volunteer '#13#10,
-            '[BranchCode = :BranchCode]'#13#10,
+            '[LBranch.GroupBranchCode = :GroupBranchCode]'#13#10,
             '('#13#10,
             '  VolunteerId, VolunteerName, HomeAddress, MobilePhone,'#13#10,
             '  self'#13#10,

@@ -272,7 +272,7 @@ class fFundDistribution :
     fundEntity = self.uipTransactionItem.FundEntity
     #if fundCategory == 'Z' and sender.Ashnaf == 'L':
     if fundEntity == 1 and sender.Ashnaf == 'L':
-      raise 'Ashnaf', 'Ashnaf zakat harus diisi'
+      raise 'Ashnaf', 'Ashnaf zakat harus diisi (Tidak Boleh Memilih Lainnya)'
     elif fundEntity != 1: # fundCategory != 'Z'
       sender.Ashnaf = 'L'
 

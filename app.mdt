@@ -2220,6 +2220,12 @@ document <
           PhysicalName='BRANCHCODE'
           DataType=$TYPEDECLS['VARCHAR']
           DataLength=5
+        >, object:LinkMember<
+          MemberName='LBranch'
+          AttrLinks={object:AttributeLink<
+              ThisField=$TYPEDECLS['Volunteer'].MEMBERS['BranchCode']
+              OriginPKey=$TYPEDECLS['Branch'].MEMBERS['BranchCode']
+            >}LinkedClass=$TYPEDECLS['Branch']
         >}ClassID='{59716DA5-D1A8-423A-9EA8-E7B361CA4E16}'
     >, object:ClassTypeDecl<
       TypeName='SponsorTransaction'
