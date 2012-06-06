@@ -289,8 +289,8 @@ document <
           DataLength=1
         >, object:rpclass::TCustomLoadedField<
           Name='SponsorId'
-          DataTypeName='varchar'
-          DataLength=11
+          DataTypeName='integer'
+          DataLength=20
         >, object:rpclass::TCustomLoadedField<
           Name='SponsorName'
           DataTypeName='varchar'
@@ -314,7 +314,7 @@ document <
         >, object:rpclass::TCustomLoadedField<
           Name='LCashAccount.AccountName'
           DataTypeName='VARCHAR'
-          DataLength=50
+          DataLength=100
         >, object:rpclass::TCustomLoadedField<
           Name='LCashAccount.CurrencyCode'
           DataTypeName='VARCHAR'

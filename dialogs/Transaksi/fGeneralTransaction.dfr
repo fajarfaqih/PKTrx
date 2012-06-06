@@ -67,13 +67,13 @@ document <
       BeforeDelete='ItemBeforeDelete'
     >}Containers={object:rtf::DualSplit<
       Name='dsMain'
-      Width=668
-      Height=545
+      Width=240
+      Height=96
       Container1=$CONTAINERS['dsTransaction']
       Container2=$CONTAINERS['mpItem']
     >, object:rtf::DualSplit<
       Name='dsTransaction'
-      Width=668
+      Width=240
       Height=145
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['pTransaction']
@@ -249,8 +249,8 @@ document <
       ControlCharCase=ecUpperCase
     >, object:rtf::MultiPages<
       Name='mpItem'
-      Width=668
-      Height=399
+      Width=320
+      Height=320
       Pages={object:rtf::Page<
           PageName='pgMainItem'
           PageTitle='Rincian Transaksi'
@@ -985,8 +985,8 @@ document <
           Name='SponsorId'
           ReadOnlyControl=true
           ControlCaption='Sponsor'
-          DataTypeName='varchar'
-          DataLength=11
+          DataTypeName='integer'
+          DataLength=20
         >, object:rtf::FieldUIElmtSetting<
           Name='SponsorName'
           ControlCaption='-'
@@ -1071,7 +1071,7 @@ document <
           Name='SponsorName'
           Layout=clNextSide
           Top=64
-          Left=215
+          Left=236
           Color=0
           ControlCaption='-'
           CharCase=ecUpperCase
