@@ -643,7 +643,7 @@ document <
         >, object:rmn::MenuItem<
           Caption='Script Execute'
           OnClick='ScriptTestClick'
-          AllowedUsers='OP001;SYSTEM;SUDIANA'
+          AllowedUsers='OP001;SYSTEM;SUDIANA;PURWANTI'
         >, object:rmn::MenuItem<
           Caption='Long Script Execute'
           OnClick='LongScriptTestClick'
@@ -652,7 +652,7 @@ document <
           Caption='List Transaksi Yang Salah'
           OnClick='ListFaultTransClick'
           AllowedUsers='OP001;SYSTEM;RETNO.RIYANTI'
-        >}AllowedUsers='OP001;SYSTEM;SUDIANA'
+        >}AllowedUsers='OP001;SYSTEM;SUDIANA;PURWANTI'
       AllowedGroups='ADM;SPV'
     >, object:rmn::MenuItem<
       Caption='Batch Process'
