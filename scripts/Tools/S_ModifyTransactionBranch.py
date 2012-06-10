@@ -3,6 +3,7 @@ import com.ihsan.foundation.pobjecthelper as phelper
 import simplejson
 
 OldBranch = '101'
+INPUTER = 'PURWANTI'
 
 def DAFScriptMain(config, parameter, returnpacket):
   # config: ISysConfig object
@@ -23,10 +24,10 @@ def DAFScriptMain(config, parameter, returnpacket):
       TranHelper = helper.LoadScript('Transaction.TransactionHelper')      
       
       AddParam = ''
-      AddParam += " and inputer = 'SUDIANA' "
-      #AddParam += " and TransactionCode = 'SD001' "
-      AddParam += " and TransactionCode not in ('CAR', 'CA') "
-      AddParam += " and BranchCode = '101' "
+      AddParam += " and inputer = '%s' " % INPUTER
+      AddParam += " and TransactionCode in ('SD001','DD001','CO') "
+      #AddParam += " and TransactionCode not in ('CAR', 'CA') "
+      AddParam += " and BranchCode = '%s' " % OldBranch
       #AddParam += " and TransactionNo = 'KM-2011-101-000-0000007' "
 
       # Total Data
