@@ -25,7 +25,7 @@ def DAFScriptMain(config, parameter, returnpacket):
       
       AddParam = ''
       AddParam += " and inputer = '%s' " % INPUTER
-      AddParam += " and TransactionCode in ('SD001','DD001','CO') "
+      AddParam += " and TransactionCode in ('SD001','DD001','CA') "
       #AddParam += " and TransactionCode not in ('CAR', 'CA') "
       AddParam += " and BranchCode = '%s' " % OldBranch
       #AddParam += " and TransactionNo = 'KM-2011-101-000-0000007' "
@@ -235,7 +235,7 @@ def FundDistribution(config, params):
   request['ActualDate'] = oTransaction.ActualDate
   
   
-  request['Rate'] = oTransaction.Rate
+  request['Rate'] = oTransaction.Rate or 1.0
   request['BankAccountNo'] = oTransaction.GetFieldByName('LBank.AccountNo')
   request['AssetCode'] = oTransaction.GetFieldByName('LAsset.Account_Code')
   request['AssetName'] = oTransaction.GetFieldByName('LAsset.Account_Name')
