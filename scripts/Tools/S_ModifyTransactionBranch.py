@@ -25,7 +25,7 @@ def DAFScriptMain(config, parameter, returnpacket):
       
       AddParam = ''
       AddParam += " and inputer = '%s' " % INPUTER
-      AddParam += " and TransactionCode in ('SD001','DD001','CA') "
+      AddParam += " and TransactionCode in ('CA') "
       #AddParam += " and TransactionCode not in ('CAR', 'CA') "
       AddParam += " and BranchCode = '%s' " % OldBranch
       #AddParam += " and TransactionNo = 'KM-2011-101-000-0000007' "
@@ -507,11 +507,11 @@ def CashAdvance(config, params):
   request['EmployeeId'] = oTransaction.EmployeeId #oTransaction.GetFieldByName('LEmployee.Nomor_Karyawan')
   request['EmployeeName'] = oTransaction.EmployeeName
   request['CashAccountNo'] = oTransaction.GetFieldByName('LCashAccount.AccountNo')
-  request['CurrencyCode'] = oTransaction.CurrencyCode #GetFieldByName('LCashAccount.CurrencyCode')
+  request['CurrencyCode'] = '000' #GetFieldByName('LCashAccount.CurrencyCode')
   request['Amount'] = oTransaction.Amount
   request['ReferenceNo'] = oTransaction.ReferenceNo
   request['Description'] = oTransaction.Description
-  request['Rate'] = oTransaction.Rate
+  request['Rate'] = 1.0
   request['Inputer'] = config.SecurityContext.InitUser
   request['BranchCode'] = BranchCode
   request['TransactionNo'] = oTransaction.TransactionNo
@@ -520,7 +520,10 @@ def CashAdvance(config, params):
   request['BudgetId'] = oTransaction.BudgetId or 0
   request['FundEntity'] = oTransaction.FundEntity or 4
   request['DistributionTransferId'] = oTransaction.DistributionId or 0
-  request['ActualDate'] = oTransaction.ActualDate
+  y , m, d = oTransaction.GetFieldByName('LBatch.BatchDate')[:3]
+  request['ActualDate'] = config.ModLibUtils.EncodeDate(y, m, d)
+  request['ProductAccountNo'] = ''
+
   
   sRequest = simplejson.dumps(request)
 
