@@ -45,8 +45,8 @@ class fSaldoAwal:
 
     filename = uipData.FileName
     if AccountType == 1 :
-      if uipData.UserId != 'SYSTEM':
-        raise '','Untuk Upload Saldo Awal Kas dan Bank di non aktifkan'
+      #if uipData.UserId != 'SYSTEM':
+      #  raise '','Untuk Upload Saldo Awal Kas dan Bank di non aktifkan'
       param = self.ConvertFileToPacket1(ph,filename)
     elif AccountType == 2 :
       param = self.ConvertFileToPacket2(ph,filename)
@@ -591,7 +591,7 @@ class fSaldoAwal:
         recBalance = dsBalance.AddRecord()
         recBalance.AssetCategoryId = int(workbook.GetCellValue(row, 2))
         recBalance.AssetName = str(workbook.GetCellValue(row, 3))
-        recBalance.Description = str(workbook.GetCellValue(row, 4))
+        recBalance.Description = str(workbook.GetCellValue(row, 4) or '')
         recBalance.StartDate = workbook.GetCellValue(row, 5)
         recBalance.Amount = workbook.GetCellValue(row, 6)
         recBalance.DeprAmount = workbook.GetCellValue(row, 7)
