@@ -304,7 +304,8 @@ def GetListInvestmentCategory(config):
   return ListInvestmentCat
 
 def GetListEmployeeInvestment( config, returns):
-
+  helper = phelper.PObjectHelper(config)
+  
   BranchCode = config.SecurityContext.GetUserInfo()[4]
   BranchId = int(config.SecurityContext.GetUserInfo()[2])
   dsListAccount = returns.AddNewDatasetEx(
@@ -322,7 +323,13 @@ def GetListEmployeeInvestment( config, returns):
     ])
   )
 
-  sSQL = "select * from public.sdm_employee where branch_id=%d order by full_name" % BranchId
+
+  sSQL = "select a.*,b.accountno \
+     from public.sdm_employee a \
+           left outer join transaction.investment b on a.id=b.employeeid and investmentcatid=3 \
+     where a.branch_id=%d \
+     order by a.full_name" % BranchId
+
   ds = config.CreateSQL(sSQL).rawresult
   
   StartDate = config.ModLibUtils.EncodeDate(2011,1,1)
@@ -339,6 +346,27 @@ def GetListEmployeeInvestment( config, returns):
     recAccount.LifeTime = 0
     recAccount.Nisbah = 0.0
     
+    # Cek jika sudah pernah ada saldo awal
+    if ds.AccountNo not in [None, ''] :
+      oInvestment = helper.GetObject('InvestmentEmployee', ds.AccountNo)
+      
+      TransactionNo = 'BB-EMPINVS-%s' % (BranchCode)
+      oTranItem = helper.GetObjectByNames('AccountTransactionItem',
+          {'AccountNo' : ds.AccountNo ,
+           'LTransaction.TransactionNo' : TransactionNo ,
+           'LTransaction.TransactionCode' : 'TB' }
+       )
+
+      if not oTranItem.isnull :
+        recAccount.Balance = oTranItem.Amount
+        recAccount.InvestAmount = oInvestment.InvestmentAmount
+        recAccount.Nisbah = oInvestment.InvestmentNisbah
+        recAccount.Nisbah = oInvestment.InvestmentNisbah
+        recAccount.LifeTime = oInvestment.LifeTime
+        recAccount.StartDate = oInvestment.GetAsTDateTime('StartDate')
+        
+      # end if
+
     ds.Next()
   # end while
   
