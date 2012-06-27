@@ -79,7 +79,7 @@ document <
         >, object:rpclass::TCustomLoadedField<
           Name='LCashAccount.AccountName'
           DataTypeName='VARCHAR'
-          DataLength=50
+          DataLength=100
         >, object:rpclass::TCustomLoadedField<
           Name='EmployeeId'
           DataTypeName='integer'

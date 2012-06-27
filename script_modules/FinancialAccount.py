@@ -313,9 +313,12 @@ class EmployeeAccountReceivable(AccountReceivable):
   pobject_classname = 'EmployeeAccountReceivable'
 
   def OnCreate(self, aEmployeeId):
+    aCurrencyCode = '000'
     FinancialAccount.OnCreate(self)
     #self.AccountNo = aEmployeeId
-    self.AccountNo = 'PKPU' + str(aEmployeeId).zfill(7)
+    BranchCode = self.Config.SecurityContext.GetUserInfo()[4]
+
+    self.AccountNo = 'PKPU%s.%s.%s' % ( str(aEmployeeId).zfill(7), BranchCode, aCurrencyCode)
     #self.EmployeeId = str(aEmployeeId)
     self.EmployeeIdNumber = aEmployeeId
 

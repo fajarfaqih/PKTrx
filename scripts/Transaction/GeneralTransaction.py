@@ -28,6 +28,7 @@ def Main(config, srequest,params):
   return GenerateResponse(status,msg,oTran.TransactionNo,FileKwitansi)
 
 def GetBatch(helper,ActualDate):
+
   oBatchHelper = helper.CreateObject('BatchHelper')
   oBatch = oBatchHelper.GetBatchUser(ActualDate)
   return oBatch
@@ -46,6 +47,8 @@ def ExecFunction(TranCode, helper, oTran, oBatch, request, params):
     FileKwitansi = GeneralTransaction(helper,oTran,oBatch,request,params)
   elif TranCode == 'TI' : # Transfer Internal
     FileKwitansi = InternalTransfer(helper,oTran,oBatch,request,params)
+  elif TranCode == 'TIR' : # Transfer RAK
+    FileKwitansi = TransferRAK(helper,oTran,oBatch,request,params)
   elif TranCode == 'PAD' : # Pinjaman Antar Dana
     FileKwitansi = InterFundTransfer(helper,oTran,oBatch,request,params)
   elif TranCode in ['EAR','XAR'] : # Piutang Karyawan
@@ -81,7 +84,7 @@ def CreateTransaction(TranCode, config, srequest, params):
 
   status = 0
   msg = ''
-   
+  
   oBatch = GetBatch(helper,request['ActualDate'])
    
   config.BeginTransaction()
@@ -248,7 +251,7 @@ def GeneralTransaction( helper, oTran, oBatch, request, params):
       #if not oSponsor.isnull  : oSponsor.AddTransaction(oItemPA)
       if item[u'SponsorId'] != 0 :
         oDonor = helper.CreateObject('ExtDonor')
-        oDonor.GetData(item[u'SponsorId'])        
+        oDonor.GetData(item[u'SponsorId'])
         if oDonor.IsSponsor() : oDonor.AddTransaction(oItemPA)
       
     elif aItemType == 'B':
@@ -291,27 +294,32 @@ def InternalTransfer(helper,oTran,oBatch,request,params):
   oTran.CurrencyCode = request[u'TranCurrencyCode']
   oTran.Rate = request[u'Rate']
 
+  # Set Journal Code
+  if request[u'SourceBranchCode'] == request[u'DestBranchCode'] :
+    JournalCode = 'TI10'
+  # -- end if
+    
   # Source Transaction
   oSrcAccount = helper.GetObject('CashAccount',
     str(request[u'SourceAccountNo'])).CastToLowestDescendant()
-  if oSrcAccount.isnull:
+  if oSrcAccount.isnull :
     raise 'Cash/Bank', 'Rekening %s tidak ditemukan' % request[u'AccountNo']
 
   oItemSA = oTran.CreateAccountTransactionItem(oSrcAccount)
   oItemSA.SetMutation('C', request[u'Amount'], request[u'Rate'])
   oItemSA.Description = request[u'Description']
-  oItemSA.SetJournalParameter('TI')
+  oItemSA.SetJournalParameter(JournalCode)
 
   # Destination Transaction
   oDstAccount = helper.GetObject('CashAccount',
     str(request[u'DestAccountNo'])).CastToLowestDescendant()
-  if oDstAccount.isnull:
+  if oDstAccount.isnull :
     raise 'Cash/Bank', 'Rekening %s tidak ditemukan' % request[u'AccountNo']
 
   oItemDA = oTran.CreateAccountTransactionItem(oDstAccount)
   oItemDA.SetMutation('D', request[u'Amount'], request[u'Rate'])
   oItemDA.Description = request[u'Description']
-  oItemDA.SetJournalParameter('TI')
+  oItemDA.SetJournalParameter(JournalCode)
 
   oTran.Amount = request[u'SourceAmount']
   oTran.CurrencyCode = request[u'SourceCurrencyCode']
@@ -324,6 +332,59 @@ def InternalTransfer(helper,oTran,oBatch,request,params):
   return FileKwitansi
   
 ### -------  END INTERNAL TRANSFER -----------------------------------
+
+### -------  TRANSFER RAL -----------------------------------      
+def TransferRAK(helper,oTran,oBatch,request,params):
+  oTran.ReferenceNo = request[u'ReferenceNo']
+  oTran.Description = request[u'Description']
+  oTran.Inputer     = request[u'Inputer']
+  oTran.BranchCode  = request[u'BranchCode']
+  #oTran.TransactionNo = request[u'TransactionNo']
+  oTran.Amount = request[u'Amount']
+  oTran.ActualDate = oBatch.GetAsTDateTime('BatchDate')
+  oTran.CurrencyCode = request[u'TranCurrencyCode']
+  oTran.Rate = request[u'Rate']
+
+  # Set Journal Code
+  if request[u'SourceBranchCode'] == request[u'DestBranchCode'] :
+    JournalCode = 'TI10'
+  # -- end if
+    
+  # Source Transaction
+  oSrcAccount = helper.GetObject('CashAccount',
+    str(request[u'SourceAccountNo'])).CastToLowestDescendant()
+  if oSrcAccount.isnull :
+    raise 'Cash/Bank', 'Rekening %s tidak ditemukan' % request[u'AccountNo']
+
+  oItemSA = oTran.CreateAccountTransactionItem(oSrcAccount)
+  oItemSA.SetMutation('C', request[u'Amount'], request[u'Rate'])
+  oItemSA.Description = request[u'Description']
+  oItemSA.SetJournalParameter(JournalCode)
+
+  # Destination Transaction
+  oDstAccount = helper.GetObject('CashAccount',
+    str(request[u'DestAccountNo'])).CastToLowestDescendant()
+  if oDstAccount.isnull :
+    raise 'Cash/Bank', 'Rekening %s tidak ditemukan' % request[u'AccountNo']
+
+  oItemDA = oTran.CreateAccountTransactionItem(oDstAccount)
+  oItemDA.SetMutation('D', request[u'Amount'], request[u'Rate'])
+  oItemDA.Description = request[u'Description']
+  oItemDA.SetJournalParameter(JournalCode)
+
+  oTran.Amount = request[u'SourceAmount']
+  oTran.CurrencyCode = request[u'SourceCurrencyCode']
+  oTran.Rate = request[u'SourceRate']
+  
+  oTran.GenerateTransactionNumber('000')
+  oTran.SaveInbox(params)
+  FileKwitansi = oTran.GetKwitansi()
+  
+  return FileKwitansi
+  
+### -------  END TRANSFER RAK -----------------------------------
+
+
 
 ### -------  INTERFUND TRANSFER -----------------------------------  
 def InterFundTransfer(helper,oTran,oBatch,request,params):
@@ -379,11 +440,12 @@ def InterFundTransfer(helper,oTran,oBatch,request,params):
 ### ------- EMPLOYEE ACCOUNT RECEIVABLE -----------------------------------  
 def EmployeeAR(helper,oTran,oBatch,request,params):
     FundEntityMap = { 1 : 'AK-Z', 2 : 'AK-I', 3 : 'AK-W', 4 : 'AK-A1'}
-    
+  
+    BranchCode = str(request[u'BranchCode'])  
     oTran.ReferenceNo = request[u'ReferenceNo']
     oTran.Description = request[u'Description']
     oTran.Inputer     = request[u'Inputer']
-    oTran.BranchCode  = request[u'BranchCode']
+    oTran.BranchCode  = BranchCode
     #oTran.TransactionNo = request[u'TransactionNo']
     oTran.Amount = request[u'Amount']
     oTran.CurrencyCode = '000'
@@ -396,14 +458,15 @@ def EmployeeAR(helper,oTran,oBatch,request,params):
       oAccount = helper.GetObjectByNames('EmployeeAccountReceivable',
         {
           'EmployeeIdNumber': employeeId,
-          'CurrencyCode': '000'
+          'CurrencyCode': '000',
+          'BranchCode' : BranchCode
         }
       )
     
       if oAccount.isnull:
         # Create EmployeeAR Account
         oAccount = helper.CreatePObject('EmployeeAccountReceivable', employeeId)
-        oAccount.BranchCode = request[u'BranchCode']
+        oAccount.BranchCode = BranchCode
         oAccount.CurrencyCode = '000'
         oAccount.AccountName  = request[u'EmployeeName']
       #end if  
@@ -418,7 +481,7 @@ def EmployeeAR(helper,oTran,oBatch,request,params):
       if oAccount.isnull:
         # Create EmployeeAR Account
         oAccount = helper.CreatePObject('ExternalAccountReceivable', employeeId)
-        oAccount.BranchCode = request[u'BranchCode']
+        oAccount.BranchCode = BranchCode
         oAccount.CurrencyCode = '000'
         oAccount.AccountName  = request[u'EmployeeName']
       #end if  
@@ -452,28 +515,34 @@ def EmployeeAR(helper,oTran,oBatch,request,params):
 def PayEmployeeAR(helper,oTran,oBatch,request,params):
   FundEntityMap = {1 : 'PAK-Z', 2 : 'PAK-I', 3 : 'PAK-W', 4 : 'PAK-A1'}
 
+  BranchCode = str(request[u'BranchCode'])
+
   oTran.ReferenceNo = request[u'ReferenceNo']
   oTran.Description = request[u'Description']
   oTran.Inputer     = request[u'Inputer']
-  oTran.BranchCode  = request[u'BranchCode']
+  oTran.BranchCode  = BranchCode
   #oTran.TransactionNo = request[u'TransactionNo']
   oTran.Amount = request[u'Amount']
   oTran.CurrencyCode = '000'
   oTran.PaidTo = request[u'Casher']
   oTran.ActualDate = oBatch.GetAsTDateTime('BatchDate')
   
+  # Get Branch
+  oBranch = helper.GetObject('Branch', BranchCode)
+
   # EmployeeAR Account
   employeeId = request[u'EmployeeId']
   if request[u'DebtorType'] == 'E' :    
     oAccount = helper.GetObjectByNames('EmployeeAccountReceivable',
       {
         'EmployeeIdNumber': employeeId,
-        'CurrencyCode': '000'
+        'CurrencyCode': '000',
+        'BranchCode' : request[u'BranchCode']
       }
     )
      
     if oAccount.isnull:
-      raise 'PayEAR', 'Karyawan belum memiliki rekening piutang'
+      raise 'PayEAR', 'Karyawan belum memiliki rekening piutang di cabang %s ( %s ) ' % (BranchCode , oBranch.BranchName)
   else:
     
     oAccount = helper.GetObjectByNames('ExternalAccountReceivable',
@@ -553,7 +622,7 @@ def CashAdvance(helper,oTran,oBatch,request,params):
   oItemCAD = oTran.CreateCATransactItem(oAccount)
   oItemCAD.SetMutation('D', request[u'Amount'], aRate)
   oItemCAD.Description = request[u'Description']
-  #oItemCA.Description = 'Uang Muka'
+  oItemCAD.ProductAccountNo = request[u'ProductAccountNo']
   oItemCAD.SetFundEntity(request[u'FundEntity'])
   oItemCAD.SetJournalParameter(JournalCode[request[u'FundEntity']])
   

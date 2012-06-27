@@ -4,7 +4,7 @@ import sys
 def FormSetDataEx(uideflist,params):
   config = uideflist.Config
 
-  # Set List Data Debtor
+  #*** Set List Data Debtor
   strSQL = GetSQLDebtor(config)
   resSQL = config.CreateSQL(strSQL).RawResult
   resSQL.First()
@@ -18,7 +18,8 @@ def FormSetDataEx(uideflist,params):
     resSQL.Next()
   # end while
 
-  # Set List Data Employee
+  #*** Set List Data Employee + Account Receivable
+  
   strSQL = GetSQLEmployee(config)
   resSQL = config.CreateSQL(strSQL).RawResult
   resSQL.First()
@@ -31,6 +32,8 @@ def FormSetDataEx(uideflist,params):
 
     resSQL.Next()
   # end while
+  
+
 
   
 
@@ -40,6 +43,7 @@ def GetSQLEmployee(config,Name=None):
   
   GroupBranchCode = str(config.SecurityContext.GetUserInfo()[3])
 
+  # Employee
   strSQL = "select EmployeeId,EmployeeName from vemployee a "
   strSQL += " where exists( select 1 from transaction.branch tb \
                          where tb.BranchId=a.branch_id and \
@@ -47,7 +51,27 @@ def GetSQLEmployee(config,Name=None):
 
   if Name != None :
     strSQL += " and upper(employeename) like '%%%s%%' " % (Name.upper())
+    
+  # Existing Account Receivable not include Employee list
+
+  strSQL += " union "
+
+  strSQL += " select employeeidnumber as EmployeeId,a.accountname as EmployeeName \
+              from transaction.financialaccount a, transaction.accountreceivable b \
+                  where a.accountno=b.accountno and b.accountreceivabletype='E' \
+                     and exists( select 1 from transaction.branch tb \
+                              where tb.branchcode=a.branchcode and \
+                              GroupBranchCode= '%s' ) " % GroupBranchCode
+  strSQL += "         and not exists( select 1 from transaction.vemployee v, transaction.branch tb \
+                               where tb.branchid=v.branch_id \
+                               and tb.groupbranchcode='%s' \
+                               and v.employeeid=b.employeeidnumber) " % GroupBranchCode
+
+  if Name != None :
+    strSQL += " and upper(accountname) like '%%%s%%' " % (Name.upper())
+
   strSQL += " order by employeename "
+
   return strSQL
 
 

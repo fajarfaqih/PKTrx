@@ -171,8 +171,8 @@ document <
           DataTypeName='varchar'
           DataLength=100
         >}Name='gEmployee'
-      Width=240
-      Height=240
+      Width=392
+      Height=182
       UIPart=$UIPARTS['uipEmployee']
       ControlLeftMargin=8
       ControlTopMargin=8
@@ -191,8 +191,8 @@ document <
       SuppressHelpLine=true
     >, object:rtf::DualSplit<
       Name='dualsplit3'
-      Width=240
-      Height=96
+      Width=392
+      Height=232
       Container1=$CONTAINERS['pFilterEmployee']
       Container2=$CONTAINERS['gEmployee']
     >}FormClassName='fSearchDebtor'

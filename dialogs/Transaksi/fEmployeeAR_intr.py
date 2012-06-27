@@ -92,6 +92,7 @@ class fEmployeeAR :
       
     if form.ShowData():
       uipTran = self.uipTransaction
+      uipTran.Edit()
       if form.mpDebtor.ActivePageIndex == 0 :
         # External Debtor
         uipTran.EmployeeName = form.uipDebtor.DebtorName
