@@ -361,7 +361,6 @@ def GetListEmployeeInvestment( config, returns):
         recAccount.Balance = oTranItem.Amount
         recAccount.InvestAmount = oInvestment.InvestmentAmount
         recAccount.Nisbah = oInvestment.InvestmentNisbah
-        recAccount.Nisbah = oInvestment.InvestmentNisbah
         recAccount.LifeTime = oInvestment.LifeTime
         recAccount.StartDate = oInvestment.GetAsTDateTime('StartDate')
         
@@ -371,13 +370,16 @@ def GetListEmployeeInvestment( config, returns):
   # end while
   
 def GetListInvestee( config, returns):
-
+  helper = phelper.PObjectHelper(config)
+  
   BranchCode = config.SecurityContext.GetUserInfo()[4]
   BranchId = int(config.SecurityContext.GetUserInfo()[2])
   dsListAccount = returns.AddNewDatasetEx(
       'ListAccount',
     ';'.join([
-      'AccountNo: integer',
+      'AccountNo: string',
+      'InvesteeId:integer',
+      'InvesteeName:string',
       'AccountName: string',
       'CatCode: string',
       'CatName: string',
@@ -389,15 +391,21 @@ def GetListInvestee( config, returns):
     ])
   )
 
-  sSQL = "select * from investee where branchcode='%s' order by investeename" % BranchCode
+  sSQL = "select a.*,b.accountno \
+        from investee a \
+            left outer join transaction.investment b on a.investeeid=b.investeeid and investmentcatid<>3 \
+        where branchcode='%s' order by investeename " % BranchCode
+
   ds = config.CreateSQL(sSQL).rawresult
 
   StartDate = config.ModLibUtils.EncodeDate(2011,1,1)
   ListInvestmentCat = GetListInvestmentCategory(config)
   while not ds.Eof:
     recAccount = dsListAccount.AddRecord()
-    recAccount.AccountNo = ds.investeeid
-    recAccount.AccountName = ds.investeename
+    recAccount.InvesteeId = ds.investeeid
+    recAccount.InvesteeName = ds.investeename
+    recAccount.AccountNo = ''
+    recAccount.AccountName = ''
     recAccount.CatCode = 'IS001'
     recAccount.CatName = ListInvestmentCat['IS001']
     recAccount.Balance = 0.0
@@ -405,6 +413,36 @@ def GetListInvestee( config, returns):
     recAccount.StartDate = StartDate
     recAccount.LifeTime = 0
     recAccount.Nisbah = 0.0
+
+    # Cek jika sudah pernah ada saldo awal
+    if ds.AccountNo not in [None, ''] :
+      oInvestment = helper.GetObject('InvestmentNonEmployee', ds.AccountNo)
+
+      TransactionNo = 'BB-EXTINVS-%s' % (BranchCode)
+      oTranItem = helper.GetObjectByNames('AccountTransactionItem',
+          {'AccountNo' : ds.AccountNo ,
+           'LTransaction.TransactionNo' : TransactionNo ,
+           'LTransaction.TransactionCode' : 'TB' }
+       )
+
+      if not oTranItem.isnull :
+        recAccount.Balance = oTranItem.Amount
+        recAccount.AccountNo = oInvestment.AccountNo
+        recAccount.AccountName = oInvestment.AccountName
+        recAccount.InvestAmount = oInvestment.InvestmentAmount
+        recAccount.Nisbah = oInvestment.InvestmentNisbah
+        recAccount.LifeTime = oInvestment.LifeTime
+        recAccount.StartDate = oInvestment.GetAsTDateTime('StartDate')
+      else:
+        recAccount.AccountNo = 'TIDAK ADA SALDO AWAL - HAPUS SAJA'
+        recAccount.AccountName = 'TIDAK ADA SALDO AWAL - HAPUS SAJA'
+
+
+      # end if
+    else:
+      recAccount.AccountNo = 'TIDAK ADA SALDO AWAL - HAPUS SAJA'
+      recAccount.AccountName = 'TIDAK ADA SALDO AWAL - HAPUS SAJA'
+
 
     ds.Next()
   # end while

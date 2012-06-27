@@ -59,7 +59,7 @@ class fSaldoAwal:
     elif AccountType == 6 :
       param = self.ConvertFileToPacket6(ph,filename)
     elif AccountType == 7 :
-      param = self.ConvertFileToPacket6(ph,filename)
+      param = self.ConvertFileToPacketExtInvs(ph,filename)
     elif AccountType == 8 :
       param = self.ConvertFileToPacket8(ph,filename)
     # end if
@@ -325,15 +325,17 @@ class fSaldoAwal:
         row = i + 6
 
         workbook.SetCellValue(row, 1, i+1)
-        workbook.SetCellValue(row, 2, rec.AccountNo)
-        workbook.SetCellValue(row, 3, rec.AccountName)
-        workbook.SetCellValue(row, 4, rec.CatCode)
-        workbook.SetCellValue(row, 5, rec.CatName)
-        workbook.SetCellValue(row, 6, rec.InvestAmount)
-        workbook.SetCellValue(row, 7, rec.Balance)
-        workbook.SetCellValue(row, 8, rec.StartDate)
-        workbook.SetCellValue(row, 9, rec.LifeTime)
-        workbook.SetCellValue(row, 10, rec.Nisbah)
+        workbook.SetCellValue(row, 2, rec.InvesteeId)
+        workbook.SetCellValue(row, 3, rec.InvesteeName)
+        workbook.SetCellValue(row, 4, rec.AccountNo)
+        workbook.SetCellValue(row, 5, rec.AccountName)
+        workbook.SetCellValue(row, 6, rec.CatCode)
+        workbook.SetCellValue(row, 7, rec.CatName)
+        workbook.SetCellValue(row, 8, rec.InvestAmount)
+        workbook.SetCellValue(row, 9, rec.Balance)
+        workbook.SetCellValue(row, 10, rec.StartDate)
+        workbook.SetCellValue(row, 11, rec.LifeTime)
+        workbook.SetCellValue(row, 12, rec.Nisbah)
 
         i += 1
       # end of while
@@ -505,6 +507,63 @@ class fSaldoAwal:
         recBalance.AccountNo = int(workbook.GetCellValue(row, 2))
         recBalance.AccountName = str(workbook.GetCellValue(row, 3))
         recBalance.Balance = workbook.GetCellValue(row, 4)
+
+        row += 1
+      # end while
+    finally:
+      workbook = None
+
+    return ph
+    
+  def ConvertFileToPacketExtInvs(self,ph,filename):
+    app = self.app
+    dsBalance = ph.Packet.AddNewDatasetEx(
+      'BalanceData',
+      ';'.join([
+        'InvesteeId:integer',
+        'InvesteeName:string',
+        'AccountNo:string',
+        'AccountName:string',
+        'CatCode: string',
+        'CatName: string',
+        'InvestAmount: float',
+        'Balance: float',
+        'StartDate: datetime',
+        'LifeTime: integer',
+        'Nisbah: float',
+        'FundEntity: integer',
+      ])
+    )
+
+    workbook = pyFlexcel.Open(filename)
+    workbook.ActivateWorksheet('data')
+    try:
+      row = 6
+      while workbook.GetCellValue(row, 1) not in ['',None]:
+        recBalance = dsBalance.AddRecord()
+        
+        recBalance.InvesteeId = int(workbook.GetCellValue(row, 2))
+        recBalance.InvesteeName = str(workbook.GetCellValue(row, 3))
+        recBalance.AccountNo = str(workbook.GetCellValue(row, 4))
+        recBalance.AccountName = str(workbook.GetCellValue(row, 5))
+
+        recBalance.CatCode = str(workbook.GetCellValue(row, 6))
+        recBalance.CatName = str(workbook.GetCellValue(row, 7))
+
+        recBalance.InvestAmount = workbook.GetCellValue(row, 8)
+        if recBalance.InvestAmount <= 0 : raise 'PERINGATAN','Data Nilai Investasi Untuk Data No %d belum diinputkan ' % (row - 5)
+
+        recBalance.Balance = workbook.GetCellValue(row, 9)
+        recBalance.StartDate = workbook.GetCellValue(row, 10)
+
+        recBalance.LifeTime = workbook.GetCellValue(row, 11)
+        if recBalance.LifeTime <= 0 : raise 'PERINGATAN','Data Jangka Waktu Untuk Data No %d belum diinputkan ' % (row - 5)
+
+        recBalance.Nisbah = workbook.GetCellValue(row, 12)
+        if recBalance.Nisbah <= 0 : raise 'PERINGATAN','Data Nisbah Untuk Data No %d belum diinputkan ' % (row - 5)
+
+        recBalance.FundEntity = workbook.GetCellValue(row, 13) or 0
+        if int(recBalance.FundEntity) not in [1,2,3,4,5] : raise 'PERINGATAN','Data Sumber Dana Untuk Data No %d belum diinputkan ' % (row - 5)
 
         row += 1
       # end while

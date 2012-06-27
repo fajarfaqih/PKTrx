@@ -71,14 +71,13 @@ def GetTransaction(helper, oBatch, PrefTransactionNo, Description, CurrencyCode 
   # end if  
   
   return oTran  
-    
-    
+
 def ApprovalTransaction(config, oTran) :
   if oTran.AuthStatus == 'T' :
       raise 'Authorization', 'Transaksi sudah diotorisasi'
 
   oTran.AuthStatus = 'T'
-  oTran.AuthAction = authAction
+  oTran.AuthAction = 'A'
   oTran.AuthDate   = config.Now()
   oTran.AuthUser   = config.SecurityContext.InitUser
 
@@ -471,37 +470,39 @@ def EmployeeInvestment(config,params):
       recBalance = BalanceData.GetRecord(i)
       app.ConWriteln('Proses data ke-%s , %s' %(str(i+1),recBalance.AccountName),'TB')     
       
-      EmployeeId = recBalance.AccountNo
-      oAccount = helper.GetObjectByNames('InvestmentEmployee',{'EmployeeId':EmployeeId})
-      if oAccount.isnull:
-        oAccount = helper.CreatePObject('InvestmentEmployee', EmployeeId)
-        oAccount.BranchCode = aBranchCode
-        oAccount.CurrencyCode = '000'
-      # end if  
-      oAccount.AccountName  = recBalance.AccountName
-      oAccount.FundEntity = 4
-      oAccount.InvestmentAmount = recBalance.InvestAmount
-      oAccount.SetLifeTime(recBalance.LifeTime)
-      oAccount.InvestmentCatId = 3
-      oAccount.StartDate = recBalance.StartDate
-      oAccount.InvestmentNisbah = recBalance.Nisbah
+      if recBalance.InvestAmount not in [None, 0.0]:
+        raise '',recBalance.InvestAmount
+        EmployeeId = recBalance.AccountNo
+        oAccount = helper.GetObjectByNames('InvestmentEmployee',{'EmployeeId':EmployeeId})
+        if oAccount.isnull:
+          oAccount = helper.CreatePObject('InvestmentEmployee', EmployeeId)
+          oAccount.BranchCode = aBranchCode
+          oAccount.CurrencyCode = '000'
+        # end if  
+        oAccount.AccountName  = recBalance.AccountName
+        oAccount.FundEntity = 4
+        oAccount.InvestmentAmount = recBalance.InvestAmount
+        oAccount.SetLifeTime(recBalance.LifeTime)
+        oAccount.InvestmentCatId = 3
+        oAccount.StartDate = recBalance.StartDate
+        oAccount.InvestmentNisbah = recBalance.Nisbah
+          
+        oItem = helper.GetObjectByNames('AccountTransactionItem',
+            {'TransactionId' : oTran.TransactionId,
+             'AccountNo' : oAccount.AccountNo
+            }
+          )
+        if oItem.isnull :
+          oItem = oTran.CreateAccountTransactionItem(oAccount)
+        else:
+          oItem.CancelTransaction()
+        BeginningBalance = recBalance.Balance or 0.0
         
-      oItem = helper.GetObjectByNames('AccountTransactionItem',
-          {'TransactionId' : oTran.TransactionId,
-           'AccountNo' : oAccount.AccountNo
-          }
-        )
-      if oItem.isnull :
-        oItem = oTran.CreateAccountTransactionItem(oAccount)
-      else:
-        oItem.CancelTransaction()
-      BeginningBalance = recBalance.Balance or 0.0
-      
-      oItem.SetMutation('D', BeginningBalance, 1.0)
-      oItem.Description = 'Saldo Awal'
-      oItem.SetJournalParameter('10')
-            
-      TotalAmount += BeginningBalance
+        oItem.SetMutation('D', BeginningBalance, 1.0)
+        oItem.Description = 'Saldo Awal'
+        oItem.SetJournalParameter('10')
+              
+        TotalAmount += BeginningBalance
     # end for
     
     oTran.Amount = TotalAmount
@@ -560,16 +561,32 @@ def ExternalInvestment(config,params):
       recBalance = BalanceData.GetRecord(i)
       app.ConWriteln('Proses data ke-%s , %s' %(str(i+1),recBalance.AccountName),'TB')     
       
-      InvesteeId = recBalance.AccountNo
-      oAccount = helper.GetObjectByNames('InvestmentNonEmployee',{'InvesteeId':InvesteeId})
+      InvesteeId = recBalance.InvesteeId
+      AccountNo = recBalance.AccountNo
+
+      if recBalance.AccountName not in [None, '','None']:
+        AccountName = recBalance.AccountName
+      else :
+        AccountName = recBalance.InvesteeName
+
+      if AccountNo not in [None, '','None'] :
+        oAccount = helper.GetObject('InvestmentNonEmployee', AccountNo)
+      else:
+        oAccount = helper.GetObjectByNames('InvestmentNonEmployee',{'InvesteeId':InvesteeId})
+
       if oAccount.isnull:
         oAccount = helper.CreatePObject('InvestmentNonEmployee', InvesteeId)
         oAccount.BranchCode = aBranchCode
         oAccount.CurrencyCode = '000'
       # end if
-        
-      oAccount.AccountName  = recBalance.AccountName
-      oAccount.FundEntity = 4
+
+      oAccount.AccountName  = AccountName
+      if recBalance.FundEntity in [1,2,3,4,5] :
+        oAccount.FundEntity = recBalance.FundEntity
+      else :
+        oAccount.FundEntity = 4
+      # end if
+
       oAccount.InvestmentAmount = recBalance.InvestAmount
       oAccount.SetLifeTime(recBalance.LifeTime)
       oAccount.InvestmentCatId = 1
