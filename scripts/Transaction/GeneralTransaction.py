@@ -295,9 +295,7 @@ def InternalTransfer(helper,oTran,oBatch,request,params):
   oTran.Rate = request[u'Rate']
 
   # Set Journal Code
-  if request[u'SourceBranchCode'] == request[u'DestBranchCode'] :
-    JournalCode = 'TI10'
-  # -- end if
+  JournalCode = 'TI'
     
   # Source Transaction
   oSrcAccount = helper.GetObject('CashAccount',
