@@ -622,7 +622,7 @@ def CashAdvance(helper,oTran,oBatch,request,params):
   oItemCAD = oTran.CreateCATransactItem(oAccount)
   oItemCAD.SetMutation('D', request[u'Amount'], aRate)
   oItemCAD.Description = request[u'Description']
-  oItemCAD.ProductAccountNo = request[u'ProductAccountNo']
+  #oItemCAD.ProductAccountNo = request[u'ProductAccountNo']
   oItemCAD.SetFundEntity(request[u'FundEntity'])
   oItemCAD.SetJournalParameter(JournalCode[request[u'FundEntity']])
   
