@@ -364,6 +364,10 @@ document <
           Caption='Transaksi RAK'
           MenuItems={object:rmn::MenuItem<
               Name='TR0024'
+              Caption='Transaksi Transfer Dana Antar Cabang...'
+              OnClick='TransferRAKClick'
+            >, object:rmn::MenuItem<
+              Name='TR0024'
               Caption='Transaksi Penyaluran Dana ke Cabang (RAK)...'
               OnClick='BranchDistributionClick'
               AllowedGroups='ADM;SPV;KEU'

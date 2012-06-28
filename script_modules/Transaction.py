@@ -639,7 +639,7 @@ class Transaction(pobject.PObject):
         aItem.Referensi = oItem.TransactionItemId
         aItem.Nomor_Rekening = oItem.RefAccountNo
         aItem.Nama_Rekening  = oItem.RefAccountName
-        
+
         # Kode Account
         if oTCode.AccountBase == 'T':
           accountCode = (oTCode.AccountCode or '').strip()
@@ -650,7 +650,6 @@ class Transaction(pobject.PObject):
 
         elif oTCode.AccountBase == 'P':
           aItem.Kode_Account = oTCode.AccountCode
-          
 
         elif oTCode.AccountBase == 'R' :
           aProductId  = oRes.ProductId
@@ -658,7 +657,6 @@ class Transaction(pobject.PObject):
           oProduk     = helper.GetObject('Product', aProductId)
           aSSL        = oProduk.GetAccountInterface(aKode).AccountCode
           aItem.Kode_Account = aSSL
-          
 
         elif oTCode.AccountBase == 'I' :
           aContId     = oRes.GLIContainerId
@@ -677,12 +675,11 @@ class Transaction(pobject.PObject):
           aSSL        = oTranGLInterface.AccountCode
           aItem.Kode_Account = aSSL
 
-
-        # end if elif  
+        # end if elif
           
         #-- if
         if aItem.Kode_Account == '':
-          raise '',"%d %s %s" % (self.TransactionId, oTCode.AccountBase, aJournalCode)
+          raise '',"Kode Account pada detil transaksi tidak ditemukan (%d %s %s)" % (self.TransactionId, oTCode.AccountBase, aJournalCode)
   
         # cabang
         aSC = oTCode.BranchBase
@@ -928,7 +925,7 @@ class Transaction(pobject.PObject):
       EMPMUTATIONTYPE = {'EAR' : 'D','PEAR' : 'C','XAR' : 'D','PXAR' : 'C'}
       EmpMutationType = EMPMUTATIONTYPE[self.TransactionCode]        
       return Voucher.GetKwitansiPiutang(self,EmpMutationType)
-    elif self.TransactionCode in ['TI'] :
+    elif self.TransactionCode in ['TI','TIR'] :
       return Voucher.GetKwitansiTransferInternal(self)  
     else:
       raise '','Transaksi Tidak Memiliki Fungsi Cetak Kwitansi'          

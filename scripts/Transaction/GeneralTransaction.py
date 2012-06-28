@@ -331,45 +331,120 @@ def InternalTransfer(helper,oTran,oBatch,request,params):
   
 ### -------  END INTERNAL TRANSFER -----------------------------------
 
-### -------  TRANSFER RAL -----------------------------------      
-def TransferRAK(helper,oTran,oBatch,request,params):
+### -------  TRANSFER RAK -----------------------------------      
+def TransferRAK(helper, oTran, oBatch, request, params):
   oTran.ReferenceNo = request[u'ReferenceNo']
+
+  CurrencyCode = request[u'TranCurrencyCode']
+  aAmount = request[u'Amount']
+  aRate = request[u'Rate']
+
   oTran.Description = request[u'Description']
   oTran.Inputer     = request[u'Inputer']
   oTran.BranchCode  = request[u'BranchCode']
   #oTran.TransactionNo = request[u'TransactionNo']
   oTran.Amount = request[u'Amount']
   oTran.ActualDate = oBatch.GetAsTDateTime('BatchDate')
-  oTran.CurrencyCode = request[u'TranCurrencyCode']
+  oTran.CurrencyCode = CurrencyCode
   oTran.Rate = request[u'Rate']
-
+  
+  
   # Set Journal Code
-  if request[u'SourceBranchCode'] == request[u'DestBranchCode'] :
-    JournalCode = 'TI10'
-  # -- end if
+  JournalCode = '15' 
     
-  # Source Transaction
+  # Source Cash Account Transaction
   oSrcAccount = helper.GetObject('CashAccount',
     str(request[u'SourceAccountNo'])).CastToLowestDescendant()
   if oSrcAccount.isnull :
     raise 'Cash/Bank', 'Rekening %s tidak ditemukan' % request[u'AccountNo']
 
   oItemSA = oTran.CreateAccountTransactionItem(oSrcAccount)
-  oItemSA.SetMutation('C', request[u'Amount'], request[u'Rate'])
+  oItemSA.SetMutation('C', aAmount, aRate)
   oItemSA.Description = request[u'Description']
   oItemSA.SetJournalParameter(JournalCode)
 
-  # Destination Transaction
+  # Destination Cash Account Transaction
   oDstAccount = helper.GetObject('CashAccount',
     str(request[u'DestAccountNo'])).CastToLowestDescendant()
   if oDstAccount.isnull :
     raise 'Cash/Bank', 'Rekening %s tidak ditemukan' % request[u'AccountNo']
 
   oItemDA = oTran.CreateAccountTransactionItem(oDstAccount)
-  oItemDA.SetMutation('D', request[u'Amount'], request[u'Rate'])
+  oItemDA.SetMutation('D', aAmount, aRate)
   oItemDA.Description = request[u'Description']
   oItemDA.SetJournalParameter(JournalCode)
 
+  FundEntity = int(request[u'FundEntity'])
+  if FundEntity == 4 : # Sumber Dana Amil
+    # Source
+    oItemFA = oTran.CreateGLTransactionItem('5520904', '000')
+    oItemFA.RefAccountName = 'Pengiriman Transfer Dana'
+    oItemFA.SetMutation('D', aAmount, aRate)
+    oItemFA.Description = request[u'Description']
+    oItemFA.SetJournalParameter(JournalCode)
+
+    # Desctination
+    oItemFA = oTran.CreateGLTransactionItem('4510902', '000')
+    oItemFA.BranchCode = request[u'DestBranchCode']
+    oItemFA.RefAccountName = 'Penerimaan Transfer Dana'
+    oItemFA.SetMutation('C', aAmount, aRate)
+    oItemFA.Description = request[u'Description']
+    oItemFA.SetJournalParameter(JournalCode)
+
+
+  else : # Sumber Dana Non Amil
+    
+    TransferAccountCode = {
+      '4110101' : '4110104',
+      '4210101' : '4210105',
+      '4210102' : '4210106',
+      '4210103' : '4210107',
+      '4220101' : '4220104',
+      '4310101' : '4310104',
+      '4410101' : '4410104',
+      '5110101' : '5110103',
+      '5210101' : '5210105',
+      '5210102' : '5210106',
+      '5210103' : '5210107',
+      '5210201' : '5210203',
+      '5310101' : '5310103',
+      '5410101' : '5410103',
+    }
+
+    # Source Account
+    ProductAccountNo = str(request[u'ProductAccountNo'])
+    oSrcAccount = helper.GetObject('ProductAccount',
+                                    ProductAccountNo).CastToLowestDescendant()
+
+    if oSrcAccount.isnull:
+      raise 'ProductAccount', 'Rekening Produk cabang asal (%s) tidak ditemukan' % request[u'AccountNo']
+    
+    oItemSA = oTran.CreateAccountTransactionItem(oSrcAccount)
+    oItemSA.SetMutation('D', request[u'Amount'], request[u'Rate'])
+    oItemSA.Description = request[u'Description']
+    
+    oItemSA.SetDistributionEntity(request[u'FundEntity'])
+    oItemSA.AccountCode = TransferAccountCode[oItemSA.AccountCode]
+    oItemSA.SetJournalParameter(JournalCode)
+
+    # Destination Account
+    oDstAccount = helper.GetObjectByNames('ProductAccount', 
+                          { 'ProductId' : int(request[u'ProductId']),
+                            'BranchCode' : str(request[u'DestBranchCode']),
+                            'CurrencyCode' : CurrencyCode
+                          }).CastToLowestDescendant()
+
+    if oDstAccount.isnull:
+      raise 'ProductAccount', 'Rekening Produk cabang tujuan (%s) tidak ditemukan' % request[u'AccountNo']
+
+    oItemDA = oTran.CreateAccountTransactionItem(oDstAccount)
+    oItemDA.SetMutation('C', request[u'Amount'], request[u'Rate'])
+    oItemDA.Description = request[u'Description']
+
+    oItemDA.SetCollectionEntity(request[u'FundEntity'])
+    oItemDA.AccountCode = TransferAccountCode[oItemDA.AccountCode]
+    oItemDA.SetJournalParameter(JournalCode)
+    
   oTran.Amount = request[u'SourceAmount']
   oTran.CurrencyCode = request[u'SourceCurrencyCode']
   oTran.Rate = request[u'SourceRate']

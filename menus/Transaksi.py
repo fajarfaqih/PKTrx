@@ -123,6 +123,12 @@ def TransferInternalClick (menu, app):
   ph = app.CreateValues()
   fTran= app.CreateForm('Transaksi/fInternalTransfer', 'Transaksi/fInternalTransfer', 0, ph, None)
   fTran.Show()
+  
+def TransferRAKClick(menu, app):
+  GetAccess(app, menu.Name)
+  ph = app.CreateValues()
+  fTran= app.CreateForm('Transaksi/fTransferRAK', 'Transaksi/fTransferRAK', 0, ph, None)
+  fTran.Show()
 
 def AccountReceivableClick (menu, app):
   GetAccess(app, menu.Name)

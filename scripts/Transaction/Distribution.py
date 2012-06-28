@@ -210,7 +210,7 @@ def BranchCashDistribution(helper,oTran,oBatch,request,params):
   aInputer    = request[u'Inputer'] 
   aBranchCode = request[u'BranchCode']
   aValuta = request[u'CashCurrency']
-  aRate = request[u'Rate']
+  aRate = request[u'Rate'] or 1.0
   aPeriodId = request[u'PeriodId']
   
   oTran.Inputer     = aInputer
