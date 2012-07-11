@@ -16,6 +16,7 @@ def FormSetDataEx(uideflist, parameter):
     #=== Routine Saat Form Ditampilkan
     rec = uideflist.uipData.Dataset.AddRecord()
     rec.UserId = config.securitycontext.InitUser
+
     Now = config.Now()
     rec.BeginDate = int(Now)
     rec.EndDate = int(Now)
@@ -38,13 +39,17 @@ def FormSetDataEx(uideflist, parameter):
     if recAcc.Is_Err : raise '',recAcc.Err_Message
 
     rec.LastCloseDate = int(recAcc.LastCloseDate)
-    
+
+    # Cek Super User
+    LsPeran = config.SecurityContext.GetUserInfo()[7]
+    rec.IsSuperUser = (LsPeran.find('SUTRAN') != -1)
     
   else:
-    #-- Routine untuk SetDataWithParameters
+    #-- Routine untuk SetDataWithParameters saat menampilkan transaksi
     
     helper = phelper.PObjectHelper(config)
     data = parameter.FirstRecord
+    aUserInfo = config.securitycontext.GetUserInfo()
 
 #    batchId = int(data.BatchId)
 #    beginNo = int(data.BeginNo)
@@ -52,6 +57,7 @@ def FormSetDataEx(uideflist, parameter):
     EndDate = data.EndDate
     IsAllCabang = data.IsAllCabang
     BranchCode = data.BranchCode
+    aGroupBranchCode = str(aUserInfo[3])
     SearchCategory = data.SearchCategory
     SearchText = data.SearchText
     IsSPV = data.IsSPV

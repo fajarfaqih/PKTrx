@@ -298,10 +298,11 @@ class fTransactionHistory:
 
     self.CheckIsProcessAllowed()
     
-    #if uipTran.BranchCode != self.uipData.BranchCode :
-    #  raise 'PERINGATAN','Anda tidak dapat menghapus transaksi milik cabang lain'
+    if ( uipTran.Inputer.upper() != self.uipData.UserId.upper()
+         and not self.uipData.IsSuperUser ):
+      raise 'PERINGATAN','Transaksi tidak dapat dihapus, karena transaksi adalah milik user lain'
       
-    #if uipTran.AuthStatus == 'T' and not self.uipData.IsSPV:
+    #if uipTran.AuthStatus == 'T' and not self.uipData.IsSuperUser :
     #  raise 'PERINGATAN','Transaksi ini tidak dapat dihapus karena telah di otorisasi.\nSilahkan hubungi supervisor cabang anda'
 
     if app.ConfirmDialog('Yakin Hapus Transaksi'):

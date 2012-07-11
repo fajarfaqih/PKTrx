@@ -48,6 +48,11 @@ document <
           Hidden=true
           DataTypeName='timestamp'
           DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='IsSuperUser'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
         >}Name='uipData'
     >, object:rtf::PClassUI<
       Name='uipTransaction'

@@ -36,6 +36,10 @@ document <
           DataTypeName='timestamp'
           DataLength=20
         >, object:rpclass::TCustomLoadedField<
+          Name='IsSuperUser'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
           Name='BeginItemNo'
           DataTypeName='integer'
           DataLength=20
