@@ -1249,6 +1249,13 @@ def CostPaidInAdvance(helper,oTran,oBatch,request,params):
   oItem.SetMutation('D', request[u'Amount'], 1.0)
   oItem.Description = request[u'Description']
   oItem.SetJournalParameter('BDD01')
+
+  aBudgetId = request[u'BudgetId'] 
+  
+  if aBudgetId != 0 :
+    oBudget = helper.GetObject('Budget',aBudgetId)
+    oItem.CreateBudgetTransaction(oBudget.BudgetId)
+  # endif 
   
   # Destination Transaction
   oCashAccount = helper.GetObject('CashAccount',

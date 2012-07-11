@@ -51,6 +51,8 @@ def SimpanData(config, params, returns):
     request['PaidTo'] = oTransaction.PaidTo
     request['CostAccountNo'] = oTransaction.GetFieldByName('LCostAccount.Account_Code')
     request['CPIACatId'] = oTransaction.GetFieldByName('LCPIACategory.CPIACatId')
+    request['BudgetCode'] = oTransaction.BudgetCode or ''
+    request['BudgetId'] = oTransaction.BudgetId or 0
     request['HasContract'] = oTransaction.HasContract
     request['ContractNo'] = oTransaction.ContractNo
     request['ContractEndDate'] = oTransaction.ContractEndDate

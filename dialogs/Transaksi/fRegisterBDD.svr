@@ -24,6 +24,10 @@ document <
           DataTypeName='integer'
           DataLength=20
         >, object:rpclass::TCustomLoadedField<
+          Name='BudgetId'
+          DataTypeName='integer'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
           Name='TransactionNo'
           DataTypeName='varchar'
           DataLength=30
@@ -71,7 +75,7 @@ document <
         >, object:rpclass::TCustomLoadedField<
           Name='LCashAccount.AccountName'
           DataTypeName='VARCHAR'
-          DataLength=50
+          DataLength=100
         >, object:rpclass::TCustomLoadedField<
           Name='Amount'
           DataTypeName='double'
@@ -97,6 +101,14 @@ document <
         >, object:rpclass::TCustomLoadedField<
           Name='LCostAccount.Account_Name'
           DataTypeName='VARCHAR'
+          DataLength=100
+        >, object:rpclass::TCustomLoadedField<
+          Name='BudgetCode'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
+          Name='BudgetOwner'
+          DataTypeName='varchar'
           DataLength=100
         >, object:rpclass::TCustomLoadedField<
           Name='HasContract'

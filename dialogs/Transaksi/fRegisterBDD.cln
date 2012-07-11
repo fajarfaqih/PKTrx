@@ -32,6 +32,11 @@ document <
           Hidden=true
           DataTypeName='integer'
           DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BudgetId'
+          Hidden=true
+          DataTypeName='integer'
+          DataLength=20
         >}Name='uipTransaction'
       AlwaysPostToServer=true
       PostLinkValues=true
@@ -167,7 +172,7 @@ document <
             >, object:rtf::FieldUIElmtSetting<
               Name='LCashAccount.AccountName'
               DataTypeName='VARCHAR'
-              DataLength=50
+              DataLength=100
               UsedAsDisplay=true
               KeyOrDisplayName='AccountName'
               FinalDisplayFieldName='AccountName'
@@ -252,6 +257,18 @@ document <
           LookupOption=loCustomOQL
           FieldBaseName='LCostAccount'
         >, object:rtf::FieldUIElmtSetting<
+          Name='BudgetCode'
+          ReadOnlyControl=true
+          ControlCaption='Kode Budget'
+          DataTypeName='varchar'
+          DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='BudgetOwner'
+          ReadOnlyControl=true
+          ControlCaption='-'
+          DataTypeName='varchar'
+          DataLength=100
+        >, object:rtf::FieldUIElmtSetting<
           Name='HasContract'
           ControlCaption='Memiliki Kontrak'
           DataTypeName='varchar'
@@ -281,7 +298,7 @@ document <
           DataLength=100
         >}Name='pTransaction'
       Width=537
-      Height=401
+      Height=433
       UIPart=$UIPARTS['uipTransaction']
       Controls={*object:rtf::DBEdit<
           Name='TransactionNo'
@@ -358,9 +375,30 @@ document <
           ControlCaption='Account Biaya'
           LookupField='LCostAccount.Account_Name'
           DisplayLookupField=true
+        >, *object:rtf::DBEdit<
+          Name='BudgetCode'
+          Top=260
+          Left=8
+          Width=67
+          Height=21
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Kode Budget'
+          CharCase=ecUpperCase
+        >, *object:rtf::DBEdit<
+          Name='BudgetOwner'
+          Layout=clNextSide
+          Top=260
+          Left=213
+          Width=216
+          Height=21
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='-'
+          CharCase=ecUpperCase
         >, *object:rtf::DBCheckBox<
           Name='HasContract'
-          Top=260
+          Top=288
           Left=8
           Color=0
           ControlCaption='Memiliki Kontrak'
@@ -368,7 +406,7 @@ document <
           ValueUnchecked='F'
         >, *object:rtf::DBEdit<
           Name='ContractNo'
-          Top=288
+          Top=316
           Left=8
           Width=299
           Height=21
@@ -377,13 +415,13 @@ document <
           CharCase=ecUpperCase
         >, *object:rtf::DBDateEdit<
           Name='ContractEndDate'
-          Top=316
+          Top=344
           Left=8
           Color=0
           ControlCaption='Tanggal berakhir kontrak'
         >, *object:rtf::DBEdit<
           Name='ReferenceNo'
-          Top=344
+          Top=372
           Left=8
           Width=299
           Height=21
@@ -393,7 +431,7 @@ document <
           CharCase=ecUpperCase
         >, *object:rtf::DBEdit<
           Name='Description'
-          Top=372
+          Top=400
           Left=8
           Width=299
           Height=21
@@ -401,6 +439,18 @@ document <
           ControlCaption='Keterangan'
           CaptionWidth=130
           CharCase=ecUpperCase
+        >, object:rtf::Button<
+          Name='bSearchBudget'
+          Layout=clAbsolute
+          Top=265
+          Left=448
+          Width=75
+          Height=21
+          Color=0
+          ControlCaption=''
+          LayoutOrder=11
+          Caption='Cari Budget'
+          OnClick='bSearchBudgetClick'
         >}EqualCaptionWidth=130
       ControlLeftMargin=8
       ControlTopMargin=8

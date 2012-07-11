@@ -3,6 +3,7 @@ KodeTransaksi = ['KK','KM']
 class fRegisterBDD :
   def __init__(self, formObj, parentForm) :
     self.app = formObj.ClientApplication
+    self.fSearchBudget = None
 
   def Show(self , mode = 1):
     uipTran = self.uipTransaction
@@ -32,6 +33,27 @@ class fRegisterBDD :
     if uipTran.GetFieldValue('LCostAccount.Account_Code') in ['',None] :
       raise 'PERINGATAN','Akun Biaya belum dipilih'
 
+  def bSearchBudgetClick(self, sender):
+    uipTran = self.uipTransaction
+    if self.fSearchBudget == None:
+      formname = 'Transaksi/fSelectBudgetCode'
+      form = self.app.CreateForm(formname,formname,0,None,None)
+      self.fSearchBudget = form
+    else:
+      form = self.fSearchBudget
+    # end if
+
+    ActualDate = self.uipTransaction.ActualDate or 0
+    if ActualDate == 0 :
+      raise 'Peringatan','Tanggal transaksi belum diinput. Silahkan input tanggal transaksi lebih dahulu'
+
+    if form.GetBudget(ActualDate) == 1:
+      uipTran.Edit()
+      uipTran.BudgetCode = form.BudgetCode
+      uipTran.BudgetOwner = form.BudgetOwner
+      uipTran.BudgetId = form.BudgetId
+    # end if
+    
   def bSimpanClick(self, sender):
     app = self.app
     
