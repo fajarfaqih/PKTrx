@@ -89,7 +89,7 @@ document <
     >, object:rpclass::TPClassUIDef<
       Name='uipCPIA'
       PClassName='CostPaidInAdvance'
-      LoadedFieldList='AccountNo;AccountName;CostAccountNo;NilaiAwal;Balance;OpeningDate'
+      LoadedFieldList='AccountNo;AccountName;CostAccountNo;Description;NilaiAwal;Balance;OpeningDate'
       CustomLoadedFields={object:rpclass::TCustomLoadedField<
           Name='TransactionNo'
           DataTypeName='varchar'

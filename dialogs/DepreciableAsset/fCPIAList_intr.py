@@ -106,6 +106,7 @@ class fCIAList:
           workbook.SetCellValue(row, 7, rec.CostAccountNo)
           workbook.SetCellValue(row, 8, rec.CostAccountName)
           workbook.SetCellValue(row, 9, rec.CPIACatName)
+          workbook.SetCellValue(row, 10, rec.Description)
 
           i += 1
         # end of while

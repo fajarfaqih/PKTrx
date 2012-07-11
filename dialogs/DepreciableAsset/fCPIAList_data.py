@@ -29,6 +29,7 @@ def FormSetDataEx(uideflist,params):
       oCPIA.SetFieldAt(0, 'PObj:CostPaidInAdvance#AccountNo=%s' % ds.AccountNo)
       oCPIA.AccountNo = ds.AccountNo
       oCPIA.AccountName = ds.AccountName
+      oCPIA.Description = ds.Description
       oCPIA.NilaiAwal = ds.NilaiAwal
       oCPIA.OpeningDate = timeutils.AsTDateTime(config, ds.OpeningDate)
       oCPIA.CostAccountNo = ds.CostAccountNo
@@ -85,6 +86,7 @@ def GetDataCPIA(config,recParam):
     ( AccountNo, \
       AccountName, \
       CostAccountNo, \
+      Description, \
       NilaiAwal, \
       LAccount.Account_Name, \
       OpeningDate, \
@@ -113,6 +115,7 @@ def GetCPIAList(config,params,returns):
       'AccountName: string',
       'NilaiAwal: float',
       'Balance: float',
+      'Description: string' ,
       'TotalPenyusutan: float',
       'OpeningDate: string',
       'TransactionNo: string',
@@ -148,6 +151,7 @@ def GetCPIAList(config,params,returns):
 
       recCPIA.AccountNo = data.AccountNo
       recCPIA.AccountName = data.AccountName
+      recCPIA.Description = data.Description
       recCPIA.NilaiAwal = data.NilaiAwal
       recCPIA.OpeningDate = config.FormatDateTime('dd/mm/yyyy', timeutils.AsTDateTime(config, data.OpeningDate))
       recCPIA.CostAccountNo = data.CostAccountNo

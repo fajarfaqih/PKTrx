@@ -37,8 +37,8 @@ document <
       MultiLine=true
     >}Containers={object:rtf::DualSplit<
       Name='dualsplit1'
-      Width=585
-      Height=320
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dualsplit2']
       InversedAlign=true
@@ -192,8 +192,8 @@ document <
       RowControlGap=7
     >, object:rtf::DualSplit<
       Name='dualsplit2'
-      Width=585
-      Height=277
+      Width=240
+      Height=96
       Container1=$CONTAINERS['pFilter']
       Container2=$CONTAINERS['dualsplit3']
     >, object:rtf::Panel<
@@ -232,6 +232,7 @@ document <
           DataMembers=['AccountNo'#13#10,
             'AccountName'#13#10,
             'CostAccountNo'#13#10,
+            'Description'#13#10,
             'NilaiAwal'#13#10,
             'Balance'#13#10,
             'OpeningDate'#13#10]
@@ -244,6 +245,9 @@ document <
         >, *object:rtf::FieldUIElmtSetting<
           Name='CostAccountNo'
           ControlCaption='Kode Akun Biaya'
+        >, *object:rtf::FieldUIElmtSetting<
+          Name='Description'
+          ControlCaption='Keterangan'
         >, *object:rtf::FieldUIElmtSetting<
           Name='NilaiAwal'
           ControlCaption='Nominal Biaya'
@@ -301,6 +305,11 @@ document <
           DisplayFormat=''
           TitleCaption='Kode Akun Biaya'
           Width=100
+          ReadOnly=true
+        >, *object:rtf::GridColumn<
+          Name='Description'
+          TitleCaption='Keterangan'
+          Width=120
           ReadOnly=true
         >, *object:rtf::GridColumn<
           Name='NilaiAwal'
