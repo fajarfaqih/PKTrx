@@ -182,12 +182,13 @@ class fSummaryCashAdvance:
         workbook.SetCellValue(row, 5, rec.Amount)
         workbook.SetCellValue(row, 6, rec.CurrencyName)
         workbook.SetCellValue(row, 7, rec.AmountEkuivalen)
-        workbook.SetCellValue(row, 8, rec.ReferenceNo)
-        workbook.SetCellValue(row, 9, rec.Description)
-        workbook.SetCellValue(row, 10, rec.ReturnStatus)
-        workbook.SetCellValue(row, 11, rec.ReturnTransactionNo)
-        workbook.SetCellValue(row, 12, rec.Inputer)
-        workbook.SetCellValue(row, 13, rec.BranchName)
+        workbook.SetCellValue(row, 8, rec.FundEntity)
+        workbook.SetCellValue(row, 9, rec.ReferenceNo)
+        workbook.SetCellValue(row, 10, rec.Description)
+        workbook.SetCellValue(row, 11, rec.ReturnStatus)
+        workbook.SetCellValue(row, 12, rec.ReturnTransactionNo)
+        workbook.SetCellValue(row, 13, rec.Inputer)
+        workbook.SetCellValue(row, 14, rec.BranchName)
 
         TotalDebetGroup += rec.Debet
         TotalCreditGroup += rec.Kredit

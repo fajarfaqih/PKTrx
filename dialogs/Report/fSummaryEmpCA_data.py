@@ -275,6 +275,7 @@ def SummaryEmpCA(config,params,returns):
         'ReturnTransactionNo:string',
         'BranchCode:string',
         'BranchName:string',
+        'FundEntity:string',
       ])
     )
 
@@ -282,7 +283,7 @@ def SummaryEmpCA(config,params,returns):
     strSQL = "SELECT A.TRANSACTIONITEMID, C.TRANSACTIONDATE, C.TRANSACTIONCODE, C.ACTUALDATE, B.MUTATIONTYPE, \
         B.AMOUNT, B.EKUIVALENAMOUNT, C.REFERENCENO, C.DESCRIPTION, C.INPUTER, C.TRANSACTIONNO, \
         C.AUTHSTATUS, B.CURRENCYCODE, B.RATE, E.SHORT_NAME, C.CURRENCYCODE, C.RATE, D.SHORT_NAME, \
-        BR.BRANCHCODE, BR.BRANCHNAME,  \
+        BR.BRANCHCODE, BR.BRANCHNAME,  A.FUNDENTITY, \
         G.ACCOUNTNAME, A.TRANSACTIONITEMID,  a.returntransactionitemid, \
           (select transactionno from \
              transaction.transaction tr, transaction.transactionitem ti \
@@ -321,6 +322,9 @@ def SummaryEmpCA(config,params,returns):
 
     # dict untuk status pengembalian LPJ
     stReturn = {0 : 'Belum ada LPJ', 1 : 'Sudah Ada LPJ' }
+
+    # dict untuk jenis dana
+    LsFundEntity = {1 : 'Zakat', 2 : 'Infaq' , 3 : 'Wakaf', 4 : 'Amil', 5 : 'Non Halal'}
     
     while not ds.Eof:
       recHist = dsHist.AddRecord()
@@ -371,6 +375,7 @@ def SummaryEmpCA(config,params,returns):
       recHist.ReturnTransactionNo = ds.return_transactionno
       recHist.BranchName = ds.BranchName
       recHist.BranchCode = ds.BranchCode
+      recHist.FundEntity = LsFundEntity[ds.FundEntity]
       
       ds.Next()
     #-- while
