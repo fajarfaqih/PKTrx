@@ -77,7 +77,7 @@ def SummaryVolunteer(config,params,returns):
     # Set BranchCodeParam
     BranchCodeParam = ''
     if IsAllBranch == 'F' :
-      BranchCodeParam = " and a.branchcode='%s' " % BranchCode
+      BranchCodeParam = " and (br.branchcode='%(BRANCHCODE)s' or br.groupbranchcode='%(BRANCHCODE)s' )" % {'BRANCHCODE' : BranchCode}
     else:
       IsHeadOffice = (UserBranchCode == HeadOfficeCode)
 

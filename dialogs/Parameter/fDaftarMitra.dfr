@@ -30,6 +30,11 @@ document <
           Hidden=true
           DataTypeName='varchar'
           DataLength=5
+        >, object:rtf::FieldUIElmtSetting<
+          Name='GroupBranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=5
         >}Name='uipParam'
     >}Containers={object:rtf::Panel<
       Name='pFilter'

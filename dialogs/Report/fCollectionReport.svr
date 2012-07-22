@@ -28,6 +28,10 @@ document <
           DataTypeName='varchar'
           DataLength=5
         >, object:rpclass::TCustomLoadedField<
+          Name='GroupBranchCode'
+          DataTypeName='varchar'
+          DataLength=5
+        >, object:rpclass::TCustomLoadedField<
           Name='BeginDate'
           DataTypeName='timestamp'
           DataLength=20
@@ -74,7 +78,7 @@ document <
         >, object:rpclass::TCustomLoadedField<
           Name='LPettyCash.AccountName'
           DataTypeName='VARCHAR'
-          DataLength=50
+          DataLength=100
         >, object:rpclass::TCustomLoadedField<
           Name='LPettyCash.Balance'
           DataTypeName='DOUBLE'

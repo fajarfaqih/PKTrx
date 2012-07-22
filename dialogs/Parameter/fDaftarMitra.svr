@@ -11,6 +11,10 @@ document <
           Name='BranchCode'
           DataTypeName='varchar'
           DataLength=5
+        >, object:rpclass::TCustomLoadedField<
+          Name='GroupBranchCode'
+          DataTypeName='varchar'
+          DataLength=5
         >}Mode=imSingleRow
     >}OnSetDataEx='FormSetDataEx'
 >

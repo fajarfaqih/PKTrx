@@ -55,10 +55,10 @@ class fDaftarMitra:
 
 
   def DisplayQuery(self):
-    BranchCode = self.uipParam.BranchCode
+    GroupBranchCode = self.uipParam.GroupBranchCode
     qVolunteer = self.fVolunteer
     qVolunteer.OQLText = " select from Volunteer \
-        [BranchCode = '%s'] \
+        [LBranch.GroupBranchCode = '%s'] \
         ( \
           VolunteerId, \
           VolunteerName as Nama_Mitra, \
@@ -66,7 +66,7 @@ class fDaftarMitra:
           BranchCode, \
           self \
         ) then order by VolunteerId; \
-    " % (BranchCode)
+    " % (GroupBranchCode)
 
     qVolunteer.DisplayData()
 

@@ -10,6 +10,7 @@ def FormSetDataEx(uideflist,params):
   rec.BranchName = str(UserInfo[5])
   rec.BranchId = int(UserInfo[2])
   rec.HeadOfficeCode = config.SysVarIntf.GetStringSysVar('OPTION','HeadOfficeCode')
+  rec.GroupBranchCode = str(UserInfo[3])
 
   # Set Default Period Date
   Now = config.Now()

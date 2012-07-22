@@ -6,6 +6,7 @@ def FormSetDataEx(uideflist, params) :
 
   rec = uideflist.uipVolunteer.Dataset.AddRecord()
   rec.BranchCode = str(config.SecurityContext.GetUserInfo()[4])
+  rec.GroupBranchCode = str(config.SecurityContext.GetUserInfo()[3])
   rec.BeginDate = (config.Now())
   rec.EndDate = rec.BeginDate
 

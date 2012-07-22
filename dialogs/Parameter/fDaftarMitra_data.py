@@ -6,6 +6,7 @@ def FormSetDataEx(uideflist,params):
 
   recParam = uideflist.uipParam.Dataset.AddRecord()
   recParam.BranchCode = config.SecurityContext.GetUserInfo()[4]
+  recParam.GroupBranchCode = config.SecurityContext.GetUserInfo()[3]
   
 def GetDataMitra(config,parameters,returns):
   status = returns.CreateValues(

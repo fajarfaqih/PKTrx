@@ -33,6 +33,11 @@ document <
           Hidden=true
           DataTypeName='varchar'
           DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='GroupBranchCode'
+          Hidden=true
+          DataTypeName='varchar'
+          DataLength=5
         >}Name='uipVolunteer'
     >, object:rtf::PClassUI<
       Name='uipTransaction'
@@ -143,9 +148,9 @@ document <
           ControlCaption='Pilih mitra'
           ClassTypeName='Volunteer'
           DisplayFields='VolunteerId;VolunteerName;HomeAddress;HomePhone'
-          Restrictions='BranchCode|BranchCode'
+          Restrictions='GroupBranchCode|GroupBranchCode'
           OQLText=['select from Volunteer'#13#10,
-            '[BranchCode=:BranchCode]'#13#10,
+            '[LBranch.GroupBranchCode=:GroupBranchCode]'#13#10,
             '('#13#10,
             '  VolunteerId,'#13#10,
             '  VolunteerName,'#13#10,
