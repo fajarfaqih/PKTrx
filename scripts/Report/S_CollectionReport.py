@@ -62,7 +62,7 @@ def GetReportData(config,param):
     if param.IsAllBranch == 'F' :
       if param.IsIncludeChildBranch == 'F' :
         # jika hanya menampilkan cabang tanpa anak di bawahnya
-        SQLParam = " and i.BranchCode='%s' " % aBranchCode
+        SQLParam = " and (i.BranchCode='%(BranchCode)s' or b.GroupBranchCode='%(BranchCode)s' ) " % {'BranchCode' : aBranchCode}  
         addFilter += SQLParam 
         addFilter2 += SQLParam
       else :
