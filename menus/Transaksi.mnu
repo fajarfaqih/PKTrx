@@ -38,7 +38,7 @@ document <
           Name='TR0004'
           Caption='Mitra'
           OnClick='ShowQueryClick'
-          AllowedGroups='ADM;SPV'
+          AllowedGroups='ADM;SPV;KEU'
           StringTag='parameter/fDaftarMitra'
         >, object:rmn::MenuItem<
           Name='TR0004A'
@@ -137,7 +137,7 @@ document <
           OnClick='ShowQueryClick'
           AllowedGroups='ADM;SPV'
           StringTag='parameter/fDaftarExternalDebtor'
-        >}AllowedGroups='ADM;SPV'
+        >}AllowedGroups='ADM;SPV;KEU'
     >, object:rmn::MenuItem<
       Caption='Peragaan'
       MenuItems={object:rmn::MenuItem<
