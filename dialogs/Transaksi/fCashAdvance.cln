@@ -11,7 +11,7 @@ document <
   Left=50
   Top=50
   Width=641
-  Height=600
+  Height=700
   UIParts={object:rtf::PClassUI<
       Elements={object:rtf::FieldUIElmtSetting<
           Name='BranchCode'
@@ -49,7 +49,7 @@ document <
     >}Containers={object:rtf::DualSplit<
       Name='dsMain'
       Width=641
-      Height=600
+      Height=700
       Container1=$CONTAINERS['pAction']
       Container2=$CONTAINERS['dualsplit1']
       InversedAlign=true
@@ -118,9 +118,15 @@ document <
           ControlCaption='Jumlah Dana RAK'
           DataTypeName='double'
           DataLength=20
+        >, object:rtf::FieldUIElmtSetting<
+          Name='DistBalance'
+          ReadOnlyControl=true
+          ControlCaption='Sisa Dana RAK'
+          DataTypeName='double'
+          DataLength=20
         >}Name='pRAKInfo'
       Width=545
-      Height=137
+      Height=145
       Bordered=true
       UIPart=$UIPARTS['uipTransaction']
       Controls={*object:rtf::DBEdit<
@@ -155,12 +161,23 @@ document <
           Name='DistAmount'
           Top=96
           Left=8
-          Width=180
+          Width=177
           Height=21
           Enabled=false
           Color=-2147483624
           ControlCaption='Jumlah Dana RAK'
           FieldName='DistAmount'
+          DisplayFormat=',0.00'
+        >, *object:rtf::DBEdit<
+          Name='DistBalance'
+          Top=124
+          Left=8
+          Width=177
+          Height=21
+          Enabled=false
+          Color=-2147483624
+          ControlCaption='Sisa Dana RAK'
+          FieldName='DistBalance'
           DisplayFormat=',0.00'
         >, object:rtf::Label<
           Name='label1'
@@ -198,7 +215,7 @@ document <
     >, object:rtf::DualSplit<
       Name='dualsplit1'
       Width=641
-      Height=569
+      Height=634
       Container1=$CONTAINERS['dualsplit2']
       Container2=$CONTAINERS['pRAKInfo']
     >, object:rtf::Panel<
@@ -223,7 +240,7 @@ document <
             >, object:rtf::FieldUIElmtSetting<
               Name='LCashAccount.AccountName'
               DataTypeName='VARCHAR'
-              DataLength=50
+              DataLength=100
               UsedAsDisplay=true
               KeyOrDisplayName='AccountName'
               FinalDisplayFieldName='AccountName'
@@ -367,6 +384,18 @@ document <
           ControlCaption='-'
           DataTypeName='varchar'
           DataLength=100
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ProductAccountNo'
+          ReadOnlyControl=true
+          ControlCaption='Program'
+          DataTypeName='varchar'
+          DataLength=30
+        >, object:rtf::FieldUIElmtSetting<
+          Name='ProductAccountName'
+          ReadOnlyControl=true
+          ControlCaption='-'
+          DataTypeName='varchar'
+          DataLength=20
         >}Name='pTransaction2'
       Width=593
       Height=337
@@ -428,7 +457,7 @@ document <
           Name='ReferenceNo'
           Top=188
           Left=8
-          Width=225
+          Width=305
           Height=21
           Color=0
           ControlCaption='Nomor referensi'
@@ -436,7 +465,7 @@ document <
           Name='Description'
           Top=216
           Left=8
-          Width=225
+          Width=305
           Height=21
           Color=0
           ControlCaption='Keterangan'
@@ -444,7 +473,7 @@ document <
           Name='BudgetCode'
           Top=244
           Left=8
-          Width=49
+          Width=89
           Height=21
           Color=-2147483624
           ControlCaption='Kode Budget'
@@ -452,22 +481,53 @@ document <
           Name='BudgetOwner'
           Layout=clNextSide
           Top=244
-          Left=165
-          Width=165
-          Height=21
+          Left=205
           Color=-2147483624
           ControlCaption='-'
+        >, *object:rtf::DBEdit<
+          Name='ProductAccountNo'
+          Top=272
+          Left=8
+          Width=89
+          Height=21
+          Visible=false
+          Color=-2147483624
+          ControlCaption='Program'
+          ReadOnly=true
+        >, *object:rtf::DBEdit<
+          Name='ProductAccountName'
+          Layout=clNextSide
+          Top=272
+          Left=205
+          Width=200
+          Height=21
+          Visible=false
+          Color=-2147483624
+          ControlCaption='-'
+          ReadOnly=true
         >, object:rtf::Button<
           Name='bSearchBudget'
           Layout=clAbsolute
           Top=244
-          Left=345
-          Width=88
+          Left=425
+          Width=120
           Height=25
           Color=0
           ControlCaption=''
           Caption='Cari Budget'
           OnClick='bSearchBudgetClick'
+        >, object:rtf::Button<
+          Name='bSearchProduct'
+          Layout=clAbsolute
+          Top=272
+          Left=424
+          Width=121
+          Height=25
+          Visible=false
+          Color=0
+          ControlCaption=''
+          Caption='Cari Program / Project'
+          OnClick='bSearchProductClick'
         >}EqualCaptionWidth=100
       ControlLeftMargin=8
       ControlTopMargin=20
@@ -636,7 +696,7 @@ document <
     >, object:rtf::DualSplit<
       Name='dualsplit2'
       Width=641
-      Height=465
+      Height=479
       Container1=$CONTAINERS['pTransaction']
       Container2=$CONTAINERS['pTransaction2']
     >}FormClassName='fCashAdvance'

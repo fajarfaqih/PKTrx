@@ -25,6 +25,7 @@ class fCashAdvance :
     self.fSearchEmployee = None
     self.fSearchBudget = None
     self.fSearchRAK = None
+    self.fSelectProduct = None
     self.DefaultValues = {}
 
   # --- PRIVATE METHOD ---
@@ -122,6 +123,26 @@ class fCashAdvance :
       uipTran.BudgetId = form.BudgetId
     # end if
 
+  def bSearchProductClick(self,sender):
+    uipTran = self.uipTransaction
+    if self.fSelectProduct == None:
+      fProduct = self.app.CreateForm('Transaksi/fSelectProduct', 'Transaksi/fSelectProduct', 0, None, None)
+      self.fSelectProduct = fProduct
+    else:
+      fProduct = self.fSelectProduct
+    # end if
+
+    branchCode = uipTran.BranchCode
+    if fProduct.GetProduct(branchCode) == 1:
+      uipTran.Edit()
+      uipTran.ProductAccountNo = fProduct.AccountNo
+      uipTran.ProductAccountName = fProduct.ProductName
+      #self.uipTransactionItem.ProductId = productId
+      #self.uipTransactionItem.FundEntityCollection = MAPEntity[fProduct.FundCategory or 'I']
+      #self.uipTransactionItem.PercentageOfAmil = fProduct.PercentageOfAmilFunds
+
+    return 1
+    
   def bSearchRAKClick(self,sender):
     uipTran = self.uipTransaction
     if self.fSearchRAK == None:
@@ -139,6 +160,7 @@ class fCashAdvance :
       uipTran.DistSourceBranchCode = uipDist.BranchCodeSource
       uipTran.DistSourceBranchName = uipDist.BranchNameSource
       uipTran.DistAmount = uipDist.Amount
+      uipTran.DistBalance = uipDist.Balance
       uipTran.DistributionId = uipDist.DistributionId
     # end if
     

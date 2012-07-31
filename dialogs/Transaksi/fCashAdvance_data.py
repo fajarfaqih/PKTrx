@@ -68,6 +68,8 @@ def SimpanData(config, params, returns):
     request['FundEntity'] = oTransaction.FundEntity or 4
     request['DistributionTransferId'] = oTransaction.DistributionId or 0
     request['ActualDate'] = oTransaction.ActualDate
+    request['ProductAccountNo'] = oTransaction.ProductAccountNo
+    
     
     sRequest = simplejson.dumps(request)
 

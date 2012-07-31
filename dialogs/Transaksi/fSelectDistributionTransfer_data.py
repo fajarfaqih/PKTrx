@@ -48,6 +48,7 @@ def FormSetDataEx(uideflist,params):
       recDisb.SourceCashAccountName = res.AccountName
       recDisb.DestCashAccountNo = res.CashAccountNoDest
       recDisb.DestCashAccountName = res.AccountName_1
+      recDisb.Balance = res.Balance
       res.Next()
     # end while
   # end if
@@ -79,6 +80,7 @@ def GetDataDistributionOUT(config,SourceBranchCode,DestBranchCode,BeginDate,EndD
      LCashAccountSource.AccountName as AccountNameSource, \
      CashAccountNoDest, \
      LCashAccountDest.AccountName as AccountNameDest, \
+     Balance, \
      self) then order by ActualDate,TransactionId ; \
   " % AddParam
 
@@ -119,6 +121,7 @@ def GetDataDistributionIN(config,SourceBranchCode,DestBranchCode,BeginDate,EndDa
      LCashAccountSource.AccountName as AccountNameSource, \
      CashAccountNoDest, \
      LCashAccountDest.AccountName as AccountNameDest, \
+     Balance , \
      self) then order by ActualDate,TransactionId ; \
   " % AddParam
 

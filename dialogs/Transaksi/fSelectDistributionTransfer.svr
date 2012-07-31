@@ -87,6 +87,10 @@ document <
           DataTypeName='double'
           DataLength=20
         >, object:rpclass::TCustomLoadedField<
+          Name='Balance'
+          DataTypeName='double'
+          DataLength=20
+        >, object:rpclass::TCustomLoadedField<
           Name='TransactionNo'
           DataTypeName='varchar'
           DataLength=30
