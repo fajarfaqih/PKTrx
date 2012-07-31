@@ -3806,6 +3806,10 @@ document <
           MemberName='Balance'
           PhysicalName='BALANCE'
           DataType=$TYPEDECLS['DOUBLE']
+        >, object:FieldMember<
+          MemberName='DistributionAmount'
+          PhysicalName='DISTRIBUTIONAMOUNT'
+          DataType=$TYPEDECLS['INTEGER']
         >}ClassID='{31EBA381-7CFF-49F2-B5F7-D41B80260C28}'
       AutoPrimaryKey=$TYPEDECLS['DistributionTransferInfo'].MEMBERS['DistributionId']
     >, object:ClassTypeDecl<

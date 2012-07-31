@@ -1707,6 +1707,7 @@ class DistributionTransferInfo(pobject.PObject):
          "
     
     def SetBalance(self,aAmount) :
+      self.DistributionAmount = aAmount
       self.Balance = aAmount
 
       # Hitung RAK yang sudah dipakai oleh cabang
