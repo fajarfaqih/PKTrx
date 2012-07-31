@@ -1723,6 +1723,8 @@ class DistributionTransferInfo(pobject.PObject):
       TotalUsed = oRes.TotalUsed or 0.0
 
       if TotalUsed > 0.0:
+        if TotalUsed > self.Balance :
+          raise Exception, 'Perubahan Nilai Transaksi tidak valid. Dana RAK telah digunakan oleh cabang pengirim sebesar %f ' % TotalUsed
         self.Balance -= TotalUsed
 
 class FixedAssetTransactInfo(pobject.PObject):
