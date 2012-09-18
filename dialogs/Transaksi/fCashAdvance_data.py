@@ -24,7 +24,7 @@ def FormSetDataEx(uideflist, params) :
       rec.Rate = 1.0
       rec.AmountEkuivalen = rec.Amount
 
-    oCA = helper.GetObjectByNames('CATransactItem', {'TransactionId' : oTran.TransactionId}
+    oCA = helper.GetObjectByNames('CATransactItem', {'TransactionId' : oTran.TransactionId})
     if oCA.FundEntity != 0 :
        rec.FundEntity = oCA.FundEntity
 
