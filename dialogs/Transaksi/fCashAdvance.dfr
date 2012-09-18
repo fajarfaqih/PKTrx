@@ -224,7 +224,7 @@ document <
     >, object:rtf::DualSplit<
       Name='dualsplit1'
       Width=641
-      Height=634
+      Height=669
       Container1=$CONTAINERS['dualsplit2']
       Container2=$CONTAINERS['pRAKInfo']
     >, object:rtf::Panel<

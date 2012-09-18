@@ -16,6 +16,7 @@ def FormSetDataEx(uideflist, params) :
 
     oTran = helper.GetObjectByNames('Transaction',{'TransactionNo' : rec.TransactionNo})
     rec.ActualDate = oTran.GetAsTDateTime('ActualDate')
+
     
     if rec.CurrencyCode in ['',None]:
       rec.CurrencyCode = '000'
@@ -23,6 +24,9 @@ def FormSetDataEx(uideflist, params) :
       rec.Rate = 1.0
       rec.AmountEkuivalen = rec.Amount
 
+    oCA = helper.GetObjectByNames('CATransactItem', {'TransactionId' : oTran.TransactionId}
+    if oCA.FundEntity != 0 :
+       rec.FundEntity = oCA.FundEntity
 
     return st
 
