@@ -127,28 +127,28 @@ def SummaryEmpCA(config,params,returns):
                           transaction.transactionitem d, \
                           transaction.accounttransactionitem e \
                      where c.transactionid = d.transactionid and d.transactionitemid = e.transactionitemid \
-                         and c.actualdate between '%(BEGINDATE)s' and '%(ENDDATE)s'  and e.accountno=a.accountno \
+                         and c.actualdate >= '%(BEGINDATE)s' and c.actualdate < '%(ENDDATE)s'  and e.accountno=a.accountno \
                          and d.mutationtype='D') as Debet, \
                  (select sum(d.EkuivalenAmount) \
                      from transaction.transaction c, \
                           transaction.transactionitem d, \
                           transaction.accounttransactionitem e \
                      where c.transactionid = d.transactionid and d.transactionitemid = e.transactionitemid \
-                         and c.actualdate between '%(BEGINDATE)s' and '%(ENDDATE)s'  and e.accountno=a.accountno \
+                         and c.actualdate >= '%(BEGINDATE)s' and c.actualdate < '%(ENDDATE)s'  and e.accountno=a.accountno \
                          and d.mutationtype='D') as DebetEkuiv, \
                  (select sum(d.Amount) \
                      from transaction.transaction c, \
                           transaction.transactionitem d, \
                           transaction.accounttransactionitem e \
                      where c.transactionid = d.transactionid and d.transactionitemid = e.transactionitemid \
-                         and c.actualdate between '%(BEGINDATE)s' and '%(ENDDATE)s'  and e.accountno=a.accountno \
+                         and c.actualdate >= '%(BEGINDATE)s' and c.actualdate < '%(ENDDATE)s'  and e.accountno=a.accountno \
                          and d.mutationtype='C') as Kredit, \
                  (select sum(d.EkuivalenAmount) \
                      from transaction.transaction c, \
                           transaction.transactionitem d, \
                           transaction.accounttransactionitem e \
                      where c.transactionid = d.transactionid and d.transactionitemid = e.transactionitemid \
-                         and c.actualdate between '%(BEGINDATE)s' and '%(ENDDATE)s'  and e.accountno=a.accountno \
+                         and c.actualdate >= '%(BEGINDATE)s' and c.actualdate < '%(ENDDATE)s'  and e.accountno=a.accountno \
                          and d.mutationtype='C') as KreditEkuiv \
               from transaction.financialaccount a, transaction.accountreceivable b, transaction.currency c, branch br \
               where a.accountno = b.accountno \
@@ -195,6 +195,7 @@ def SummaryEmpCA(config,params,returns):
       res.Next()
       
     # end while
+
     
     #--- GET Saldo Awal
     dsBalance = returns.AddNewDatasetEx(
@@ -247,7 +248,6 @@ def SummaryEmpCA(config,params,returns):
 
       ds.Next()
     # end while
-      
     
     #--- GET HISTORI TRANSAKSI
     dsHist = returns.AddNewDatasetEx(
@@ -306,7 +306,7 @@ def SummaryEmpCA(config,params,returns):
         A.ACCOUNTNO = F.ACCOUNTNO AND \
         F.AccountNo = G.AccountNo AND \
         BR.BranchCode = B.BranchCode AND \
-        ( C.ACTUALDATE BETWEEN '%(BEGINDATE)s' AND '%(ENDDATE)s' %(BRANCHCODEPARAM)s ) \
+        ( c.actualdate >= '%(BEGINDATE)s' and c.actualdate < '%(ENDDATE)s' %(BRANCHCODEPARAM)s ) \
         ORDER BY B.BranchCode, C.ACTUALDATE ASC, A.TRANSACTIONITEMID ASC \
         " % { 'BRANCHCODEPARAM' : BranchCodeParam ,
               'BEGINDATE' : sqlBeginDateParam,
@@ -324,7 +324,7 @@ def SummaryEmpCA(config,params,returns):
     stReturn = {0 : 'Belum ada LPJ', 1 : 'Sudah Ada LPJ' }
 
     # dict untuk jenis dana
-    LsFundEntity = {1 : 'Zakat', 2 : 'Infaq' , 3 : 'Wakaf', 4 : 'Amil', 5 : 'Non Halal'}
+    LsFundEntity = {0 : '' , 1 : 'Zakat', 2 : 'Infaq' , 3 : 'Wakaf', 4 : 'Amil', 5 : 'Non Halal'}
     
     while not ds.Eof:
       recHist = dsHist.AddRecord()

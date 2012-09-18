@@ -114,7 +114,7 @@ class fSummaryCashAdvance:
         i += 1
         row += 1
       # end of while
-      
+
       # ---- Data Saldo Awal
       dsBeginBalance = ph.packet.BeginBalance
       
@@ -209,7 +209,7 @@ class fSummaryCashAdvance:
       workbook.SetCellValue(rowTotalGroup, 5, TotalCreditGroup)
       workbook.SetCellValue(rowTotalGroup, 6, MutasiGroup)
       workbook.SetCellValue(rowTotalGroup, 7, BeginBalance + MutasiGroup)
-      
+
       # set sheet aktif
       workbook.ActivateWorksheet('DataRekap')
       
